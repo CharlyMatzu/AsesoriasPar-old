@@ -1,0 +1,64 @@
+$panel-width: 460px;
+
+.wrapper{
+	position: relative;
+	height: 100%;
+
+	.panel-left{
+		background-color: #212121;
+		position: fixed;
+		width: $panel-width;
+		height: 100%;
+		background-size: cover;
+
+		// background-position: center;
+	}
+
+	.panel-right{
+		margin-left: $panel-width;
+		position: relative;
+		height: 100%;
+		overflow: auto;
+		padding: 20px 50px;
+
+		.panel-menu{
+			position: absolute;
+			top: 20px;
+			right: 50px;
+
+			.button{
+				margin-left: 10px;
+			}
+		}
+
+		// center verticaly
+		display: flex;
+		align-items: center;
+
+		.form-section{
+			width: 100%;
+			max-width: 540px;
+			margin: 0 auto;
+			
+			display: flex;
+			flex-direction: column;
+
+			.head{
+				color: $gray-color;
+				margin-bottom: 40px;
+				.name{
+					font-style: italic;
+					text-decoration: underline;
+					transition: .3s;
+
+					&:hover{
+						color: #212121;
+					}
+				}
+			}
+			.form-container{}
+		}
+
+	}
+
+}

@@ -1,0 +1,31 @@
+.schedule-table {
+  width: 100%; }
+  .schedule-table .columns-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    overflow-y: hidden; }
+    .schedule-table .columns-container .column-item {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;      flex: 1;
+      display: inline-block;
+      background-color: peru;
+      text-align: center; }
+      .schedule-table .columns-container .column-item .cell-item {
+        color: #212121;
+        padding: 10px 20px;
+        background: #DDDBDB; }
+      .schedule-table .columns-container .column-item .cell-header {
+        background: #92E55A;
+        font-weight: bold; }
+      .schedule-table .columns-container .column-item .active {
+        background-color: #FF5555; }
+    .schedule-table .columns-container .hide {
+      display: none; }
+
+.schedule-selectable .columns-container .column-item .cell-hour {
+  cursor: pointer; }
+  .schedule-selectable .columns-container .column-item .cell-hour:hover {
+    background-color: tomato; }

@@ -1,0 +1,191 @@
+<?php namespace Api;
+
+require_once 'config.php';
+require_once 'includes/autoload.php';
+require_once 'vendor/autoload.php';
+
+use Exceptions\RequestException;
+use Objects\User;
+use Slim\Exception\MethodNotAllowedException;
+use Slim\Exception\NotFoundException;
+use \Slim\Http\Request;
+use \Slim\Http\Response;
+use \Slim\App;
+use Utils;
+use Control\UserControl;
+
+
+$app = new App;
+
+//-----------GET METOD
+
+//TODO: arreglar todas las funciones para que el status venga de control
+$app->get('/', function (Request $request, Response $response) {
+    try{
+        $control = new UserControl();
+        $result = $control->getUsers();
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+});
+
+$app->post('/create', function (Request $request, Response $response) {
+    //Se obtiene el json y se transforma en array
+    $body = $request->getParsedBody();
+    //Mando incormacion incorrecta
+    if( ($body == null) || (!isset($body['email'])) || (!isset($body['password']) || (!isset($body['role'])) ) )
+       return $response->withStatus(Utils::$BAD_REQUEST)
+            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+
+    //TODO: validar que vengan los campos requeridos
+    try{
+        //Obteniendo datos
+        $control = new UserControl();
+        //Registrando
+        $email = $body['email'];
+        $password = $body['password'];
+        $role = $body['role'];
+
+        if( ($email == null) || ($password == null) || ($role == null) ){
+            return $response->withStatus(Utils::$BAD_REQUEST)
+                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+        }
+
+        $user = new User();
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $user->setRole($role);
+
+        $result = $control->insertUser( $user );
+
+        return $response->withStatus( Utils::$CREATED )->withJson( $result );
+
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+    // { "email":"nuevo@gmail.com","password":"555","role":"student"}
+
+});
+
+$app->post('/update', function (Request $request, Response $response) {
+    //Se obtiene el json y se transforma en array
+    $body = $request->getParsedBody();
+    //Mando incormacion incorrecta
+    if( ($body == null) || (!isset($body['id'])) || (!isset($body['email'])) || (!isset($body['password']) || (!isset($body['role'])) ) )
+        return $response->withStatus(Utils::$BAD_REQUEST)
+            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+
+    //TODO: validar que vengan los campos requeridos
+    try{
+        //Obteniendo datos
+        $control = new UserControl();
+        //Registrando
+        $id = $body['id'];
+        $email = $body['email'];
+        $password = $body['password'];
+        $role = $body['role'];
+
+        if( ($id == null) || ($email == null) || ($password == null) || ($role == null) ){
+            return $response->withStatus(Utils::$BAD_REQUEST)
+                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+        }
+
+        $user = new User();
+        $user->setId($id);
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $user->setRole($role);
+
+        $result = $control->updateUser( $user );
+
+        return $response->withStatus( Utils::$OK )->withJson( $result );
+
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+    // { "id":"20","email":"editado3@gmail.com","password":"555","role":"student"}
+});
+
+$app->post('/delete', function (Request $request, Response $response) {
+    //Se obtiene el json y se transforma en array
+    $body = $request->getParsedBody();
+    //Mando incormacion incorrecta
+    if( ($body == null) || (!isset($body['id'])) )
+        return $response->withStatus(Utils::$BAD_REQUEST)
+            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+
+    //TODO: validar que vengan los campos requeridos
+    try{
+        //Obteniendo datos
+        $control = new UserControl();
+        //Registrando
+        $id = $body['id'];
+
+        if( $id == null ){
+            return $response->withStatus(Utils::$BAD_REQUEST)
+                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+        }
+
+        $result = $control->deleteUser( $id );
+        return $response->withStatus( Utils::$OK )->withJson( $result );
+
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+    //{ "id":"6" }
+});
+
+$app->post('/search', function (Request $request, Response $response) {
+    //Se obtiene el json y se transforma en array
+    $body = $request->getParsedBody();
+    //Mando incormacion incorrecta
+    if( ($body == null) || (!isset($body['search'])) || (!isset($body['search_by']))  )
+        return $response->withStatus(Utils::$BAD_REQUEST)
+            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+
+    //TODO: validar que vengan los campos requeridos
+    try{
+        //Obteniendo datos
+        $control = new UserControl();
+        //Registrando
+        $search_by = $body['search_by'];
+        $search = $body['search'];
+
+        if( ($search_by == null) || ($search == null) ){
+            return $response->withStatus(Utils::$BAD_REQUEST)
+                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+        }
+
+        $result = $control->searchUser( $search_by, $search );
+        return $response->withStatus( Utils::$OK )->withJson( $result );
+
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+    // { "role":"Admin","search_by":"name","search":"Edu"}
+});
+
+try{
+    $app->run();
+} catch (MethodNotAllowedException $e) {
+    $res = Utils::makeJson( Utils::makeArrayResponse("Internal error", "Exception ocurred") );
+    http_response_code( Utils::$INTERNAL_SERVER_ERROR);
+    exit( $res );
+} catch (NotFoundException $e) {
+    $res = Utils::makeJson( Utils::makeArrayResponse("Internal error", "Exception ocurred") );
+    http_response_code( Utils::$INTERNAL_SERVER_ERROR);
+    exit( $res );
+} catch (\Exception $e) {
+    $res = Utils::makeJson( Utils::makeArrayResponse("Internal error", "Exception ocurred") );
+    http_response_code( Utils::$INTERNAL_SERVER_ERROR);
+    exit( $res );
+}

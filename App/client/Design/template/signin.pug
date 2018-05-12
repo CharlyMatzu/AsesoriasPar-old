@@ -1,0 +1,48 @@
+doctype html
+html(lang="es")
+head
+	meta(charset="UTF-8")
+	title Document
+	link(rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css")
+	link(rel="stylesheet" href="assets/css/style.css")
+body
+	// start wrapper
+	.wrapper
+		// Side
+		.panel-left(style="background-image: url('assets/img/pic1.jpeg')")
+			.overlay
+				.content
+					p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate omnis sequi ipsam velit fuga illum, atque iusto tenetur sapiente rem amet quod maxime, nostrum delectus non quisquam adipisci vitae temporibus.
+		// right
+		.panel-right
+			// menu
+			.panel-menu
+				span Don't have an account?
+				a.button(href="#") Sing up
+		
+			// form
+			.form-section
+				.head
+					h1 Sing In to 
+					span.name AsesorasPar
+
+					h5 Enter your details below.
+
+				// Form
+				.form-container
+					form.form(action="")
+					
+					.group
+						label.label(for="email") Email Address
+						input#email.input(type="text" name="email" placeholder="name@domain.com")
+					
+					.group
+						label.label(for="pass") Password
+						input#pass.input(type="password" name="pass" placeholder="Enter your password")
+						a.form-help(href="") Forgot your password?
+					
+					.text-center
+						input.send-button(type="submit" value="Sign in")
+	
+	script(src="vendor/jquery/jquery-3.2.1.min.js")
+	script(src="vendor/bootstrap/js/bootstrap.min.js")
