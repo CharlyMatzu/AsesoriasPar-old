@@ -7,8 +7,10 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
 use Persistence\Users;
 use PHPMailer\PHPMailer\Exception;
+use UnexpectedValueException;
 use Utils;
 use Slim\Http\Request;
+use Carbon\Carbon;
 
 class Auth
 {
@@ -16,6 +18,7 @@ class Auth
     private static $encrypt = ['HS256'];
     private static $aud = null;
 
+    //https://jwt.io/
     /**
      * Regresa el token correspondiente
      * @param $data @mixed Informacion correspondiente
@@ -23,12 +26,12 @@ class Auth
      */
     public static function getToken($data)
     {
-        $time = time();
+        $time_now = Carbon::now(Utils::TIMEZONE);
 
         //https://jwt.io/introduction/
         $payload = array(
-            'iat' => $time, //Cuando se creo
-            'exp' => $time + (7*24*60*60), //cuando expira (una hora extra)
+            'iat' => $time_now->timestamp, //Cuando se creo
+            'exp' => $time_now->addHour(1)->timestamp, //cuando expira (una hora extra)
             'aud' => self::Aud(), //extra validation (audience)
             //Adicional
             'data' => $data
@@ -49,6 +52,7 @@ class Auth
     /**
      * @param $request Request
      * @param $role_required int Rol requerido
+     * @return int  id del usuario asociado al token
      * @throws UnauthorizedException    No esta autorizado para la accion
      * @throws InternalErrorException
      */
@@ -63,21 +67,27 @@ class Auth
         if( empty($token_auth) )
             throw new UnauthorizedException("No esta autorizado");
 
-        //Obtiene token de string (array)
+
         //TODO verificar sin Bearer
+        //Obtiene token de string (array) sepaando de Bearer
         $token_auth = explode(" ", $token_auth)[1];
-        //Verifica si token es valido
-        try{
-            $token_auth = self::CheckToken($token_auth);
-        }
-        catch (Exception $ex){
-            throw new UnauthorizedException("No esta autorizado");
-        }
 
         //Verifica datos
-        $data_array = self::GetData($token_auth);
+        try{
+            //Verifica si token es valido
+            //TODO verificar que el token sea valido
+            self::CheckToken($token_auth);
+            //Obteniendo datos del token
+            //NOTA: Hace lo mismo que el anterior pero sin verificar
+            //TODO dejar un solo paso
+            $data = self::GetData($token_auth);
+        }
+        catch (Exception $ex){
+            throw new UnauthorizedException("Token invalido");
+        }
+
         $perUsers = new Users();
-        $result = $perUsers->getUserByTokenAuth( $data_array['id'], $data_array['email'] );
+        $result = $perUsers->getUserByTokenAuth( $data );
 
         //TODO: verificar role
         if( Utils::isEmpty( $result->getOperation() ) )
@@ -85,12 +95,14 @@ class Auth
         else if( Utils::isError( Utils::isError( $result->getOperation() ) ) )
             throw new InternalErrorException("Ocurrio un error al verificar usuario");
 
+        //Obtiene el primer registro
+        return $result->getData()[0]['user_id'];
     }
 
 
     /**
      * @param $token
-     * @return object
+     * @return void
      * @throws Exception
      * @throws UnauthorizedException
      */
@@ -99,9 +111,9 @@ class Auth
         if(empty($token))
             throw new Exception("Invalid token supplied.");
 
-        $decode = null;
+        $payload = null;
         try{
-            $decode = JWT::decode(
+            $payload = JWT::decode(
                 $token,
                 self::$secret_key,
                 self::$encrypt
@@ -115,24 +127,29 @@ class Auth
 
 
         //Validacion del sistema de seguridad extra
-        if($decode->aud !== self::Aud())
+        if($payload->aud !== self::Aud())
             throw new Exception("Invalid user logged in.");
 
-        return $decode;
+        //return $payload;
     }
 
     /**
      * Se obtiene informacion de token
      * @param $token
      * @return mixed
+     * @throws Exception
      */
     private static function GetData($token)
     {
-        return JWT::decode(
-            $token,
-            self::$secret_key,
-            self::$encrypt
-        )->data;
+        try{
+            return JWT::decode(
+                $token,
+                self::$secret_key,
+                self::$encrypt
+            )->data;
+        }catch (UnexpectedValueException $ex){
+            throw new Exception("Ocurrio un error al obtener datos del token");
+        }
     }
 
     private static function Aud()

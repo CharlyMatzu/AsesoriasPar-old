@@ -4,6 +4,8 @@ class Utils
 
     //Status code for database registers
     const HEADER_AUTH = "Authorization";
+    const TIMEZONE = 'America/Phoenix';
+
     public static $STATUS_DELETED = 0;
     public static $STATUS_ACTIVE = 1;
     //public static $DELETE = 0;

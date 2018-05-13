@@ -63,14 +63,12 @@ class Users extends Persistence{
 
     /**
      * @param $id int
-     * @param $email String
      * @return \Objects\DataResult
      */
-    public function getUserByTokenAuth($id, $email)
+    public function getUserByTokenAuth($id)
     {
         $query = $this->SELECT."
-                WHERE u.user_id = $id
-                AND u.email = '$email'";
+                WHERE u.user_id = $id";
         return  self::executeQuery($query);
     }
 

@@ -74,10 +74,13 @@ class UserControl{
         else{
             $user = self::makeObject_User( $result->getData()[0] );
             //Se envia array con datos: id y email y retorna token
-            $token = Auth::getToken([
-                'id' => $user->getId(),
-                'email' => $user->getEmail()
-            ]);
+            //TODO: no usar id de BD
+//            $token = Auth::getToken([
+//                'id' => $user->getId(),
+//                'email' => $user->getEmail()
+//            ]);
+            $token = Auth::getToken($user->getId());
+
             return [
                 "message" => "autenticado con exito",
                 'token' => $token
