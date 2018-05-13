@@ -4,7 +4,7 @@ class Utils
 
     //Status code for database registers
     public static $STATUS_DELETED = 0;
-    public static $STATUS_ENABLE = 1;
+    public static $STATUS_ACTIVE = 1;
     //public static $DELETE = 0;
 
     public static $ROLE_ADMIN = "admin";

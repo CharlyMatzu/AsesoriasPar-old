@@ -2,6 +2,7 @@
 
 include "../../vendor/autoload.php";
 use Firebase\JWT\JWT;
+use Slim\Exception\MethodNotAllowedException;
 
 class Auth
 {
@@ -9,6 +10,11 @@ class Auth
     private static $encrypt = ['HS256'];
     private static $aud = null;
 
+    /**
+     * Regresa el token correspondiente
+     * @param $data @mixed Informacion correspondiente
+     * @return string token
+     */
     public static function SignIn($data)
     {
         $time = time();
@@ -22,6 +28,10 @@ class Auth
         return JWT::encode($token, self::$secret_key);
     }
 
+    /**
+     * Verifica si token es valido
+     * @param $token
+     */
     public static function Check($token)
     {
         if(empty($token))
@@ -41,6 +51,11 @@ class Auth
         }
     }
 
+    /**
+     * Se obtiene informacion de token
+     * @param $token
+     * @return mixed
+     */
     public static function GetData($token)
     {
         return JWT::decode(
@@ -66,5 +81,10 @@ class Auth
         $aud .= gethostname();
 
         return sha1($aud);
+    }
+
+    //TODO: validar si esta autorizado
+    private static function isAuthorized(){
+        throw new MethodNotAllowedException("Sin funcionalidad");
     }
 }

@@ -123,7 +123,7 @@ class Careers extends Persistence {
      */
     public function changeStatusToEnable( $careerID ){
         $query = "UPDATE career 
-                      SET status = ". Utils::$STATUS_ENABLE ."
+                      SET status = ". Utils::$STATUS_ACTIVE ."
                       WHERE career_id = $careerID";
         return  self::executeQuery($query);
     }

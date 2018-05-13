@@ -31,7 +31,21 @@ $app->get('/', function (Request $request, Response $response) {
     }
 });
 
-$app->post('/create', function (Request $request, Response $response) {
+
+//TODO: arreglar todas las funciones para que el status venga de control
+$app->get('/active', function (Request $request, Response $response) {
+    try{
+        $control = new UserControl();
+        $result = $control->getActiveUsers();
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+});
+
+
+$app->post('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -71,7 +85,7 @@ $app->post('/create', function (Request $request, Response $response) {
 
 });
 
-$app->post('/update', function (Request $request, Response $response) {
+$app->put('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -112,7 +126,7 @@ $app->post('/update', function (Request $request, Response $response) {
     // { "id":"20","email":"editado3@gmail.com","password":"555","role":"student"}
 });
 
-$app->post('/delete', function (Request $request, Response $response) {
+$app->delete('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta

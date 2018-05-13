@@ -7,7 +7,7 @@ NEW
 	"short_name": "ISWaaa"
 }
 
-UPDATE
+UPDATE (PUT)
 {"id": 4,
 	"name": "aaaa",
 	"short_name": "bbbb"
@@ -27,7 +27,7 @@ CREATE
 	"year": 2009
 }
 
-UPDATE
+UPDATE (PUT)
 {
 	"id": 1,
 	"year": 2016
@@ -54,7 +54,7 @@ CREATE
 	"career": 1
 }
 
-UPDATE
+UPDATE (PUT)
 {
 	"id": 1,
 	"name": "Programacion 2",
@@ -63,4 +63,29 @@ UPDATE
 	"semester": 2,
 	"plan": 1,
 	"career": 5
+}
+
+
+
+-----------------------------
+USER
+-----------------------------
+CREATE
+{ 
+	"email": "carlosrozumaa@gmail.com",
+	"password": "123456",
+	"role": "basic"
+}
+
+UPDATE (PUT)
+{ 
+	"id": 3,
+	"email": "carlosrozumaa@gmail.com",
+	"password": "123456",
+	"role": "basic"
+}
+
+DELETE
+{
+	"id": 4
 }

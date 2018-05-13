@@ -18,9 +18,9 @@ class Users extends Persistence{
                         u.password,
                         u.register_date,
                         u.status,
-                        r.name
+                        r.name as 'role_name'
                     FROM user u
-                    INNER JOIN role r ON r.name = u.fk_role";
+                    INNER JOIN role r ON r.name = u.fk_role ";
 
     /**
      * Método que regresa todos los usuarios
@@ -31,9 +31,22 @@ class Users extends Persistence{
         return  self::executeQuery($query);
     }
 
+    public function getActive()
+    {
+        $query = $this->SELECT.
+                "WHERE u.status = ".Utils::$STATUS_ACTIVE;
+        return  self::executeQuery($query);
+    }
+
+    public function getDeleted()
+    {
+        $query = $this->SELECT.
+            "WHERE u.status = ".Utils::$STATUS_DELETED;
+        return  self::executeQuery($query);
+    }
+
 
     //TODO: change for auth with JWT token based
-
     /**
      * Método que regresa un usuario en la coincidencia con un nombre de
      * usuario y la contraseña
@@ -66,7 +79,7 @@ class Users extends Persistence{
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
-                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ENABLE;
+                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ACTIVE;
         return  self::executeQuery($query);
     }
 
@@ -118,9 +131,9 @@ class Users extends Persistence{
      * @param $id
      * @return \Objects\DataResult
      */
-    public function deleteUser( $id ){
+    public function changeStatusToDeleted($id ){
         $query = "UPDATE user u
-                         SET u.status = 0    
+                         SET u.status = ".Utils::$STATUS_DELETED."    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }
@@ -134,6 +147,8 @@ class Users extends Persistence{
         $query = "SELECT * FROM Role WHERE name = '$roleName'";
         return  self::executeQuery($query);
     }
+
+
 
 
 }
