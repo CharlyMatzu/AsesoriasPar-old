@@ -59,6 +59,8 @@ $app->get('/all', function (Request $request, Response $response) {
 
 $app->get('/active', function (Request $request, Response $response) {
     try{
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
         $control = new UserControl();
         $result = $control->getActiveUsers();
         return $response->withJson( $result );
@@ -69,6 +71,7 @@ $app->get('/active', function (Request $request, Response $response) {
 });
 
 
+//Regstro de usuario
 $app->post('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
@@ -95,6 +98,9 @@ $app->post('/', function (Request $request, Response $response) {
         $user->setEmail($email);
         $user->setPassword($password);
         $user->setRole($role);
+
+        //Validando authorizacion
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
 
         $result = $control->insertUser( $user );
 
@@ -138,6 +144,9 @@ $app->put('/', function (Request $request, Response $response) {
         $user->setPassword($password);
         $user->setRole($role);
 
+        //Validando authorizacion
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
         $result = $control->updateUser( $user );
 
         return $response->withStatus( Utils::$OK )->withJson( $result );
@@ -169,6 +178,9 @@ $app->delete('/', function (Request $request, Response $response) {
             return $response->withStatus(Utils::$BAD_REQUEST)
                 ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
         }
+
+        //Validando authorizacion
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
 
         $result = $control->deleteUser( $id );
         return $response->withStatus( Utils::$OK )->withJson( $result );
