@@ -41,12 +41,31 @@ class Auth
     }
 
     /**
-     * @param $token String
+     * @param $role_user
+     * @param $role_required
      * @return bool
      */
-    public static function isAuthenticated($token)
+    public static function isAuthorized($role_user, $role_required)
     {
-        return true;
+        //Se le podrian definir los permisos en la bd a un rol o usuario
+
+        //Si es admin, tiene permisos
+        if( $role_user ===  Utils::$ROLE_ADMIN )
+            return true;
+        //Si se requiere moderador
+        else if( $role_required === Utils::$ROLE_MOD ){
+            if( $role_user ===  Utils::$ROLE_MOD )
+                return true;
+            else
+                return false;
+        }
+        else if( $role_required === Utils::$ROLE_BASIC ){
+            if( $role_user ===  Utils::$ROLE_MOD ||
+                $role_user ===  Utils::$ROLE_BASIC)
+                return true;
+        }
+
+        return false;
     }
 
     /**
@@ -83,7 +102,7 @@ class Auth
             $data = self::GetData($token_auth);
         }
         catch (Exception $ex){
-            throw new UnauthorizedException("Token invalido");
+            throw new UnauthorizedException("Error: ".$ex->getMessage());
         }
 
         $perUsers = new Users();
@@ -96,7 +115,11 @@ class Auth
             throw new InternalErrorException("Ocurrio un error al verificar usuario");
 
         //Obtiene el primer registro
-        return $result->getData()[0]['user_id'];
+        $user = UserControl::makeObject_User($result->getData()[0]);
+        if( !self::isAuthorized( $user->getRole(), $role_required ) )
+            throw new UnauthorizedException("No esta autorizado");
+
+        return $user->getId();
     }
 
 
@@ -104,12 +127,11 @@ class Auth
      * @param $token
      * @return void
      * @throws Exception
-     * @throws UnauthorizedException
      */
     private static function CheckToken($token)
     {
         if(empty($token))
-            throw new Exception("Invalid token supplied.");
+            throw new Exception("Token invalido");
 
         $payload = null;
         try{
@@ -119,16 +141,16 @@ class Auth
                 self::$encrypt
             );
         }catch (ExpiredException $ex){
-            throw new UnauthorizedException($ex->getMessage());
+            throw new Exception("Token ha expirado");
         }
         catch (SignatureInvalidException $ex){
-            throw new UnauthorizedException($ex->getMessage());
+            throw new Exception("Firma de token invalida");
         }
 
 
         //Validacion del sistema de seguridad extra
         if($payload->aud !== self::Aud())
-            throw new Exception("Invalid user logged in.");
+            throw new Exception("Sesion de Usuario invalida");
 
         //return $payload;
     }
@@ -148,7 +170,7 @@ class Auth
                 self::$encrypt
             )->data;
         }catch (UnexpectedValueException $ex){
-            throw new Exception("Ocurrio un error al obtener datos del token");
+            throw new Exception($ex->getMessage());
         }
     }
 
