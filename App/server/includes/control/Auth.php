@@ -1,5 +1,6 @@
 <?php namespace Control;
 
+use Exceptions\ForbiddenException;
 use Exceptions\InternalErrorException;
 use Exceptions\UnauthorizedException;
 use Firebase\JWT\ExpiredException;
@@ -29,6 +30,7 @@ class Auth
         $time_now = Carbon::now(Utils::TIMEZONE);
 
         //https://jwt.io/introduction/
+        //TODO: improve expired time
         $payload = array(
             'iat' => $time_now->timestamp, //Cuando se creo
             'exp' => $time_now->addHour(1)->timestamp, //cuando expira (una hora extra)
@@ -74,17 +76,18 @@ class Auth
      * @return int  id del usuario asociado al token
      * @throws UnauthorizedException    No esta autorizado para la accion
      * @throws InternalErrorException
+     * @throws ForbiddenException
      */
     public static function authorize($request, $role_required)
     {
         //Se verifica header
         if( !$request->hasHeader( "Authorization" ) )
-            throw new UnauthorizedException("No esta autorizado");
+            throw new UnauthorizedException();
 
         //Se obtiene token
         $token_auth = $request->getHeader("Authorization")[0];
         if( empty($token_auth) )
-            throw new UnauthorizedException("No esta autorizado");
+            throw new UnauthorizedException();
 
 
         //TODO verificar sin Bearer
@@ -102,7 +105,7 @@ class Auth
             $data = self::GetData($token_auth);
         }
         catch (Exception $ex){
-            throw new UnauthorizedException("Error: ".$ex->getMessage());
+            throw new UnauthorizedException($ex->getMessage());
         }
 
         $perUsers = new Users();
@@ -110,14 +113,14 @@ class Auth
 
         //TODO: verificar role
         if( Utils::isEmpty( $result->getOperation() ) )
-            throw new UnauthorizedException("No esta autorizado");
+            throw new UnauthorizedException();
         else if( Utils::isError( Utils::isError( $result->getOperation() ) ) )
             throw new InternalErrorException("Ocurrio un error al verificar usuario");
 
         //Obtiene el primer registro
         $user = UserControl::makeObject_User($result->getData()[0]);
         if( !self::isAuthorized( $user->getRole(), $role_required ) )
-            throw new UnauthorizedException("No esta autorizado");
+            throw new ForbiddenException("No esta autorizado");
 
         return $user->getId();
     }

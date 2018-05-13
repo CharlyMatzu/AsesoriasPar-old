@@ -19,7 +19,27 @@ use Control\Auth;
 $app = new App;
 
 //-----------GET METOD
+
+//Obtener informacion del usuario actual
 $app->get('/', function (Request $request, Response $response) {
+
+    try{
+        //Verificamos si esta autorizado
+        $id = Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        $control = new UserControl();
+        $result = $control->getUser_ById($id);
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+});
+
+
+//Informacion de todos los usuarios
+$app->get('/all', function (Request $request, Response $response) {
 
     try{
         //Verificamos si esta autorizado
