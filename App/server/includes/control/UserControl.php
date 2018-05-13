@@ -55,8 +55,6 @@ class UserControl{
     }
 
 
-    //TODO: aplicar auth
-
     /**
      * @param $email string
      * @param $pass string
@@ -65,7 +63,7 @@ class UserControl{
      * @throws NotFoundException
      */
     public function signIn($email, $pass){
-        $result = $this->perUsers->getUser_ByAuth($email, $pass);
+        $result = $this->perUsers->getUser_BySignIn($email, $pass);
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al authenticar");
@@ -76,7 +74,7 @@ class UserControl{
         else{
             $user = self::makeObject_User( $result->getData()[0] );
             //Se envia array con datos: id y email y retorna token
-            $token = Auth::SignIn([
+            $token = Auth::getToken([
                 'id' => $user->getId(),
                 'email' => $user->getEmail()
             ]);

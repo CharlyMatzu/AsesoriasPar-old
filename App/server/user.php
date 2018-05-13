@@ -13,13 +13,18 @@ use \Slim\Http\Response;
 use \Slim\App;
 use Utils;
 use Control\UserControl;
+use Control\Auth;
 
 
 $app = new App;
 
 //-----------GET METOD
 $app->get('/', function (Request $request, Response $response) {
+
     try{
+        //Verificamos si esta autorizado
+        Auth::authorize( $request, Utils::$ROLE_MOD );
+
         $control = new UserControl();
         $result = $control->getUsers();
         return $response->withJson( $result );
@@ -27,6 +32,7 @@ $app->get('/', function (Request $request, Response $response) {
         return $response->withStatus( $ex->getRequestStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
+
 });
 
 

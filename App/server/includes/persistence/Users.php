@@ -46,7 +46,6 @@ class Users extends Persistence{
     }
 
 
-    //TODO: change for auth with JWT token based
     /**
      * Método que regresa un usuario en la coincidencia con un nombre de
      * usuario y la contraseña
@@ -54,11 +53,24 @@ class Users extends Persistence{
      * @param String $pass Contraseña
      * @return \Objects\DataResult
      */
-    public function getUser_ByAuth($email, $pass){
+    public function getUser_BySignIn($email, $pass){
         $ePass = $this->crypt($pass);
         $query = $this->SELECT."
                 WHERE (u.email = '".$email."') 
                 AND u.password = '".$ePass."' ";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $id int
+     * @param $email String
+     * @return \Objects\DataResult
+     */
+    public function getUserByTokenAuth($id, $email)
+    {
+        $query = $this->SELECT."
+                WHERE u.user_id = $id
+                AND u.email = '$email'";
         return  self::executeQuery($query);
     }
 
