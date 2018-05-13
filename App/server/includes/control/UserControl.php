@@ -5,6 +5,7 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
+use Objects\DataResult;
 use Persistence\Users;
 use Objects\Student;
 use Objects\User;
@@ -21,119 +22,133 @@ class UserControl{
 
     /**
      * Obtiene todos los usuarios registrados
-     * @return array|bool|null
-     * @throws InternalErrorException Si no se pudo obtener a los usuarios
-     * @throws NoContentException Si no se encuentra ningun usuario
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NoContentException
      */
     public function getUsers(){
         $result = $this->perUsers->getUsers();
-        if($result['operation'] == Utils::$OPERATION_EMPTY)
-            return false;
-        else if( $result == Utils::$OPERATION_RESULT)
-            return $result;
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Ocurrio un error al obtener usuarios");
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No hay usuarios");
         else
-            return $result;
+            return $result->getData();
     }
 
 
+    //TODO: aplicar auth
     /**
      * @param $user
      * @param $pass
-     * @return array|bool|null
+     * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NotFoundException
      */
     public function getUser_ByAuth($user, $pass){
         $result = $this->perUsers->getUser_ByAuth($user, $pass);
-        if($result['operation'] == Utils::$OPERATION_EMPTY)
-            return false;
-        else if( $result == Utils::$OPERATION_RESULT)
-            return true;
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Ocurrio un error al authenticar");
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NotFoundException("Password o contraseña incorrectos");
         else
-            return $result;
+            return $result->getData();
     }
 
     /**
      * @param $id
-     * @return array|bool|null
+     * @return \mysqli_result|null
      * @throws InternalErrorException
-     * @throws NotFoundException
+     * @throws NoContentException
      */
     public function getUser_ById($id){
         $result = $this->perUsers->getUser_ById( $id );
-        if($result['operation'] == Utils::$OPERATION_RESULT )
-            return $result;
-        else if( $result['operation'] == Utils::$OPERATION_EMPTY)
-            return false;
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Ocurrio un error al obtener usuario");
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No se encontro usuario");
         else
-            return $result;
+            return $result->getData();
     }
 
-
-    /**
-     * @param $id int
-     * @return bool TRUE si existe, FALSE si no existe
-     * @throws InternalErrorException si ocurrio un error
-     * @throws NotFoundException si no existe el
-     */
-    public function isUserExist_ById($id){
-        $result = $this->getUser_ById($id);
-        if($result['operation'] == Utils::$OPERATION_EMPTY)
-            return false;
-        else if($result['operation'] == Utils::$OPERATION_RESULT)
-            return true;
-        else
-            return $result;
-    }
 
     /**
      * @param $id
-     * @return mixed
-     * @throws InternalErrorException
-     * @throws NotFoundException
+     * @return bool|DataResult
      */
-    public function getRoleUser($id){
-        $result = $this->perUsers->getRoleUser( $id );
-        if( $result['operation'] === Utils::$OPERATION_EMPTY)
-            return false;
-        else if( $result['operation'] == Utils::$OPERATION_RESULT)
-            return true;
-        else
-            return $result;
+    public function isUserExist_ById($id){
+        $result = $this->perUsers->getUser_ById($id);
+
+        if( Utils::isSuccessWithResult($result->getOperation()) )
+            $result->setOperation(true);
+        else if( Utils::isEmpty($result->getOperation()) )
+            $result->setOperation(false);
+
+        return $result;
     }
 
-    public function ifExistRole($role){
-        $result = $this->perUsers->ifExistRole( $role );
-        if( $result['operation'] === Utils::$OPERATION_RESULT )
-            return true;
-        else if( $result['operation'] === Utils::$OPERATION_EMPTY)
-            return false;
-        else
-            return $result;
-    }
-
-
-    public function getUser_ByEmail($email){
-        $result = $this->perUsers->getUser_ByEmail( $email );
-        if( $result['operation'] === Utils::$OPERATION_SUCCESS)
-            return true;
-        else if( $result['operation'] === Utils::$OPERATION_EMPTY)
-            return false;
-        else
-            return $result;
-    }
 
     /**
-     * @param $email String
+     * @param $id
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
      */
-    public function isUserExist_ByEmail($email){
-        $result = $this->getUser_ByEmail($email);
-        if( $result['operation'] === Utils::$OPERATION_RESULT)
-            return true;
-        else if( $result['operation'] === Utils::$OPERATION_EMPTY)
-            return false;
+    public function getRoleUser($id){
+
+        $result = $this->perUsers->getRoleUser( $id );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Ocurrio un error al obtener rol de usuario");
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No se obtuvo rol");
         else
-            return $result;
+            return $result->getData();
+    }
+
+
+    /**
+     * @param $email
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getUser_ByEmail($email){
+        $result = $this->perUsers->getUser_ByEmail( $email );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Ocurrio un error al obtener usuario por email");
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No se encontro usuario");
+        else
+            return $result->getData();
+    }
+
+
+    public function isEmailUsed($email){
+        $result = $this->perUsers->getUser_ByEmail( $email );
+
+        if( Utils::isSuccessWithResult($result->getOperation()) )
+            $result->setOperation(true);
+        else if( Utils::isEmpty($result->getOperation()) )
+            $result->setOperation(false);
+
+        return $result;
+    }
+
+
+    public function isRoleExists($role){
+        $result = $this->perUsers->getRole_ByName( $role );
+
+        if( Utils::isSuccessWithResult($result->getOperation()) )
+            $result->setOperation(true);
+        else if( Utils::isEmpty($result->getOperation()) )
+            $result->setOperation(false);
+
+        return $result;
     }
 
     //------------------REGISTRAR USUARIO
@@ -141,61 +156,45 @@ class UserControl{
 
     /**
      * @param $user User
-     * @param $student Student
      * @return array
-     * @throws BadRequestException
      * @throws ConflictException
      * @throws InternalErrorException
+     * @throws NotFoundException
      */
     public function insertUser($user){
-        $userId = $user->getId();
 
-        if( $userId != null ) {
-            $result = $this->isUserExist_ById($userId);
+        //Verifica que email no exista
+        $result = $this->isEmailUsed( $user->getEmail() );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al verificar email de usuario");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new ConflictException( "Email ya existe" );
 
-            if ($result == false)
-                throw new ConflictException("Usuario no existe");
-            else if ($result == true) {
-                $result = $this->getRoleUser($userId);
-                if ($result == false)
-                    throw new ConflictException("Usuario no tiene rol de estudiante o esta inhabil");
-                else if ($result == true) {
-                    return $result;
-                } else {
-                    throw new InternalErrorException("Ocurrio un error al buscar rol", $result['error']);
-                }
-            }else{
-                throw new InternalErrorException("Ocurrio un error al buscar usuario por ID", $result['error']);
-            }
-        }else {
-            //Insercion de usuario
+        //Se verifica rol
+        $result = $this->isRoleExists( $user->getRole() );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al verificar rol");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException( "No existe rol asignado" );
 
-            $result = $this->isUserExist_ByEmail( $user->getEmail() );
-            if ($result == true)
-                throw new ConflictException("Email ya existe");
-            else if ($result == false) {
-                $result = $this->ifExistRole( $user->getRole() );
-                if ($result == false)
-                    throw new ConflictException("Rol no existe");
-            }else{
-                throw new ConflictException("Ocurrio un error al veirifcar email");
-            }
+        //Se registra usuario
+        $result = $this->perUsers->insertUser( $user );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al registrar usuario");
 
-            $result = $this->perUsers->insertUser( $user );
-            if( $result['operation'] == Utils::$OPERATION_ERROR )
-                throw new InternalErrorException("Ocurrio un error al registrar usuario", $result['error']);
-            else
-                return Utils::makeArrayResponse(
-                    "Se registro usuario con éxito",
-                    'Correcto!'
-                );
-        }
+        return Utils::makeArrayResponse(
+            "Se registro usuario con éxito"
+        );
+
     }
+
 
     /**
      * @param $user User
-     * @param $student Student
      * @return array
+     * @throws ConflictException
+     * @throws InternalErrorException
+     * @throws NoContentException
      */
     public function updateUser($user){
         $result = $this->getUser_ById( $user->getId() );
@@ -207,7 +206,7 @@ class UserControl{
             if ($result == true)
                 throw new ConflictException("Email ya existe");
             else if ($result == false) {
-                $result = $this->ifExistRole( $user->getRole() );
+                $result = $this->isRoleExists( $user->getRole() );
                 if ($result == false)
                     throw new ConflictException("Rol no existe");
             }else{

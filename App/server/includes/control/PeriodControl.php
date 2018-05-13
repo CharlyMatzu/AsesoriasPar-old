@@ -219,6 +219,7 @@ class PeriodControl{
      */
     public function isPeriodBetweenOther( $date ){
         $result = $this->perPeriods->getPeriodWhereIsBetween( $date );
+
         if( Utils::isSuccessWithResult($result->getOperation()) )
             $result->setOperation(true);
         else if( Utils::isEmpty($result->getOperation()) )

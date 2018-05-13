@@ -13,7 +13,7 @@ class Users extends Persistence{
     public function __construct(){}
 
     private $SELECT = "SELECT 
-                        u.pk_id,
+                        u.user_id,
                         u.email,
                         u.password,
                         u.register_date,
@@ -24,6 +24,7 @@ class Users extends Persistence{
 
     /**
      * Método que regresa todos los usuarios
+     * @return \Objects\DataResult
      */
     public function getUsers(){
         $query = $this->SELECT;
@@ -32,12 +33,13 @@ class Users extends Persistence{
 
 
     //TODO: change for auth with JWT token based
+
     /**
      * Método que regresa un usuario en la coincidencia con un nombre de
      * usuario y la contraseña
      * @param String $email Correo del usuario
      * @param String $pass Contraseña
-     * @return array|bool|null
+     * @return \Objects\DataResult
      */
     public function getUser_ByAuth($email, $pass){
         $ePass = $this->crypt($pass);
@@ -50,29 +52,27 @@ class Users extends Persistence{
     /**
      * Método que regresa un usuario en la coincidencia con el ID
      * @param int $id ID del usuario
-     * @return array|bool|null
+     * @return \Objects\DataResult
      */
     public function getUser_ById($id){
         $query = $this->SELECT."
-                WHERE u.pk_id = ".$id;
+                WHERE u.user_id = ".$id;
         return  self::executeQuery($query);
     }
 
+    /**
+     * @param $id
+     * @return \Objects\DataResult
+     */
     public function getRoleUser($id){
         $query = $this->SELECT."
                 WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ENABLE;
         return  self::executeQuery($query);
     }
 
-    public function isStudentRole( $user ){
-        $role = 'student';
-        $query = $this->SELECT."
-                WHERE r.name = '$role' AND u.pk_id = ".$user;
-        return  self::executeQuery($query);
-    }
 
     /**
-     * @return array|bool|null
+     * @return \Objects\DataResult
      */
     public function getUser_Last(){
         $query = $this->SELECT." 
@@ -82,17 +82,17 @@ class Users extends Persistence{
 
     /**
      * @param $email String
-     * @return array|bool|null
+     * @return \Objects\DataResult
      */
     public function getUser_ByEmail($email){
         $query = $this->SELECT."
-                 WHERE u.email LIKE '%$email%'";
+                 WHERE u.email LIKE '$email'";
         return  self::executeQuery($query);
     }
 
     /**
      * @param $user User objeto tipo User con la informacion de registro
-     * @return array|bool|null
+     * @return \Objects\DataResult
      */
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
@@ -103,28 +103,37 @@ class Users extends Persistence{
 
     /**
      * @param $user User objeto tipo User con la informacion de registro
-     * @return array|bool|null
+     * @return \Objects\DataResult
      */
     public function updateUser( $user ){
         $passC = self::crypt( $user->getPassword() );
 
         $query = "UPDATE user u
                          SET u.email = '".$user->getEmail()."', u.password = '".$passC."', u.fk_role = '".$user->getRole()."'   
-                         WHERE u.pk_id = ".$user->getId();
+                         WHERE u.user_id = ".$user->getId();
         return  self::executeQuery($query);
     }
 
     /**
-     * @param $user User objeto tipo User con la informacion de registro
-     * @return array|bool|null
+     * @param $id
+     * @return \Objects\DataResult
      */
     public function deleteUser( $id ){
         $query = "UPDATE user u
                          SET u.status = 0    
-                         WHERE pk_id = ".$id;
+                         WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }
 
+    /**
+     * @param $roleName String
+     * @return \Objects\DataResult
+     */
+    public function getRole_ByName($roleName)
+    {
+        $query = "SELECT * FROM Role WHERE name = '$roleName'";
+        return  self::executeQuery($query);
+    }
 
 
 }
