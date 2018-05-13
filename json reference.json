@@ -70,6 +70,12 @@ UPDATE (PUT)
 -----------------------------
 USER
 -----------------------------
+SINGIN
+{
+	"email": "carlosrozuma@gmail.com",
+	"password": "123456"
+}
+
 CREATE
 { 
 	"email": "carlosrozumaa@gmail.com",

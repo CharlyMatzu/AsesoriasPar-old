@@ -56,22 +56,36 @@ class UserControl{
 
 
     //TODO: aplicar auth
+
     /**
-     * @param $user
-     * @param $pass
-     * @return \mysqli_result|null
+     * @param $email string
+     * @param $pass string
+     * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function getUser_ByAuth($user, $pass){
-        $result = $this->perUsers->getUser_ByAuth($user, $pass);
+    public function signIn($email, $pass){
+        $result = $this->perUsers->getUser_ByAuth($email, $pass);
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al authenticar");
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("Password o contraseña incorrectos");
-        else
-            return $result->getData();
+            throw new NotFoundException("email o contraseña incorrectos");
+
+        //Si se encontró, se crea token y se retorna
+        else{
+            $user = self::makeObject_User( $result->getData()[0] );
+            //Se envia array con datos: id y email y retorna token
+            $token = Auth::SignIn([
+                'id' => $user->getId(),
+                'email' => $user->getEmail()
+            ]);
+            return [
+                "message" => "autenticado con exito",
+                'token' => $token
+            ];
+        }
+
     }
 
     /**

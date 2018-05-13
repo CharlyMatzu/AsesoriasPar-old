@@ -18,8 +18,6 @@ use Control\UserControl;
 $app = new App;
 
 //-----------GET METOD
-
-//TODO: arreglar todas las funciones para que el status venga de control
 $app->get('/', function (Request $request, Response $response) {
     try{
         $control = new UserControl();
@@ -32,7 +30,7 @@ $app->get('/', function (Request $request, Response $response) {
 });
 
 
-//TODO: arreglar todas las funciones para que el status venga de control
+
 $app->get('/active', function (Request $request, Response $response) {
     try{
         $control = new UserControl();
@@ -156,37 +154,68 @@ $app->delete('/', function (Request $request, Response $response) {
     //{ "id":"6" }
 });
 
-$app->post('/search', function (Request $request, Response $response) {
+$app->post('/auth', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
+
     //Mando incormacion incorrecta
-    if( ($body == null) || (!isset($body['search'])) || (!isset($body['search_by']))  )
+    if( ($body == null) || (!isset($body['email'])) || (!isset($body['password'])) )
+        return $response->withStatus(Utils::$BAD_REQUEST)
+            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+
+    $email = $body['email'];
+    $pass = $body['password'];
+
+    if( empty($email) || empty($pass) )
         return $response->withStatus(Utils::$BAD_REQUEST)
             ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
 
     //TODO: validar que vengan los campos requeridos
     try{
-        //Obteniendo datos
-        $control = new UserControl();
-        //Registrando
-        $search_by = $body['search_by'];
-        $search = $body['search'];
-
-        if( ($search_by == null) || ($search == null) ){
-            return $response->withStatus(Utils::$BAD_REQUEST)
-                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
-        }
-
-        $result = $control->searchUser( $search_by, $search );
+        $con = new UserControl();
+        $result = $con->signIn($email, $pass);
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
         return $response->withStatus( $ex->getRequestStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
-
-    // { "role":"Admin","search_by":"name","search":"Edu"}
+    //{ "id":"6" }
 });
+
+
+
+//$app->post('/search', function (Request $request, Response $response) {
+//    //Se obtiene el json y se transforma en array
+//    $body = $request->getParsedBody();
+//    //Mando incormacion incorrecta
+//    if( ($body == null) || (!isset($body['search'])) || (!isset($body['search_by']))  )
+//        return $response->withStatus(Utils::$BAD_REQUEST)
+//            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+//
+//    //TODO: validar que vengan los campos requeridos
+//    try{
+//        //Obteniendo datos
+//        $control = new UserControl();
+//        //Registrando
+//        $search_by = $body['search_by'];
+//        $search = $body['search'];
+//
+//        if( ($search_by == null) || ($search == null) ){
+//            return $response->withStatus(Utils::$BAD_REQUEST)
+//                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+//        }
+//
+//        $result = $control->searchUser( $search_by, $search );
+//        return $response->withStatus( Utils::$OK )->withJson( $result );
+//
+//    }catch (RequestException $ex){
+//        return $response->withStatus( $ex->getRequestStatusCode() )
+//            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+//    }
+//
+//    // { "role":"Admin","search_by":"name","search":"Edu"}
+//});
 
 try{
     $app->run();

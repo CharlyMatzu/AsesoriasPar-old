@@ -1,6 +1,7 @@
 <?php namespace Control;
 
-include "../../vendor/autoload.php";
+//require_once "../../config.php";
+//require_once "../../vendor/autoload.php";
 use Firebase\JWT\JWT;
 use Slim\Exception\MethodNotAllowedException;
 
