@@ -32,7 +32,7 @@ $app->get('/', function (Request $request, Response $response) {
         $result = $control->getUser_ById($id);
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -57,7 +57,7 @@ $app->get('/{id}', function (Request $request, Response $response, $params) {
         $result = $control->getUser_ById($id);
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -75,7 +75,7 @@ $app->get('/all', function (Request $request, Response $response) {
         $result = $control->getUsers();
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -91,7 +91,7 @@ $app->get('/active', function (Request $request, Response $response) {
         $result = $control->getActiveUsers();
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -133,7 +133,7 @@ $app->post('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$CREATED )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -178,7 +178,7 @@ $app->put('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -212,7 +212,7 @@ $app->delete('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
     //{ "id":"6" }
@@ -241,7 +241,7 @@ $app->post('/auth', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
     //{ "id":"6" }

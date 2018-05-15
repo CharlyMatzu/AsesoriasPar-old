@@ -40,8 +40,11 @@ require_once 'includes/settings.php';
 //      Para enviar: $request = $request->withAttribute('foo', 'bar');
 //      Para obtener: $foo = $request->getAttribute('foo');
 //--------NOTA:
-// se puede agregar un middelware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
-// El orden de ejecucion de lod MID es LIFO (pila)
+// --se puede agregar un middelware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
+// --El orden de ejecucion de lod MID es LIFO (pila)
+// --Se debe obtener los parametros directamente del $request cuando este es un Middelware,
+//  en un controller se recibe un "array" como parametro
+
 
 
 
@@ -55,9 +58,9 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 $app->get('/users', 'UserController:getUsers')->add(AuthMiddelware::class);
 $app->get('/users/{id}', 'UserController:getUser_ById')
-    ->add('InputMiddelware:isInteger')
+    ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
-$app->post('/users/signup', 'UserController:createUser'); //Es el registro
+$app->post('/users/signup', 'UserController:createUser')->add('InputMiddelware:checkData_Signup'); //Es el registro
 $app->post('/users/signin', 'UserController:signIn'); //Es el inicio de sesion
 $app->put('/users', 'UserController:updateUser')->add(AuthMiddelware::class);
 $app->delete('/users', 'UserController:deleteUser')->add(AuthMiddelware::class);

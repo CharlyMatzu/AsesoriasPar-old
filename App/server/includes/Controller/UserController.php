@@ -1,9 +1,7 @@
 <?php namespace Controller;
 
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
 use Exceptions\RequestException;
-use PHPMailer\PHPMailer\Exception;
+use Objects\User;
 use Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -22,11 +20,10 @@ class UserController
         try {
             $userServ = new UserService();
             $result = $userServ->getUsers();
-            return $res->withStatus(200)->withJson($result);
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Usuarios", $result );
 
         } catch (RequestException $e) {
-            return $res->withStatus( $e->getRequestStatusCode() )
-                       ->withJson( Utils::makeArrayResponse( $e->getMessage() ) );
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -34,16 +31,17 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @param $params array
+     * @return Response
      */
-    public function getUser_ById($req, $res, $params){
+    public function getUser_ById($req, $res, $params)
+    {
         try {
             $userServ = new UserService();
-            $result = $userServ->getUsers();
-            return $res->withStatus(200)->withJson($result);
+            $result = $userServ->getUser_ById( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Usuario", $result );
 
         } catch (RequestException $e) {
-            return $res->withStatus( $e->getRequestStatusCode() )
-                ->withJson( Utils::makeArrayResponse( $e->getMessage() ) );
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -51,8 +49,20 @@ class UserController
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
      */
-    public function createUser($req, $res){}
+    public function createUser($req, $res)
+    {
+        try {
+            $userServ = new UserService();
+            $user = $req->getAttribute('user_signup');
+            $userServ->insertUser( $user );
+            return Utils::makeJSONResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**

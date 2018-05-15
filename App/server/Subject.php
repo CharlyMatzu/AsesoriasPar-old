@@ -25,7 +25,7 @@ $app->get('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -38,7 +38,7 @@ $app->get('/{name}', function (Request $request, Response $response, $params) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -86,7 +86,7 @@ $app->post('/', function (Request $req, Response $res) {
         return $res->withStatus( Utils::$CREATED )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $res->withStatus( $ex->getRequestStatusCode() )
+        return $res->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -103,7 +103,7 @@ $app->post('/relation', function(Request $request, Response $response){
         return $response->withStatus( Utils::$CREATED )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -129,7 +129,7 @@ $app->delete('/', function (Request $req, Response $res) {
         return $res->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $res->withStatus( $ex->getRequestStatusCode() )
+        return $res->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -172,7 +172,7 @@ $app->put('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 

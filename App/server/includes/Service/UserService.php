@@ -93,7 +93,7 @@ class UserService{
      * @param $id
      * @return \mysqli_result|null
      * @throws InternalErrorException
-     * @throws NoContentException
+     * @throws NotFoundException
      */
     public function getUser_ById($id){
         $result = $this->userPer->getUser_ById( $id );
@@ -101,7 +101,7 @@ class UserService{
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuario");
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NoContentException("No se encontro usuario");
+            throw new NotFoundException("No se encontro usuario", $id);
         else
             return $result->getData();
     }
