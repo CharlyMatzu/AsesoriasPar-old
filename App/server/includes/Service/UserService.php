@@ -6,7 +6,7 @@ use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 use Objects\DataResult;
-use Service\UsersPersistence;
+use Persistence\UsersPersistence;
 use Objects\Student;
 use Objects\User;
 use Utils;

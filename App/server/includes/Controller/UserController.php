@@ -1,5 +1,7 @@
 <?php namespace Controller;
 
+use Exceptions\InternalErrorException;
+use Exceptions\NoContentException;
 use Exceptions\RequestException;
 use Service\UserService;
 use Slim\Http\Request;
@@ -16,6 +18,14 @@ class UserController
      */
     public function getUsers($req, $res)
     {
+        $userServ = new UserService();
+        try {
+            $result = $userServ->getUsers();
+            return $res->withStatus(200)->withJson($result);
+        } catch (RequestException $e) {
+            $res->getBody()->write("Error:". $e->getMessage());
+        }
+
         return $res;
     }
 

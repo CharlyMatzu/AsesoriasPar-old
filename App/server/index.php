@@ -5,6 +5,7 @@ require_once 'includes/autoload.php';
 require_once 'vendor/autoload.php';
 
 
+use Middelware\AuthMiddelware;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;
@@ -17,10 +18,16 @@ $app = new App();
 require_once 'includes/settings.php';
 
 //--------- NOTA:
-// -Los middelware se ejecutan antes y despues que los controllers
-// -Se usa el getBody para escribir en el response sin enviarlo
-// -Los middelware siempre deben retornar el response
-// -Los Middelware reciben un callable referente al siguiente middelware o controller
+// --Los middelware se ejecutan antes y despues que los controllers
+// --Se usa el getBody para escribir en el response sin enviarlo
+// --Los middelware y controllers siempre deben retornar el response
+// --Los Middelware reciben un callable referente al siguiente middelware o controller el cual deben llamar ($next)
+// el cual retorna un response para ser manejado desde el midd
+// --Para pasar parametros entre middelwares,se usa:
+//      Para enviar: $request = $request->withAttribute('foo', 'bar');
+//      Para obtener: $foo = $request->getAttribute('foo');
+//NOTA, se puede agregar un middelware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
+
 
 
 $app->get('/', function(Request $request, Response $response, $params){
@@ -31,7 +38,7 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 //  USER ROUTES
 //--------------------------
-$app->get('/users', 'UserController:getUsers');
+$app->get('/users', 'UserController:getUsers')->add(AuthMiddelware::class);
 $app->get('/users/{id}', 'UserController:getUser_ById');
 $app->post('/users', 'UserController:createUser');
 $app->put('/users', 'UserController:updateUser');
