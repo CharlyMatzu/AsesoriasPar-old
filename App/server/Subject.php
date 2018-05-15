@@ -49,8 +49,8 @@ $app->get('/{name}', function (Request $request, Response $response, $params) {
 //    $name = $params['name'];
 //
 //    try{
-//        $control = new SubjectControl();
-//        $result = $control->getSubjects_ByName( $name );
+//        $Service = new SubjectControl();
+//        $result = $Service->getSubjects_ByName( $name );
 //        return $response->withStatus( Utils::$OK )->withJson( $result );
 //
 //    }catch (RequestException $ex){

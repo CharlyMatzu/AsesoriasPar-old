@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 
 use Carbon\Carbon;
@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Persistence\Advisories;
 use Objects\Advisory;
 
-class AdvisoryControl
+class AdvisoryService
 {
 
     private $perAsesorias;
@@ -96,7 +96,7 @@ class AdvisoryControl
 
 
     //-----------------
-    // Subjects
+    // SubjectsPersistence
     //-----------------
 
     public function getCurrentAvailableSubject( $idStudent ){

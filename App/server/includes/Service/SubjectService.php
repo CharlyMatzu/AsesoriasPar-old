@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
@@ -6,16 +6,16 @@ use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 use Persistence\Careers;
 use Persistence\Plans;
-use Persistence\Subjects;
+use Persistence\SubjectsPersistence;
 use Objects\Subject;
 use Utils;
 
-class SubjectControl{
+class SubjectService{
 
     private $perSubjects;
 
     public function __construct(){
-        $this->perSubjects = new Subjects();
+        $this->perSubjects = new SubjectsPersistence();
     }
 
     /**

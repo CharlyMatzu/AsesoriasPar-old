@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\BadRequestException;
 use Exceptions\ConflictException;
@@ -8,12 +8,12 @@ use Exceptions\NotFoundException;
 
 use Objects\User;
 use Persistence\Students;
-use Persistence\Users;
+use Persistence\UsersPersistence;
 use Objects\Student;
-use Control\UserControl;
+use Service\UserService;
 use Utils;
 
-class StudentControl{
+class StudentService{
 
     private $perStudents;
 
@@ -244,7 +244,7 @@ class StudentControl{
      */
     public function insertStudent( $student ){
         $idUser = $student->getUser();
-        $controlUser = new UserControl();
+        $controlUser = new UserService();
 
         $user = new User();
         $user->setId($idUser);
@@ -282,7 +282,7 @@ class StudentControl{
      */
     public function updateStudent($student){
         $idUser = $student->getUser();
-        $controlUser = new UserControl();
+        $controlUser = new UserService();
 
         $user = new User();
         $user->setId($idUser);

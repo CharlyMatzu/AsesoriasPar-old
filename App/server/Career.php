@@ -129,7 +129,7 @@ $app->delete('/', function (Request $req, Response $res) {
 });
 /*
 $app->post('/search', function (Request $request, Response $response) {
-    $control = new CareerControl();
+    $Service = new CareerControl();
 
     $param = $request->getParsedBody();
     //Obtenemos json
@@ -141,7 +141,7 @@ $app->post('/search', function (Request $request, Response $response) {
     $value = $careerArray['value'];
 
 
-    $res = $control->searchCareers($toSearch,$value);
+    $res = $Service->searchCareers($toSearch,$value);
 
     $mensaje = $res['message'];
 

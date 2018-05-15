@@ -1,16 +1,22 @@
 <?php namespace Controller;
 
+use Exceptions\RequestException;
+use Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Utils;
 
 class UserController
 {
+
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
      */
-    public function getUsers($req, $res){
-        //$res->write("Users");
+    public function getUsers($req, $res)
+    {
+        return $res;
     }
 
     /**

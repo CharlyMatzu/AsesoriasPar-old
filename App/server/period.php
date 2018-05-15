@@ -20,7 +20,7 @@ $app = new App;
 //---------------------
 // GET
 //---------------------
-//TODO: arreglar todas las funciones para que el status venga de control
+//TODO: arreglar todas las funciones para que el status venga de Service
 $app->get('/', function (Request $request, Response $response) {
     try{
         $control = new PeriodControl();
@@ -35,9 +35,9 @@ $app->get('/', function (Request $request, Response $response) {
 
 //$app->get('/{start}/{end}', function (Request $request, Response $response, $params) {
 //    try{
-//        $control = new PeriodControl();
+//        $Service = new PeriodControl();
 //        //TODO: verificar campos (vacios, corretos)
-//        $result = $control->getPeriods_ByDateRange( $params['start'], $params['end'] );
+//        $result = $Service->getPeriods_ByDateRange( $params['start'], $params['end'] );
 //
 //        return $response->withJson( $result );
 //

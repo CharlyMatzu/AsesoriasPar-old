@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\BadRequestException;
 use Exceptions\ConflictException;
@@ -10,7 +10,7 @@ use Objects\Period;
 use DateTime;
 use Utils;
 
-class PeriodControl{
+class PeriodService{
 
     private $perPeriods;
 

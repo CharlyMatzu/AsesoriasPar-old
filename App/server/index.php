@@ -2,7 +2,6 @@
 
 require_once 'config.php';
 require_once 'includes/autoload.php';
-
 require_once 'vendor/autoload.php';
 
 
@@ -11,16 +10,22 @@ use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;
 use \Slim\Http\Response;
 use \Slim\App;
-use Utils;
 
 
 $app = new App();
 //Contenedores de controlladores y midd
 require_once 'includes/settings.php';
 
+//--------- NOTA:
+// -Los middelware se ejecutan antes y despues que los controllers
+// -Se usa el getBody para escribir en el response sin enviarlo
+// -Los middelware siempre deben retornar el response
+// -Los Middelware reciben un callable referente al siguiente middelware o controller
+
 
 $app->get('/', function(Request $request, Response $response, $params){
-    $response->write("Hello world");
+    //TODO: retorn API routes in JSON
+    $response->write("Welcome to the API");
 });
 
 //--------------------------

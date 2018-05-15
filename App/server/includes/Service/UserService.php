@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\BadRequestException;
 use Exceptions\ConflictException;
@@ -6,17 +6,17 @@ use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 use Objects\DataResult;
-use Persistence\Users;
+use Service\UsersPersistence;
 use Objects\Student;
 use Objects\User;
 use Utils;
 
-class UserControl{
+class UserService{
 
-    private $perUsers;
+    private $userPer;
 
     public function __construct(){
-        $this->perUsers = new Users();
+        $this->userPer = new UsersPersistence();
     }
 
 
@@ -27,7 +27,7 @@ class UserControl{
      * @throws NoContentException
      */
     public function getUsers(){
-        $result = $this->perUsers->getUsers();
+        $result = $this->userPer->getUsers();
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuarios");
@@ -44,7 +44,7 @@ class UserControl{
      * @throws NoContentException
      */
     public function getActiveUsers(){
-        $result = $this->perUsers->getActive();
+        $result = $this->userPer->getActive();
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuarios");
@@ -63,7 +63,7 @@ class UserControl{
      * @throws NotFoundException
      */
     public function signIn($email, $pass){
-        $result = $this->perUsers->getUser_BySignIn($email, $pass);
+        $result = $this->userPer->getUser_BySignIn($email, $pass);
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al authenticar");
@@ -96,7 +96,7 @@ class UserControl{
      * @throws NoContentException
      */
     public function getUser_ById($id){
-        $result = $this->perUsers->getUser_ById( $id );
+        $result = $this->userPer->getUser_ById( $id );
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuario");
@@ -112,7 +112,7 @@ class UserControl{
      * @return bool|DataResult
      */
     public function isUserExist_ById($id){
-        $result = $this->perUsers->getUser_ById($id);
+        $result = $this->userPer->getUser_ById($id);
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
             $result->setOperation(true);
@@ -131,7 +131,7 @@ class UserControl{
      */
     public function getRoleUser($id){
 
-        $result = $this->perUsers->getRoleUser( $id );
+        $result = $this->userPer->getRoleUser( $id );
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener rol de usuario");
@@ -149,7 +149,7 @@ class UserControl{
      * @throws NoContentException
      */
     public function getUser_ByEmail($email){
-        $result = $this->perUsers->getUser_ByEmail( $email );
+        $result = $this->userPer->getUser_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuario por email");
@@ -161,7 +161,7 @@ class UserControl{
 
 
     public function isEmailUsed($email){
-        $result = $this->perUsers->getUser_ByEmail( $email );
+        $result = $this->userPer->getUser_ByEmail( $email );
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
             $result->setOperation(true);
@@ -173,7 +173,7 @@ class UserControl{
 
 
     public function isRoleExists($role){
-        $result = $this->perUsers->getRole_ByName( $role );
+        $result = $this->userPer->getRole_ByName( $role );
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
             $result->setOperation(true);
@@ -210,7 +210,7 @@ class UserControl{
             throw new NotFoundException( "No existe rol asignado" );
 
         //Se registra usuario
-        $result = $this->perUsers->insertUser( $user );
+        $result = $this->userPer->insertUser( $user );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al registrar usuario");
 
@@ -229,7 +229,7 @@ class UserControl{
      * @throws NotFoundException
      */
     public function updateUser($user){
-        $result = $this->perUsers->getUser_ById( $user->getId() );
+        $result = $this->userPer->getUser_ById( $user->getId() );
 
         //Verificacion de usuario
         if( Utils::isError( $result->getOperation() ) )
@@ -263,7 +263,7 @@ class UserControl{
 
 
         //Se actualiza usuario
-        $result = $this->perUsers->updateUser( $user );
+        $result = $this->userPer->updateUser( $user );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al actualizar usuario");
 
@@ -284,14 +284,14 @@ class UserControl{
     public function deleteUser( $id ){
 
         //Verificando si existe usuario
-        $result = $this->perUsers->getUser_ById( $id );
+        $result = $this->userPer->getUser_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al obtener usuario");
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe usuario");
 
         //Eliminando usuario (cambiando status)
-        $result = $this->perUsers->changeStatusToDeleted( $id );
+        $result = $this->userPer->changeStatusToDeleted( $id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al eliminar usuario");
 
