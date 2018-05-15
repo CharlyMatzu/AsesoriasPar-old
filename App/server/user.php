@@ -13,15 +13,64 @@ use \Slim\Http\Response;
 use \Slim\App;
 use Utils;
 use Control\UserControl;
+use Control\Auth;
 
 
-$app = new App;
+//$app = new App(['settings' => ['displayErrorDetails' => true]]);
+$app = new App();
 
 //-----------GET METOD
 
-//TODO: arreglar todas las funciones para que el status venga de control
+//Obtener informacion del usuario actual
 $app->get('/', function (Request $request, Response $response) {
+
     try{
+        //Verificamos si esta autorizado
+        $id = Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        $control = new UserControl();
+        $result = $control->getUser_ById($id);
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+});
+
+
+$app->get('/{id}', function (Request $request, Response $response, $params) {
+
+    try{
+        //Verificamos si esta autorizado
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        //se obtiene parametro
+        if( !isset($params['id']) ){
+            if( empty($params['id']) )
+                return $response->withStatus(Utils::$BAD_REQUEST)
+                    ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+        }
+
+        $id = $params['id'];
+        $control = new UserControl();
+        $result = $control->getUser_ById($id);
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+});
+
+
+//Informacion de todos los usuarios
+$app->get('/all', function (Request $request, Response $response) {
+
+    try{
+        //Verificamos si esta autorizado
+        Auth::authorize( $request, Utils::$ROLE_MOD );
+
         $control = new UserControl();
         $result = $control->getUsers();
         return $response->withJson( $result );
@@ -29,9 +78,27 @@ $app->get('/', function (Request $request, Response $response) {
         return $response->withStatus( $ex->getRequestStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
+
 });
 
-$app->post('/create', function (Request $request, Response $response) {
+
+
+$app->get('/active', function (Request $request, Response $response) {
+    try{
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        $control = new UserControl();
+        $result = $control->getActiveUsers();
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+});
+
+
+//Regstro de usuario
+$app->post('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -58,6 +125,9 @@ $app->post('/create', function (Request $request, Response $response) {
         $user->setPassword($password);
         $user->setRole($role);
 
+        //Validando authorizacion
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
         $result = $control->insertUser( $user );
 
         return $response->withStatus( Utils::$CREATED )->withJson( $result );
@@ -71,7 +141,7 @@ $app->post('/create', function (Request $request, Response $response) {
 
 });
 
-$app->post('/update', function (Request $request, Response $response) {
+$app->put('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -100,6 +170,9 @@ $app->post('/update', function (Request $request, Response $response) {
         $user->setPassword($password);
         $user->setRole($role);
 
+        //Validando authorizacion
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
         $result = $control->updateUser( $user );
 
         return $response->withStatus( Utils::$OK )->withJson( $result );
@@ -112,7 +185,7 @@ $app->post('/update', function (Request $request, Response $response) {
     // { "id":"20","email":"editado3@gmail.com","password":"555","role":"student"}
 });
 
-$app->post('/delete', function (Request $request, Response $response) {
+$app->delete('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -132,6 +205,9 @@ $app->post('/delete', function (Request $request, Response $response) {
                 ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
         }
 
+        //Validando authorizacion
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
         $result = $control->deleteUser( $id );
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
@@ -142,37 +218,68 @@ $app->post('/delete', function (Request $request, Response $response) {
     //{ "id":"6" }
 });
 
-$app->post('/search', function (Request $request, Response $response) {
+$app->post('/auth', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
+
     //Mando incormacion incorrecta
-    if( ($body == null) || (!isset($body['search'])) || (!isset($body['search_by']))  )
+    if( ($body == null) || (!isset($body['email'])) || (!isset($body['password'])) )
+        return $response->withStatus(Utils::$BAD_REQUEST)
+            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+
+    $email = $body['email'];
+    $pass = $body['password'];
+
+    if( empty($email) || empty($pass) )
         return $response->withStatus(Utils::$BAD_REQUEST)
             ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
 
     //TODO: validar que vengan los campos requeridos
     try{
-        //Obteniendo datos
-        $control = new UserControl();
-        //Registrando
-        $search_by = $body['search_by'];
-        $search = $body['search'];
-
-        if( ($search_by == null) || ($search == null) ){
-            return $response->withStatus(Utils::$BAD_REQUEST)
-                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
-        }
-
-        $result = $control->searchUser( $search_by, $search );
+        $con = new UserControl();
+        $result = $con->signIn($email, $pass);
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
         return $response->withStatus( $ex->getRequestStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
-
-    // { "role":"Admin","search_by":"name","search":"Edu"}
+    //{ "id":"6" }
 });
+
+
+
+//$app->post('/search', function (Request $request, Response $response) {
+//    //Se obtiene el json y se transforma en array
+//    $body = $request->getParsedBody();
+//    //Mando incormacion incorrecta
+//    if( ($body == null) || (!isset($body['search'])) || (!isset($body['search_by']))  )
+//        return $response->withStatus(Utils::$BAD_REQUEST)
+//            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+//
+//    //TODO: validar que vengan los campos requeridos
+//    try{
+//        //Obteniendo datos
+//        $control = new UserControl();
+//        //Registrando
+//        $search_by = $body['search_by'];
+//        $search = $body['search'];
+//
+//        if( ($search_by == null) || ($search == null) ){
+//            return $response->withStatus(Utils::$BAD_REQUEST)
+//                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+//        }
+//
+//        $result = $control->searchUser( $search_by, $search );
+//        return $response->withStatus( Utils::$OK )->withJson( $result );
+//
+//    }catch (RequestException $ex){
+//        return $response->withStatus( $ex->getRequestStatusCode() )
+//            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+//    }
+//
+//    // { "role":"Admin","search_by":"name","search":"Edu"}
+//});
 
 try{
     $app->run();

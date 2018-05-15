@@ -3,8 +3,11 @@ class Utils
 {
 
     //Status code for database registers
+    const HEADER_AUTH = "Authorization";
+    const TIMEZONE = 'America/Phoenix';
+
     public static $STATUS_DELETED = 0;
-    public static $STATUS_ENABLE = 1;
+    public static $STATUS_ACTIVE = 1;
     //public static $DELETE = 0;
 
     public static $ROLE_ADMIN = "admin";
@@ -102,10 +105,15 @@ class Utils
      */
     public static $BAD_REQUEST = 400;
     /**
-     * Utilizado para una peticion a la cual no se tiene permisos
+     * Se necesita estar autenticado
      * @var int 401
      */
     public static $UNAUTHORIZED = 401;
+    /**
+     * No se tienen los permisos (incluso al estar autenticado)
+     * @var int 403
+     */
+    public static $FORBIDDEN = 403;
     /**
      * El valor buscado no existe
      * @var int 404

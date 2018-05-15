@@ -7,12 +7,15 @@ namespace Composer\Autoload;
 class ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12
 {
     public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Component\\Translation\\' => 30,
             'Slim\\' => 5,
         ),
         'P' => 
@@ -27,11 +30,20 @@ class ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'FastRoute\\' => 10,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Component\\Translation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
         'Slim\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',
@@ -52,10 +64,18 @@ class ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/nesbot/carbon/src',
     );
 
     public static $prefixesPsr0 = array (
@@ -73,6 +93,7 @@ class ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12::$fallbackDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitc721b244929abc7ae52eb0e9e402ca12::$prefixesPsr0;
 
         }, null, ClassLoader::class);

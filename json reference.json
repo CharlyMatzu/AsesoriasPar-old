@@ -1,0 +1,97 @@
+-----------------------------
+CAREER
+-----------------------------
+
+NEW
+{"name": "Insgenieria en softwareaa",
+	"short_name": "ISWaaa"
+}
+
+UPDATE (PUT)
+{"id": 4,
+	"name": "aaaa",
+	"short_name": "bbbb"
+}
+
+DELETE
+{
+"id": 4 
+}
+
+
+-----------------------------
+PLAN
+-----------------------------
+CREATE
+{
+	"year": 2009
+}
+
+UPDATE (PUT)
+{
+	"id": 1,
+	"year": 2016
+}
+
+
+-----------------------------
+PERIOD
+-----------------------------
+
+
+
+
+-----------------------------
+SUBJECT
+-----------------------------
+CREATE
+{
+	"name": "Programacion 2",
+	"short_name": "PRO 2",
+	"description": "Segunda materia de programacion",
+	"semester": 2,
+	"plan": 1,
+	"career": 1
+}
+
+UPDATE (PUT)
+{
+	"id": 1,
+	"name": "Programacion 2",
+	"short_name": "PRO 2",
+	"description": "Segunda materia de programacion",
+	"semester": 2,
+	"plan": 1,
+	"career": 5
+}
+
+
+
+-----------------------------
+USER
+-----------------------------
+SINGIN
+{
+	"email": "carlosrozuma@gmail.com",
+	"password": "123456"
+}
+
+CREATE
+{ 
+	"email": "carlosrozumaa@gmail.com",
+	"password": "123456",
+	"role": "basic"
+}
+
+UPDATE (PUT)
+{ 
+	"id": 3,
+	"email": "carlosrozumaa@gmail.com",
+	"password": "123456",
+	"role": "basic"
+}
+
+DELETE
+{
+	"id": 4
+}
