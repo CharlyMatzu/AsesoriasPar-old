@@ -8,9 +8,9 @@ class Plans extends Persistence{
     public function __construct(){}
 
     private $campos = "SELECT
-                          plan_id as 'id',
+                          plan_id,
                           year,
-                          date_register as 'register'
+                          register_date
                         FROM plan ";
 
     public function getPlans(){

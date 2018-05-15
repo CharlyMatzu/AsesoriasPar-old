@@ -4,6 +4,7 @@ require_once 'config.php';
 require_once 'includes/autoload.php';
 require_once 'vendor/autoload.php';
 
+use Control\Auth;
 use Exceptions\RequestException;
 use Objects\Student;
 use Control\StudentControl;
@@ -18,9 +19,43 @@ use Control\UserControl;
 
 $app = new App;
 
-//TODO: arreglar todas las funciones para que el status venga de control
+
 $app->get('/', function (Request $request, Response $response) {
     try{
+        //Autorizar usuario
+        $id = Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        $control = new StudentControl();
+        $result = $control->getStudent_ById($id);
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+});
+
+
+$app->get('/{id}', function (Request $request, Response $response, $params) {
+    //$id = $params['id'];
+    try{
+        //Autorizar usuario
+        $id = Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        $control = new StudentControl();
+        $result = $control->getStudent_ById($id);
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+});
+
+
+$app->get('/all', function (Request $request, Response $response) {
+    try{
+        //Autorizar usuario
+        Auth::authorize( $request, Utils::$ROLE_MOD );
+
         $control = new StudentControl();
         $result = $control->getStudents();
         return $response->withJson( $result );
@@ -30,7 +65,8 @@ $app->get('/', function (Request $request, Response $response) {
     }
 });
 
-$app->post('/create', function (Request $request, Response $response) {
+
+$app->post('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -73,7 +109,7 @@ $app->post('/create', function (Request $request, Response $response) {
 
 });
 
-$app->post('/update', function (Request $request, Response $response) {
+$app->put('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -83,6 +119,10 @@ $app->post('/update', function (Request $request, Response $response) {
 
     //TODO: validar que vengan los campos requeridos
     try{
+        //TODO: verificar que sea el mismo usuario quien se modifica a si mismo
+        //Autorizar usuario
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
         //Obteniendo datos
         $control = new StudentControl();
         //Registrando
@@ -120,7 +160,8 @@ $app->post('/update', function (Request $request, Response $response) {
     // { "id":"2", "itson_id":"56346", "first_name":"vianey", "last_name":"navarro", "user":"5", "status":"1", "career":"1"}
 });
 
-$app->post('/delete', function (Request $request, Response $response) {
+
+$app->delete('/', function (Request $request, Response $response) {
     //Se obtiene el json y se transforma en array
     $body = $request->getParsedBody();
     //Mando incormacion incorrecta
@@ -130,6 +171,11 @@ $app->post('/delete', function (Request $request, Response $response) {
 
     //TODO: validar que vengan los campos requeridos
     try{
+        //TODO: verificar que sea el mismo usuario quien se modifica a si mismo
+        //Autorizar usuario
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+
         //Obteniendo datos
         $control = new StudentControl();
         //Registrando
@@ -150,42 +196,58 @@ $app->post('/delete', function (Request $request, Response $response) {
 
 });
 
-$app->post('/search', function (Request $request, Response $response) {
+//$app->post('/search', function (Request $request, Response $response) {
+//
+//    $body = $request->getParsedBody();
+//    //Mando incormacion incorrecta
+//    if( ($body == null) || (!isset($body['search'])) || (!isset($body['role'])) || (!isset($body['search_by']))  )
+//        return $response->withStatus(Utils::$BAD_REQUEST)
+//            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
+//
+//    //TODO: validar que vengan los campos requeridos
+//    try{
+//        //Obteniendo datos
+//        $control = new StudentControl();
+//        //Registrando
+//        $role = $body['role'];
+//        $search_by = $body['search_by'];
+//        $search = $body['search'];
+//
+//        if( ($search_by == null) || ($search == null) || ($role == null) ){
+//            return $response->withStatus(Utils::$BAD_REQUEST)
+//                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+//        }
+//
+//        $res = null;
+//        if($role === 'admin'){
+//            $res = $control->getStudent_Admin($search_by, $search);
+//        }else{
+//            $res = $control->search_Student($search_by, $search);
+//        }
+//
+//        return $response->withStatus( Utils::$OK )->withJson( $res );
+//
+//    }catch (RequestException $ex){
+//        return $response->withStatus( $ex->getRequestStatusCode() )
+//            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+//    }
+//
+//    // { "role":"Admin","search_by":"name","search":"Edu"}
+//});
 
-    $body = $request->getParsedBody();
-    //Mando incormacion incorrecta
-    if( ($body == null) || (!isset($body['search'])) || (!isset($body['role'])) || (!isset($body['search_by']))  )
-        return $response->withStatus(Utils::$BAD_REQUEST)
-            ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula") );
 
-    //TODO: validar que vengan los campos requeridos
-    try{
-        //Obteniendo datos
-        $control = new StudentControl();
-        //Registrando
-        $role = $body['role'];
-        $search_by = $body['search_by'];
-        $search = $body['search'];
-
-        if( ($search_by == null) || ($search == null) || ($role == null) ){
-            return $response->withStatus(Utils::$BAD_REQUEST)
-                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
-        }
-
-        $res = null;
-        if($role === 'admin'){
-            $res = $control->getStudent_Admin($search_by, $search);
-        }else{
-            $res = $control->search_Student($search_by, $search);
-        }
-
-        return $response->withStatus( Utils::$OK )->withJson( $res );
-
-    }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
-            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
-    }
-
-    // { "role":"Admin","search_by":"name","search":"Edu"}
-});
+try{
     $app->run();
+} catch (MethodNotAllowedException $e) {
+    $res = Utils::makeJson( Utils::makeArrayResponse("Internal error", "Exception ocurred") );
+    http_response_code( Utils::$INTERNAL_SERVER_ERROR);
+    exit( $res );
+} catch (NotFoundException $e) {
+    $res = Utils::makeJson( Utils::makeArrayResponse("Internal error", "Exception ocurred") );
+    http_response_code( Utils::$INTERNAL_SERVER_ERROR);
+    exit( $res );
+} catch (\Exception $e) {
+    $res = Utils::makeJson( Utils::makeArrayResponse("Internal error", "Exception ocurred") );
+    http_response_code( Utils::$INTERNAL_SERVER_ERROR);
+    exit( $res );
+}

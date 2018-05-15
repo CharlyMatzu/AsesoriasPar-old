@@ -109,7 +109,7 @@ class Users extends Persistence{
      */
     public function getUser_ByEmail($email){
         $query = $this->SELECT."
-                 WHERE u.email LIKE '$email'";
+                 WHERE u.email = '$email'";
         return  self::executeQuery($query);
     }
 

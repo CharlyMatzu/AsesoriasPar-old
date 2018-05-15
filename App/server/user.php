@@ -16,7 +16,8 @@ use Control\UserControl;
 use Control\Auth;
 
 
-$app = new App;
+//$app = new App(['settings' => ['displayErrorDetails' => true]]);
+$app = new App();
 
 //-----------GET METOD
 
@@ -27,6 +28,31 @@ $app->get('/', function (Request $request, Response $response) {
         //Verificamos si esta autorizado
         $id = Auth::authorize( $request, Utils::$ROLE_BASIC );
 
+        $control = new UserControl();
+        $result = $control->getUser_ById($id);
+        return $response->withJson( $result );
+    }catch (RequestException $ex){
+        return $response->withStatus( $ex->getRequestStatusCode() )
+            ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
+    }
+
+});
+
+
+$app->get('/{id}', function (Request $request, Response $response, $params) {
+
+    try{
+        //Verificamos si esta autorizado
+        Auth::authorize( $request, Utils::$ROLE_BASIC );
+
+        //se obtiene parametro
+        if( !isset($params['id']) ){
+            if( empty($params['id']) )
+                return $response->withStatus(Utils::$BAD_REQUEST)
+                    ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
+        }
+
+        $id = $params['id'];
         $control = new UserControl();
         $result = $control->getUser_ById($id);
         return $response->withJson( $result );

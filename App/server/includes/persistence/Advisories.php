@@ -11,13 +11,13 @@ class Advisories extends Persistence{
                     a.status as 'status',
                     e_al.pk_id as 'student',
                     e_as.pk_id as 'adviser',
-                    s.name as 'subject',
+                    s.name as 'subject'
                     FROM adviser_request a
                     INNER JOIN student e_al ON e_al.pk_id = a.fk_student
                     INNER JOIN student e_as ON e_as.pk_id = a.fk_adviser
                     INNER JOIN schedule_subject hm ON hm.pk_id = a.fk_subject
                     INNER JOIN subject s ON s.pk_id = hm.fk_subject
-                    INNER JOIN schedule h ON h.pk_id = hm.fk_schedule";
+                    INNER JOIN schedule h ON h.pk_id = hm.fk_schedule ";
 
 
     public function getAdvisories(){

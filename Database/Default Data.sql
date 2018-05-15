@@ -14,8 +14,7 @@ INSERT INTO role(name, description) VALUES
 -- ----------------------------
 
 INSERT INTO user(email, password, fk_role) VALUES
-('carlosrozuma@gmail.com', md5('freedom'), 'admin'),
-('c_01_12@hotmail.com', md5('freedom'), 'moderator');
+('carlosrozuma@gmail.com', md5('freedom'), 'admin');
 
 
 
