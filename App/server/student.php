@@ -15,7 +15,7 @@ use \Slim\Http\Response;
 use Utils;
 use \Slim\App;
 
-use Control\UserControl;
+use Control\UserService;
 
 $app = new App;
 
@@ -207,7 +207,7 @@ $app->delete('/', function (Request $request, Response $response) {
 //    //TODO: validar que vengan los campos requeridos
 //    try{
 //        //Obteniendo datos
-//        $control = new StudentControl();
+//        $Service = new StudentControl();
 //        //Registrando
 //        $role = $body['role'];
 //        $search_by = $body['search_by'];
@@ -220,9 +220,9 @@ $app->delete('/', function (Request $request, Response $response) {
 //
 //        $res = null;
 //        if($role === 'admin'){
-//            $res = $control->getStudent_Admin($search_by, $search);
+//            $res = $Service->getStudent_Admin($search_by, $search);
 //        }else{
-//            $res = $control->search_Student($search_by, $search);
+//            $res = $Service->search_Student($search_by, $search);
 //        }
 //
 //        return $response->withStatus( Utils::$OK )->withJson( $res );

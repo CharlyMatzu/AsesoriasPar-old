@@ -6,7 +6,7 @@ use Exceptions\UnauthorizedException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
-use Persistence\Users;
+use Persistence\UsersPersistence;
 use PHPMailer\PHPMailer\Exception;
 use UnexpectedValueException;
 use Utils;
@@ -108,7 +108,7 @@ class Auth
             throw new UnauthorizedException($ex->getMessage());
         }
 
-        $perUsers = new Users();
+        $perUsers = new UsersPersistence();
         $result = $perUsers->getUserByTokenAuth( $data );
 
         //TODO: verificar role
@@ -118,7 +118,7 @@ class Auth
             throw new InternalErrorException("Ocurrio un error al verificar usuario");
 
         //Obtiene el primer registro
-        $user = UserControl::makeObject_User($result->getData()[0]);
+        $user = UserService::makeObject_User($result->getData()[0]);
         if( !self::isAuthorized( $user->getRole(), $role_required ) )
             throw new ForbiddenException("No esta autorizado");
 

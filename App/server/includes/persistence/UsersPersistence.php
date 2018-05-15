@@ -8,7 +8,7 @@ use Utils;
  * Class Users
  * @package Model\Persistence
  */
-class Users extends Persistence{
+class UsersPersistence extends Persistence{
 
     public function __construct(){}
 

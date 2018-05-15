@@ -19,7 +19,7 @@ $app = new App;
 // GET
 //---------------------
 
-//TODO: arreglar todas las funciones para que el status venga de control
+//TODO: arreglar todas las funciones para que el status venga de Service
 $app->get('/', function (Request $request, Response $response) {
 
     try{
@@ -34,9 +34,9 @@ $app->get('/', function (Request $request, Response $response) {
 });
 
 //
-////TODO: arreglar todas las funciones para que el status venga de control
+////TODO: arreglar todas las funciones para que el status venga de Service
 //$app->get('/{year}', function (Request $request, Response $response, $params) {
-//    $control = new PlanControl();
+//    $Service = new PlanControl();
 //    if( !isset($params['year']) )
 //        return $response->withStatus( Utils::$BAD_REQUEST )
 //            ->withJson( Utils::makeArrayResponse( "Parametros incorrectos" ) );
@@ -46,7 +46,7 @@ $app->get('/', function (Request $request, Response $response) {
 //        return $response->withStatus( Utils::$BAD_REQUEST )
 //            ->withJson( Utils::makeArrayResponse( "Campo vacio" ) );
 //
-//    $result = $control->getPlan_ByYear($year);
+//    $result = $Service->getPlan_ByYear($year);
 //    return $response->withStatus( $result['result'] )
 //        ->withJson( Utils::makeArrayResponse( $result['message'], $result['data'] ) );
 //});
@@ -128,9 +128,9 @@ $app->put('/', function(Request $request, Response $response){
 //    try{
 //        //Obteniendo datos
 //        //TODO: validar formato de año
-//        $control = new PlanControl();
+//        $Service = new PlanControl();
 //        //Registrando
-//        $result = $control->disablePlan( $body['id'] );
+//        $result = $Service->disablePlan( $body['id'] );
 //        return $res->withStatus( Utils::$OK )->withJson( $result );
 //    }catch (RequestException $ex){
 //        return $res->withStatus( $ex->getRequestStatusCode() )

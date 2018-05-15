@@ -12,7 +12,7 @@ use \Slim\Http\Request;
 use \Slim\Http\Response;
 use \Slim\App;
 use Utils;
-use Control\UserControl;
+use Control\UserService;
 use Control\Auth;
 
 
@@ -28,7 +28,7 @@ $app->get('/', function (Request $request, Response $response) {
         //Verificamos si esta autorizado
         $id = Auth::authorize( $request, Utils::$ROLE_BASIC );
 
-        $control = new UserControl();
+        $control = new UserService();
         $result = $control->getUser_ById($id);
         return $response->withJson( $result );
     }catch (RequestException $ex){
@@ -53,7 +53,7 @@ $app->get('/{id}', function (Request $request, Response $response, $params) {
         }
 
         $id = $params['id'];
-        $control = new UserControl();
+        $control = new UserService();
         $result = $control->getUser_ById($id);
         return $response->withJson( $result );
     }catch (RequestException $ex){
@@ -71,7 +71,7 @@ $app->get('/all', function (Request $request, Response $response) {
         //Verificamos si esta autorizado
         Auth::authorize( $request, Utils::$ROLE_MOD );
 
-        $control = new UserControl();
+        $control = new UserService();
         $result = $control->getUsers();
         return $response->withJson( $result );
     }catch (RequestException $ex){
@@ -87,7 +87,7 @@ $app->get('/active', function (Request $request, Response $response) {
     try{
         Auth::authorize( $request, Utils::$ROLE_BASIC );
 
-        $control = new UserControl();
+        $control = new UserService();
         $result = $control->getActiveUsers();
         return $response->withJson( $result );
     }catch (RequestException $ex){
@@ -109,7 +109,7 @@ $app->post('/', function (Request $request, Response $response) {
     //TODO: validar que vengan los campos requeridos
     try{
         //Obteniendo datos
-        $control = new UserControl();
+        $control = new UserService();
         //Registrando
         $email = $body['email'];
         $password = $body['password'];
@@ -152,7 +152,7 @@ $app->put('/', function (Request $request, Response $response) {
     //TODO: validar que vengan los campos requeridos
     try{
         //Obteniendo datos
-        $control = new UserControl();
+        $control = new UserService();
         //Registrando
         $id = $body['id'];
         $email = $body['email'];
@@ -196,7 +196,7 @@ $app->delete('/', function (Request $request, Response $response) {
     //TODO: validar que vengan los campos requeridos
     try{
         //Obteniendo datos
-        $control = new UserControl();
+        $control = new UserService();
         //Registrando
         $id = $body['id'];
 
@@ -236,7 +236,7 @@ $app->post('/auth', function (Request $request, Response $response) {
 
     //TODO: validar que vengan los campos requeridos
     try{
-        $con = new UserControl();
+        $con = new UserService();
         $result = $con->signIn($email, $pass);
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
@@ -260,7 +260,7 @@ $app->post('/auth', function (Request $request, Response $response) {
 //    //TODO: validar que vengan los campos requeridos
 //    try{
 //        //Obteniendo datos
-//        $control = new UserControl();
+//        $Service = new UserControl();
 //        //Registrando
 //        $search_by = $body['search_by'];
 //        $search = $body['search'];
@@ -270,7 +270,7 @@ $app->post('/auth', function (Request $request, Response $response) {
 //                ->withJson( Utils::makeArrayResponse("Informacion es incorrecta o nula", "400 Bad Request") );
 //        }
 //
-//        $result = $control->searchUser( $search_by, $search );
+//        $result = $Service->searchUser( $search_by, $search );
 //        return $response->withStatus( Utils::$OK )->withJson( $result );
 //
 //    }catch (RequestException $ex){

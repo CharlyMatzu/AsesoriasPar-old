@@ -3,7 +3,7 @@
 use Objects\Subject;
 use Utils;
 
-class Subjects extends Persistence{
+class SubjectsPersistence extends Persistence{
     public function __construct(){}
 
     private $campos = "SELECT

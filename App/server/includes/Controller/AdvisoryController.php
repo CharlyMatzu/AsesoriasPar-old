@@ -3,41 +3,41 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class UserController
+class AdvisoryController
 {
     /**
      * @param $req Request
      * @param $res Response
      */
-    public function getUsers($req, $res){}
+    public function getAdvisorys($req, $res){}
 
     /**
      * @param $req Request
      * @param $res Response
      * @param $params array
      */
-    public function getUser_ById($req, $res, $params){}
+    public function getAdvisory_ById($req, $res, $params){}
 
 
     /**
      * @param $req Request
      * @param $res Response
      */
-    public function createUser($req, $res){}
+    public function createAdvisory($req, $res){}
 
 
     /**
      * @param $req Request
      * @param $res Response
      */
-    public function updateUser($req, $res){}
+    public function updateAdvisory($req, $res){}
 
 
     /**
      * @param $req Request
      * @param $res Response
      */
-    public function deleteUser($req, $res){}
+    public function deleteAdvisory($req, $res){}
 
 
 }

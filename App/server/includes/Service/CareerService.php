@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
@@ -9,7 +9,7 @@ use Persistence\Careers;
 use Objects\Career;
 use Utils;
 
-class CareerControl{
+class CareerService{
 
     private $perCareers;
 

@@ -1,10 +1,10 @@
-<?php namespace Control;
+<?php namespace Service;
 
 
 use Persistence\Schedules;
 use Objects\Schedule;
 
-class ScheduleControl{
+class ScheduleService{
 
     private $perHorarios;
 
@@ -136,7 +136,7 @@ class ScheduleControl{
 
 
     /**
-     * Obtenemos Subjects de schedule especifico
+     * Obtenemos SubjectsPersistence de schedule especifico
      * @param int $scheduleid
      * @return array|bool|string
      */

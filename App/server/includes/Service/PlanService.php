@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
@@ -8,7 +8,7 @@ use Objects\DataResult;
 use Persistence\Plans;
 use Utils;
 
-class PlanControl{
+class PlanService{
 
     private $perPlans;
 
