@@ -3,8 +3,9 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Utils;
 
-class InputParamsMiddelware
+class InputParamsMiddelware extends Middelware
 {
     /**
      * Verifica que el parametro enviado sea un valor valido
@@ -13,8 +14,12 @@ class InputParamsMiddelware
      * @param $next callable
      * @return Response
      */
-    public function isInteger($req, $res, $next)
+    public function checkId($req, $res, $next)
     {
+        $id = $this->getRouteParams($req)['id'];
+        if( !is_int($id) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+
         $res = $next($req, $res);
         return $res;
     }

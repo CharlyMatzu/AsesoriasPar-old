@@ -13,17 +13,20 @@ use \Slim\Http\Response;
 use \Slim\App;
 
 
-$app = new App([
+$config = [
     'settings' => [
         'displayErrorDetails' => true,
 
 //        'logger' => [
 //            'name' => 'slim-app',
-//            'level' => Monolog\Logger::DEBUG,
+//            'level' => Monolog\Logger::DEBUG, //Se requiere Monolog
 //            'path' => __DIR__ . '/../logs/app.log',
 //        ],
     ],
-]);
+];
+
+//Instanciando APP
+$app = new App($config);
 //Contenedores de controlladores y midd
 require_once 'includes/settings.php';
 

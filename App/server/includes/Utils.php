@@ -155,5 +155,20 @@ class Utils
     }
 
 
+    /**
+     * @param $res \Slim\Http\Response
+     * @param $statusCode
+     * @param $message String
+     * @param $data @mixed
+     * @return \Slim\Http\Response
+     */
+    public static function makeJSONResponse($res, $statusCode, $message, $data = null)
+    {
+        return $res->withStatus(200)->withJson(
+            self::makeArrayResponse(
+                $message,
+                $data
+            ));
+    }
 
 }
