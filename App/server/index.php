@@ -13,7 +13,17 @@ use \Slim\Http\Response;
 use \Slim\App;
 
 
-$app = new App();
+$app = new App([
+    'settings' => [
+        'displayErrorDetails' => true,
+
+//        'logger' => [
+//            'name' => 'slim-app',
+//            'level' => Monolog\Logger::DEBUG,
+//            'path' => __DIR__ . '/../logs/app.log',
+//        ],
+    ],
+]);
 //Contenedores de controlladores y midd
 require_once 'includes/settings.php';
 
@@ -26,7 +36,9 @@ require_once 'includes/settings.php';
 // --Para pasar parametros entre middelwares,se usa:
 //      Para enviar: $request = $request->withAttribute('foo', 'bar');
 //      Para obtener: $foo = $request->getAttribute('foo');
-//NOTA, se puede agregar un middelware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
+//--------NOTA:
+// se puede agregar un middelware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
+// El orden de ejecucion de lod MID es LIFO (pila)
 
 
 
@@ -39,10 +51,13 @@ $app->get('/', function(Request $request, Response $response, $params){
 //  USER ROUTES
 //--------------------------
 $app->get('/users', 'UserController:getUsers')->add(AuthMiddelware::class);
-$app->get('/users/{id}', 'UserController:getUser_ById');
-$app->post('/users', 'UserController:createUser');
-$app->put('/users', 'UserController:updateUser');
-$app->delete('/users', 'UserController:deleteUser');
+$app->get('/users/{id}', 'UserController:getUser_ById')
+    ->add('InputMiddelware:isInteger')
+    ->add(AuthMiddelware::class);
+$app->post('/users/signup', 'UserController:createUser'); //Es el registro
+$app->post('/users/signin', 'UserController:signIn'); //Es el inicio de sesion
+$app->put('/users', 'UserController:updateUser')->add(AuthMiddelware::class);
+$app->delete('/users', 'UserController:deleteUser')->add(AuthMiddelware::class);
 
 //--------------------------
 //  STUDENT ROUTES

@@ -3,6 +3,7 @@
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\RequestException;
+use PHPMailer\PHPMailer\Exception;
 use Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -18,15 +19,15 @@ class UserController
      */
     public function getUsers($req, $res)
     {
-        $userServ = new UserService();
         try {
+            $userServ = new UserService();
             $result = $userServ->getUsers();
             return $res->withStatus(200)->withJson($result);
-        } catch (RequestException $e) {
-            $res->getBody()->write("Error:". $e->getMessage());
-        }
 
-        return $res;
+        } catch (RequestException $e) {
+            return $res->withStatus( $e->getRequestStatusCode() )
+                       ->withJson( Utils::makeArrayResponse( $e->getMessage() ) );
+        }
     }
 
     /**
@@ -34,7 +35,17 @@ class UserController
      * @param $res Response
      * @param $params array
      */
-    public function getUser_ById($req, $res, $params){}
+    public function getUser_ById($req, $res, $params){
+        try {
+            $userServ = new UserService();
+            $result = $userServ->getUsers();
+            return $res->withStatus(200)->withJson($result);
+
+        } catch (RequestException $e) {
+            return $res->withStatus( $e->getRequestStatusCode() )
+                ->withJson( Utils::makeArrayResponse( $e->getMessage() ) );
+        }
+    }
 
 
     /**
@@ -42,6 +53,13 @@ class UserController
      * @param $res Response
      */
     public function createUser($req, $res){}
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     */
+    public function signIn($req, $res){}
 
 
     /**

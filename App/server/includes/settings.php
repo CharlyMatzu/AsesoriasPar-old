@@ -2,7 +2,17 @@
 
 $container = $app->getContainer();
 
-//----------Controllers methods
+//-----------------------
+//Middelware methods
+//-----------------------
+$container['InputMiddelware'] = function($c){
+    return new \Middelware\InputParamsMiddelware();
+};
+
+//-----------------------
+//Controllers methods
+//-----------------------
+
 $container['UserController'] = function($c){
     return new \Controller\UserController();
 };

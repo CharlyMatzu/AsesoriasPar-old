@@ -1,21 +1,20 @@
 <?php namespace Middelware;
 
+
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class AuthMiddelware
+class InputParamsMiddelware
 {
-
     /**
+     * Verifica que el parametro enviado sea un valor valido
      * @param $req Request
      * @param $res Response
-     * @param $params array
      * @param $next callable
      * @return Response
      */
-    public function __invoke($req, $res, $next)
+    public function isInteger($req, $res, $next)
     {
-        //$res->getBody()->write("MID");
         $res = $next($req, $res);
         return $res;
     }
