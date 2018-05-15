@@ -9,7 +9,9 @@ class UserController
      * @param $req Request
      * @param $res Response
      */
-    public function getUsers($req, $res){}
+    public function getUsers($req, $res){
+        //$res->write("Users");
+    }
 
     /**
      * @param $req Request
