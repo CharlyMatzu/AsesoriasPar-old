@@ -6,7 +6,7 @@ require_once 'vendor/autoload.php';
 
 use Control\Auth;
 use Exceptions\RequestException;
-use Objects\Student;
+use Model\Student;
 use Control\StudentControl;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
@@ -29,7 +29,7 @@ $app->get('/', function (Request $request, Response $response) {
         $result = $control->getStudent_ById($id);
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -45,7 +45,7 @@ $app->get('/{id}', function (Request $request, Response $response, $params) {
         $result = $control->getStudent_ById($id);
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -60,7 +60,7 @@ $app->get('/all', function (Request $request, Response $response) {
         $result = $control->getStudents();
         return $response->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -102,7 +102,7 @@ $app->post('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$CREATED )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
     //{"itson_id":"132456","first_name":"pepito","last_name":"lopez","user":"5","career":"1"}
@@ -153,7 +153,7 @@ $app->put('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 
@@ -190,7 +190,7 @@ $app->delete('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 

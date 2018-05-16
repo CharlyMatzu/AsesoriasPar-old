@@ -28,7 +28,7 @@ $app->get('/', function (Request $request, Response $response) {
         return $response->withStatus( Utils::$OK )->withJson( $result );
 
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -76,7 +76,7 @@ $app->post('/', function(Request $request, Response $response){
         $result = $control->registerPlan( $body['year'] );
         return $response->withStatus( Utils::$CREATED )->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });
@@ -104,7 +104,7 @@ $app->put('/', function(Request $request, Response $response){
         $result = $control->updatePlan( $body['id'], $body['year'] );
         return $response->withStatus( Utils::$OK )->withJson( $result );
     }catch (RequestException $ex){
-        return $response->withStatus( $ex->getRequestStatusCode() )
+        return $response->withStatus( $ex->getStatusCode() )
             ->withJson( Utils::makeArrayResponse( $ex->getMessage() ) );
     }
 });

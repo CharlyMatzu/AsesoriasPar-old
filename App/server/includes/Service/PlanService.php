@@ -4,7 +4,7 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
-use Objects\DataResult;
+use Model\DataResult;
 use Persistence\Plans;
 use Utils;
 

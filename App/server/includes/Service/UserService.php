@@ -1,14 +1,13 @@
 <?php namespace Service;
 
-use Exceptions\BadRequestException;
+
 use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
-use Objects\DataResult;
-use Service\UsersPersistence;
-use Objects\Student;
-use Objects\User;
+use Model\DataResult;
+use Persistence\UsersPersistence;
+use Model\User;
 use Utils;
 
 class UserService{
@@ -73,17 +72,18 @@ class UserService{
         //Si se encontró, se crea token y se retorna
         else{
             $user = self::makeObject_User( $result->getData()[0] );
+
             //Se envia array con datos: id y email y retorna token
             //TODO: no usar id de BD
 //            $token = Auth::getToken([
 //                'id' => $user->getId(),
 //                'email' => $user->getEmail()
 //            ]);
-            $token = Auth::getToken($user->getId());
+            $token = Auth::getToken( $user->getId() );
 
             return [
-                "message" => "autenticado con exito",
-                'token' => $token
+                "id" => $user->getId(),
+                "token" => $token,
             ];
         }
 
@@ -93,7 +93,7 @@ class UserService{
      * @param $id
      * @return \mysqli_result|null
      * @throws InternalErrorException
-     * @throws NoContentException
+     * @throws NotFoundException
      */
     public function getUser_ById($id){
         $result = $this->userPer->getUser_ById( $id );
@@ -101,7 +101,7 @@ class UserService{
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuario");
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NoContentException("No se encontro usuario");
+            throw new NotFoundException("No se encontro usuario", $id);
         else
             return $result->getData();
     }
@@ -188,7 +188,6 @@ class UserService{
 
     /**
      * @param $user User
-     * @return array
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -214,16 +213,11 @@ class UserService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al registrar usuario");
 
-        return Utils::makeArrayResponse(
-            "Se registro usuario con éxito"
-        );
-
     }
 
 
     /**
      * @param $user User
-     * @return array
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -267,18 +261,11 @@ class UserService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al actualizar usuario");
 
-        return Utils::makeArrayResponse(
-            "Se actualizó usuario con éxito"
-        );
-
     }
 
     /**
      * @param $id
-     * @return array
-     * @throws ConflictException
      * @throws InternalErrorException
-     * @throws NoContentException
      * @throws NotFoundException
      */
     public function deleteUser( $id ){
@@ -294,10 +281,6 @@ class UserService{
         $result = $this->userPer->changeStatusToDeleted( $id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al eliminar usuario");
-
-        return Utils::makeArrayResponse(
-            "Se elimino el usuario con éxito"
-        );
 
     }
 

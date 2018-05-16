@@ -4,7 +4,7 @@
 use Carbon\Carbon;
 
 use Persistence\Advisories;
-use Objects\Advisory;
+use Model\Advisory;
 
 class AdvisoryService
 {

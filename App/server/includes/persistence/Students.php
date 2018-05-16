@@ -1,7 +1,7 @@
 <?php namespace Persistence;
 
-use Objects\Career;
-use Objects\Student;
+use Model\Career;
+use Model\Student;
 use Utils;
 
 class Students extends Persistence{
@@ -25,7 +25,7 @@ class Students extends Persistence{
 
     /**
      * @param $id int
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getStudent_ById($id){
         $query =    $this->SELECT."
@@ -36,7 +36,7 @@ class Students extends Persistence{
     }
 
     /**
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getStudents(){
         $query =    $this->SELECT."
@@ -47,7 +47,7 @@ class Students extends Persistence{
 
     /**
      * @param $id int
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getStudent_ByUserId( $id ){
         $query = $this->SELECT."
@@ -124,7 +124,7 @@ class Students extends Persistence{
 
     /**
      * @param $student Student
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function insertStudent( $student ){
         $query = "INSERT INTO student(itson_id, first_name, last_name, fk_user , fk_career)
@@ -139,7 +139,7 @@ class Students extends Persistence{
 
     /**
      * @param $student Student
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function updateStudent( $student ){
         $query = "UPDATE  student s 
@@ -151,7 +151,7 @@ class Students extends Persistence{
 
     /**
      * @param $idStudent
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      * TODO: change status
      */
     public function changeStatusToDeleted($idStudent ){

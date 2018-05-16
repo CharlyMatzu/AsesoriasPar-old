@@ -23,7 +23,7 @@ abstract class RequestException extends Exception
     /**
      * @return int status code
      */
-    public function getRequestStatusCode()
+    public function getStatusCode()
     {
         return $this->status_code;
     }

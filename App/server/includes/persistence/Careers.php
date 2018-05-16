@@ -1,7 +1,7 @@
 <?php namespace Persistence;
 
-use Objects\Career;
-use Objects\DataResult;
+use Model\Career;
+use Model\DataResult;
 use Utils;
 
 class Careers extends Persistence {

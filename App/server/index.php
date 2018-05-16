@@ -5,6 +5,7 @@ require_once 'includes/autoload.php';
 require_once 'vendor/autoload.php';
 
 
+use Middelware\AuthMiddelware;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;
@@ -12,15 +13,39 @@ use \Slim\Http\Response;
 use \Slim\App;
 
 
-$app = new App();
+$config = [
+    'settings' => [
+        'displayErrorDetails' => true,
+
+//        'logger' => [
+//            'name' => 'slim-app',
+//            'level' => Monolog\Logger::DEBUG, //Se requiere Monolog
+//            'path' => __DIR__ . '/../logs/app.log',
+//        ],
+    ],
+];
+
+//Instanciando APP
+$app = new App($config);
 //Contenedores de controlladores y midd
 require_once 'includes/settings.php';
 
 //--------- NOTA:
-// -Los middelware se ejecutan antes y despues que los controllers
-// -Se usa el getBody para escribir en el response sin enviarlo
-// -Los middelware siempre deben retornar el response
-// -Los Middelware reciben un callable referente al siguiente middelware o controller
+// --Los middelware se ejecutan antes y despues que los controllers
+// --Se usa el getBody para escribir en el response sin enviarlo
+// --Los middelware y controllers siempre deben retornar el response
+// --Los Middelware reciben un callable referente al siguiente middelware o controller el cual deben llamar ($next)
+// el cual retorna un response para ser manejado desde el midd
+// --Para pasar parametros entre middelwares,se usa:
+//      Para enviar: $request = $request->withAttribute('foo', 'bar');
+//      Para obtener: $foo = $request->getAttribute('foo');
+//--------NOTA:
+// --se puede agregar un middelware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
+// --El orden de ejecucion de lod MID es LIFO (pila)
+// --Se debe obtener los parametros directamente del $request cuando este es un Middelware,
+//  en un controller se recibe un "array" como parametro
+
+
 
 
 $app->get('/', function(Request $request, Response $response, $params){
@@ -31,11 +56,18 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 //  USER ROUTES
 //--------------------------
-$app->get('/users', 'UserController:getUsers');
-$app->get('/users/{id}', 'UserController:getUser_ById');
-$app->post('/users', 'UserController:createUser');
-$app->put('/users', 'UserController:updateUser');
-$app->delete('/users', 'UserController:deleteUser');
+$app->get('/users', 'UserController:getUsers')->add(AuthMiddelware::class);
+$app->get('/users/{id}', 'UserController:getUser_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+$app->post('/users/signup', 'UserController:signUp')->add('InputMiddelware:checkData_Signup'); //Es el registro
+$app->post('/users/auth', 'UserController:auth')->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
+$app->put('/users', 'UserController:updateUser')
+    ->add('InputMiddelware:checkData_update')
+    ->add(AuthMiddelware::class);
+$app->delete('/users/{id}', 'UserController:deleteUser')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 //--------------------------
 //  STUDENT ROUTES

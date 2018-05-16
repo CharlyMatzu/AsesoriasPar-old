@@ -15,6 +15,11 @@ class Utils
     public static $ROLE_BASIC = "basic";
 
 
+    //------------OTROS
+    const EXPREG_EMAIL = "/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/";
+    const EXPREG_PASS = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$";
+
+
 
     //++++++++++++++++++++++++
     // OPERATIONS
@@ -155,5 +160,43 @@ class Utils
     }
 
 
+    /**
+     * @param $res \Slim\Http\Response
+     * @param $statusCode int
+     * @param $message String
+     * @param $data @mixed
+     * @return \Slim\Http\Response
+     */
+    public static function makeJSONResponse($res, $statusCode, $message, $data = null)
+    {
+        return $res->withStatus($statusCode)->withJson(
+            self::makeArrayResponse(
+                $message,
+                $data
+            ));
+    }
+
+    /**
+     * @param $req \Slim\Http\Request
+     * @param $params array
+     * @return array
+     */
+    public static function makeParamValidationArray($req, $params)
+    {
+        $array = [
+            "route" => $req->getUri()->getPath(),
+            "method" => $req->getMethod(),
+            "param" => $params
+        ];
+        return $array;
+    }
+
+    public static function isRole($role)
+    {
+        if( $role === self::$ROLE_ADMIN || $role === self::$ROLE_MOD || $role === self::$ROLE_BASIC )
+            return true;
+        else
+            return false;
+    }
 
 }

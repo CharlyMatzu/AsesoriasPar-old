@@ -2,7 +2,7 @@
 
 
 use Persistence\Schedules;
-use Objects\Schedule;
+use Model\Schedule;
 
 class ScheduleService{
 

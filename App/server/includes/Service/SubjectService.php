@@ -7,7 +7,7 @@ use Exceptions\NotFoundException;
 use Persistence\Careers;
 use Persistence\Plans;
 use Persistence\SubjectsPersistence;
-use Objects\Subject;
+use Model\Subject;
 use Utils;
 
 class SubjectService{
@@ -331,7 +331,7 @@ class SubjectService{
 
     /**
      * @param $name
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function isSubjectExist_ByName( $name )
     {
@@ -347,7 +347,7 @@ class SubjectService{
 
     /**
      * @param $shortName
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function isSubjectExist_ByShortName($shortName )
     {
@@ -364,7 +364,7 @@ class SubjectService{
     /**
      * @param $name
      * @param $short
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function isSubjectExist_ByName_ShortName( $name, $short )
     {
@@ -381,7 +381,7 @@ class SubjectService{
 
     /**
      * @param $id
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function isSubjectExist_ById( $id )
     {
