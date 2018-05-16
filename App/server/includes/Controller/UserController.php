@@ -1,7 +1,7 @@
 <?php namespace Controller;
 
 use Exceptions\RequestException;
-use Objects\User;
+use Model\User;
 use Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -51,7 +51,7 @@ class UserController
      * @param $res Response
      * @return Response
      */
-    public function createUser($req, $res)
+    public function signUp($req, $res)
     {
         try {
             $userServ = new UserService();
@@ -68,22 +68,58 @@ class UserController
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
      */
-    public function signIn($req, $res){}
+    public function auth($req, $res)
+    {
+        try {
+            $userServ = new UserService();
+            $user = $req->getAttribute('user_auth');
+            $result = $userServ->signIn( $user->getEmail(), $user->getPassword() );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Autenticado con exito", $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
      */
-    public function updateUser($req, $res){}
+    public function updateUser($req, $res)
+    {
+        try {
+            $userServ = new UserService();
+            $user = $req->getAttribute('user_update');
+            $result = $userServ->updateUser($user);
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Actualizado con exito", $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**
      * @param $req Request
      * @param $res Response
+     * @param $params array
+     * @return Response
      */
-    public function deleteUser($req, $res){}
+    public function deleteUser($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $userServ->deleteUser( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Eliminado con exito", $params['id']);
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
 }

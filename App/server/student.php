@@ -6,7 +6,7 @@ require_once 'vendor/autoload.php';
 
 use Control\Auth;
 use Exceptions\RequestException;
-use Objects\Student;
+use Model\Student;
 use Control\StudentControl;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;

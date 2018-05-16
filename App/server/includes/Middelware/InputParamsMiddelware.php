@@ -1,7 +1,7 @@
 <?php namespace Middelware;
 
 
-use Objects\User;
+use Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Utils;
@@ -72,6 +72,82 @@ class InputParamsMiddelware extends Middelware
         return $res;
     }
 
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_Auth($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['email']) || !isset($params['password']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: email, password");
 
+        if( empty($params['email']) || empty($params['password']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        $email = $params['email'];
+        $pass = $params['password'];
+
+        //TODO validar
+//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
+//            !preg_match(Utils::EXPREG_PASS, $pass))
+//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //Se crea objeto
+        $user = new User();
+        $user->setEmail($email);
+        $user->setPassword($pass);
+
+        //Se envian los parametros mediante el request ya validados
+        $req = $req->withAttribute('user_auth', $user);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_update($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['id']) || !isset($params['email']) || !isset($params['password']) || !isset($params['role']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: email, password, role");
+
+        if( empty($params['id']) || empty($params['email']) || empty($params['password']) || empty($params['role']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        $id = $params['id'];
+        $email = $params['email'];
+        $pass = $params['password'];
+        $role = $params['role'];
+
+        //TODO validar
+//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
+//            !preg_match(Utils::EXPREG_PASS, $pass) ||
+//            !Utils::isRole($role) )
+//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //Se crea objeto
+        $user = new User();
+        $user->setId($id);
+        $user->setEmail($email);
+        $user->setPassword($pass);
+        $user->setRole($role);
+
+        //Se envian los parametros mediante el request ya validados
+        $req = $req->withAttribute('user_update', $user);
+
+        $res = $next($req, $res);
+        return $res;
+    }
 
 }

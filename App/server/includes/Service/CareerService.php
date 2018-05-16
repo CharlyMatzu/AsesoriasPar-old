@@ -4,9 +4,9 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
-use Objects\DataResult;
+use Model\DataResult;
 use Persistence\Careers;
-use Objects\Career;
+use Model\Career;
 use Utils;
 
 class CareerService{

@@ -5,7 +5,7 @@ require_once 'includes/autoload.php';
 require_once 'vendor/autoload.php';
 
 use Exceptions\RequestException;
-use Objects\Period;
+use Model\Period;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;

@@ -1,4 +1,4 @@
-<?php namespace Control;
+<?php namespace Service;
 
 use Exceptions\ForbiddenException;
 use Exceptions\InternalErrorException;
@@ -8,10 +8,9 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
 use Persistence\UsersPersistence;
 use PHPMailer\PHPMailer\Exception;
-use UnexpectedValueException;
-use Utils;
 use Slim\Http\Request;
 use Carbon\Carbon;
+use Utils;
 
 class Auth
 {
@@ -168,7 +167,7 @@ class Auth
     {
         try{
             return JWT::decode(
-                $token,
+                 $token,
                 self::$secret_key,
                 self::$encrypt
             )->data;

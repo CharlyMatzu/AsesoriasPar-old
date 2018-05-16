@@ -6,10 +6,10 @@ use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 
-use Objects\User;
+use Model\User;
 use Persistence\Students;
 use Persistence\UsersPersistence;
-use Objects\Student;
+use Model\Student;
 use Service\UserService;
 use Utils;
 

@@ -1,6 +1,6 @@
 <?php namespace Persistence;
 
-use Objects\DataResult;
+use Model\DataResult;
 use Persistence\Database\MySQLConexion;
 use Utils;
 //use Exceptions\PersistenciaException;

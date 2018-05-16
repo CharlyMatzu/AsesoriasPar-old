@@ -1,16 +1,14 @@
-<?php namespace Objects;
+<?php namespace Model;
 
-    class Schedule{
-        
+    class Advisory{
+
         private $id;
         private $register_date;
         private $status;
         private $student;
-        private $period;
-
-        /**
-         * Schedule constructor.
-         */
+        private $adviser;
+        private $subject;
+        
         public function __construct(){}
 
         /**
@@ -62,7 +60,7 @@
         }
 
         /**
-         * @return mixed
+         * @return Student
          */
         public function getStudent()
         {
@@ -78,18 +76,35 @@
         }
 
         /**
-         * @return Period
+         * @return Student
          */
-        public function getPeriod()
+        public function getAdviser()
         {
-            return $this->period;
+            return $this->adviser;
         }
 
         /**
-         * @param Period $period
+         * @param Student $adviser
          */
-        public function setPeriod($period)
+        public function setAdviser($adviser)
         {
-            $this->period = $period;
+            $this->adviser = $adviser;
         }
+
+        /**
+         * @return Subject
+         */
+        public function getSubject()
+        {
+            return $this->subject;
+        }
+
+        /**
+         * @param Subject $subject
+         */
+        public function setSubject($subject)
+        {
+            $this->subject = $subject;
+        }
+
     }

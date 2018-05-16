@@ -6,7 +6,7 @@ use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 use Persistence\Periods;
-use Objects\Period;
+use Model\Period;
 use DateTime;
 use Utils;
 
@@ -200,7 +200,7 @@ class PeriodService{
 
     /**
      * @param $periodId
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function isPeriodExist_ById( $periodId ){
         $result = $this->perPeriods->getPeriod_ById( $periodId );
@@ -215,7 +215,7 @@ class PeriodService{
 
     /**
      * @param $date
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function isPeriodBetweenOther( $date ){
         $result = $this->perPeriods->getPeriodWhereIsBetween( $date );

@@ -36,7 +36,7 @@ class Plans extends Persistence{
     /**
      * Obtiene el plan que conincida con el año
      * @param $year
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getPlan_ByYear( $year ){
         $query = $this->campos.
@@ -48,7 +48,7 @@ class Plans extends Persistence{
     /**
      * Busca las coincidencias con uno o mas valores numericos que concuerden con el año del plan
      * @param $number
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getPlan_BySearch( $number ){
         $query = $this->campos.
@@ -59,7 +59,7 @@ class Plans extends Persistence{
 
     /**
      * @param $year string año del plan
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function createPlan( $year ){
         $query = "INSERT INTO plan(year) VALUES('$year')";

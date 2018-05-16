@@ -1,7 +1,7 @@
 <?php namespace Persistence;
 
 use Control\Functions;
-use objects\User;
+use Model\User;
 use Utils;
 
 /**
@@ -24,7 +24,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * Método que regresa todos los usuarios
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getUsers(){
         $query = $this->SELECT;
@@ -51,7 +51,7 @@ class UsersPersistence extends Persistence{
      * usuario y la contraseña
      * @param String $email Correo del usuario
      * @param String $pass Contraseña
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getUser_BySignIn($email, $pass){
         $ePass = $this->crypt($pass);
@@ -63,7 +63,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id int
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getUserByTokenAuth($id)
     {
@@ -75,7 +75,7 @@ class UsersPersistence extends Persistence{
     /**
      * Método que regresa un usuario en la coincidencia con el ID
      * @param int $id ID del usuario
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getUser_ById($id){
         $query = $this->SELECT."
@@ -85,7 +85,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
@@ -95,7 +95,7 @@ class UsersPersistence extends Persistence{
 
 
     /**
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getUser_Last(){
         $query = $this->SELECT." 
@@ -105,7 +105,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $email String
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getUser_ByEmail($email){
         $query = $this->SELECT."
@@ -115,7 +115,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $user User objeto tipo User con la informacion de registro
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
@@ -126,7 +126,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $user User objeto tipo User con la informacion de registro
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function updateUser( $user ){
         $passC = self::crypt( $user->getPassword() );
@@ -139,7 +139,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function changeStatusToDeleted($id ){
         $query = "UPDATE user u
@@ -150,7 +150,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $roleName String
-     * @return \Objects\DataResult
+     * @return \Model\DataResult
      */
     public function getRole_ByName($roleName)
     {

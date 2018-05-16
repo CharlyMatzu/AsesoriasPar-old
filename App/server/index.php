@@ -58,12 +58,16 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 $app->get('/users', 'UserController:getUsers')->add(AuthMiddelware::class);
 $app->get('/users/{id}', 'UserController:getUser_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+$app->post('/users/signup', 'UserController:signUp')->add('InputMiddelware:checkData_Signup'); //Es el registro
+$app->post('/users/auth', 'UserController:auth')->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
+$app->put('/users', 'UserController:updateUser')
+    ->add('InputMiddelware:checkData_update')
+    ->add(AuthMiddelware::class);
+$app->delete('/users/{id}', 'UserController:deleteUser')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
-$app->post('/users/signup', 'UserController:createUser')->add('InputMiddelware:checkData_Signup'); //Es el registro
-$app->post('/users/signin', 'UserController:signIn'); //Es el inicio de sesion
-$app->put('/users', 'UserController:updateUser')->add(AuthMiddelware::class);
-$app->delete('/users', 'UserController:deleteUser')->add(AuthMiddelware::class);
 
 //--------------------------
 //  STUDENT ROUTES
