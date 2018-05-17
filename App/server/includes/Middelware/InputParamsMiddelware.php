@@ -3,6 +3,7 @@
 
 use Model\Career;
 use Model\Student;
+use Model\Subject;
 use Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -224,15 +225,43 @@ class InputParamsMiddelware extends Middelware
 
         //TODO: validar formato, tipo, etc..
 
-        //NOTA: al parecer no funciona....
-        //$year = $params['year'];
-        //Se envian los parametros mediante el request ya validados
-        //$req = $req->withAttribute('plan_data', $year);
-
         $res = $next($req, $res);
         return $res;
     }
 
 
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_subject($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['name']) || !isset($params['short_name']) || !isset($params['description']) ||
+            !isset($params['semester']) || !isset($params['plan']) || !isset($params['career']))
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros",
+                "Se requiere: name, short_name, description, semester, plan, career");
+
+        if( empty($params['name']) || empty($params['short_name']) || empty($params['description']) ||
+            empty($params['semester']) || empty($params['plan']) || empty($params['career']))
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //TODO: validar formato, tipo, etc..
+        $subject = new Subject();
+        $subject->setName( $params['name'] );
+        $subject->setShortName( $params['short_name'] );
+        $subject->setDescription( $params['description'] );
+        $subject->setSemester( $params['semester'] );
+        $subject->setPlan( $params['plan'] );
+        $subject->setCareer( $params['career'] );
+
+        $req = $req->withAttribute('subject_data', $subject);
+
+        $res = $next($req, $res);
+        return $res;
+    }
 
 }

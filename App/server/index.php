@@ -146,22 +146,23 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 //--------------------------
 //  SUBJECT ROUTES
 //--------------------------
-$app->get('/subject', 'SubjectController:getSubjects');
+$app->get('/subjects', 'SubjectController:getSubjects')
+        ->add(AuthMiddelware::class);
 
-$app->get('/subject/{id}', 'SubjectController:getSubject_ById')
+$app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-$app->post('/subject', 'SubjectController:createSubject')
+$app->post('/subjects', 'SubjectController:createSubject')
         ->add('InputMiddelware:checkData_subject')
         ->add(AuthMiddelware::class);
 
-$app->put('/subject/{id}', 'SubjectController:updateSubject')
+$app->put('/subjects/{id}', 'SubjectController:updateSubject')
         ->add('InputMiddelware:checkData_subject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
-$app->delete('/subject/{id}', 'SubjectController:deleteSubject')
+$app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 

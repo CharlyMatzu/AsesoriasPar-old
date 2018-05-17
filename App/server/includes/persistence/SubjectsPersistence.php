@@ -79,14 +79,19 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
-     * @param $name
-     * @param $short_name
+     * @param $name String
+     * @param $plan int
+     * @param $career int
+     *
      * @return \Model\DataResult
      */
-    public function getSubject_ByName_ShortName($name, $short_name){
+    public function getSubject_ByName_ShortName($name, $plan, $career){
         $query = $this->campos."
                      INNER JOIN career c ON s.fk_career = c.career_id
-                     WHERE s.name = '$name' OR s.short_name = '$short_name'";
+                      INNER JOIN plan p ON s.fk_plan = p.plan_id
+                      WHERE (s.fk_career = $career AND s.fk_plan = $plan) AND
+                            (s.name = '$name' OR s.short_name = '$name')";
+
         //Obteniendo resultados
         return self::executeQuery($query);
     }
@@ -220,6 +225,18 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * @param $subjectID int
+     *
+     * @return \Model\DataResult
+     */
+    public function deleteSubject($subjectID ){
+        $query = "DELETE FROM subject
+                  WHERE subject_id = $subjectID";
+        return  self::executeQuery($query);
+    }
+
+
+    /**
      * @param $subjectID
      * @return \Model\DataResult
      */
@@ -235,24 +252,28 @@ class SubjectsPersistence extends Persistence{
     // MATERIAS SIMILARES
     //----------------------
 
-    /**
-     * @param $sub_1 int
-     * @param $sub_2 int
-     * @return \Model\DataResult
-     */
-    public function setSubjectRelation($sub_1, $sub_2)
-    {
-        $query = "INSERT INTO subject_similary(fk_subject_1, fk_subject_2) 
-                  VALUES($sub_1, $sub_2)";
-        return  self::executeQuery($query);
-    }
-
-    public function deleteSubjectRelation($relation_id)
-    {
-        $query = "DELETE FROM subject_similary
-                  WHERE pk_similary = $relation_id";
-        return  self::executeQuery($query);
-    }
+//    /**
+//     * @param $sub_1 int
+//     * @param $sub_2 int
+//     * @return \Model\DataResult
+//     */
+//    public function setSubjectRelation($sub_1, $sub_2)
+//    {
+//        $query = "INSERT INTO subject_similary(fk_subject_1, fk_subject_2)
+//                  VALUES($sub_1, $sub_2)";
+//        return  self::executeQuery($query);
+//    }
+//
+//    /**
+//     * @param $relation_id int
+//     * @return \Model\DataResult
+//     */
+//    public function deleteSubjectRelation($relation_id)
+//    {
+//        $query = "DELETE FROM subject_similary
+//                  WHERE pk_similary = $relation_id";
+//        return  self::executeQuery($query);
+//    }
 
 
 
