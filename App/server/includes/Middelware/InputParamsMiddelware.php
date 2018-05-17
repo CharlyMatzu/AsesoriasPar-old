@@ -1,6 +1,7 @@
 <?php namespace Middelware;
 
 
+use Model\Student;
 use Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -40,7 +41,7 @@ class InputParamsMiddelware extends Middelware
      * @param $next callable
      * @return Response
      */
-    public function checkData_Signup($req, $res, $next)
+    public function checkData_Signup_user($req, $res, $next)
     {
         $params = $req->getParsedBody();
         if( !isset($params['email']) || !isset($params['password']) || !isset($params['role']) )
@@ -71,6 +72,62 @@ class InputParamsMiddelware extends Middelware
         $res = $next($req, $res);
         return $res;
     }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_Signup_student($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['first_name']) || !isset($params['last_name']) ||
+            !isset($params['itson_id']) || !isset($params['phone']) ||
+            !isset($params['career']))
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST,
+                "Faltan parametros", "Se requiere: first_name, last_name, itson_id, phone");
+
+        if( empty($params['first_name']) || empty($params['last_name']) ||
+            empty($params['itson_id']) || empty($params['phone']) ||
+            empty($params['career']))
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        $first = $params['first_name'];
+        $last = $params['last_name'];
+        $itson = $params['itson_id'];
+        $phone = $params['phone'];
+        $career = $params['career'];
+
+        //TODO validar
+//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
+//            !preg_match(Utils::EXPREG_PASS, $pass) ||
+//            !Utils::isRole($role) )
+//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //Para este punto, ya tenemos el USER validado y en los parametros
+        //Se obtiene user
+        $user = $req->getAttribute('user_signup');
+
+        //Se crea objeto estudiante
+        $student = new Student();
+        //Se agregan datos
+        $student->setUser( $user );
+        $student->setFirstName($first);
+        $student->setLastName($last);
+        $student->setItsonId($itson);
+        $student->setPhone($phone);
+        $student->setCareer($career);
+
+
+        //Se envian los parametros mediante el request ya validados
+        $req = $req->withAttribute('student_signup', $student);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
 
     /**
      * Verifica que el parametro enviado sea un valor valido

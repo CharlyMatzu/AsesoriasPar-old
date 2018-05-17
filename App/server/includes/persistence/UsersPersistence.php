@@ -1,6 +1,5 @@
 <?php namespace Persistence;
 
-use Control\Functions;
 use Model\User;
 use Utils;
 
@@ -99,7 +98,7 @@ class UsersPersistence extends Persistence{
      */
     public function getUser_Last(){
         $query = $this->SELECT." 
-                  ORDER BY pk_id DESC LIMIT 1";
+                  ORDER BY user_id DESC LIMIT 1";
         return  self::executeQuery($query);
     }
 

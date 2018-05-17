@@ -51,13 +51,33 @@ class UserController
      * @param $res Response
      * @return Response
      */
-    public function signUp($req, $res)
+    public function creteUser($req, $res)
     {
         try {
             $userServ = new UserService();
             $user = $req->getAttribute('user_signup');
             $userServ->insertUser( $user );
             return Utils::makeJSONResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @return Response
+     */
+    public function createUserAndStudent($req, $res)
+    {
+        try {
+            $userServ = new UserService();
+            $student = $req->getAttribute('student_signup');
+            $userServ->insertUserAndStudent( $student );
+            return Utils::makeJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

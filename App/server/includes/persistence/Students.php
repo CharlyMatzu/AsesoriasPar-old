@@ -19,7 +19,7 @@ class Students extends Persistence{
                         s.date_register as 'date_register',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
-                        c.fk_career as 'career_id'
+                        c.career_id as 'career_id'
                         FROM student s";
 
 
@@ -29,7 +29,7 @@ class Students extends Persistence{
      */
     public function getStudent_ById($id){
         $query =    $this->SELECT."
-                        INNER JOIN career c ON c.pk_id = s.fk_career
+                        INNER JOIN career c ON c.career_id = s.fk_career
                         WHERE s.student_id = ".$id;
         //Obteniendo resultados
         return $this->executeQuery($query);
@@ -40,22 +40,29 @@ class Students extends Persistence{
      */
     public function getStudents(){
         $query =    $this->SELECT."
-                        INNER JOIN career c ON c.pk_id = s.fk_career";
+                        INNER JOIN career c ON c.career_id = s.fk_career";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }
 
-    /**
-     * @param $id int
-     * @return \Model\DataResult
-     */
-    public function getStudent_ByUserId( $id ){
-        $query = $this->SELECT."
-                        INNER JOIN career c ON c.pk_id = s.fk_career
-                        WHERE s.fk_user =".$id;
+    public function getStudent_ByItsonId($itsonId){
+        $query =    $this->SELECT."
+                        WHERE s.itson_id = '$itsonId'";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }
+
+//    /**
+//     * @param $id int
+//     * @return \Model\DataResult
+//     */
+//    public function getStudent_ByUserId( $id ){
+//        $query = $this->SELECT."
+//                        INNER JOIN career c ON c.career_id = s.fk_career
+//                        WHERE s.fk_user =".$id;
+//        //Obteniendo resultados
+//        return $this->executeQuery($query);
+//    }
 
 //    /**
 //     * @param $name String
@@ -63,7 +70,7 @@ class Students extends Persistence{
 //     */
 //    public function getStudent_LikeName($name ){
 //        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.pk_id = s.fk_career
+//                        INNER JOIN career c ON c.career_id = s.fk_career
 //                        WHERE s.first_name LIKE '%$name%' OR s.last_name LIKE '%$name%' ";
 //        //Obteniendo resultados
 //        return $this->executeQuery($query);
@@ -87,7 +94,7 @@ class Students extends Persistence{
 
 //    public function getStudent_byCareer ( $career ){
 //        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.pk_id = s.fk_career
+//                        INNER JOIN career c ON c.career_id = s.fk_career
 //                        WHERE c.name LIKE '%$career%'";
 //        //Obteniendo resultados
 //        return $this->executeQuery($query);
@@ -96,8 +103,8 @@ class Students extends Persistence{
 
 //    public function getStudent_bySubject ( $subject ){
 //        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.pk_id = s.fk_career
-//                        INNER JOIN subject s ON c.pk_id = s.fk_career
+//                        INNER JOIN career c ON c.career_id = s.fk_career
+//                        INNER JOIN subject s ON c.career_id = s.fk_career
 //                        WHERE s.name LIKE '%$subject%'";
 //        //Obteniendo resultados
 //        return $this->executeQuery($query);
@@ -105,7 +112,7 @@ class Students extends Persistence{
 
 //    public function getStudent_byItsonId( $itsonId ){
 //        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.pk_id = s.fk_career
+//                        INNER JOIN career c ON c.career_id = s.fk_career
 //                        WHERE s.itson_id LIKE '%$itsonId%'";
 //        //Obteniendo resultados
 //        return $this->executeQuery($query);
@@ -113,7 +120,7 @@ class Students extends Persistence{
 
 //    public function getStudent_byAdvisor( $advisor ){
 //        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.pk_id = s.fk_career
+//                        INNER JOIN career c ON c.career_id = s.fk_career
 //                        WHERE s.itson_id LIKE '%$advisor%'";
 //        //Obteniendo resultados
 //        return $this->executeQuery($query);
@@ -127,13 +134,14 @@ class Students extends Persistence{
      * @return \Model\DataResult
      */
     public function insertStudent( $student ){
-        $query = "INSERT INTO student(itson_id, first_name, last_name, fk_user , fk_career)
+        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career)
                   VALUES(
                       '".$student->getItsonId()."',
                       '".$student->getFirstName()."', 
-                      '".$student->getLastname()."', 
-                      ".$student->getUser().", 
-                      ".$student->getCareer().")";
+                      '".$student->getLastname()."',
+                      '".$student->getPhone()."', 
+                      ".$student->getUser()->getId().", 
+                      ".$student->getCareer()->getId().")";
         return  self::executeQuery($query);
     }
 
@@ -160,5 +168,7 @@ class Students extends Persistence{
                          WHERE s.student_id = " .$idStudent ;
         return  self::executeQuery($query);
     }
+
+
 }
 ?>

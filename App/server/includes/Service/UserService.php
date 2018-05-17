@@ -5,9 +5,12 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
+use Exceptions\RequestException;
 use Model\DataResult;
+use Model\Student;
 use Persistence\UsersPersistence;
 use Model\User;
+use PHPMailer\PHPMailer\Exception;
 use Utils;
 
 class UserService{
@@ -106,12 +109,28 @@ class UserService{
             return $result->getData();
     }
 
+    /**
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @return \mysqli_result
+     */
+    public function getLastUser(){
+        $result = $this->userPer->getUser_Last();
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Ocurrio un error al obtener usuario");
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No hay usuarios");
+        else
+            return $result->getData();
+    }
+
 
     /**
      * @param $id
      * @return bool|DataResult
      */
-    public function isUserExist_ById($id){
+    public function isUserExist($id){
         $result = $this->userPer->getUser_ById($id);
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
@@ -212,7 +231,70 @@ class UserService{
         $result = $this->userPer->insertUser( $user );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al registrar usuario");
+    }
 
+
+    //------------------REGISTRAR USUARIO Y ESTUDIANTE
+
+    /**
+     * @param $student Student
+     * @throws InternalErrorException
+     * @throws RequestException
+     */
+    public function insertUserAndStudent($student){
+
+        //Inicia transaccion
+        $trans = UsersPersistence::initTransaction();
+        if( !$trans )
+            throw new InternalErrorException("Error al iniciar transaccion");
+
+
+        //------------Verificacion de datos de usuario (excepciones incluidas)
+        try {
+            //Registramos usuario
+            $this->insertUser( $student->getUser() );
+            //Obtenemos ultimo registrado
+            $result = $this->getLastUser();
+            $user = self::makeObject_User( $result[0] );
+            //Se agrega al Modelo de estudiante
+            $student->setUser( $user );
+
+        } catch (RequestException $e) {
+            //Se termina transaccion
+            $trans = UsersPersistence::rollbackTransaction();
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+        }
+
+
+        //--------------CARRERA
+
+        try {
+            $careerService = new CareerService();
+            $result = $careerService->getCareer_ById( $student->getCareer() );
+            $career = CareerService::makeObject_career( $result[0] );
+            //Se asigna carrera (model) a student
+            $student->setCareer( $career );
+
+        } catch (RequestException $e) {
+            //Se termina transaccion
+            $trans = UsersPersistence::rollbackTransaction();
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+        }
+
+        //------------Iniciamos registro de estudiante
+        try{
+            $studentService = new StudentService();
+            $studentService->insertStudent( $student );
+        }catch (RequestException $e){
+            //Se termina transaccion
+            $trans = UsersPersistence::rollbackTransaction();
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+        }
+
+        //Si marcha bien, se registra commit
+        $trans = UsersPersistence::commitTransaction();
+        if( !$trans )
+            throw new InternalErrorException("Error al realizar commit de transaccion");
     }
 
 
@@ -285,7 +367,6 @@ class UserService{
     }
 
 
-
 //    public function searchUser($search_by, $data_search)
 //    {
 //        if ($search_by === "id") {
@@ -319,163 +400,7 @@ class UserService{
 
 
 
-        //------------------REGISTRAR USUARIO Y ESTUDIANTE
 
-//    /**
-//     * @param $user User
-//     * @param $student Student
-//     * @return array
-//     */
-//    public function insertUserAndStudent($user, $student){
-//        $trans = Users::initTransaction();
-//        //TODO: cambiar los "response" por el metodo @see Functions::makeArrayResponse
-//        if( !$trans ){
-//            $response = [
-//                "result" => 'error',
-//                "type" => "username",
-//                "message" => "No se pudo iniciar transaccion"
-//            ];
-//            return $response;
-//        }
-//
-//
-//        //------------Verificacion de datos
-//        //Verificamos si el nombre de usuario ya existe
-//        $result = $this->isUserExist_ByUsername( $user->getUsername() );
-//
-//        if( $result === 'error' ){
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo obtener usuario por nombre de usuario"
-//            ];
-//            return $response;
-//        }
-//        else if( $result === true ) {
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => false,
-//                "type" => "username",
-//                "message" => "Nombre de usuario ya existe",
-//            ];
-//            return $response;
-//        }
-//
-//        //Verificamos que correo no exista
-//        $result = $this->isUserExist_ByEmail( $user->getEmail() );
-//        if( $result === 'error' ){
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo obtener email"
-//            ];
-//            return $response;
-//        }
-//        else if( $result === true ) {
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => false,
-//                "type" => 'email',
-//                "message" => "Email ya existe"
-//            ];
-//            return $response;
-//        }
-//
-//
-//        //Se verifica carrera
-//        $conCareer = new CareerControl();
-//
-//        $result = $conCareer->getCareer_ById( $student->getCareer() );
-//        if( $result === 'error' ){
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo obtener carrera por id"
-//            ];
-//            return $response;
-//        }
-//        else if( $result === null ) {
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => false,
-//                "type" => 'career',
-//                "message" => "Career no existe"
-//            ];
-//            return $response;
-//        }
-//
-//        //Se asigna carrera a student
-//        $student->setCareer( $result );
-//
-//
-//        //------------Iniciamos registro
-//
-//        //Registramos usuario
-//        $result = $this->perUsers->insertUser( $user );
-//        if( $result === false ){
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo registrar usuario"
-//            ];
-//            return $response;
-//        }
-//
-//
-//        //Registramos ultimo usuario (debe ser el mismo)
-//        //TODO: obtener con el nombre de usuario para evitar problemas
-//        $result = $this->perUsers->getUser_ByUsername( $user->getUsername() );
-//        if( $result === false ){
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo obtener usuario registrado anteriormente"
-//            ];
-//            return $response;
-//        }
-//        else if( $result === null ) {
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => false,
-//                "message" => "User no existe"
-//            ];
-//            return $response;
-//        }
-//
-//        //Obtiene Id del usuario y se lo agrega al student
-//        $userObj = self::makeObject_User( $result[0] );
-//
-//
-//        //Registramos student
-//        $student->setUser( $userObj );
-//        $conStudents = new StudentControl();
-//
-//        $result = $conStudents->insertStudent( $student );
-//        if( $result === false ){
-//            Users::rollbackTransaction();
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo registrar student"
-//            ];
-//            return $response;
-//        }
-//
-//        $trans = $this->perUsers::commitTransaction();
-//        if( !$trans ){
-//            $response = [
-//                "result" => 'error',
-//                "message" => "No se pudo hacer commit"
-//            ];
-//            return $response;
-//        }
-//
-//        //Si sale bien
-//        $response = [
-//            "result" => true,
-//            "message" => "Se registro correctamente"
-//        ];
-//        return $response;
-//    }
 
 
 

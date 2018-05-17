@@ -35,7 +35,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getItsonId()
         {
@@ -43,7 +43,7 @@
         }
 
         /**
-         * @param mixed $itson_id
+         * @param String $itson_id
          */
         public function setItsonId($itson_id)
         {
@@ -51,7 +51,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getFirstName()
         {
@@ -59,7 +59,7 @@
         }
 
         /**
-         * @param mixed $first_name
+         * @param String $first_name
          */
         public function setFirstName($first_name)
         {
@@ -67,7 +67,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getLastName()
         {
@@ -75,7 +75,7 @@
         }
 
         /**
-         * @param mixed $last_name
+         * @param String $last_name
          */
         public function setLastName($last_name)
         {
@@ -83,7 +83,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getPhone()
         {
@@ -91,7 +91,7 @@
         }
 
         /**
-         * @param mixed $phone
+         * @param String $phone
          */
         public function setPhone($phone)
         {
@@ -99,7 +99,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getFacebook()
         {
@@ -107,7 +107,7 @@
         }
 
         /**
-         * @param mixed $facebook
+         * @param String $facebook
          */
         public function setFacebook($facebook)
         {
@@ -115,7 +115,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getAvatar()
         {
@@ -123,7 +123,7 @@
         }
 
         /**
-         * @param mixed $avatar
+         * @param String $avatar
          */
         public function setAvatar($avatar)
         {
@@ -131,7 +131,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getRegisterDate()
         {
@@ -139,7 +139,7 @@
         }
 
         /**
-         * @param mixed $register_date
+         * @param String $register_date
          */
         public function setRegisterDate($register_date)
         {
@@ -147,7 +147,7 @@
         }
 
         /**
-         * @return mixed
+         * @return int
          */
         public function getStatus()
         {
@@ -155,7 +155,7 @@
         }
 
         /**
-         * @param mixed $status
+         * @param int $status
          */
         public function setStatus($status)
         {
@@ -163,7 +163,7 @@
         }
 
         /**
-         * @return mixed
+         * @return int|Career
          */
         public function getCareer()
         {
@@ -171,7 +171,7 @@
         }
 
         /**
-         * @param mixed $career
+         * @param int|Career $career
          */
         public function setCareer($career)
         {
@@ -179,7 +179,7 @@
         }
 
         /**
-         * @return mixed
+         * @return int|User
          */
         public function getUser()
         {
@@ -187,7 +187,7 @@
         }
 
         /**
-         * @param mixed $user
+         * @param int|User $user
          */
         public function setUser($user)
         {

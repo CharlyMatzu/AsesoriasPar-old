@@ -56,24 +56,39 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 //  USER ROUTES
 //--------------------------
-$app->get('/users', 'UserController:getUsers')->add(AuthMiddelware::class);
+$app->get('/users', 'UserController:getUsers')
+        ->add(AuthMiddelware::class);
+
 $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
-$app->post('/users/signup', 'UserController:signUp')->add('InputMiddelware:checkData_Signup'); //Es el registro
-$app->post('/users/auth', 'UserController:auth')->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
+
+$app->post('/users/signup', 'UserController:createUser')
+        ->add('InputMiddelware:checkData_Signup_user'); //Es el registro de estudiante
+
+$app->post('/users/student/signup', 'UserController:createUserAndStudent')
+    ->add('InputMiddelware:checkData_Signup_student') //Es el registro de estudiante
+    ->add('InputMiddelware:checkData_Signup_user'); //Es el registro de usuario (se ejecuta primero)
+
+$app->post('/users/auth', 'UserController:auth')
+        ->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
+
 $app->put('/users', 'UserController:updateUser')
-    ->add('InputMiddelware:checkData_update')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkData_update')
+        ->add(AuthMiddelware::class);
+
 $app->delete('/users/{id}', 'UserController:deleteUser')
-    ->add('InputMiddelware:checkParam_Id')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  STUDENT ROUTES
 //--------------------------
-$app->get('/students', 'StudentController:getStudents');
-$app->get('/students/{id}', 'StudentController:getStudent_ById');
+$app->get('/students', 'StudentController:getStudents')
+        ->add(AuthMiddelware::class);
+$app->get('/students/{id}', 'StudentController:getStudent_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 $app->post('/students', 'StudentController:createStudent');
 $app->put('/students', 'StudentController:updateStudent');
 $app->delete('/students', 'StudentController:deleteStudent');

@@ -303,12 +303,12 @@ class CareerService{
     }
 
 
-//    public static function makeObject_career( $c ){
-//        $career = new Career();
-//        $career->setId( $c['id'] );
-//        $career->setName( $c['name'] );
-//        $career->setShortName( $c['short_name'] );
-//        $career->setRegisterDate( $c['date_register'] );
-//        return $career;
-//    }
+    public static function makeObject_career( $c ){
+        $career = new Career();
+        $career->setId( $c['id'] );
+        $career->setName( $c['name'] );
+        $career->setShortName( $c['short_name'] );
+        $career->setRegisterDate( $c['date_register'] );
+        return $career;
+    }
 }
