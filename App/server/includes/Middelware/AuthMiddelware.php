@@ -6,6 +6,11 @@ use Slim\Http\Response;
 class AuthMiddelware extends Middelware
 {
 
+    //TODO: que este autenticado
+    //TODO: que tenga los permisos para dicha operacion mediante rol
+    //TODO: que no tenga los permisos de modificar otro usuario siendo basic (o mod)
+
+
     /**
      * @param $req Request
      * @param $res Response
