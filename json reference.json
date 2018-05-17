@@ -2,21 +2,19 @@
 CAREER
 -----------------------------
 
-NEW
-{"name": "Insgenieria en softwareaa",
-	"short_name": "ISWaaa"
+CREATE
+{
+	"name": "Insgenieria en software",
+	"short_name": "ISW"
 }
 
 UPDATE (PUT)
-{"id": 4,
-	"name": "aaaa",
-	"short_name": "bbbb"
+{
+	"id": 1,
+	"name": "Insgenieria en software",
+	"short_name": "ISW"
 }
 
-DELETE
-{
-"id": 4 
-}
 
 
 -----------------------------

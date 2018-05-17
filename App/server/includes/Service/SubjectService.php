@@ -4,8 +4,8 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
-use Persistence\Careers;
-use Persistence\Plans;
+use Persistence\CareersPersistence;
+use Persistence\PlansPeristence;
 use Persistence\SubjectsPersistence;
 use Model\Subject;
 use Utils;
@@ -199,7 +199,7 @@ class SubjectService{
             throw new ConflictException("Nombre o Abreviacion ya existe");
 
         //------------Verificamos que la carrera exista
-        $perCareer =  new Careers();
+        $perCareer =  new CareersPersistence();
         $result = $perCareer->getCareer_ById( $subject->getCareer() );
 
         if( Utils::isError( $result->getOperation() ) )
@@ -209,7 +209,7 @@ class SubjectService{
             throw new NotFoundException("Carrera no existe");
 
         //------------Verificamos que el plan exista
-        $perPlan =  new Plans();
+        $perPlan =  new PlansPeristence();
         $result = $perPlan->getPlan_ById( $subject->getPlan() );
 
         if( Utils::isError( $result->getOperation() ) )
@@ -273,7 +273,7 @@ class SubjectService{
 
 
         //------------Verificamos que la carrera exista
-        $perCareer =  new Careers();
+        $perCareer =  new CareersPersistence();
         $result = $perCareer->getCareer_ById( $subject->getCareer() );
 
         if( Utils::isError( $result->getOperation() ) )
@@ -283,7 +283,7 @@ class SubjectService{
             throw new NotFoundException("Carrera no existe");
 
         //------------Verificamos que el plan exista
-        $perPlan =  new Plans();
+        $perPlan =  new PlansPeristence();
         $result = $perPlan->getPlan_ById( $subject->getPlan() );
 
         if( Utils::isError( $result->getOperation() ) )

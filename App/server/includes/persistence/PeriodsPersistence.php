@@ -4,7 +4,7 @@
 use Model\Period;
 use Utils;
 
-class Periods extends Persistence{
+class PeriodsPersistence extends Persistence{
 
 
     public function __construct(){}

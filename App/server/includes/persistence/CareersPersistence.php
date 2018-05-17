@@ -4,7 +4,7 @@ use Model\Career;
 use Model\DataResult;
 use Utils;
 
-class Careers extends Persistence {
+class CareersPersistence extends Persistence {
     public function __construct(){}
 
 
@@ -68,12 +68,11 @@ class Careers extends Persistence {
     /**
      * Se obtiene la carrera por nombre corto (Abreviacion) de la carrera
      * @param $name
-     * @param $short_name string
      * @return DataResult|bool
      */
-    public function getCareer_ByName_ShortName( $name, $short_name ){
+    public function getCareer_ByName_ShortName( $name ){
         $query = $this->campos."
-                     WHERE name = '$name' OR short_name = '$short_name'";
+                     WHERE name = '$name' OR short_name = '$name'";
         //Obteniendo resultados
         return self::executeQuery($query);
     }
