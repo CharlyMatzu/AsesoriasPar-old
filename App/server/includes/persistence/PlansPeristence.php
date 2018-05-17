@@ -80,5 +80,16 @@ class PlansPeristence extends Persistence{
         return  self::executeQuery($query);
     }
 
+    /**
+     * @param $id
+     * @return \Model\DataResult
+     */
+    public function deletePlan($id)
+    {
+        $query = "DELETE FROM plan
+                  WHERE plan_id = $id";
+        return  self::executeQuery($query);
+    }
+
 }
 

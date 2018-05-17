@@ -8,7 +8,6 @@ class CareersPersistence extends Persistence {
     public function __construct(){}
 
 
-    //TODO: agregar estado
     private $campos = "SELECT
                             c.career_id as 'id',
                             c.name as 'name',

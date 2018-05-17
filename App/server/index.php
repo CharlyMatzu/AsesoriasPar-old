@@ -110,7 +110,6 @@ $app->post('/careers', 'CareerController:createCareer')
         ->add('InputMiddelware:checkData_career')
         ->add(AuthMiddelware::class);
 
-//TODO: agregar id a la ruta
 $app->put('/careers/{id}', 'CareerController:updateCareer')
         ->add('InputMiddelware:checkData_career')
         ->add('InputMiddelware:checkParam_Id')
@@ -124,11 +123,24 @@ $app->delete('/careers/{id}', 'CareerController:deleteCareer')
 //--------------------------
 //  PLAN ROUTES
 //--------------------------
-$app->get('/plan', 'PlanController:getPlans');
-$app->get('/plan/{id}', 'PlanController:getPlan_ById');
-$app->post('/plan', 'PlanController:createPlan');
-$app->put('/plan', 'PlanController:updatePlan');
-$app->delete('/plan', 'PlanController:deletePlan');
+$app->get('/plans', 'PlanController:getPlans')
+        ->add(AuthMiddelware::class);
+
+$app->get('/plans/{id}', 'PlanController:getPlan_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+$app->post('/plans', 'PlanController:createPlan')
+        ->add('InputMiddelware:checkData_plan')
+        ->add(AuthMiddelware::class);
+
+$app->put('/plans/{id}', 'PlanController:updatePlan')
+        ->add('InputMiddelware:checkData_plan')
+        ->add(AuthMiddelware::class);
+
+$app->delete('/plans/{id}', 'PlanController:deletePlan')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  SUBJECT ROUTES

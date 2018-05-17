@@ -205,4 +205,34 @@ class InputParamsMiddelware extends Middelware
         return $res;
     }
 
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_plan($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['year']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: year");
+
+        if( empty($params['year']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //TODO: validar formato, tipo, etc..
+
+        //NOTA: al parecer no funciona....
+        //$year = $params['year'];
+        //Se envian los parametros mediante el request ya validados
+        //$req = $req->withAttribute('plan_data', $year);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+
 }
