@@ -2,6 +2,7 @@
 
 
 use Model\Career;
+use Model\Period;
 use Model\Student;
 use Model\Subject;
 use Model\User;
@@ -259,6 +260,35 @@ class InputParamsMiddelware extends Middelware
         $subject->setCareer( $params['career'] );
 
         $req = $req->withAttribute('subject_data', $subject);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_period($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['start']) || !isset($params['end']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: start, end");
+
+        if( empty($params['start']) || empty($params['end']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //TODO: validar formato, tipo, etc..
+
+        $period = new Period();
+        $period->setDateStart( $params['start'] );
+        $period->setDateEnd( $params['end'] );
+
+        $req = $req->withAttribute('period_data', $period);
 
         $res = $next($req, $res);
         return $res;

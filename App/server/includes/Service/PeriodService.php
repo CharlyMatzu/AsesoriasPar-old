@@ -93,11 +93,10 @@ class PeriodService{
     /**
      * @param $start
      * @param $end
-     * @return array
      * @throws ConflictException
      * @throws InternalErrorException
      */
-    public function registerPeriod($start, $end ){
+    public function createPeriod($start, $end ){
 
         //------------FECHAS EMPALMADAS
         $result = $this->isPeriodBetweenOther( $start );
@@ -122,21 +121,12 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al registrar periodo", $result->getErrorMessage());
-        else
-            return Utils::makeArrayResponse(
-                "Se registro periodo con éxito",
-                $start.' a '.$end
-            );
-
-
-
     }
 
 //   ------------------------------------- UPDATE CYCLES
 
     /**
      * @param $period Period
-     * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -154,10 +144,6 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("No se pudo actualizar periodo");
-        else
-            return Utils::makeArrayResponse(
-                "Periodo actualizado con exito"
-            );
 
     }
 
@@ -166,7 +152,6 @@ class PeriodService{
 
     /**
      * @param $periodId
-     * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -185,11 +170,6 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("No se pudo deshabilitar periodo");
-        else
-            return Utils::makeArrayResponse(
-                "Se deshabilito periodo con exito",
-                $periodId
-            );
     }
 
 

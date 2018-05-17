@@ -169,11 +169,25 @@ $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
 //--------------------------
 //  PERIOD ROUTES
 //--------------------------
-$app->get('/period', 'PeriodController:getPeriods');
-$app->get('/period/{id}', 'PeriodController:getPeriod_ById');
-$app->post('/period', 'PeriodController:createPeriod');
-$app->put('/period/{id}', 'PeriodController:updatePeriod');
-$app->delete('/period/{id}', 'PeriodController:deletePeriod');
+$app->get('/periods', 'PeriodController:getPeriods')
+        ->add(AuthMiddelware::class);
+
+$app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
+
+$app->post('/periods', 'PeriodController:createPeriod')
+        ->add('InputMiddelware:checkData_period')
+        ->add(AuthMiddelware::class);
+
+$app->put('/periods/{id}', 'PeriodController:updatePeriod')
+        ->add('InputMiddelware:checkData_period')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
+
+$app->delete('/periods/{id}', 'PeriodController:deletePeriod')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  SCHEDULE ROUTES
