@@ -110,7 +110,8 @@ abstract class Persistence{
 
 
     /**
-     * @return bool
+     * Se encarga de activar las transacciones de MYSQL, iniciando antes una conexion en caso de no haber
+     * @return bool TRUE si fue exitoso, FALSE si fallo
      */
     public static function initTransaction(){
         //Si conexion no esta activa
@@ -130,6 +131,10 @@ abstract class Persistence{
     }
 
 
+    /**
+     * Permite registrar los cambios
+     * @return bool TRUE si se registro con exito, FALSE si fallo
+     */
     public static function commitTransaction(){
         if( self::isTransactionON() ){
             //Se realiza el commit

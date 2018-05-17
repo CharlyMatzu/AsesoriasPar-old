@@ -76,7 +76,7 @@ SINGIN
 	"password": "123456"
 }
 
-CREATE
+SIGNUP
 { 
 	"email": "carlosrozumaa@gmail.com",
 	"password": "123456",
@@ -95,3 +95,23 @@ DELETE
 {
 	"id": 4
 }
+
+-----------------------------
+STUDENT
+-----------------------------
+
+SINGUP
+{
+	//Usuario
+	"email": "carlosrozuma@gmail.com",
+	"password": "123456",
+	"role": "basic",
+	//Estudiante
+	"career": 1,
+	"first_name": "carlos",
+	"last_name": "Zuñiga",
+	"itson_id": "162156",
+	"phone": "4182747"
+}
+
+

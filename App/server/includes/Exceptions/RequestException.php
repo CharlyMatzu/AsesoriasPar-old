@@ -2,7 +2,7 @@
 
 use Exception;
 
-abstract class RequestException extends Exception
+class RequestException extends Exception
 {
     private $status_code;
     private $extra_data;
@@ -35,9 +35,5 @@ abstract class RequestException extends Exception
     {
         return $this->extra_data;
     }
-
-
-
-
 
 }
