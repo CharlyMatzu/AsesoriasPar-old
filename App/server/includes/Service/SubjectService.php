@@ -228,77 +228,44 @@ class SubjectService{
 
     /**
      * @param $subject Subject
-     * @return array
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     * @throws ConflictException
+     * @throws RequestException
      */
     public function updateSubject( $subject ){
+        //------------Verificamos que la materia no exista
 
+        //TODO: verificar por cambio de nombre
+//        $result = $this->isSubjectExist_ByName_ShortName(
+//            $subject->getName(), $subject->getShortName(),
+//            $subject->getPlan(), $subject->getCareer() );
 
-        //Se obtiene materia y verifica existencia
-        $result = $this->perSubjects->getSubject_ById( $subject->getId() );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo comprobar existencia de materia por ID");
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe materia");
-
-        //-----------Verificando dato que cambio
-        $sub_Name = $result->getData()[0]['name'];
-        $sub_ShortName = $result->getData()[0]['short_name'];
-
-        //--Si cambio el nombre
-        if( $subject->getName() !== $sub_Name ){
-            $result = $this->isSubjectExist_ByName( $subject->getName() );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("Error al buscar materia por nombre");
-            else if( $result->getOperation() == true )
-                throw new ConflictException("Nombre ya existe");
-        }
-
-
-        //Si cambio la abreviacion
-        if( $subject->getShortName() !== $sub_ShortName ) {
-            $result = $this->isSubjectExist_ByShortName($subject->getShortName());
-
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("Error al buscar materia por abreviacion");
-            else if( $result->getOperation() == true )
-                throw new ConflictException("Abreviacion ya existe");
-        }
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException("No se pudo verificar materia");
+//        else if( $result->getOperation() == true )
+//            throw new ConflictException("Nombre o Abreviacion ya existe");
 
 
         //------------Verificamos que la carrera exista
-        $perCareer =  new CareersPersistence();
-        $result = $perCareer->getCareer_ById( $subject->getCareer() );
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener la carrera");
-
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("Carrera no existe");
+        try{
+            $careerService =  new CareerService();
+            $careerService->getCareer_ById( $subject->getCareer() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
         //------------Verificamos que el plan exista
-        $perPlan =  new PlansPeristence();
-        $result = $perPlan->getPlan_ById( $subject->getPlan() );
+        try{
+            $planService =  new PlanService();
+            $planService->getPlan_ById( $subject->getPlan() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
+        //-------------Registrando materia
+        $result = $this->perSubjects->updateSubject( $subject );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener el plan");
-
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("Plan no existe");
-
-
-        // Si sale bien, Inicia registro de Career
-        $result = $this->perSubjects->updateSubject( $subject);
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo actualizar materia");
-        else
-            return Utils::makeArrayResponse(
-                "Materia actualizado con exito"
-            );
+            throw new InternalErrorException("Ocurrio un error al actualizar la materia");
     }
+
 
     //---------------------DELETE SUBJECT--------------------
 
@@ -324,38 +291,25 @@ class SubjectService{
         );
     }
 
-
     /**
-     * @param $name
-     * @return \Model\DataResult
+     * @param $subjectID
+     * @throws InternalErrorException
+     * @throws NotFoundException
      */
-    public function isSubjectExist_ByName( $name )
-    {
-        $result = $this->perSubjects->getSubject_ByName( $name );
+    public function deleteSubject($subjectID ){
 
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
+        $result = $this->isSubjectExist_ById( $subjectID );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("Error al obtener materia por ID");
+        else if( $result->getOperation() == false )
+            throw new NotFoundException("No existe materia");
 
-        return $result;
+        $result = $this->perSubjects->deleteSubject( $subjectID );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("Error al eliminar materia");
     }
 
-    /**
-     * @param $shortName
-     * @return \Model\DataResult
-     */
-    public function isSubjectExist_ByShortName($shortName )
-    {
-        $result = $this->perSubjects->getSubject_ByShortName( $shortName );
 
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
-
-        return $result;
-    }
 
     /**
      * @param $name String Career name/short_name
@@ -405,45 +359,46 @@ class SubjectService{
     // MATERIAS RELACIONADAS
     //----------------------
 
-    /**
-     * @param $mainSubID int ID de la materia principal
-     * @param $subjectsArray array array de materias relacionadas
-     * @return array
-     * @throws NotFoundException
-     * @throws InternalErrorException
-     */
-    public function addSimilarySubjetcs($mainSubID, $subjectsArray){
+//    /**
+//     * @param $mainSubID int ID de la materia principal
+//     * @param $subjectsArray array array de materias relacionadas
+//     * @return array
+//     * @throws NotFoundException
+//     * @throws InternalErrorException
+//     */
+//    public function addSimilarySubjetcs($mainSubID, $subjectsArray){
+//
+//        //Verificando que materia principal exista
+//        $result = $this->isSubjectExist_ById( $mainSubID );
+//        //Comprobando errores
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException("No se pudo obtener materia", $result->getErrorMessage());
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            throw new NotFoundException("No existe materia principal");
+//
+//        //TODO: verificar que no esten ya relacionadas
+//        //TODO: Verificar que materia no sea la misma que principal
+//        //TODO: Verificar que materia no se haya relacionado anteriomente (durante registros)
+//
+//
+//        //TODO: Usar transacciones
+//        foreach ( $subjectsArray as $subID ){
+//            if( Utils::isError( $result->getOperation() ) )
+//                throw new InternalErrorException("No se pudo obtener materia", $result->getErrorMessage());
+//            else if( Utils::isEmpty( $result->getOperation() ) )
+//                throw new NotFoundException("No existe materia principal");
+//
+//            //Se registra
+//            $result = $this->perSubjects->setSubjectRelation( $mainSubID, $subID );
+//
+//            if( Utils::isError( $result->getOperation() ) )
+//                throw new InternalErrorException("No se pudo relacionar materia", $result->getErrorMessage());
+//        }
+//
+//        return Utils::makeArrayResponse("Materias relacionadas con éxito");
+//
+//    }
 
-        //Verificando que materia principal exista
-        $result = $this->isSubjectExist_ById( $mainSubID );
-        //Comprobando errores
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener materia", $result->getErrorMessage());
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe materia principal");
-
-        //TODO: verificar que no esten ya relacionadas
-        //TODO: Verificar que materia no sea la misma que principal
-        //TODO: Verificar que materia no se haya relacionado anteriomente (durante registros)
-
-
-        //TODO: Usar transacciones
-        foreach ( $subjectsArray as $subID ){
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo obtener materia", $result->getErrorMessage());
-            else if( Utils::isEmpty( $result->getOperation() ) )
-                throw new NotFoundException("No existe materia principal");
-
-            //Se registra
-            $result = $this->perSubjects->setSubjectRelation( $mainSubID, $subID );
-
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo relacionar materia", $result->getErrorMessage());
-        }
-
-        return Utils::makeArrayResponse("Materias relacionadas con éxito");
-
-    }
 
 }
 

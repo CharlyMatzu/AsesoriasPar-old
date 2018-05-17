@@ -225,6 +225,18 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * @param $subjectID int
+     *
+     * @return \Model\DataResult
+     */
+    public function deleteSubject($subjectID ){
+        $query = "DELETE FROM subject
+                  WHERE subject_id = $subjectID";
+        return  self::executeQuery($query);
+    }
+
+
+    /**
      * @param $subjectID
      * @return \Model\DataResult
      */
@@ -240,24 +252,28 @@ class SubjectsPersistence extends Persistence{
     // MATERIAS SIMILARES
     //----------------------
 
-    /**
-     * @param $sub_1 int
-     * @param $sub_2 int
-     * @return \Model\DataResult
-     */
-    public function setSubjectRelation($sub_1, $sub_2)
-    {
-        $query = "INSERT INTO subject_similary(fk_subject_1, fk_subject_2) 
-                  VALUES($sub_1, $sub_2)";
-        return  self::executeQuery($query);
-    }
-
-    public function deleteSubjectRelation($relation_id)
-    {
-        $query = "DELETE FROM subject_similary
-                  WHERE pk_similary = $relation_id";
-        return  self::executeQuery($query);
-    }
+//    /**
+//     * @param $sub_1 int
+//     * @param $sub_2 int
+//     * @return \Model\DataResult
+//     */
+//    public function setSubjectRelation($sub_1, $sub_2)
+//    {
+//        $query = "INSERT INTO subject_similary(fk_subject_1, fk_subject_2)
+//                  VALUES($sub_1, $sub_2)";
+//        return  self::executeQuery($query);
+//    }
+//
+//    /**
+//     * @param $relation_id int
+//     * @return \Model\DataResult
+//     */
+//    public function deleteSubjectRelation($relation_id)
+//    {
+//        $query = "DELETE FROM subject_similary
+//                  WHERE pk_similary = $relation_id";
+//        return  self::executeQuery($query);
+//    }
 
 
 
