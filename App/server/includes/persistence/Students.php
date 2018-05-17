@@ -160,7 +160,6 @@ class Students extends Persistence{
     /**
      * @param $idStudent
      * @return \Model\DataResult
-     * TODO: change status
      */
     public function changeStatusToDeleted($idStudent ){
         $query = "UPDATE student s

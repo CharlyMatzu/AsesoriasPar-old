@@ -17,9 +17,9 @@ class PlanService{
     }
 
     /**
-     * @return array|null|string
      * @throws InternalErrorException
      * @throws NoContentException
+     * @return \mysqli_result
      */
     public function getPlans(){
         $result = $this->perPlans->getPlans();

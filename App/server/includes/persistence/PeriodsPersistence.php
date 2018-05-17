@@ -9,7 +9,6 @@ class PeriodsPersistence extends Persistence{
 
     public function __construct(){}
 
-    //TODO: cambiar a ingles
     private $campos = "SELECT
                           period_id as 'id',
                           date_start as 'start',

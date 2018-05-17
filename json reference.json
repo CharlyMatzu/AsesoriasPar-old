@@ -10,7 +10,6 @@ CREATE
 
 UPDATE (PUT)
 {
-	"id": 1,
 	"name": "Insgenieria en software",
 	"short_name": "ISW"
 }
@@ -27,7 +26,6 @@ CREATE
 
 UPDATE (PUT)
 {
-	"id": 1,
 	"year": 2016
 }
 
@@ -54,13 +52,12 @@ CREATE
 
 UPDATE (PUT)
 {
-	"id": 1,
 	"name": "Programacion 2",
 	"short_name": "PRO 2",
 	"description": "Segunda materia de programacion",
 	"semester": 2,
 	"plan": 1,
-	"career": 5
+	"career": 1
 }
 
 
