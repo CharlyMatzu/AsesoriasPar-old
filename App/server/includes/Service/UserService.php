@@ -350,7 +350,7 @@ class UserService{
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function deleteUser( $id ){
+    public function disableUser($id ){
 
         //Verificando si existe usuario
         $result = $this->userPer->getUser_ById( $id );

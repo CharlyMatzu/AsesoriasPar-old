@@ -5,7 +5,7 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
-use Persistence\Periods;
+use Persistence\PeriodsPersistence;
 use Model\Period;
 use DateTime;
 use Utils;
@@ -15,7 +15,7 @@ class PeriodService{
     private $perPeriods;
 
     public function __construct(){
-        $this->perPeriods = new Periods();
+        $this->perPeriods = new PeriodsPersistence();
     }
 
     /**

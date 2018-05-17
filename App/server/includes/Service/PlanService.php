@@ -5,7 +5,7 @@ use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 use Model\DataResult;
-use Persistence\Plans;
+use Persistence\PlansPeristence;
 use Utils;
 
 class PlanService{
@@ -13,7 +13,7 @@ class PlanService{
     private $perPlans;
 
     public function __construct(){
-        $this->perPlans = new Plans();
+        $this->perPlans = new PlansPeristence();
     }
 
     /**

@@ -2,7 +2,7 @@
 
 use Utils;
 
-class Plans extends Persistence{
+class PlansPeristence extends Persistence{
 
 
     public function __construct(){}

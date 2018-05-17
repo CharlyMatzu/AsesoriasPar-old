@@ -1,6 +1,7 @@
 <?php namespace Middelware;
 
 
+use Model\Career;
 use Model\Student;
 use Model\User;
 use Slim\Http\Request;
@@ -41,7 +42,7 @@ class InputParamsMiddelware extends Middelware
      * @param $next callable
      * @return Response
      */
-    public function checkData_Signup_user($req, $res, $next)
+    public function checkData_user($req, $res, $next)
     {
         $params = $req->getParsedBody();
         if( !isset($params['email']) || !isset($params['password']) || !isset($params['role']) )
@@ -67,7 +68,7 @@ class InputParamsMiddelware extends Middelware
         $user->setRole($role);
 
         //Se envian los parametros mediante el request ya validados
-        $req = $req->withAttribute('user_signup', $user);
+        $req = $req->withAttribute('user_data', $user);
 
         $res = $next($req, $res);
         return $res;
@@ -79,7 +80,7 @@ class InputParamsMiddelware extends Middelware
      * @param $next callable
      * @return Response
      */
-    public function checkData_Signup_student($req, $res, $next)
+    public function checkData_student($req, $res, $next)
     {
         $params = $req->getParsedBody();
         if( !isset($params['first_name']) || !isset($params['last_name']) ||
@@ -121,7 +122,7 @@ class InputParamsMiddelware extends Middelware
 
 
         //Se envian los parametros mediante el request ya validados
-        $req = $req->withAttribute('student_signup', $student);
+        $req = $req->withAttribute('student_data', $student);
 
         $res = $next($req, $res);
         return $res;
@@ -166,6 +167,7 @@ class InputParamsMiddelware extends Middelware
     }
 
 
+
     /**
      * Verifica que el parametro enviado sea un valor valido
      * @param $req Request
@@ -173,19 +175,17 @@ class InputParamsMiddelware extends Middelware
      * @param $next callable
      * @return Response
      */
-    public function checkData_update($req, $res, $next)
+    public function checkData_career($req, $res, $next)
     {
         $params = $req->getParsedBody();
-        if( !isset($params['id']) || !isset($params['email']) || !isset($params['password']) || !isset($params['role']) )
-            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: email, password, role");
+        if( !isset($params['name']) || !isset($params['short_name']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: name, short_name");
 
-        if( empty($params['id']) || empty($params['email']) || empty($params['password']) || empty($params['role']) )
+        if( empty($params['name']) || empty($params['short_name']) )
             return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
-        $id = $params['id'];
-        $email = $params['email'];
-        $pass = $params['password'];
-        $role = $params['role'];
+        $name = $params['name'];
+        $short_name = $params['short_name'];
 
         //TODO validar
 //        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
@@ -194,14 +194,12 @@ class InputParamsMiddelware extends Middelware
 //            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
         //Se crea objeto
-        $user = new User();
-        $user->setId($id);
-        $user->setEmail($email);
-        $user->setPassword($pass);
-        $user->setRole($role);
+        $career = new Career();
+        $career->setName( $name );
+        $career->setShortName( $short_name );
 
         //Se envian los parametros mediante el request ya validados
-        $req = $req->withAttribute('user_update', $user);
+        $req = $req->withAttribute('career_data', $career);
 
         $res = $next($req, $res);
         return $res;

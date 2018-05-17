@@ -64,18 +64,20 @@ $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add(AuthMiddelware::class);
 
 $app->post('/users/signup', 'UserController:createUser')
-        ->add('InputMiddelware:checkData_Signup_user'); //Es el registro de estudiante
+        ->add('InputMiddelware:checkData_user'); //Es el registro de estudiante
 
 $app->post('/users/student/signup', 'UserController:createUserAndStudent')
-    ->add('InputMiddelware:checkData_Signup_student') //Es el registro de estudiante
-    ->add('InputMiddelware:checkData_Signup_user'); //Es el registro de usuario (se ejecuta primero)
+    ->add('InputMiddelware:checkData_student') //Es el registro de estudiante
+    ->add('InputMiddelware:checkData_user'); //Es el registro de usuario (se ejecuta primero)
 
 $app->post('/users/auth', 'UserController:auth')
         ->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
 
-$app->put('/users', 'UserController:updateUser')
-        ->add('InputMiddelware:checkData_update')
+$app->put('/users/{id}', 'UserController:updateUser')
+        ->add('InputMiddelware:checkData_user')
+        ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
 
 $app->delete('/users/{id}', 'UserController:deleteUser')
         ->add('InputMiddelware:checkParam_Id')
@@ -86,21 +88,38 @@ $app->delete('/users/{id}', 'UserController:deleteUser')
 //--------------------------
 $app->get('/students', 'StudentController:getStudents')
         ->add(AuthMiddelware::class);
+
 $app->get('/students/{id}', 'StudentController:getStudent_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
-$app->post('/students', 'StudentController:createStudent');
-$app->put('/students', 'StudentController:updateStudent');
-$app->delete('/students', 'StudentController:deleteStudent');
+
+//$app->put('/students', 'StudentController:updateStudent');
+//$app->delete('/students', 'StudentController:deleteStudent');
 
 //--------------------------
 //  CAREER ROUTES
 //--------------------------
-$app->get('/careers', 'CareerController:getCareers');
-$app->get('/careers/{id}', 'CareerController:getCareer_ById');
-$app->post('/careers', 'CareerController:createCareer');
-$app->put('/careers', 'CareerController:updateCareer');
-$app->delete('/careers', 'CareerController:deleteCareer');
+$app->get('/careers', 'CareerController:getCareers')
+        ->add(AuthMiddelware::class);
+
+$app->get('/careers/{id}', 'CareerController:getCareer_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+$app->post('/careers', 'CareerController:createCareer')
+        ->add('InputMiddelware:checkData_career')
+        ->add(AuthMiddelware::class);
+
+//TODO: agregar id a la ruta
+$app->put('/careers/{id}', 'CareerController:updateCareer')
+        ->add('InputMiddelware:checkData_career')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+
+$app->delete('/careers/{id}', 'CareerController:deleteCareer')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  PLAN ROUTES
