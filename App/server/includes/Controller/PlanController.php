@@ -53,7 +53,7 @@ class PlanController
             $planService = new PlanService();
             //$year = $req->getParam('plan_data');
             $planService->createPlan( $params['year'] );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Plan registrado con éxito");
+            return Utils::makeJSONResponse( $res, Utils::$CREATED, "Plan registrado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

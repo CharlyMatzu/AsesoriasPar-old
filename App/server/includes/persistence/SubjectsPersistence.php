@@ -79,14 +79,19 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
-     * @param $name
-     * @param $short_name
+     * @param $name String
+     * @param $plan int
+     * @param $career int
+     *
      * @return \Model\DataResult
      */
-    public function getSubject_ByName_ShortName($name, $short_name){
+    public function getSubject_ByName_ShortName($name, $plan, $career){
         $query = $this->campos."
                      INNER JOIN career c ON s.fk_career = c.career_id
-                     WHERE s.name = '$name' OR s.short_name = '$short_name'";
+                      INNER JOIN plan p ON s.fk_plan = p.plan_id
+                      WHERE (s.fk_career = $career AND s.fk_plan = $plan) AND
+                            (s.name = '$name' OR s.short_name = '$name')";
+
         //Obteniendo resultados
         return self::executeQuery($query);
     }

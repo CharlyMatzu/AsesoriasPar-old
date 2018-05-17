@@ -4,6 +4,7 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
+use Exceptions\RequestException;
 use Persistence\CareersPersistence;
 use Persistence\PlansPeristence;
 use Persistence\SubjectsPersistence;
@@ -181,51 +182,46 @@ class SubjectService{
 
     /**
      * @param $subject Subject objeto de materia
-     * @return array
-     * @throws InternalErrorException
+     *
+     * @return void
      * @throws ConflictException
-     * @throws NotFoundException
+     * @throws InternalErrorException
+     * @throws RequestException
      */
-    public function registerSubject($subject ){
+    public function insertSubject( $subject ){
 
         //------------Verificamos que la materia no exista
         //TODO: verificar que no sea el mismo nombre dentro de la misma carrera/plan, se puede repetir en otros...
-        $result = $this->isSubjectExist_ByName_ShortName($subject->getName(), $subject->getShortName());
+        $result = $this->isSubjectExist_ByName_ShortName(
+            $subject->getName(), $subject->getShortName(),
+            $subject->getPlan(), $subject->getCareer() );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener materia por el nombre");
-
+            throw new InternalErrorException("No se pudo verificar materia");
         else if( $result->getOperation() == true )
             throw new ConflictException("Nombre o Abreviacion ya existe");
 
+
         //------------Verificamos que la carrera exista
-        $perCareer =  new CareersPersistence();
-        $result = $perCareer->getCareer_ById( $subject->getCareer() );
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener la carrera");
-
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("Carrera no existe");
+        try{
+            $careerService =  new CareerService();
+            $careerService->getCareer_ById( $subject->getCareer() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
         //------------Verificamos que el plan exista
-        $perPlan =  new PlansPeristence();
-        $result = $perPlan->getPlan_ById( $subject->getPlan() );
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener el plan");
-
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("Plan no existe");
-
+        try{
+            $planService =  new PlanService();
+            $planService->getPlan_ById( $subject->getPlan() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
         //-------------Registrando materia
         $result = $this->perSubjects->insertSubject( $subject );
-
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al registrar la materia", $result->getErrorMessage());
-        else
-            return Utils::makeArrayResponse("Se registro materia con éxito");
+            throw new InternalErrorException("Ocurrio un error al registrar la materia");
     }
 
     //--------------------UPDATE SUBJECT--------------------
@@ -362,14 +358,24 @@ class SubjectService{
     }
 
     /**
-     * @param $name
-     * @param $short
+     * @param $name String Career name/short_name
+     * @param $short_name
+     * @param $plan int Plan Id
+     * @param $career int Career id
+     *
      * @return \Model\DataResult
      */
-    public function isSubjectExist_ByName_ShortName( $name, $short )
+    public function isSubjectExist_ByName_ShortName( $name, $short_name, $plan, $career )
     {
-        $result = $this->perSubjects->getSubject_ByName_ShortName( $name, $short );
+        //----Busca por name
+        $result = $this->perSubjects->getSubject_ByName_ShortName( $name, $plan, $career );
+        if( Utils::isSuccessWithResult( $result->getOperation() ) )
+            $result->setOperation(true);
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            $result->setOperation(false);
 
+        //----Busca por short_name
+        $result = $this->perSubjects->getSubject_ByName_ShortName( $short_name, $plan, $career );
         if( Utils::isSuccessWithResult( $result->getOperation() ) )
             $result->setOperation(true);
         else if( Utils::isEmpty( $result->getOperation() ) )
