@@ -40,7 +40,7 @@ PERIOD
 -----------------------------
 SUBJECT
 -----------------------------
-CREATE
+
 {
 	"name": "Programacion 2",
 	"short_name": "PRO 2",
@@ -50,15 +50,6 @@ CREATE
 	"career": 1
 }
 
-UPDATE (PUT)
-{
-	"name": "Programacion 2",
-	"short_name": "PRO 2",
-	"description": "Segunda materia de programacion",
-	"semester": 2,
-	"plan": 1,
-	"career": 1
-}
 
 
 
@@ -78,18 +69,7 @@ SIGNUP
 	"role": "basic"
 }
 
-UPDATE (PUT)
-{ 
-	"id": 3,
-	"email": "carlosrozumaa@gmail.com",
-	"password": "123456",
-	"role": "basic"
-}
 
-DELETE
-{
-	"id": 4
-}
 
 -----------------------------
 STUDENT

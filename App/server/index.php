@@ -139,7 +139,8 @@ $app->put('/plans/{id}', 'PlanController:updatePlan')
         ->add(AuthMiddelware::class);
 
 $app->delete('/plans/{id}', 'PlanController:deletePlan')
-        ->add('InputMiddelware:checkParam_Id');
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  SUBJECT ROUTES
