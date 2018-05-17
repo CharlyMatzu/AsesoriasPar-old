@@ -5,6 +5,7 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
+use Exceptions\RequestException;
 use Persistence\PeriodsPersistence;
 use Model\Period;
 use DateTime;
@@ -88,16 +89,13 @@ class PeriodService{
 //        }
 //    }
 
-    //TODO: verificar el formato de la fecha
-    //TODO: verificar que no sea antes de NOW
     /**
      * @param $start
      * @param $end
-     * @return array
      * @throws ConflictException
      * @throws InternalErrorException
      */
-    public function registerPeriod($start, $end ){
+    public function createPeriod($start, $end ){
 
         //------------FECHAS EMPALMADAS
         $result = $this->isPeriodBetweenOther( $start );
@@ -122,42 +120,30 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al registrar periodo", $result->getErrorMessage());
-        else
-            return Utils::makeArrayResponse(
-                "Se registro periodo con éxito",
-                $start.' a '.$end
-            );
-
-
-
     }
 
 //   ------------------------------------- UPDATE CYCLES
 
     /**
      * @param $period Period
-     * @return array
+     *
      * @throws InternalErrorException
-     * @throws NotFoundException
+     * @throws RequestException
      */
     public function updatePeriod( $period ){
         //TODO: comprobar que las fechas sean correctas (empalmadas, inicio antes de fin, formatos)
 
-        $result = $this->isPeriodExist_ById( $period->getId() );
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("No se pudo comprobar existencia de periodo");
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe periodo");
+        try{
+            $this->getPeriod_ById( $period->getId() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
         //Se actualiza
         $result = $this->perPeriods->updatePeriod( $period );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("No se pudo actualizar periodo");
-        else
-            return Utils::makeArrayResponse(
-                "Periodo actualizado con exito"
-            );
+            throw new InternalErrorException("Error al actualizar periodo");
 
     }
 
@@ -166,7 +152,6 @@ class PeriodService{
 
     /**
      * @param $periodId
-     * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -185,11 +170,6 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("No se pudo deshabilitar periodo");
-        else
-            return Utils::makeArrayResponse(
-                "Se deshabilito periodo con exito",
-                $periodId
-            );
     }
 
 
