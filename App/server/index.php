@@ -136,6 +136,7 @@ $app->post('/plans', 'PlanController:createPlan')
 
 $app->put('/plans/{id}', 'PlanController:updatePlan')
         ->add('InputMiddelware:checkData_plan')
+        ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
 $app->delete('/plans/{id}', 'PlanController:deletePlan')
@@ -146,10 +147,23 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 //  SUBJECT ROUTES
 //--------------------------
 $app->get('/subject', 'SubjectController:getSubjects');
-$app->get('/subject/{id}', 'SubjectController:getSubject_ById');
-$app->post('/subject', 'SubjectController:createSubject');
-$app->put('/subject', 'SubjectController:updateSubject');
-$app->delete('/subject', 'SubjectController:deleteSubject');
+
+$app->get('/subject/{id}', 'SubjectController:getSubject_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+$app->post('/subject', 'SubjectController:createSubject')
+        ->add('InputMiddelware:checkData_subject')
+        ->add(AuthMiddelware::class);
+
+$app->put('/subject/{id}', 'SubjectController:updateSubject')
+        ->add('InputMiddelware:checkData_subject')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
+
+$app->delete('/subject/{id}', 'SubjectController:deleteSubject')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  PERIOD ROUTES
@@ -157,8 +171,8 @@ $app->delete('/subject', 'SubjectController:deleteSubject');
 $app->get('/period', 'PeriodController:getPeriods');
 $app->get('/period/{id}', 'PeriodController:getPeriod_ById');
 $app->post('/period', 'PeriodController:createPeriod');
-$app->put('/period', 'PeriodController:updatePeriod');
-$app->delete('/period', 'PeriodController:deletePeriod');
+$app->put('/period/{id}', 'PeriodController:updatePeriod');
+$app->delete('/period/{id}', 'PeriodController:deletePeriod');
 
 //--------------------------
 //  SCHEDULE ROUTES
@@ -166,8 +180,8 @@ $app->delete('/period', 'PeriodController:deletePeriod');
 $app->get('/schedule', 'ScheduleController:getSchedules');
 $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById');
 $app->post('/schedule', 'ScheduleController:createSchedule');
-$app->put('/schedule', 'ScheduleController:updateSchedule');
-$app->delete('/schedule', 'ScheduleController:deleteSchedule');
+$app->put('/schedule/{id}', 'ScheduleController:updateSchedule');
+$app->delete('/schedule/{id}', 'ScheduleController:deleteSchedule');
 
 //--------------------------
 //  ADVISORY ROUTES
@@ -175,8 +189,8 @@ $app->delete('/schedule', 'ScheduleController:deleteSchedule');
 $app->get('/advisory', 'AdvisoryController:getAdvisorys');
 $app->get('/advisory/{id}', 'AdvisoryController:getAdvisory_ById');
 $app->post('/advisory', 'AdvisoryController:createAdvisory');
-$app->put('/advisory', 'AdvisoryController:updateAdvisory');
-$app->delete('/advisory', 'AdvisoryController:deleteAdvisory');
+$app->put('/advisory/{id}', 'AdvisoryController:updateAdvisory');
+$app->delete('/advisory/{id}', 'AdvisoryController:deleteAdvisory');
 
 
 
