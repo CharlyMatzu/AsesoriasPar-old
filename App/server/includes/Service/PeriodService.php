@@ -5,6 +5,7 @@ use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
+use Exceptions\RequestException;
 use Persistence\PeriodsPersistence;
 use Model\Period;
 use DateTime;
@@ -88,8 +89,6 @@ class PeriodService{
 //        }
 //    }
 
-    //TODO: verificar el formato de la fecha
-    //TODO: verificar que no sea antes de NOW
     /**
      * @param $start
      * @param $end
@@ -127,23 +126,24 @@ class PeriodService{
 
     /**
      * @param $period Period
+     *
      * @throws InternalErrorException
-     * @throws NotFoundException
+     * @throws RequestException
      */
     public function updatePeriod( $period ){
         //TODO: comprobar que las fechas sean correctas (empalmadas, inicio antes de fin, formatos)
 
-        $result = $this->isPeriodExist_ById( $period->getId() );
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("No se pudo comprobar existencia de periodo");
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe periodo");
+        try{
+            $this->getPeriod_ById( $period->getId() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
         //Se actualiza
         $result = $this->perPeriods->updatePeriod( $period );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("No se pudo actualizar periodo");
+            throw new InternalErrorException("Error al actualizar periodo");
 
     }
 

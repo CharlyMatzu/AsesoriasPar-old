@@ -88,8 +88,8 @@ class PeriodController
     public function deletePeriod($req, $res, $params){
         try {
             $periodService = new PeriodService();
-            $result = $periodService->disablePeriod( $params['id'] );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Periodo desahbilitado", $result );
+            $periodService->disablePeriod( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Periodo desahbilitado");
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }

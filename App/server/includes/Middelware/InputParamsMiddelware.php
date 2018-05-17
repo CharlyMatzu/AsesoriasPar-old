@@ -282,7 +282,8 @@ class InputParamsMiddelware extends Middelware
         if( empty($params['start']) || empty($params['end']) )
             return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
-        //TODO: validar formato, tipo, etc..
+        //TODO: verificar el formato de la fecha
+        //TODO: verificar que no sea antes de NOW
 
         $period = new Period();
         $period->setDateStart( $params['start'] );
