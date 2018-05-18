@@ -8,7 +8,7 @@ class SchedulesPersistence extends Persistence{
 
     private $SELECT = "SELECT
                             s.schedule_id as 'id',
-                            s.date_register 'date_register',
+                            s.date_register 'register_date',
                             s.fk_period as 'period_id',
                             s.fk_student as 'student_id'
                             FROM schedule s ";
@@ -35,7 +35,6 @@ class SchedulesPersistence extends Persistence{
      */
     public function getSchedule_ByStudentId($studentId){
         $query = $this->SELECT."
-                INNER JOIN 
                 WHERE  s.fk_student = ".$studentId;
         return  self::executeQuery($query);
     }
@@ -74,6 +73,24 @@ class SchedulesPersistence extends Persistence{
                     ORDER BY $orderType";
 
         //TODO: cambiar orden en caso de requerir
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param int $scheduleid
+     * @return \Model\DataResult
+     */
+    public function getScheduleSubjects_ById($scheduleid)
+    {
+        $query = "SELECT
+                  ss.schedule_subject_id as 'id',
+                  s.name as 'subject',
+                  s.status as 'status'
+                FROM schedule_subjects ss
+                INNER JOIN subject s ON ss.fk_subject = s.subject_id
+                WHERE ss.fk_schedule = $scheduleid";
+
         //Obteniendo resultados
         return self::executeQuery($query);
     }
@@ -144,7 +161,7 @@ class SchedulesPersistence extends Persistence{
      * @see SchedulesPersistence::ORDER_BY_HOUR
      * @return \Model\DataResult
      */
-    public function getHoursAndDays($orderType ){
+    public function getHoursAndDays( $orderType ){
         $query = "SELECT 
                         dh.day_hour_id as 'id',
                         day as 'day',
@@ -167,6 +184,8 @@ class SchedulesPersistence extends Persistence{
         //Obteniendo resultados
         return self::executeQuery($query);
     }
+
+
 
 
 

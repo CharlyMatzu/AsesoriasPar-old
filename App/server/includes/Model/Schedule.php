@@ -7,6 +7,9 @@
         private $status;
         private $student;
         private $period;
+        private $hours;
+        private $subjects;
+
 
         /**
          * Schedule constructor.
@@ -92,4 +95,38 @@
         {
             $this->period = $period;
         }
+
+        /**
+         * @return mixed
+         */
+        public function getHours()
+        {
+            return $this->hours;
+        }
+
+        /**
+         * @param mixed $hours
+         */
+        public function setHours($hours)
+        {
+            $this->hours = $hours;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getSubjects()
+        {
+            return $this->subjects;
+        }
+
+        /**
+         * @param mixed $subjects
+         */
+        public function setSubjects($subjects)
+        {
+            $this->subjects = $subjects;
+        }
+
+
     }

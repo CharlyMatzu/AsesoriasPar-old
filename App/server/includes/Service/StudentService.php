@@ -6,6 +6,8 @@ use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
 
+use Exceptions\RequestException;
+use Model\Schedule;
 use Model\User;
 use Persistence\Students;
 use Persistence\UsersPersistence;
@@ -94,62 +96,119 @@ class StudentService{
     }
 
 
+//    /**
+//     * @param $student Student
+//     * @return array
+//     */
+//    public function updateStudent($student){
+//        $idUser = $student->getUser();
+//        $controlUser = new UserService();
+//
+//        $user = new User();
+//        $user->setId($idUser);
+//
+//        $result = $controlUser->insertUser($user);
+//        if ($result == false)
+//            throw new ConflictException("Usuario no existe");
+//        else if ($result == true) {
+//            $result = $this->ifUserExist($student);
+//            if ($result == true)
+//                throw new ConflictException("Estudiante ya existe");
+//            else if($result == false)
+//                $result = $this->ifExistCareer($student->getCareer());
+//            if ($result == false)
+//                throw new ConflictException("Carrera no existe");
+//            else if ($result == true) {
+//
+//                $result = $this->perStudents->updateStudent($student);
+//                if ($result['operation'] == Utils::$OPERATION_ERROR)
+//                    throw new InternalErrorException("Ocurrio un error al actualizar estudiante", $result['error']);
+//                else
+//                    return Utils::makeArrayResponse(
+//                        "Se actualizo estudiente con éxito",
+//                        'Correcto!'
+//                    );
+//            }
+//        }
+//        throw new ConflictException("Error!");
+//    }
+
+//    /**
+//     * @param $id int
+//     *
+//     * @return array
+//     * @throws ConflictException
+//     * @throws InternalErrorException
+//     */
+//    public function deleteStudent( $id )
+//    {
+//        try{
+//            $result = $this->getStudent_ById( $id );
+//        }catch (RequestException $e){
+//
+//        }
+//
+//        $result = $this->perStudents->changeStatusToDeleted( $id );
+//        if( $result['operation'] == Utils::$OPERATION_ERROR )
+//            throw new InternalErrorException("Ocurrio un error al eliminar el estudiante", $result['error']);
+//        else
+//            return Utils::makeArrayResponse(
+//                "Se elimino el estudiante con éxito",
+//                'Correcto!'
+//            );
+//    }
+
+
     /**
-     * @param $student Student
-     * @return array
+     * @param $studentId int
+     *
+     * @throws RequestException
      */
-    public function updateStudent($student){
-        $idUser = $student->getUser();
-        $controlUser = new UserService();
-
-        $user = new User();
-        $user->setId($idUser);
-
-        $result = $controlUser->insertUser($user);
-        if ($result == false)
-            throw new ConflictException("Usuario no existe");
-        else if ($result == true) {
-            $result = $this->ifUserExist($student);
-            if ($result == true)
-                throw new ConflictException("Estudiante ya existe");
-            else if($result == false)
-                $result = $this->ifExistCareer($student->getCareer());
-            if ($result == false)
-                throw new ConflictException("Carrera no existe");
-            else if ($result == true) {
-
-                $result = $this->perStudents->updateStudent($student);
-                if ($result['operation'] == Utils::$OPERATION_ERROR)
-                    throw new InternalErrorException("Ocurrio un error al actualizar estudiante", $result['error']);
-                else
-                    return Utils::makeArrayResponse(
-                        "Se actualizo estudiente con éxito",
-                        'Correcto!'
-                    );
-            }
-        }
-        throw new ConflictException("Error!");
-    }
-
-    /**
-     * @param $id int
-     * @return array
-     */
-    public function deleteStudent( $id )
+    public function getStudentSchedule($studentId)
     {
-        $result = $this->getStudent_ById( $id );
+        //Se verifica que exista estudiante
+        try{
+            $this->getStudent_ById( $studentId );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
-        if ($result == false)
-            throw new ConflictException("Usuario no existe");
+        //Se obtiene horario de estudiante
+        /* @var $schedule Schedule */
+        $schedule = null;
+        $scheduleService = new ScheduleService();
+        try{
+            $schedule = $scheduleService->getSchedule_ByStudentId( $studentId );
+            $schedule = ScheduleService::makeScheduleModel( $schedule[0] );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
 
-        $result = $this->perStudents->changeStatusToDeleted( $id );
-        if( $result['operation'] == Utils::$OPERATION_ERROR )
-            throw new InternalErrorException("Ocurrio un error al eliminar el estudiante", $result['error']);
-        else
-            return Utils::makeArrayResponse(
-                "Se elimino el estudiante con éxito",
-                'Correcto!'
-            );
+        //se obtiene horas de horario
+        $hours_days = null;
+        try{
+            $hours_days = $scheduleService->getScheduleHoursAndDays_ById( $schedule->getId() );
+        }catch (RequestException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+        }
+
+        //se obtiene materias (si hay)
+        $subjects = null;
+        try{
+            $subjects = $scheduleService->getScheduleSubjects_ById( $schedule->getId() );
+        }catch (NoContentException $e){
+            //No hay problema
+        }
+
+        $student_schedule = [
+            "id" => $schedule->getId(),
+            //"period" => $schedule->getPeriod(),
+            "hours_days" => $hours_days,
+            "subjects" => $subjects
+        ];
+
+        return $student_schedule;
     }
+
 }
 

@@ -99,6 +99,40 @@ class ScheduleService{
         return $result->getData();
     }
 
+    /**
+     * @param $id int
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getScheduleHoursAndDays_ById($id)
+    {
+        $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("Error al obtener dias y horas de horario");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("");
+
+        return $result->getData();
+    }
+
+    /**
+     * @param $id
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getScheduleSubjects_ById($id)
+    {
+        $result = $this->schedulesPer->getScheduleSubjects_ById( $id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("Error al obtener materias de horario");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("");
+
+        return $result->getData();
+    }
+
 
 
 
@@ -436,26 +470,32 @@ class ScheduleService{
 //    // FUNCIONES ADICIONALES
 //    //------------------------------
 //
-//    private static function makeArray_Schedule($s){
-//        $hoursAndDays = [
-//            'id'            => $s['id'],
-//            'date'          => $s['register_date'],
-//            'validation'    => $s['validated'],
-//            'status'        => $s['status']
-//        ];
-//        return $hoursAndDays;
-//    }
+
+    /**
+     * @param $s \mysqli_result
+     * @return Schedule
+     */
+    public static function makeScheduleModel( $s ){
+
+        $schedule = new Schedule();
+        $schedule->setId( $s['id'] );
+        $schedule->setPeriod( $s['period_id'] );
+        $schedule->setStudent( $s['student_id'] );
+        $schedule->setRegisterDate( $s['register_date'] );
+
+        return $schedule;
+    }
 
 
 
-//    private static function makeArray_HoursAndDays($hd){
-//        $hoursAndDays = [
-//            'id'  => $hd['id'],
-//            'day'  => $hd['day'],
-//            'hour' => $hd['hour']
-//        ];
-//        return $hoursAndDays;
-//    }
+    public static function makeHoursAndDaysArray($hd){
+        $hoursAndDays = [
+            'id'  => $hd['id'],
+            'day'  => $hd['day'],
+            'hour' => $hd['hour']
+        ];
+        return $hoursAndDays;
+    }
 
 
 

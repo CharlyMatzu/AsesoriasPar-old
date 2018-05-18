@@ -44,9 +44,6 @@ class StudentController
     }
 
 
-
-
-
     /**
      * @param $req Request
      * @param $res Response
@@ -59,6 +56,28 @@ class StudentController
      * @param $res Response
      */
     public function deleteStudent($req, $res){}
+
+    //--------------------
+    // SCHEDULE
+    //--------------------
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function getStudentSchedule_ById($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $result = $studentSer->getStudentSchedule( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Horario de alumno", $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
 }
