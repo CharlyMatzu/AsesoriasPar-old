@@ -46,7 +46,7 @@ class UserService{
      * @throws NoContentException
      */
     public function getActiveUsers(){
-        $result = $this->userPer->getActive();
+        $result = $this->userPer->getUsers_Active();
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuarios");

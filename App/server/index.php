@@ -149,6 +149,7 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 $app->get('/subjects', 'SubjectController:getSubjects')
         ->add(AuthMiddelware::class);
 
+//TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
 $app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
@@ -190,13 +191,23 @@ $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
         ->add(AuthMiddelware::class);
 
 //--------------------------
+//  HOURS AND DAYS ROUTES
+//--------------------------
+
+//--------------------------
 //  SCHEDULE ROUTES
 //--------------------------
-$app->get('/schedule', 'ScheduleController:getSchedules');
-$app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById');
-$app->post('/schedule', 'ScheduleController:createSchedule');
-$app->put('/schedule/{id}', 'ScheduleController:updateSchedule');
-$app->delete('/schedule/{id}', 'ScheduleController:deleteSchedule');
+//TODO: agregar a ruta de estudiante para registrar y obtener de estudiante --> /student/{id}/schedule
+
+$app->get('/schedule', 'ScheduleController:getHoursAndDays')
+    ->add(AuthMiddelware::class);
+
+$app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
+
+
+
 
 //--------------------------
 //  ADVISORY ROUTES
