@@ -94,9 +94,14 @@ $app->get('/students/{id}', 'StudentController:getStudent_ById')
         ->add(AuthMiddelware::class);
 
 //------------SCHEDULE
-$app->get('/students/{id}/schedule', 'StudentController:getStudentSchedule_ById')
-    ->add('InputMiddelware:checkParam_Id')
-    ->add(AuthMiddelware::class);
+$app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+$app->post('/students/{id}/schedule', 'StudentController:createSchedule_ById')
+        ->add('InputMiddelware:checkData_schedule')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
 
 //$app->post('/students/{id}/schedule', 'StudentController:getStudent_ById')

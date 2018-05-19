@@ -160,16 +160,17 @@ class StudentService{
 
 
     /**
+     * Obtiene todas las horas y dias de un horario asi como las materias
      * @param $studentId int
-     *
+     * @return array
      * @throws RequestException
      */
-    public function getStudentSchedule($studentId)
+    public function getSchedule($studentId)
     {
         //Se verifica que exista estudiante
-        try{
-            $this->getStudent_ById( $studentId );
-        }catch (RequestException $e){
+        try {
+            $this->getStudent_ById($studentId);
+        } catch (RequestException $e) {
             throw new RequestException($e->getMessage(), $e->getStatusCode());
         }
 
@@ -177,38 +178,59 @@ class StudentService{
         /* @var $schedule Schedule */
         $schedule = null;
         $scheduleService = new ScheduleService();
-        try{
-            $schedule = $scheduleService->getSchedule_ByStudentId( $studentId );
-            $schedule = ScheduleService::makeScheduleModel( $schedule[0] );
-        }catch (RequestException $e){
+        try {
+            $schedule = $scheduleService->getCurrentSchedule_ByStudentId($studentId);
+            $schedule = ScheduleService::makeScheduleModel($schedule[0]);
+        } catch (RequestException $e) {
             throw new RequestException($e->getMessage(), $e->getStatusCode());
         }
 
         //se obtiene horas de horario
         $hours_days = null;
-        try{
-            $hours_days = $scheduleService->getScheduleHoursAndDays_ById( $schedule->getId() );
-        }catch (RequestException $e){
+        try {
+            $hours_days = $scheduleService->getScheduleHoursAndDays_ById($schedule->getId());
+        } catch (RequestException $e) {
             throw new RequestException($e->getMessage(), $e->getStatusCode());
         }
 
         //se obtiene materias (si hay)
         $subjects = null;
-        try{
-            $subjects = $scheduleService->getScheduleSubjects_ById( $schedule->getId() );
+        try {
+            $subjects = $scheduleService->getScheduleSubjects_ById($schedule->getId());
+        }catch (InternalErrorException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
         }catch (NoContentException $e){
             //No hay problema
         }
 
         $student_schedule = [
             "id" => $schedule->getId(),
-            //"period" => $schedule->getPeriod(),
+            "period" => $schedule->getPeriod(),
             "hours_days" => $hours_days,
             "subjects" => $subjects
         ];
 
         return $student_schedule;
     }
+
+
+    /**
+     * @param $studentId int
+     * @param $schedule Schedule
+     * @return void
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function createSchedule( $studentId, $schedule )
+    {
+        //Se comprueba existencia de alumno
+        $this->getStudent_ById( $studentId );
+
+        //se envia a registrar horario
+        $scheduleService = new ScheduleService();
+        //$scheduleService->insertSchedule( $studentId, $schedule );
+    }
+
 
 }
 

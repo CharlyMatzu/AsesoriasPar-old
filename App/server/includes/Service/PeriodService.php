@@ -71,6 +71,21 @@ class PeriodService{
     }
 
 
+    /**
+     * @return array
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getCurrentPeriod()
+    {
+        $result = $this->perPeriods->getCurrentPeriod();
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("Error al obtener periodo actual");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("No hay un periodo actual registrado");
+
+        return $result->getData()[0];
+    }
 
 
 //    public function getPeriod_ByScheduleId( $schedule ){
@@ -173,9 +188,6 @@ class PeriodService{
     }
 
 
-    //--------------------------
-    //  FUNCIONES
-    //--------------------------
 
 
     /**
@@ -207,6 +219,8 @@ class PeriodService{
 
         return $result;
     }
+
+
 
 }
 

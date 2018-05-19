@@ -1,9 +1,11 @@
 <?php namespace Service;
 
 
+use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
 use Exceptions\NotFoundException;
+use Exceptions\RequestException;
 use Persistence\SchedulesPersistence;
 use Model\Schedule;
 use Utils;
@@ -35,41 +37,28 @@ class ScheduleService{
 
     /**
      * @param $studentId int
-     * @return \mysqli_result|null
+     *
+     * @return \mysqli_result
      * @throws InternalErrorException
-     * @throws NotFoundException
+     * @throws NoContentException
      */
-    public function getSchedule_ByStudentId($studentId)
+    public function getCurrentSchedule_ByStudentId($studentId)
     {
+        $periodService = new PeriodService();
+        $period = $periodService->getCurrentPeriod();
+
         //--------Comprobando si existe alumno
-        $result = $this->schedulesPer->getSchedule_ByStudentId($studentId);
+        $result = $this->schedulesPer->getSchedule_ByStudentId_Period($studentId, $period['id']);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Error al obtener horario de alumno");
+            throw new InternalErrorException("Error al obtener horario actual de alumno");
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe horario de alumno");
+            throw new NoContentException("Alumno no tiene horario en periodo actual");
 
         return $result->getData();
     }
 
 
-//    /**
-//     * @param $scheduleId
-//     *
-//     * @return mixed
-//     * @throws InternalErrorException
-//     * @throws NotFoundException
-//     */
-//    public function getScheduleHours_ById($scheduleId){
-//        $result = $this->schedulesPer->getSchedule();
-//
-//        if( Utils::isError( $result->getOperation() ) )
-//            throw new InternalErrorException("Error al obtener horario de alumno");
-//        else if( Utils::isEmpty( $result->getOperation() ) )
-//            throw new NotFoundException("No existe horario de alumno");
-//
-//        return $result->getData();
-//    }
 
     public function getDays(){
         $result = $this->schedulesPer->getDays();
@@ -134,174 +123,56 @@ class ScheduleService{
     }
 
 
+    /**
+     * @param $studentId int
+     * @param $schedule Schedule
+     *
+     * @throws RequestException
+     */
+    public function insertSchedule($studentId, $schedule)
+    {
+        //TODO: Comprobar que no se tenga horario en periodo actual
+        //TODO: comprobar existencia de cada dia_hora
+
+        //Se obtiene periodo actual
+        $periodService = new PeriodService();
+        $period = null;
+        try{
+            $period = $periodService->getCurrentPeriod();
+        }catch (RequestException $e){
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+        }
+
+        //vericicar que no tenga periodo registrado
+        try{
+            //se obtiene horario
+            $this->getCurrentSchedule_ByStudentId( $studentId );
+            //Si tiene horario, entonces se lanza la excepcion
+            throw new ConflictException("Alumno ya tiene horario");
+
+        }catch (InternalErrorException $e){
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+        }catch (NotFoundException $e){
+
+            //Si no tiene horario, se registra
+            $result = $this->schedulesPer->insertSchedule( $studentId, $period['period_id'] );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException("No se pudo registrar horario");
+
+            //Se obtiene horario de alumno en periodo actual
+            //$result = $this->schedulesPer->get
+
+        }
 
 
 
-//    public function getHoursAndDays_OrderByHour(){
-//        $result = $this->schedulesPer->getHoursAndDays_OrderByHour();
-//        if( !is_array($result) )
-//            return $result;
-//        else{
-//            $hourAndDays = array();
-//            foreach( $result as $hd )
-//                $hourAndDays[] = $this->makeArray_HoursAndDays($hd);
-//            return $hourAndDays;
-//        }
-//    }
-//
-//    /**
-//     * @return array|null|string
-//     */
-//    public function getCurrentPeriod(){
-//        $result = $this->schedulesPer->getCurrentPeriod();
-//        if( $result === false )
-//            return 'error';
-//        else if( $result == null )
-//            return null;
-//        else{
-//            //Si array esta vacio
-//            if( count($result) == 0 )
-//                return null;
-//            //Si tiene datos
-//            else {
-//                $cycle = [
-//                    "id" => $result[0]['id'],
-//                    'start' => $result[0]['start'],
-//                    'end' => $result[0]['end']
-//                ];
-//                return $cycle;
-//            }
-//        }
-//    }
-//
-//
-//
-//    //------------------------
-//    //  HORARIO DEL ESTUDIANTE
-//    //------------------------
-//
-//
-//    /**
-//     * Obtiene los datos completos del schedule de un student
-//     * @param String|int $id
-//     * @return array|bool|schedule|null|string
-//     */
-//    public function getFullCurrentSchedule_ByStudentId( $id ){
-//        $result = $this->getCurrentScheduleMain_ByStudentId( $id );
-//        if( $result === false )
-//            return 'error';
-//        else if( $result === null )
-//            return null;
-//        else{
-//
-//            $schedule = $result;
-//            //Se obtienen materias
-//            $subjects = $this->getScheduleSubject_ByScheduleId( $schedule['id'] );
-//            //Se obtienen horas y dias
-//            $hoursAndDays = $this->getScheduleHours_ByScheduleId( $schedule['id'] );
-//
-//            //----Creando objeto
-//            $scheduleObj = new Schedule();
-//            //TODO: verificar validacion de schedule
-//            $scheduleObj->setId( $schedule['id'] );
-//            $scheduleObj->setStatus( $schedule['status'] );
-//            $scheduleObj->setPeriod( $hoursAndDays );
-//            return $scheduleObj;
-//        }
-//    }
-//
-//    /**
-//     * Obtiene la referencia general del schedule del student
-//     * @param int $id String|int
-//     * @return array|bool|null
-//     */
-//    public function getCurrentScheduleMain_ByStudentId($id){
-//        $cycle = $this->getCurrentPeriod();
-//        //Si no es el resultado esperado
-//        if( !is_array($cycle) )
-//            return $cycle;
-//        else{
-//            //Si existe ciclo se busca schedule del student
-//            $result = $this->schedulesPer->getScheduleMain_ByStudentId( $id, $cycle['id'] );
-//            if( $result === false )
-//                return 'error';
-//            else if( $result === null )
-//                return null;
-//            else
-//                return $this->makeArray_Schedule( $result[0] );
-//        }
-//    }
-//
-//
-//    /**
-//     * Obtenemos SubjectsPersistence de schedule especifico
-//     * @param int $scheduleid
-//     * @return array|bool|string
-//     */
-//    public function getScheduleSubject_ByScheduleId( $scheduleid ){
-//        $conMaterias = new SubjectControl();
-//        return $conMaterias->getScheduleSubjects_ByScheduleId( $scheduleid );
-//    }
-//
-//    /**
-//     * Obtenemos Horas de un schedule especifico
-//     * @param String|int $idSchedule
-//     * @return array|bool|string
-//     */
-//    public function getScheduleHours_ByScheduleId($idSchedule ){
-//        $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $idSchedule );
-//        if( $result === false )
-//            return 'error';
-//        else if( $result === false )
-//            return null;
-//        else{
-//            $arrayHoras = array();
-//            foreach( $result as $hd ){
-//                $arrayHoras[] = $this->makeArray_HoursAndDays( $hd );
-//            }
-//            return $arrayHoras;
-//        }
-//    }
-//
-//
-//    /**
-//     * @param $idStudent String|int del student
-//     * @return bool|string
-//     */
-//    public function haveStudentCurrSchedule($idStudent){
-//        $result = $this->getCurrentScheduleMain_ByStudentId($idStudent);
-//        if( $result === false )
-//            return 'error';
-//        else if( $result === null)
-//            return false;
-//        else
-//            return true;
-//    }
-//
-//    /**
-//     * Comprueba que un schedule exista mediante su ID
-//     * @param int $scheduleId id del schedule a verificar
-//     * @return bool|string
-//     * Regresa FALSE cuando no existe
-//     * TRUE cuando existe
-//     * regresa la cadena 'error' cuando Ocurrio un error
-//     */
-//    public function isScheduleExist( $scheduleId ){
-//        $result = $this->getCurrentScheduleMain_ByStudentId( $scheduleId );
-//        //Error
-//        if( $result == false ){
-//            return 'error';
-//        }
-//        //No existe
-//        else if( $result != null )
-//            return true;
-//        //Existe
-//        else
-//            return false;
-//    }
-//
-//
-//
+
+    }
+
+
+
+
+
 //    //------------------------ REGISTRO DE HORARIO
 //
 //    /**
@@ -442,13 +313,9 @@ class ScheduleService{
 //            "Se registro schedule con éxito"
 //        );
 //    }
-//
-//
-//
-//    //----------------------
-//    // ASESORIAS
-//    //----------------------
-//
+
+
+
 //    public function getCurrAvailSchedules_SkipStudent($subjectId, $studentId){
 //        $cycle = $this->getCurrentPeriod();
 //        if( !is_array($cycle) )
@@ -462,14 +329,14 @@ class ScheduleService{
 //        }
 //
 //    }
-//
-//
-//
-//
+
+
+
+
 //    //------------------------------
 //    // FUNCIONES ADICIONALES
 //    //------------------------------
-//
+
 
     /**
      * @param $s \mysqli_result

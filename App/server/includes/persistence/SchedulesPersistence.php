@@ -30,12 +30,12 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $studentId int
-     *
+     * @param $period int
      * @return \Model\DataResult
      */
-    public function getSchedule_ByStudentId($studentId){
+    public function getSchedule_ByStudentId_Period($studentId, $period){
         $query = $this->SELECT."
-                WHERE  s.fk_student = ".$studentId;
+                WHERE  s.fk_student = $studentId AND s.fk_period = $period";
         return  self::executeQuery($query);
     }
 
