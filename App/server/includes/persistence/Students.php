@@ -47,7 +47,8 @@ class Students extends Persistence{
 
     public function getStudent_ByItsonId($itsonId){
         $query =    $this->SELECT."
-                        WHERE s.itson_id = '$itsonId'";
+                    INNER JOIN career c ON c.career_id = s.fk_career
+                    WHERE s.itson_id = '$itsonId'";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }

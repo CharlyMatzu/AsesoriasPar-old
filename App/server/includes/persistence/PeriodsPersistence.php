@@ -142,5 +142,17 @@ class PeriodsPersistence extends Persistence{
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }
+
+    /**
+     * @param $id
+     *
+     * @return \Model\DataResult
+     */
+    public function deletePeriod($id)
+    {
+        $query = "DELETE FROM Period
+                  WHERE period_id = $id";
+        return  self::executeQuery($query);
+    }
 }
 
