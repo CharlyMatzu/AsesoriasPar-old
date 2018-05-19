@@ -30,14 +30,14 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-    public function getActive()
+    public function getUsers_Active()
     {
         $query = $this->SELECT.
                 "WHERE u.status = ".Utils::$STATUS_ACTIVE;
         return  self::executeQuery($query);
     }
 
-    public function getDeleted()
+    public function getUsers_Deleted()
     {
         $query = $this->SELECT.
             "WHERE u.status = ".Utils::$STATUS_DELETED;
