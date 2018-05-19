@@ -157,7 +157,16 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-
+    /**
+     * @param $id int
+     * @return \Model\DataResult
+     */
+    public function deleteUser_ById($id)
+    {
+        $query = "DELETE FROM user 
+                  WHERE user_id = $id";
+        return  self::executeQuery($query);
+    }
 
 
 }

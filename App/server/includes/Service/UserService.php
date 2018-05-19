@@ -366,6 +366,26 @@ class UserService{
 
     }
 
+    /**
+     * @param $id
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function deleteUser($id)
+    {
+        //Verificando si existe usuario
+        $result = $this->userPer->getUser_ById( $id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al obtener usuario");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe usuario");
+
+        //Eliminando usuario (cambiando status)
+        $result = $this->userPer->deleteUser_ById( $id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al eliminar usuario");
+    }
+
 
 //    public function searchUser($search_by, $data_search)
 //    {

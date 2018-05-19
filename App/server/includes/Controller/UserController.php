@@ -137,11 +137,29 @@ class UserController
      * @param $params array
      * @return Response
      */
-    public function deleteUser($req, $res, $params)
+    public function disableUser($req, $res, $params)
     {
         try {
             $userServ = new UserService();
             $userServ->disableUser( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Desactivado con exito", $params['id']);
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function deleteUser($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $userServ->deleteUser( $params['id'] );
             return Utils::makeJSONResponse( $res, Utils::$OK, "Eliminado con exito", $params['id']);
 
         } catch (RequestException $e) {

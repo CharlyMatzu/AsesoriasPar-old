@@ -2,18 +2,10 @@
 CAREER
 -----------------------------
 
-CREATE
 {
 	"name": "Insgenieria en software",
 	"short_name": "ISW"
 }
-
-UPDATE (PUT)
-{
-	"name": "Insgenieria en software",
-	"short_name": "ISW"
-}
-
 
 
 -----------------------------

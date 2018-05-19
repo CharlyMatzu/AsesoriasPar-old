@@ -187,7 +187,28 @@ class PeriodService{
             throw new InternalErrorException("No se pudo deshabilitar periodo");
     }
 
+    /**
+     * @param $id
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function deletePeriod($id)
+    {
+        $result = $this->isPeriodExist_ById($id);
 
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("Error al comprobar existencia de periodo", $result->getErrorMessage());
+
+        else if( $result->getOperation() == false )
+            throw new NotFoundException("Periodo no existe");
+
+        //Se elimina
+        $result = $this->perPeriods->deletePeriod( $id );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("No se pudo eliminar periodo");
+    }
 
 
     /**
@@ -219,6 +240,7 @@ class PeriodService{
 
         return $result;
     }
+
 
 
 

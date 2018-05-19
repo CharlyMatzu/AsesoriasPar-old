@@ -79,9 +79,15 @@ $app->put('/users/{id}', 'UserController:updateUser')
         ->add(AuthMiddelware::class);
 
 
-$app->delete('/users/{id}', 'UserController:deleteUser')
+$app->patch('/users/{id}', 'UserController:disableUser')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+//TODO: agregar habilitar
+
+$app->delete('/users/{id}', 'UserController:deleteUser')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 //--------------------------
 //  STUDENT ROUTES
@@ -107,6 +113,8 @@ $app->post('/students/{id}/schedule/subjects', 'StudentController:addScheduleSub
     ->add('InputMiddelware:checkData_schedule_subjects')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
+
+//TODO: agregar: Actualizar, deshabilitar, eliminar
 
 //$app->post('/students/{id}/schedule', 'StudentController:getStudent_ById')
 //    ->add('InputMiddelware:checkData_schedule')
@@ -143,9 +151,15 @@ $app->put('/careers/{id}', 'CareerController:updateCareer')
         ->add(AuthMiddelware::class);
 
 
-$app->delete('/careers/{id}', 'CareerController:deleteCareer')
+$app->patch('/careers/{id}', 'CareerController:disableCareer')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+//TODO: agregar: habilitar career
+
+$app->delete('/careers/{id}', 'CareerController:deleteCareer')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 //--------------------------
 //  PLAN ROUTES
@@ -165,6 +179,12 @@ $app->put('/plans/{id}', 'PlanController:updatePlan')
         ->add('InputMiddelware:checkData_plan')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+$app->patch('/plans/{id}', 'PlanController:disablePlan')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+//TODO: agregar habilitar
 
 $app->delete('/plans/{id}', 'PlanController:deletePlan')
         ->add('InputMiddelware:checkParam_Id')
@@ -190,6 +210,13 @@ $app->put('/subjects/{id}', 'SubjectController:updateSubject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
+
+$app->patch('/subjects/{id}', 'SubjectController:disableSubject')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
+
+//TODO: agregar habilitar
+
 $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
@@ -213,6 +240,8 @@ $app->put('/periods/{id}', 'PeriodController:updatePeriod')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
+
+//TODO: agregar habilitar/deshabilitar
 $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);

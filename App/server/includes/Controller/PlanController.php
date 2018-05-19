@@ -100,5 +100,23 @@ class PlanController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function disablePlan($req, $res, $params){
+        try {
+            $planService = new PlanService();
+            $planService->disablePlan( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Plan deshabilitado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 
 }

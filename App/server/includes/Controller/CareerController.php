@@ -93,11 +93,28 @@ class CareerController
      * @param $params
      * @return Response
      */
-    public function deleteCareer($req, $res, $params){
+    public function disableCareer($req, $res, $params){
         try {
             $careerService = new CareerService();
             $careerService->disableCareer( $params['id'] );
             return Utils::makeJSONResponse( $res, Utils::$OK, "Carrera deshabilitada");
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params
+     * @return Response
+     */
+    public function deleteCareer($req, $res, $params){
+        try {
+            $careerService = new CareerService();
+            $careerService->deleteCareer( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Carrera eliminada");
 
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

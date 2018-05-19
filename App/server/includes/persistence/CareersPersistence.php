@@ -126,6 +126,11 @@ class CareersPersistence extends Persistence {
         return  self::executeQuery($query);
     }
 
-    //TODO: añadir opcion para deliminar definitivamente
+    public function deleteCareer($id)
+    {
+        $query = "DELETE FROM career 
+                  WHERE career_id = $id";
+        return  self::executeQuery($query);
+    }
 
 }

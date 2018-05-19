@@ -77,8 +77,8 @@ class SubjectController
             $subject = $req->getAttribute('subject_data');
             $subject->setId( $params['id'] );
 
-            $result = $subjectService->updateSubject( $subject );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Materia actualizada", $result );
+            $subjectService->updateSubject( $subject );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Materia actualizada");
 
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -97,6 +97,23 @@ class SubjectController
             $subjectService = new SubjectService();
             $result = $subjectService->disableSubject( $params['id'] );
             return Utils::makeJSONResponse( $res, Utils::$OK, "Materia eliminada con exito", $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function disableSubject($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $subjectService->disableSubject( $params['id'] );
+            return Utils::makeJSONResponse( $res, Utils::$OK, "Materia deshabilitada con exito");
 
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
