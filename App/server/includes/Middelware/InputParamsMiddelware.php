@@ -108,14 +108,12 @@ class InputParamsMiddelware extends Middelware
 //            !Utils::isRole($role) )
 //            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
-        //Para este punto, ya tenemos el USER validado y en los parametros
-        //Se obtiene user
-        $user = $req->getAttribute('user_signup');
+
 
         //Se crea objeto estudiante
         $student = new Student();
         //Se agregan datos
-        $student->setUser( $user );
+//        $student->setUser( $user );
         $student->setFirstName($first);
         $student->setLastName($last);
         $student->setItsonId($itson);

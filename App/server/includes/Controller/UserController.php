@@ -1,6 +1,7 @@
 <?php namespace Controller;
 
 use Exceptions\RequestException;
+use Model\Student;
 use Model\User;
 use Service\UserService;
 use Slim\Http\Request;
@@ -75,7 +76,10 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            $student = $req->getAttribute('student_signup');
+            $user = $req->getAttribute('user_data');
+            /* @var $student Student */
+            $student = $req->getAttribute('student_data');
+            $student->setUser($user);
             $userServ->insertUserAndStudent( $student );
             return Utils::makeJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
 

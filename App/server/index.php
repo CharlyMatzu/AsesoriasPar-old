@@ -66,7 +66,7 @@ $app->get('/users/{id}', 'UserController:getUser_ById')
 $app->post('/users/signup', 'UserController:createUser')
         ->add('InputMiddelware:checkData_user'); //Es el registro de estudiante
 
-$app->post('/users/student/signup', 'UserController:createUserAndStudent')
+$app->post('/users/students/signup', 'UserController:createUserAndStudent')
     ->add('InputMiddelware:checkData_student') //Es el registro de estudiante
     ->add('InputMiddelware:checkData_user'); //Es el registro de usuario (se ejecuta primero)
 
