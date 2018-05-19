@@ -55,7 +55,7 @@ class ScheduleService{
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("Alumno no tiene horario en periodo actual");
 
-        return $result->getData();
+        return $result->getData()[0];
     }
 
 
@@ -132,16 +132,9 @@ class ScheduleService{
     public function insertSchedule($studentId, $schedule_hours)
     {
 
-        //TODO: comprobar existencia de cada dia_hora
-
         //Se obtiene periodo actual
         $periodService = new PeriodService();
-        $period = null;
-        try{
-            $period = $periodService->getCurrentPeriod();
-        }catch (RequestException $e){
-            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
-        }
+        $period = $periodService->getCurrentPeriod();
 
         //vericicar que no tenga periodo registrado
         try{
@@ -154,15 +147,16 @@ class ScheduleService{
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }catch (NoContentException $e){
 
-            //Si no tiene horario, se registra
-            $result = $this->schedulesPer->insertSchedule( $studentId, $period['period_id'] );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo registrar horario");
-
             //----------COMIENZA TRANSACCION
             $trans = SchedulesPersistence::initTransaction();
             if( !$trans )
                 throw new InternalErrorException("Error al iniciar transaccion");
+
+            //Si no tiene horario, se registra
+            $result = $this->schedulesPer->insertSchedule( $studentId, $period['id'] );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException("No se pudo registrar horario");
+
 
             //Se obtiene horario de alumno en periodo actual
             $current_schedule = null;
@@ -176,9 +170,9 @@ class ScheduleService{
 
 
             try{
+                //TODO: comprobar que horas existen
                 //Se registran horas
-                $this->insertScheduleHours( $studentId, $schedule_hours );
-
+                $this->insertScheduleHours( $current_schedule['id'], $schedule_hours );
             }catch (InternalErrorException $e){
                 throw new InternalErrorException( $e->getMessage() );
             }
@@ -191,6 +185,7 @@ class ScheduleService{
         }
 
     }
+
 
     /**
      * @param $scheduleid int
@@ -212,6 +207,8 @@ class ScheduleService{
      * @throws InternalErrorException
      */
     public function insertScheduleSubjects($scheduleid, $subjects){
+        //TODO: comprobar que materias existen
+
         foreach ( $subjects as $sub ){
             $result = $this->schedulesPer->insertScheduleSubjects( $scheduleid, $sub );
             if( Utils::isError( $result->getOperation() ) )

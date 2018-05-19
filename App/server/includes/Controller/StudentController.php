@@ -72,7 +72,7 @@ class StudentController
         try {
             $studentSer = new StudentService();
             $student_id = $params['id'];
-            $result = $studentSer->getSchedule( $student_id );
+            $result = $studentSer->getCurrentSchedule( $student_id );
             return Utils::makeJSONResponse( $res, Utils::$OK, "Horario de alumno", $result );
 
         } catch (RequestException $e) {
@@ -111,7 +111,7 @@ class StudentController
         try {
             $studentSer = new StudentService();
             $subjects = $req->getAttribute('schedule_subjects');
-            $studentSer->createSchedule( $params['id'], $subjects );
+            $studentSer->addScheduleSubjects( $params['id'], $subjects );
             return Utils::makeJSONResponse( $res, Utils::$CREATED, "Materias agregadas");
 
         } catch (RequestException $e) {

@@ -66,14 +66,14 @@ class SchedulesPersistence extends Persistence{
         $query = "SELECT
                         sdh.schedule_dh_id as 'id',
                         dh.day as 'day',
-                        TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
+                        TIME_FORMAT(dh.hour, '%H:%i') as 'hour',
+                        sdh.fk_day_hour as 'day_hour_id'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
                     WHERE sdh.fk_schedule = $scheduleid
                     ORDER BY $orderType";
 
-        //TODO: cambiar orden en caso de requerir
-        //Obteniendo resultados
+        
         return self::executeQuery($query);
     }
 

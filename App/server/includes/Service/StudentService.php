@@ -165,8 +165,10 @@ class StudentService{
      * @return array
      * @throws RequestException
      */
-    public function getSchedule($studentId)
+    public function getCurrentSchedule($studentId)
     {
+        //TODO: mover todo a un método en ScheduleService
+
         //Se verifica que exista estudiante
         try {
             $this->getStudent_ById($studentId);
@@ -180,7 +182,7 @@ class StudentService{
         $scheduleService = new ScheduleService();
         try {
             $schedule = $scheduleService->getCurrentSchedule_ByStudentId($studentId);
-            $schedule = ScheduleService::makeScheduleModel($schedule[0]);
+            $schedule = ScheduleService::makeScheduleModel($schedule);
         } catch (RequestException $e) {
             throw new RequestException($e->getMessage(), $e->getStatusCode());
         }
@@ -240,7 +242,7 @@ class StudentService{
     public function addScheduleSubjects($scheduleid, $schedule_subjects )
     {
         //Se comprueba existencia de horario
-        $this->getSchedule( $scheduleid );
+        $this->getCurrentSchedule( $scheduleid );
 
         //se envia a registrar horario
         $scheduleService = new ScheduleService();

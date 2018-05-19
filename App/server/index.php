@@ -103,6 +103,11 @@ $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+$app->post('/students/{student_id}/schedule/{id}', 'StudentController:addScheduleSubjects')
+    ->add('InputMiddelware:checkData_schedule_subjects')
+//    ->add('InputMiddelware:checkParam_studentId')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 //$app->post('/students/{id}/schedule', 'StudentController:getStudent_ById')
 //    ->add('InputMiddelware:checkData_schedule')
