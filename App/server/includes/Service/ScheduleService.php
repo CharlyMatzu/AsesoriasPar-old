@@ -206,7 +206,6 @@ class ScheduleService{
      * @param $subjects array
      *
      * @throws InternalErrorException
-     * @throws NotFoundException
      * @throws RequestException
      */
     public function insertScheduleSubjects($scheduleid, $subjects){

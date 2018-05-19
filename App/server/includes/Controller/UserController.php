@@ -51,7 +51,7 @@ class UserController
      * @param $res Response
      * @return Response
      */
-    public function creteUser($req, $res)
+    public function createUser($req, $res)
     {
         try {
             $userServ = new UserService();
