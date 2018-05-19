@@ -234,19 +234,20 @@ class StudentService{
     }
 
     /**
-     * @param $scheduleid
+     * @param $studentId
      * @param $schedule_subjects
+     *
      * @throws InternalErrorException
      * @throws RequestException
      */
-    public function addScheduleSubjects($scheduleid, $schedule_subjects )
+    public function addScheduleSubjects_current($studentId, $schedule_subjects )
     {
         //Se comprueba existencia de horario
-        $this->getCurrentSchedule( $scheduleid );
+        $schedule = $this->getCurrentSchedule( $studentId );
 
         //se envia a registrar horario
         $scheduleService = new ScheduleService();
-        $scheduleService->insertScheduleSubjects( $scheduleid, $schedule_subjects );
+        $scheduleService->insertScheduleSubjects($schedule['id'], $schedule_subjects );
     }
 
 

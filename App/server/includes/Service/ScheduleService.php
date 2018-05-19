@@ -204,16 +204,36 @@ class ScheduleService{
     /**
      * @param $scheduleid int
      * @param $subjects array
+     *
      * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws RequestException
      */
     public function insertScheduleSubjects($scheduleid, $subjects){
-        //TODO: comprobar que materias existen
+        //TODO: verificar que materia no este registrada en horario
 
+        if( !SchedulesPersistence::initTransaction() )
+            throw new InternalErrorException("Error al iniciar tranasaccion");
+
+        $subjectService = new SubjectService();
         foreach ( $subjects as $sub ){
+            //Comprueba si materia existe
+            try{
+                $subjectService->getSubject_ById( $sub );
+            }catch (RequestException $e){
+                SchedulesPersistence::rollbackTransaction();
+                throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+            }
+
             $result = $this->schedulesPer->insertScheduleSubjects( $scheduleid, $sub );
-            if( Utils::isError( $result->getOperation() ) )
+            if( Utils::isError( $result->getOperation() ) ) {
+                SchedulesPersistence::rollbackTransaction();
                 throw new InternalErrorException("Error al registrar materia de horario");
+            }
         }
+
+        if( !SchedulesPersistence::commitTransaction() )
+            throw new InternalErrorException("Error al registrar tranasaccion");
     }
 
 

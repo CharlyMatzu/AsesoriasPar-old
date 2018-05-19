@@ -73,7 +73,7 @@ class SchedulesPersistence extends Persistence{
                     WHERE sdh.fk_schedule = $scheduleid
                     ORDER BY $orderType";
 
-        
+
         return self::executeQuery($query);
     }
 

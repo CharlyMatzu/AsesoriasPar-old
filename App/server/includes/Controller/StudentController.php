@@ -111,7 +111,7 @@ class StudentController
         try {
             $studentSer = new StudentService();
             $subjects = $req->getAttribute('schedule_subjects');
-            $studentSer->addScheduleSubjects( $params['id'], $subjects );
+            $studentSer->addScheduleSubjects_current( $params['id'], $subjects );
             return Utils::makeJSONResponse( $res, Utils::$CREATED, "Materias agregadas");
 
         } catch (RequestException $e) {

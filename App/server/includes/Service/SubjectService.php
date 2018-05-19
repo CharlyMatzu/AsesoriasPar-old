@@ -47,7 +47,7 @@ class SubjectService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("Ocurrio un error al obtener la materia por ID");
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe materia");
+            throw new NotFoundException("No existe materia", $subject_id);
         else
             return $result->getData();
     }
