@@ -111,41 +111,28 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $scheduleId
-     * @param $hourArray
-     * @return bool
+     * @param $hour
+     * @return \Model\DataResult
      */
     //TODO: corregir
-    public function insertScheduleHours($scheduleId, $hourArray){
-        foreach($hourArray as $hour ){
-            $query = "INSERT INTO schedule_days_hours (fk_schedule, fk_day_hour) VALUES
-                      ($scheduleId, $hour)";
-            $result = self::executeQuery($query);
-            //Si ocurrio un error, Pelos!
-            if( !$result )
-                return false;
-        }
-        //Si salio bien
-        return true;
+    public function insertScheduleHours($scheduleId, $hour){
+        $query = "INSERT INTO schedule_days_hours (fk_schedule, fk_day_hour) 
+                  VALUES ($scheduleId, $hour)";
+
+        return self::executeQuery($query);
     }
 
     /**
      * @param $scheduleId int correspondiente al estudiante
-     * @param $subjectArray array de materias
-     * @return bool
-     * TODO: CAMBIAR FORMA DE REGISTRO, HACERLO DESDE EL SERVICE Y USAR TRANSACCIONES
+     * @param $subject array de materias
+     *
+     * @return \Model\DataResult
      */
-    public function insertScheduleSubjects($scheduleId , $subjectArray){
-        foreach($subjectArray as $sub ){
-            $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject) 
-                      VALUES ($scheduleId, $sub)";
+    public function insertScheduleSubjects($scheduleId, $subject){
+        $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject) 
+                      VALUES ($scheduleId, $subject)";
 
-            $result = self::executeQuery($query);
-            //Si ocurrio un error, Pelos!
-            if( !$result )
-                return false;
-        }
-        //Si salio bien
-        return true;
+        return self::executeQuery($query);
     }
 
     //------------

@@ -86,13 +86,33 @@ class StudentController
      * @param $params array
      * @return Response
      */
-    public function createSchedule_ById($req, $res, $params)
+    public function createSchedule($req, $res, $params)
     {
         try {
             $studentSer = new StudentService();
-            $schedule = $req->getAttribute('student_schedule');
-            $studentSer->createSchedule( $params['id'], $schedule );
+            $hours = $req->getAttribute('schedule_hours');
+            $studentSer->createSchedule( $params['id'], $hours );
             return Utils::makeJSONResponse( $res, Utils::$CREATED, "Horario de alumno creado");
+
+        } catch (RequestException $e) {
+            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function addScheduleSubjects($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $subjects = $req->getAttribute('schedule_subjects');
+            $studentSer->createSchedule( $params['id'], $subjects );
+            return Utils::makeJSONResponse( $res, Utils::$CREATED, "Materias agregadas");
 
         } catch (RequestException $e) {
             return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

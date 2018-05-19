@@ -295,4 +295,35 @@ class InputParamsMiddelware extends Middelware
         return $res;
     }
 
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     *
+     * @return Response
+     */
+    public function checkData_schedule_hours($req, $res, $next){
+
+        $params = $req->getParsedBody();
+        if( !isset($params['hours']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros", "Se requiere: hours");
+
+        if( empty($params['hours']) )
+            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        //Verificando que sean datos numericos
+        $hours = $params['hours'];
+        foreach ( $hours as $hour ){
+            if( !is_numeric($hour) )
+                return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+        }
+
+        $req = $req->withAttribute('schedule_hours', $hours);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
 }

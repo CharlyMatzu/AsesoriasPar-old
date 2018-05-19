@@ -216,19 +216,35 @@ class StudentService{
 
     /**
      * @param $studentId int
-     * @param $schedule Schedule
-     * @return void
+     * @param $schedule_hours array
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws RequestException
      */
-    public function createSchedule( $studentId, $schedule )
+    public function createSchedule($studentId, $schedule_hours )
     {
         //Se comprueba existencia de alumno
         $this->getStudent_ById( $studentId );
 
         //se envia a registrar horario
         $scheduleService = new ScheduleService();
-        //$scheduleService->insertSchedule( $studentId, $schedule );
+        $scheduleService->insertSchedule( $studentId, $schedule_hours );
+    }
+
+    /**
+     * @param $scheduleid
+     * @param $schedule_subjects
+     * @throws InternalErrorException
+     * @throws RequestException
+     */
+    public function addScheduleSubjects($scheduleid, $schedule_subjects )
+    {
+        //Se comprueba existencia de horario
+        $this->getSchedule( $scheduleid );
+
+        //se envia a registrar horario
+        $scheduleService = new ScheduleService();
+        $scheduleService->insertScheduleSubjects( $scheduleid, $schedule_subjects );
     }
 
 

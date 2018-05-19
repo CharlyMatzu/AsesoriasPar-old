@@ -92,15 +92,12 @@ SINGUP
 -----------------------------
 SCHEDULE
 -----------------------------
-CREATE
+INSERT
 {
-	"student": 1,
-	"period": 1,
 	"hours": [1,2,3,4,5]
 }
 
-SUBJECT
+SUBJECTS
 {
-	"student": 1,
-	"period": 1
+	"subjects": [1,2,3,4]
 }

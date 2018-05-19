@@ -98,8 +98,8 @@ $app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedul
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-$app->post('/students/{id}/schedule', 'StudentController:createSchedule_ById')
-        ->add('InputMiddelware:checkData_schedule')
+$app->post('/students/{id}/schedule', 'StudentController:createSchedule')
+        ->add('InputMiddelware:checkData_schedule_hours')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
