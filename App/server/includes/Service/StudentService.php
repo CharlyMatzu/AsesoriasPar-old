@@ -33,7 +33,7 @@ class StudentService{
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe estudiante");
         else
-            return $result->getData();
+            return $result->getData()[0];
     }
 
     /**
@@ -103,10 +103,9 @@ class StudentService{
 
         //Verificar si estudiante existe
         $student_aux = $this->getStudent_ById( $student->getId() );
-        $student_aux = self::makeStudentModel( $student_aux );
 
         //Verificamos si cambio el ID de itson
-        if( $student_aux->getItsonId() != $student->getItsonId() ){
+        if( $student_aux['itson_id'] != $student->getItsonId() ){
             $result = $this->isItsonIdExist( $student->getItsonId() );
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException( "Ocurrio un error al verificar id ITSON");
@@ -115,7 +114,7 @@ class StudentService{
         }
 
         //Verificamos si cambio carrera
-        if( $student_aux->getCareer() != $student->getCareer() ){
+        if( $student_aux['career_id'] != $student->getCareer() ){
             $careerService = new CareerService();
             $careerService->getCareer_ById( $student->getCareer() );
         }

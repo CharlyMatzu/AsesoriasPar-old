@@ -79,6 +79,15 @@ SINGUP
 	"phone": "4182747"
 }
 
+UPDATE
+{	
+	"career": 1,
+	"first_name": "carlos",
+	"last_name": "Zuñiga",
+	"itson_id": "162156",
+	"phone": "4182747"
+}
+
 
 -----------------------------
 SCHEDULE

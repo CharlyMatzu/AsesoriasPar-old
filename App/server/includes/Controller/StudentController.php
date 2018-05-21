@@ -50,12 +50,13 @@ class StudentController
      * @param $res Response
      * @return Response
      */
-    public function updateStudent($req, $res)
+    public function updateStudent($req, $res, $params)
     {
         try{
             $studentService = new StudentService();
             /* @var $student Student */
             $student = $req->getAttribute('student_data');
+            $student->setId( $params['id'] );
             $studentService->updateStudent( $student );
             return Utils::makeMessageJSONResponse($res, Utils::$OK, "Estudiante actualizado con exito");
 

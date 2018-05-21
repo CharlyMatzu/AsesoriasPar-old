@@ -197,15 +197,20 @@ $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
 $app->get('/students', 'StudentController:getStudents')
     ->add(AuthMiddelware::class);
 
+
 $app->get('/students/{id}', 'StudentController:getStudent_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
 
+//TODO: agregar un GET por nombre/apellido/carrera/ID
+
 $app->put('/students/{id}', 'StudentController:updateStudent')
     ->add('InputMiddelware:checkData_Student')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
+
+
 
 //------------SCHEDULE
 $app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
@@ -222,7 +227,9 @@ $app->post('/students/{id}/schedule/subjects', 'StudentController:addScheduleSub
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
-//TODO: agregar: Actualizar, deshabilitar, eliminar
+//TODO: agregar: deshabilitar/habilitar
+//TODO: agregar: eliminar
+//TODO: agregar: actualizar horas, actualizar materias
 
 //$app->post('/students/{id}/schedule', 'StudentController:getStudent_ById')
 //    ->add('InputMiddelware:checkData_schedule')
