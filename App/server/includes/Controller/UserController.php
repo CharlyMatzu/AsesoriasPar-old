@@ -108,7 +108,7 @@ class UserController
             $userServ = new UserService();
             $user = $req->getAttribute('user_auth');
             $result = $userServ->signIn( $user->getEmail(), $user->getPassword() );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Autenticado con exito", $result);
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Autenticado con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -127,9 +127,12 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            /* @var $user User*/
+            $role = $user = $req->getAttribute('role_data');
+            /* @var $user User */
             $user = $req->getAttribute('user_data');
+            $user->setRole( $role );
             $user->setId( $params['id'] );
+
             $userServ->updateUser( $user );
             return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Actualizado con exito");
 
@@ -149,16 +152,8 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            if( $params['status'] == Utils::$STATUS_DISABLE ){
-                $userServ->disableUser( $params['id'] );
-                return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Desactivado con exito");
-            }
-            else if( $params['status'] == Utils::$STATUS_ENABLE ){
-                $userServ->enableUser( $params['id'] );
-                return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Habilitado con exito");
-            }
-            //TODO: agregar para confirmar
-
+            $userServ->changeStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Desactivado con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

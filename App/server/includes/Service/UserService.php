@@ -358,7 +358,7 @@ class UserService{
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function disableUser($id ){
+    public function changeStatus($id, $status ){
 
         //Verificando si existe usuario
         $result = $this->userPer->getUser_ById( $id );
@@ -368,31 +368,16 @@ class UserService{
             throw new NotFoundException("No existe usuario");
 
         //Eliminando usuario (cambiando status)
-        $result = $this->userPer->changeStatusToDisable( $id );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al eliminar usuario");
-
-    }
-
-
-    /**
-     * @param $id
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     */
-    public function enableUser($id ){
-
-        //Verificando si existe usuario
-        $result = $this->userPer->getUser_ById( $id );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al obtener usuario");
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe usuario");
-
-        //Eliminando usuario (cambiando status)
-        $result = $this->userPer->changeStatusToEnable( $id );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al habilitar usuario");
+        if( $status == Utils::$STATUS_DISABLE ){
+            $result = $this->userPer->changeStatusToDisable( $id );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException( "Ocurrio un error al eliminar usuario");
+        }
+        else if( $status == Utils::$STATUS_ENABLE ){
+            $result = $this->userPer->changeStatusToEnable( $id );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException( "Ocurrio un error al habilitar usuario");
+        }
 
     }
 

@@ -75,7 +75,7 @@ $app->post('/users', 'UserController:createUser')
 
 //TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
-$app->post('/users/students/signup', 'UserController:createUserAndStudent')
+$app->post('/users/student', 'UserController:createUserAndStudent')
         ->add('InputMiddelware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddelware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
@@ -84,6 +84,7 @@ $app->post('/users/auth', 'UserController:auth')
 
 $app->put('/users/{id}', 'UserController:updateUser')
         ->add('InputMiddelware:checkData_User')
+        ->add('InputMiddelware:checkData_Role')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
@@ -158,17 +159,16 @@ $app->post('/careers', 'CareerController:createCareer')
         ->add('InputMiddelware:checkData_Career')
         ->add(AuthMiddelware::class);
 
+$app->patch('/careers/{id}/status/{status}', 'CareerController:changeStatus')
+    ->add('InputMiddelware:checkParam_Status')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
 $app->put('/careers/{id}', 'CareerController:updateCareer')
         ->add('InputMiddelware:checkData_Career')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-
-//$app->patch('/careers/{id}', 'CareerController:disableCareer')
-//        ->add('InputMiddelware:checkParam_Id')
-//        ->add(AuthMiddelware::class);
-
-//TODO: agregar: habilitar career
 
 $app->delete('/careers/{id}', 'CareerController:deleteCareer')
     ->add('InputMiddelware:checkParam_Id')
@@ -218,17 +218,18 @@ $app->post('/subjects', 'SubjectController:createSubject')
         ->add('InputMiddelware:checkData_Subject')
         ->add(AuthMiddelware::class);
 
+
+$app->patch('/subjects/{id}/status/{status}', 'SubjectController:chanteStatus')
+        ->add('InputMiddelware:checkParam_Status')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
+
+
 $app->put('/subjects/{id}', 'SubjectController:updateSubject')
         ->add('InputMiddelware:checkData_Subject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
-
-//$app->patch('/subjects/{id}', 'SubjectController:disableSubject')
-//    ->add('InputMiddelware:checkParam_id')
-//    ->add(AuthMiddelware::class);
-
-//TODO: agregar habilitar
 
 $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
         ->add('InputMiddelware:checkParam_id')

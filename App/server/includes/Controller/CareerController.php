@@ -19,7 +19,7 @@ class CareerController
         try {
             $careerService = new CareerService();
             $result = $careerService->getCareers();
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carreras", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -37,7 +37,7 @@ class CareerController
         try {
             $careerService = new CareerService();
             $result = $careerService->getCareer_ById( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carrera", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -93,11 +93,18 @@ class CareerController
      * @param $params
      * @return Response
      */
-    public function disableCareer($req, $res, $params){
+    public function changeStatus($req, $res, $params){
         try {
             $careerService = new CareerService();
-            $careerService->disableCareer( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carrera deshabilitada");
+            if( $params['status'] == Utils::$STATUS_DISABLE ){
+                $careerService->disableCareer( $params['id'] );
+                return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Desactivado con exito");
+            }
+            else if( $params['status'] == Utils::$STATUS_ENABLE ){
+                $careerService->enableCareer( $params['id'] );
+                return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Activado con exito");
+            }
+
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

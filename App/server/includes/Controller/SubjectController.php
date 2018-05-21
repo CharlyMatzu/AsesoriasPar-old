@@ -95,7 +95,7 @@ class SubjectController
     public function deleteSubject($req, $res, $params){
         try {
             $subjectService = new SubjectService();
-            $result = $subjectService->disableSubject( $params['id'] );
+            $result = $subjectService->changeStatus( $params['id'] );
             return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con exito", $result );
 
         } catch (RequestException $e) {
@@ -109,11 +109,11 @@ class SubjectController
      * @param $params array
      * @return Response
      */
-    public function disableSubject($req, $res, $params){
+    public function changeStatus($req, $res, $params){
         try {
             $subjectService = new SubjectService();
-            $subjectService->disableSubject( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia deshabilitada con exito");
+            $subjectService->changeStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Estado de materia modificado con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

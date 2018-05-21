@@ -225,6 +225,17 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * @param $subjectID
+     * @return \Model\DataResult
+     */
+    public function changeStatusToEnable($subjectID ){
+        $query = "UPDATE subject
+                    SET status = ".Utils::$STATUS_ENABLE." 
+                    WHERE subject_id = $subjectID";
+        return  self::executeQuery($query);
+    }
+
+    /**
      * @param $subjectID int
      *
      * @return \Model\DataResult

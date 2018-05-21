@@ -47,7 +47,7 @@ class InputParamsMiddelware extends Middelware
     {
         $status = $this->getRouteParams($req)['status'];
         //Verifica que sea un string numerico (no int porque viene como string)
-        if( !is_numeric($status) || empty($status) )
+        if( !is_numeric($status) || $status === "" || $status == null )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
         if( ($status != Utils::$STATUS_ENABLE) && ($status != Utils::$STATUS_DISABLE) )

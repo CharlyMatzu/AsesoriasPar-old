@@ -271,11 +271,13 @@ class SubjectService{
 
     /**
      * @param $subjectID
-     * @return array
+     * @param $new_status
+     *
+     * @return void
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function disableSubject($subjectID ){
+    public function changeStatus($subjectID, $new_status ){
 
         $result = $this->isSubjectExist_ById( $subjectID );
         if( Utils::isError( $result->getOperation() ) )
@@ -283,12 +285,16 @@ class SubjectService{
         else if( $result->getOperation() == false )
             throw new NotFoundException("No existe materia");
 
-        $result = $this->perSubjects->changeStatusToDeleted( $subjectID );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Error al deshabilitar materia");
-        return Utils::makeArrayResponse(
-            "Se deshabilito materia con exito"
-        );
+        if( $new_status == Utils::$STATUS_DISABLE ){
+            $result = $this->perSubjects->changeStatusToDeleted( $subjectID );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException("Error al deshabilitar materia");
+        }
+        else if( $new_status == Utils::$STATUS_ENABLE ){
+            $result = $this->perSubjects->changeStatusToEnable( $subjectID );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException("Error al habilitar materia");
+        }
     }
 
     /**
