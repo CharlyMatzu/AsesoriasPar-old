@@ -6,9 +6,10 @@ class Utils
     const HEADER_AUTH = "Authorization";
     const TIMEZONE = 'America/Phoenix';
 
-    public static $STATUS_DELETED = 0;
-    public static $STATUS_ACTIVE = 1;
-    //public static $DELETE = 0;
+    public static $STATUS_DISABLE = 0;
+    public static $STATUS_NO_CONFIRM = 1;
+    public static $STATUS_ENABLE = 2;
+
 
     public static $ROLE_ADMIN = "admin";
     public static $ROLE_MOD = "moderator";
@@ -137,18 +138,18 @@ class Utils
     public static $INTERNAL_SERVER_ERROR = 500;
 
 
-    /**
-     * @param $message string Mensaje que identifica a la respuesta
-     * @param $data mixed informacion que se retorna con la respuesta
-     * @return array regresa un array asociativo
-     */
-    public static function makeArrayResponse($message, $data = null){
-        $array = [
-            "message" => $message,
-            "data" => $data
-        ];
-        return $array;
-    }
+//    /**
+//     * @param $message string Mensaje que identifica a la respuesta
+//     * @param $data mixed informacion que se retorna con la respuesta
+//     * @return array regresa un array asociativo
+//     */
+//    public static function makeArrayResponse($message, $data = null){
+//        $array = [
+//            "message" => $message,
+//            "data" => $data
+//        ];
+//        return $array;
+//    }
 
     /**
      *
@@ -164,17 +165,25 @@ class Utils
      * @param $res \Slim\Http\Response
      * @param $statusCode int
      * @param $message String
-     * @param $data @mixed
      * @return \Slim\Http\Response
      */
-    public static function makeJSONResponse($res, $statusCode, $message, $data = null)
+    public static function makeMessageJSONResponse($res, $statusCode, $message)
     {
-        return $res->withStatus($statusCode)->withJson(
-            self::makeArrayResponse(
-                $message,
-                $data
-            ));
+        return $res->withStatus($statusCode)->withJson( ["message" => $message] );
+    }
 
+    /**
+     * @param $res \Slim\Http\Response
+     * @param $statusCode int
+     * @param $data array|mixed
+     * @return mixed
+     */
+    public static function makeResultJSONResponse($res, $statusCode, $data = null)
+    {
+        return $res->withStatus($statusCode)->withJson( $data );
+    }
+
+/*
 //        return $res
 //            ->withAddedHeader('Access-Control-Allow-Origin', '*')
 //            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
@@ -185,11 +194,11 @@ class Utils
 //                    $message,
 //                    $data
 //                ));
-    }
+*/
 
     /**
      * @param $req \Slim\Http\Request
-     * @param $params array
+     * @param $params mixed
      * @return array
      */
     public static function makeParamValidationArray($req, $params)

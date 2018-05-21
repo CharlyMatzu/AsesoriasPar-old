@@ -75,7 +75,7 @@ class PlansPeristence extends Persistence{
 
     public function changeStatusToDeleted( $id ){
         $query = "UPDATE plan
-                  SET status = ".Utils::$STATUS_DELETED.",
+                  SET status = ".Utils::$STATUS_DISABLE.",
                   WHERE plan_id = $id";
         return  self::executeQuery($query);
     }

@@ -22,7 +22,7 @@ CREATE TABLE user(
 	email 		 	VARCHAR(100) NOT NULL UNIQUE,
 	password 	 	VARCHAR(255) NOT NULL,
 	register_date 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status			TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = Activo,
+	status			TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = sin confirmar, 2 = Activo,
 	
 	-- Foraneas
 	fk_role VARCHAR(20) NOT NULL,

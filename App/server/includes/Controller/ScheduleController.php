@@ -18,10 +18,10 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $result = $scheduleService->getSchedule_ById( $params['id'] );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Horario", $result );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Horario", $result );
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -35,10 +35,10 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $result = $scheduleService->getHoursAndDays();
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Horas y dias disponibles", $result );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Horas y dias disponibles", $result );
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

@@ -19,10 +19,10 @@ class CareerController
         try {
             $careerService = new CareerService();
             $result = $careerService->getCareers();
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Carreras", $result );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carreras", $result );
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -37,10 +37,10 @@ class CareerController
         try {
             $careerService = new CareerService();
             $result = $careerService->getCareer_ById( $params['id'] );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Carrera", $result );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carrera", $result );
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -57,10 +57,10 @@ class CareerController
             /* @var $career Career*/
             $career = $req->getAttribute('career_data');
             $careerService->insertCareers( $career->getName(), $career->getShortName() );
-            return Utils::makeJSONResponse( $res, Utils::$CREATED, "Carrera registrado con éxito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Carrera registrado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -79,10 +79,10 @@ class CareerController
             $user = $req->getAttribute('career_data');
             $user->setId( $params['id'] );
             $careerService->updateCarrers( $user );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Se actualizo carrera con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Se actualizo carrera con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -97,10 +97,10 @@ class CareerController
         try {
             $careerService = new CareerService();
             $careerService->disableCareer( $params['id'] );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Carrera deshabilitada");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carrera deshabilitada");
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -114,10 +114,10 @@ class CareerController
         try {
             $careerService = new CareerService();
             $careerService->deleteCareer( $params['id'] );
-            return Utils::makeJSONResponse( $res, Utils::$OK, "Carrera eliminada");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Carrera eliminada");
 
         } catch (RequestException $e) {
-            return Utils::makeJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

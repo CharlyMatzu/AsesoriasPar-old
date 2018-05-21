@@ -59,31 +59,38 @@ $app->get('/', function(Request $request, Response $response, $params){
 $app->get('/users', 'UserController:getUsers')
         ->add(AuthMiddelware::class);
 
+//TODO: obtener por  status
+//TODO: obtener por email
+//TODO: obtener por rol
+//$app->get('/users/status/{status}', 'UserController:getUsers_ByStatus')
+//    ->add(AuthMiddelware::class);
+
 $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-$app->post('/users/signup', 'UserController:createUser')
-        ->add('InputMiddelware:checkData_user'); //Es el registro de estudiante
+$app->post('/users', 'UserController:createUser')
+        ->add('InputMiddelware:checkData_User') //Es el registro de estudiante
+        ->add('InputMiddelware:checkData_Role'); //Es el registro de estudiante
+
+//TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
 $app->post('/users/students/signup', 'UserController:createUserAndStudent')
-    ->add('InputMiddelware:checkData_student') //Es el registro de estudiante
-    ->add('InputMiddelware:checkData_user'); //Es el registro de usuario (se ejecuta primero)
+        ->add('InputMiddelware:checkData_Student') //Es el registro de estudiante
+        ->add('InputMiddelware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
 $app->post('/users/auth', 'UserController:auth')
         ->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
 
 $app->put('/users/{id}', 'UserController:updateUser')
-        ->add('InputMiddelware:checkData_user')
+        ->add('InputMiddelware:checkData_User')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-
-$app->patch('/users/{id}', 'UserController:disableUser')
+$app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
+        ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
-
-//TODO: agregar habilitar
 
 $app->delete('/users/{id}', 'UserController:deleteUser')
     ->add('InputMiddelware:checkParam_Id')
@@ -96,6 +103,12 @@ $app->get('/students', 'StudentController:getStudents')
         ->add(AuthMiddelware::class);
 
 $app->get('/students/{id}', 'StudentController:getStudent_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+
+$app->put('/students/{id}', 'StudentController:updateStudent')
+        ->add('InputMiddelware:checkData_Student')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
@@ -142,18 +155,18 @@ $app->get('/careers/{id}', 'CareerController:getCareer_ById')
         ->add(AuthMiddelware::class);
 
 $app->post('/careers', 'CareerController:createCareer')
-        ->add('InputMiddelware:checkData_career')
+        ->add('InputMiddelware:checkData_Career')
         ->add(AuthMiddelware::class);
 
 $app->put('/careers/{id}', 'CareerController:updateCareer')
-        ->add('InputMiddelware:checkData_career')
+        ->add('InputMiddelware:checkData_Career')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
 
-$app->patch('/careers/{id}', 'CareerController:disableCareer')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
+//$app->patch('/careers/{id}', 'CareerController:disableCareer')
+//        ->add('InputMiddelware:checkParam_Id')
+//        ->add(AuthMiddelware::class);
 
 //TODO: agregar: habilitar career
 
@@ -172,17 +185,17 @@ $app->get('/plans/{id}', 'PlanController:getPlan_ById')
         ->add(AuthMiddelware::class);
 
 $app->post('/plans', 'PlanController:createPlan')
-        ->add('InputMiddelware:checkData_plan')
+        ->add('InputMiddelware:checkData_Plan')
         ->add(AuthMiddelware::class);
 
 $app->put('/plans/{id}', 'PlanController:updatePlan')
-        ->add('InputMiddelware:checkData_plan')
+        ->add('InputMiddelware:checkData_Plan')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-$app->patch('/plans/{id}', 'PlanController:disablePlan')
-    ->add('InputMiddelware:checkParam_Id')
-    ->add(AuthMiddelware::class);
+//$app->patch('/plans/{id}', 'PlanController:disablePlan')
+//    ->add('InputMiddelware:checkParam_Id')
+//    ->add(AuthMiddelware::class);
 
 //TODO: agregar habilitar
 
@@ -202,18 +215,18 @@ $app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add(AuthMiddelware::class);
 
 $app->post('/subjects', 'SubjectController:createSubject')
-        ->add('InputMiddelware:checkData_subject')
+        ->add('InputMiddelware:checkData_Subject')
         ->add(AuthMiddelware::class);
 
 $app->put('/subjects/{id}', 'SubjectController:updateSubject')
-        ->add('InputMiddelware:checkData_subject')
+        ->add('InputMiddelware:checkData_Subject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
 
-$app->patch('/subjects/{id}', 'SubjectController:disableSubject')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
+//$app->patch('/subjects/{id}', 'SubjectController:disableSubject')
+//    ->add('InputMiddelware:checkParam_id')
+//    ->add(AuthMiddelware::class);
 
 //TODO: agregar habilitar
 
@@ -232,11 +245,11 @@ $app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
         ->add(AuthMiddelware::class);
 
 $app->post('/periods', 'PeriodController:createPeriod')
-        ->add('InputMiddelware:checkData_period')
+        ->add('InputMiddelware:checkData_Period')
         ->add(AuthMiddelware::class);
 
 $app->put('/periods/{id}', 'PeriodController:updatePeriod')
-        ->add('InputMiddelware:checkData_period')
+        ->add('InputMiddelware:checkData_Period')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 

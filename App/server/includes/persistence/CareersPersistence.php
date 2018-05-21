@@ -108,7 +108,7 @@ class CareersPersistence extends Persistence {
      */
     public function changeStatusToDeleted($careerID ){
         $query = "UPDATE career 
-                      SET status = ". Utils::$STATUS_DELETED ."
+                      SET status = ". Utils::$STATUS_DISABLE ."
                       WHERE career_id = $careerID";
         return  self::executeQuery($query);
     }
@@ -121,7 +121,7 @@ class CareersPersistence extends Persistence {
      */
     public function changeStatusToEnable( $careerID ){
         $query = "UPDATE career 
-                      SET status = ". Utils::$STATUS_ACTIVE ."
+                      SET status = ". Utils::$STATUS_ENABLE ."
                       WHERE career_id = $careerID";
         return  self::executeQuery($query);
     }

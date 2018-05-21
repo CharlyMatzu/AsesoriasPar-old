@@ -117,7 +117,7 @@ class Auth
             throw new InternalErrorException("Ocurrio un error al verificar usuario");
 
         //Obtiene el primer registro
-        $user = UserService::makeObject_User($result->getData()[0]);
+        $user = UserService::makeUserModel($result->getData()[0]);
         if( !self::isAuthorized( $user->getRole(), $role_required ) )
             throw new ForbiddenException("No esta autorizado");
 

@@ -138,7 +138,7 @@ class PeriodsPersistence extends Persistence{
      */
     public function changeStatusToDelete( $id ){
         $query = "UPDATE Period
-                  SET status = ".Utils::$STATUS_DELETED.",
+                  SET status = ".Utils::$STATUS_DISABLE.",
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }

@@ -46,7 +46,7 @@ class UserService{
      * @throws NoContentException
      */
     public function getActiveUsers(){
-        $result = $this->userPer->getUsers_Active();
+        $result = $this->userPer->getEnableUsers();
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuarios");
@@ -63,6 +63,7 @@ class UserService{
      * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
+     * TODO: solo debe funcionar si usuario esta activo
      */
     public function signIn($email, $pass){
         $result = $this->userPer->getUser_BySignIn($email, $pass);
@@ -74,7 +75,7 @@ class UserService{
 
         //Si se encontró, se crea token y se retorna
         else{
-            $user = self::makeObject_User( $result->getData()[0] );
+            $user = self::makeUserModel( $result->getData()[0] );
 
             //Se envia array con datos: id y email y retorna token
             //TODO: no usar id de BD
@@ -213,6 +214,10 @@ class UserService{
      */
     public function insertUser($user){
 
+        //TODO: debe enviar correo para que el usuario sea confirmado
+        //TODO: cron para eliminar usuario si este no se confirma en una semana
+        //TODO: puede solicitarse un correo para confirmar
+
         //Verifica que email no exista
         $result = $this->isEmailUsed( $user->getEmail() );
         if( Utils::isError( $result->getOperation() ) )
@@ -255,13 +260,13 @@ class UserService{
             $this->insertUser( $student->getUser() );
             //Obtenemos ultimo registrado
             $result = $this->getLastUser();
-            $user = self::makeObject_User( $result[0] );
+            $user = self::makeUserModel( $result[0] );
             //Se agrega al Modelo de estudiante
             $student->setUser( $user );
 
         } catch (RequestException $e) {
             //Se termina transaccion
-            $trans = UsersPersistence::rollbackTransaction();
+            UsersPersistence::rollbackTransaction();
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
@@ -277,7 +282,7 @@ class UserService{
 
         } catch (RequestException $e) {
             //Se termina transaccion
-            $trans = UsersPersistence::rollbackTransaction();
+            UsersPersistence::rollbackTransaction();
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
@@ -287,7 +292,7 @@ class UserService{
             $studentService->insertStudent( $student );
         }catch (RequestException $e){
             //Se termina transaccion
-            $trans = UsersPersistence::rollbackTransaction();
+            UsersPersistence::rollbackTransaction();
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
@@ -307,6 +312,9 @@ class UserService{
     public function updateUser($user){
         $result = $this->userPer->getUser_ById( $user->getId() );
 
+        //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
+        //TODO: no debe eliminarse usuario con cron
+
         //Verificacion de usuario
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al obtener usuario");
@@ -314,7 +322,7 @@ class UserService{
             throw new NotFoundException("No existe usuario");
 
         //Verifica que email
-        $user_db = self::makeObject_User( $result->getData()[0] );
+        $user_db = self::makeUserModel( $result->getData()[0] );
 
         //Si cambio el email
         if( $user_db !== $user->getEmail() ){
@@ -360,9 +368,31 @@ class UserService{
             throw new NotFoundException("No existe usuario");
 
         //Eliminando usuario (cambiando status)
-        $result = $this->userPer->changeStatusToDeleted( $id );
+        $result = $this->userPer->changeStatusToDisable( $id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al eliminar usuario");
+
+    }
+
+
+    /**
+     * @param $id
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function enableUser($id ){
+
+        //Verificando si existe usuario
+        $result = $this->userPer->getUser_ById( $id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al obtener usuario");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe usuario");
+
+        //Eliminando usuario (cambiando status)
+        $result = $this->userPer->changeStatusToEnable( $id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al habilitar usuario");
 
     }
 
@@ -433,15 +463,15 @@ class UserService{
      * @param $data \mysqli_result
      * @return User
      */
-    public static function makeObject_User( $data ){
+    public static function makeUserModel($data ){
         $user = new User();
         //setting data
-        $user->setId( $data['user_id'] );
+        $user->setId( $data['id'] );
         $user->setEmail( $data['email'] );
-        $user->setPassword( $data['password'] );
+//        $user->setPassword( $data['password'] );
         $user->setRegister_Date( $data['register_date'] );
         $user->setStatus( $data['status'] );
-        $user->setRole( $data['role_name'] );
+        $user->setRole( $data['role'] );
         //Returning object
         return $user;
     }

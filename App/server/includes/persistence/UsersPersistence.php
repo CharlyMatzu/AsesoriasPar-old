@@ -12,12 +12,11 @@ class UsersPersistence extends Persistence{
     public function __construct(){}
 
     private $SELECT = "SELECT 
-                        u.user_id,
+                        u.user_id as 'id',
                         u.email,
-                        u.password,
                         u.register_date,
                         u.status,
-                        r.name as 'role_name'
+                        r.name as 'role'
                     FROM user u
                     INNER JOIN role r ON r.name = u.fk_role ";
 
@@ -30,17 +29,17 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-    public function getUsers_Active()
+    public function getEnableUsers()
     {
         $query = $this->SELECT.
-                "WHERE u.status = ".Utils::$STATUS_ACTIVE;
+                "WHERE u.status = ".Utils::$STATUS_ENABLE;
         return  self::executeQuery($query);
     }
 
-    public function getUsers_Deleted()
+    public function getDisabledUsers()
     {
         $query = $this->SELECT.
-            "WHERE u.status = ".Utils::$STATUS_DELETED;
+            "WHERE u.status = ".Utils::$STATUS_DISABLE;
         return  self::executeQuery($query);
     }
 
@@ -88,7 +87,7 @@ class UsersPersistence extends Persistence{
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
-                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ACTIVE;
+                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ENABLE;
         return  self::executeQuery($query);
     }
 
@@ -140,9 +139,20 @@ class UsersPersistence extends Persistence{
      * @param $id
      * @return \Model\DataResult
      */
-    public function changeStatusToDeleted($id ){
+    public function changeStatusToDisable($id ){
         $query = "UPDATE user u
-                         SET u.status = ".Utils::$STATUS_DELETED."    
+                         SET u.status = ".Utils::$STATUS_DISABLE."    
+                         WHERE user_id = ".$id;
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $id
+     * @return \Model\DataResult
+     */
+    public function changeStatusToEnable($id ){
+        $query = "UPDATE user u
+                         SET u.status = ".Utils::$STATUS_ENABLE."    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }

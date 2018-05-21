@@ -4,7 +4,7 @@ use Model\Career;
 use Model\Student;
 use Utils;
 
-class Students extends Persistence{
+class StudentsPersistence extends Persistence{
 
     public function __construct(){}
 
@@ -16,7 +16,7 @@ class Students extends Persistence{
                         s.phone as 'phone', 
                         s.facebook as 'facebook', 
                         s.avatar as 'avatar', 
-                        s.date_register as 'date_register',
+                        s.date_register as 'register_date',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
                         c.career_id as 'career_id'
@@ -152,9 +152,12 @@ class Students extends Persistence{
      */
     public function updateStudent( $student ){
         $query = "UPDATE  student s 
-                          SET s.itson_id = '".$student->getItsonId()."', s.first_name = '".$student->getFirstName()."', s.last_name = '".$student->getLastName()."',
-                          s.status = '".$student->getStatus()."', s.fk_user = '".$student->getUser()."', s.fk_career = '".$student->getCareer()."'
-                          WHERE s.student_id = ".$student->getId();
+                      SET s.itson_id = '".$student->getItsonId()."',
+                      s.first_name = '".$student->getFirstName()."', 
+                      s.last_name = '".$student->getLastName()."',
+                      s.phone = '".$student->getPhone()."', 
+                      s.fk_career = '".$student->getCareer()."'
+                  WHERE s.student_id = ".$student->getId();
         return  self::executeQuery($query);
     }
 
@@ -164,7 +167,7 @@ class Students extends Persistence{
      */
     public function changeStatusToDeleted($idStudent ){
         $query = "UPDATE student s
-                         SET s.status = ". Utils::$STATUS_DELETED ."    
+                         SET s.status = ". Utils::$STATUS_DISABLE ."    
                          WHERE s.student_id = " .$idStudent ;
         return  self::executeQuery($query);
     }

@@ -71,7 +71,6 @@ SINGUP
 	//Usuario
 	"email": "carlosrozuma@gmail.com",
 	"password": "123456",
-	"role": "basic",
 	//Estudiante
 	"career": 1,
 	"first_name": "carlos",

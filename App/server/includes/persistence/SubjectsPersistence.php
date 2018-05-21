@@ -219,7 +219,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function changeStatusToDeleted($subjectID ){
         $query = "UPDATE subject
-                    SET status = ".Utils::$STATUS_DELETED." 
+                    SET status = ".Utils::$STATUS_DISABLE." 
                     WHERE subject_id = $subjectID";
         return  self::executeQuery($query);
     }

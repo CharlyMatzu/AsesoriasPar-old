@@ -1,6 +1,5 @@
 <?php namespace Service;
 
-use Exceptions\BadRequestException;
 use Exceptions\ConflictException;
 use Exceptions\InternalErrorException;
 use Exceptions\NoContentException;
@@ -8,11 +7,8 @@ use Exceptions\NotFoundException;
 
 use Exceptions\RequestException;
 use Model\Schedule;
-use Model\User;
-use Persistence\Students;
-use Persistence\UsersPersistence;
+use Persistence\StudentsPersistence;
 use Model\Student;
-use Service\UserService;
 use Utils;
 
 class StudentService{
@@ -20,7 +16,7 @@ class StudentService{
     private $perStudents;
 
     public function __construct(){
-        $this->perStudents = new Students();
+        $this->perStudents = new StudentsPersistence();
     }
 
     /**
@@ -93,6 +89,41 @@ class StudentService{
         $result = $this->perStudents->insertStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "Ocurrio un error al registrar usuario");
+    }
+
+
+    /**
+     * @param $student Student
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws ConflictException
+     */
+    public function updateStudent( $student ){
+
+        //Verificar si estudiante existe
+        $student_aux = $this->getStudent_ById( $student->getId() );
+        $student_aux = self::makeStudentModel( $student_aux );
+
+        //Verificamos si cambio el ID de itson
+        if( $student_aux->getItsonId() != $student->getItsonId() ){
+            $result = $this->isItsonIdExist( $student->getItsonId() );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException( "Ocurrio un error al verificar id ITSON");
+            else if( $result->getOperation() == true )
+                throw new ConflictException( "ITSON id ya existe" );
+        }
+
+        //Verificamos si cambio carrera
+        if( $student_aux->getCareer() != $student->getCareer() ){
+            $careerService = new CareerService();
+            $careerService->getCareer_ById( $student->getCareer() );
+        }
+
+        //Se actualizan datos de alumno
+        $result = $this->perStudents->updateStudent( $student );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "Ocurrio un error al actualizar estudiante");
     }
 
 
@@ -249,6 +280,28 @@ class StudentService{
         $scheduleService = new ScheduleService();
         $scheduleService->insertScheduleSubjects($schedule['id'], $schedule_subjects );
     }
+
+
+    public static function makeStudentModel( $data ){
+        $student = new Student();
+        //setting data
+        $student->setId( $data['id'] );
+        $student->setItsonId( $data['itson_id'] );
+        $student->setFirstName( $data['first_name'] );
+        $student->setLastName( $data['last_name'] );
+        $student->setPhone( $data['phone'] );
+        $student->setFacebook( $data['facebook'] );
+        $student->setAvatar( $data['avatar'] );
+        $student->setRegisterDate( $data['register_date'] );
+
+//        $student->setStatus( $data['status'] );
+        $student->setUser( $data['user_id'] );
+        $student->setCareer( $data['career_id'] );
+
+        //Returning object
+        return $student;
+    }
+
 
 
 }
