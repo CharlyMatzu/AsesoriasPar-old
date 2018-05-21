@@ -107,23 +107,30 @@ class PlanService{
 
     /**
      * @param $planId int
+     * @param $status
+     *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function disablePlan($planId){
+    public function changeStatus($planId, $status){
         $result = $this->isPlanExist_ById( $planId );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Error al obtener plan por ID", $result->getErrorMessage());
+            throw new InternalErrorException("Error al obtener plan por ID" );
 
         else if( $result->getOperation() == false )
             throw new NotFoundException("No existe plan");
 
-        //Inteta registrar
-        $this->perPlans->changeStatusToDeleted($planId);
-
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Error al deshabilitar plan", $result->getErrorMessage());
+        if( $status == Utils::$STATUS_DISABLE ){
+            $this->perPlans->changeStatusToDisable($planId);
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("Error al deshabilitar plan");
+        }
+        else if( $status == Utils::$STATUS_ENABLE ){
+            $this->perPlans->changeStatusToEnable($planId);
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("Error al habilitar plan");
+        }
     }
 
 

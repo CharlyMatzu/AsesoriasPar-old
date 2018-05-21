@@ -98,66 +98,18 @@ $app->delete('/users/{id}', 'UserController:deleteUser')
     ->add(AuthMiddelware::class);
 
 //--------------------------
-//  STUDENT ROUTES
-//--------------------------
-$app->get('/students', 'StudentController:getStudents')
-        ->add(AuthMiddelware::class);
-
-$app->get('/students/{id}', 'StudentController:getStudent_ById')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
-
-
-$app->put('/students/{id}', 'StudentController:updateStudent')
-        ->add('InputMiddelware:checkData_Student')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
-
-//------------SCHEDULE
-$app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
-
-$app->post('/students/{id}/schedule', 'StudentController:createSchedule')
-        ->add('InputMiddelware:checkData_schedule_hours')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
-
-$app->post('/students/{id}/schedule/subjects', 'StudentController:addScheduleSubjects')
-    ->add('InputMiddelware:checkData_schedule_subjects')
-    ->add('InputMiddelware:checkParam_Id')
-    ->add(AuthMiddelware::class);
-
-//TODO: agregar: Actualizar, deshabilitar, eliminar
-
-//$app->post('/students/{id}/schedule', 'StudentController:getStudent_ById')
-//    ->add('InputMiddelware:checkData_schedule')
-//    ->add('InputMiddelware:checkParam_Id')
-//    ->add(AuthMiddelware::class);
-//
-//$app->put('/students/{id}/schedule', 'StudentController:getStudent_ById')
-//    ->add('InputMiddelware:checkData_schedule')
-//    ->add('InputMiddelware:checkParam_Id')
-//    ->add(AuthMiddelware::class);
-//
-//$app->delete('/students/{id}/schedule', 'StudentController:getStudent_ById')
-//    ->add('InputMiddelware:checkParam_Id')
-//    ->add(AuthMiddelware::class);
-
-
-//--------------------------
 //  CAREER ROUTES
 //--------------------------
 $app->get('/careers', 'CareerController:getCareers')
-        ->add(AuthMiddelware::class);
+    ->add(AuthMiddelware::class);
 
 $app->get('/careers/{id}', 'CareerController:getCareer_ById')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 $app->post('/careers', 'CareerController:createCareer')
-        ->add('InputMiddelware:checkData_Career')
-        ->add(AuthMiddelware::class);
+    ->add('InputMiddelware:checkData_Career')
+    ->add(AuthMiddelware::class);
 
 $app->patch('/careers/{id}/status/{status}', 'CareerController:changeStatus')
     ->add('InputMiddelware:checkParam_Status')
@@ -165,14 +117,17 @@ $app->patch('/careers/{id}/status/{status}', 'CareerController:changeStatus')
     ->add(AuthMiddelware::class);
 
 $app->put('/careers/{id}', 'CareerController:updateCareer')
-        ->add('InputMiddelware:checkData_Career')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
+    ->add('InputMiddelware:checkData_Career')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 
 $app->delete('/careers/{id}', 'CareerController:deleteCareer')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
+
+
+
 
 //--------------------------
 //  PLAN ROUTES
@@ -188,16 +143,15 @@ $app->post('/plans', 'PlanController:createPlan')
         ->add('InputMiddelware:checkData_Plan')
         ->add(AuthMiddelware::class);
 
+$app->patch('/plans/{id}/status/{status}', 'PlanController:changeStatus')
+    ->add('InputMiddelware:checkParam_Status')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
 $app->put('/plans/{id}', 'PlanController:updatePlan')
         ->add('InputMiddelware:checkData_Plan')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
-
-//$app->patch('/plans/{id}', 'PlanController:disablePlan')
-//    ->add('InputMiddelware:checkParam_Id')
-//    ->add(AuthMiddelware::class);
-
-//TODO: agregar habilitar
 
 $app->delete('/plans/{id}', 'PlanController:deletePlan')
         ->add('InputMiddelware:checkParam_Id')
@@ -210,6 +164,7 @@ $app->get('/subjects', 'SubjectController:getSubjects')
         ->add(AuthMiddelware::class);
 
 //TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
+
 $app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
@@ -235,31 +190,79 @@ $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
+
+//--------------------------
+//  STUDENT ROUTES
+//--------------------------
+$app->get('/students', 'StudentController:getStudents')
+    ->add(AuthMiddelware::class);
+
+$app->get('/students/{id}', 'StudentController:getStudent_ById')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+
+$app->put('/students/{id}', 'StudentController:updateStudent')
+    ->add('InputMiddelware:checkData_Student')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+//------------SCHEDULE
+$app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+$app->post('/students/{id}/schedule', 'StudentController:createSchedule')
+    ->add('InputMiddelware:checkData_schedule_hours')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+$app->post('/students/{id}/schedule/subjects', 'StudentController:addScheduleSubjects')
+    ->add('InputMiddelware:checkData_schedule_subjects')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+//TODO: agregar: Actualizar, deshabilitar, eliminar
+
+//$app->post('/students/{id}/schedule', 'StudentController:getStudent_ById')
+//    ->add('InputMiddelware:checkData_schedule')
+//    ->add('InputMiddelware:checkParam_Id')
+//    ->add(AuthMiddelware::class);
+//
+//$app->put('/students/{id}/schedule', 'StudentController:getStudent_ById')
+//    ->add('InputMiddelware:checkData_schedule')
+//    ->add('InputMiddelware:checkParam_Id')
+//    ->add(AuthMiddelware::class);
+//
+//$app->delete('/students/{id}/schedule', 'StudentController:getStudent_ById')
+//    ->add('InputMiddelware:checkParam_Id')
+//    ->add(AuthMiddelware::class);
+
+
 //--------------------------
 //  PERIOD ROUTES
 //--------------------------
 $app->get('/periods', 'PeriodController:getPeriods')
-        ->add(AuthMiddelware::class);
+    ->add(AuthMiddelware::class);
 
 $app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
-        ->add('InputMiddelware:checkParam_id')
-        ->add(AuthMiddelware::class);
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
 
 $app->post('/periods', 'PeriodController:createPeriod')
-        ->add('InputMiddelware:checkData_Period')
-        ->add(AuthMiddelware::class);
+    ->add('InputMiddelware:checkData_Period')
+    ->add(AuthMiddelware::class);
 
 $app->put('/periods/{id}', 'PeriodController:updatePeriod')
-        ->add('InputMiddelware:checkData_Period')
-        ->add('InputMiddelware:checkParam_id')
-        ->add(AuthMiddelware::class);
+    ->add('InputMiddelware:checkData_Period')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
 
 
 //TODO: agregar habilitar/deshabilitar
 $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
-        ->add('InputMiddelware:checkParam_id')
-        ->add(AuthMiddelware::class);
-
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
 
 
 //--------------------------
@@ -277,7 +280,6 @@ $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
 
 
 
-
 //--------------------------
 //  ADVISORY ROUTES
 //--------------------------
@@ -286,6 +288,7 @@ $app->get('/advisory/{id}', 'AdvisoryController:getAdvisory_ById');
 $app->post('/advisory', 'AdvisoryController:createAdvisory');
 $app->put('/advisory/{id}', 'AdvisoryController:updateAdvisory');
 $app->delete('/advisory/{id}', 'AdvisoryController:deleteAdvisory');
+
 
 
 

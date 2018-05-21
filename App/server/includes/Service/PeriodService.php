@@ -112,6 +112,8 @@ class PeriodService{
      */
     public function createPeriod($start, $end ){
 
+        //TODO: cuando se cree un periodo, se les avisa a los estudiantes
+
         //------------FECHAS EMPALMADAS
         $result = $this->isPeriodBetweenOther( $start );
 

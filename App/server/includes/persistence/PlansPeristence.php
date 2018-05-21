@@ -67,18 +67,40 @@ class PlansPeristence extends Persistence{
         return self::executeQuery($query);
     }
 
+    /**
+     * @param $planID int
+     * @param $year string
+     *
+     * @return \Model\DataResult
+     */
     public function updatePlan( $planID, $year ){
         $query = "UPDATE plan SET year = '$year' WHERE plan_id = $planID";
         //Obteniendo resultados
         return self::executeQuery($query);
     }
 
-    public function changeStatusToDeleted( $id ){
+    /**
+     * @param $id
+     * @return \Model\DataResult
+     */
+    public function changeStatusToDisable($id ){
         $query = "UPDATE plan
                   SET status = ".Utils::$STATUS_DISABLE.",
                   WHERE plan_id = $id";
         return  self::executeQuery($query);
     }
+
+    /**
+     * @param $id
+     * @return \Model\DataResult
+     */
+    public function changeStatusToEnable($id ){
+        $query = "UPDATE plan
+                  SET status = ".Utils::$STATUS_ENABLE.",
+                  WHERE plan_id = $id";
+        return  self::executeQuery($query);
+    }
+
 
     /**
      * @param $id

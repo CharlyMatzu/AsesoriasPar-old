@@ -17,7 +17,7 @@ class PlanController
         try {
             $planService = new PlanService();
             $result = $planService->getPlans();
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Planes", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -34,7 +34,7 @@ class PlanController
         try {
             $planService = new PlanService();
             $result = $planService->getPlan_ById( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Plan", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -107,11 +107,11 @@ class PlanController
      *
      * @return Response
      */
-    public function disablePlan($req, $res, $params){
+    public function changeStatus($req, $res, $params){
         try {
             $planService = new PlanService();
-            $planService->disablePlan( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Plan deshabilitado con éxito");
+            $planService->changeStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status modificado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

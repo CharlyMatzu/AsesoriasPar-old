@@ -34,7 +34,7 @@ class PeriodController
         try {
             $periodService = new PeriodService();
             $result = $periodService->getPeriod_ById( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Periodo", $result );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Periodo", $result);
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
