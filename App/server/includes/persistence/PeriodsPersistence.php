@@ -144,6 +144,18 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * cambia el estado a 2 indicando que esta habilitado
+     * @param $id int
+     * @return \Model\DataResult
+     */
+    public function changeStatusToEnable( $id ){
+        $query = "UPDATE Period
+                  SET status = ".Utils::$STATUS_ENABLE.",
+                  WHERE period_id = $id";
+        return  self::executeQuery($query);
+    }
+
+    /**
      * @param $id
      *
      * @return \Model\DataResult

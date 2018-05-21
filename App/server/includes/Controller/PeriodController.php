@@ -18,7 +18,7 @@ class PeriodController
         try {
             $periodService = new PeriodService();
             $result = $periodService->getPeriods();
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Periodos", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
@@ -34,7 +34,7 @@ class PeriodController
         try {
             $periodService = new PeriodService();
             $result = $periodService->getPeriod_ById( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Periodo", $result);
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
@@ -77,6 +77,25 @@ class PeriodController
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params
+     * @return Response
+     */
+    public function changeStatus($req, $res, $params){
+        try {
+            $periodService = new PeriodService();
+            $periodService->changeStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Modificado status de periodo con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
 
 
     /**

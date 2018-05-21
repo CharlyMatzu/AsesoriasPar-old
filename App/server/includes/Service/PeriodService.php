@@ -169,10 +169,12 @@ class PeriodService{
 
     /**
      * @param $periodId
+     * @param $status
+     *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function disablePeriod($periodId ){
+    public function changeStatus($periodId, $status ){
 
         $result = $this->isPeriodExist_ById($periodId);
 
@@ -182,11 +184,16 @@ class PeriodService{
         else if( $result->getOperation() == false )
             throw new NotFoundException("Periodo no existe");
 
-        //Se elimina
-        $result = $this->perPeriods->changeStatusToDelete( $periodId );
-
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("No se pudo deshabilitar periodo");
+        if( $status == Utils::$STATUS_DISABLE ){
+            $result = $this->perPeriods->changeStatusToDelete( $periodId );
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("No se pudo deshabilitar periodo");
+        }
+        else if( $status == Utils::$STATUS_ENABLE ){
+            $result = $this->perPeriods->changeStatusToEnable( $periodId );
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("No se pudo habilitar periodo");
+        }
     }
 
     /**

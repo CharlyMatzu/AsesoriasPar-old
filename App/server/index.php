@@ -211,8 +211,41 @@ $app->put('/students/{id}', 'StudentController:updateStudent')
     ->add(AuthMiddelware::class);
 
 
+//--------------------------
+//  PERIOD ROUTES
+//--------------------------
+$app->get('/periods', 'PeriodController:getPeriods')
+    ->add(AuthMiddelware::class);
 
-//------------SCHEDULE
+$app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
+
+$app->post('/periods', 'PeriodController:createPeriod')
+    ->add('InputMiddelware:checkData_Period')
+    ->add(AuthMiddelware::class);
+
+$app->put('/periods/{id}', 'PeriodController:updatePeriod')
+    ->add('InputMiddelware:checkData_Period')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
+
+
+$app->patch('/periods/{id}/status/{status}', 'PeriodController:changeStatus')
+    ->add('InputMiddelware:checkParam_Status')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
+
+
+$app->delete('/periods/{id}', 'PeriodController:deletePeriod')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
+
+
+//--------------------------
+//  SCHEDULE, HOURS AND DAYS ROUTES
+//--------------------------
+
 $app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
@@ -246,35 +279,7 @@ $app->post('/students/{id}/schedule/subjects', 'StudentController:addScheduleSub
 //    ->add(AuthMiddelware::class);
 
 
-//--------------------------
-//  PERIOD ROUTES
-//--------------------------
-$app->get('/periods', 'PeriodController:getPeriods')
-    ->add(AuthMiddelware::class);
 
-$app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
-
-$app->post('/periods', 'PeriodController:createPeriod')
-    ->add('InputMiddelware:checkData_Period')
-    ->add(AuthMiddelware::class);
-
-$app->put('/periods/{id}', 'PeriodController:updatePeriod')
-    ->add('InputMiddelware:checkData_Period')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
-
-
-//TODO: agregar habilitar/deshabilitar
-$app->delete('/periods/{id}', 'PeriodController:deletePeriod')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
-
-
-//--------------------------
-//  SCHEDULE, HOURS AND DAYS ROUTES
-//--------------------------
 //TODO: agregar a ruta de estudiante para registrar y obtener de estudiante --> /student/{id}/schedule
 
 $app->get('/schedule', 'ScheduleController:getHoursAndDays')
