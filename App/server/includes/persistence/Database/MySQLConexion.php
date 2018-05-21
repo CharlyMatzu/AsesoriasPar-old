@@ -9,9 +9,9 @@
 
         private $datos = [
             'host' => "localhost",
-            'user' => 'asesoriaspar_user',
-            'pass' => 'asesoriaspar_pass',
-            'db'   => 'asesoriaspar'
+            'user' => 'ronintop_asesoriaspar_user',
+            'pass' => 'ronintop_asesoriaspar_pass',
+            'db'   => 'ronintop_asesoriaspar'
         ];
         private $_connection;
 

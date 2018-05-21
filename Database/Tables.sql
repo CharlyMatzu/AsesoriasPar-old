@@ -4,10 +4,10 @@
 -- ----------------
 
 -- show engines;
-DROP DATABASE asesoriaspar;
+DROP DATABASE ronintop_asesoriaspar;
 
-CREATE DATABASE asesoriaspar CHARACTER SET utf8 COLLATE utf8_general_ci;
-use asesoriaspar;
+CREATE DATABASE ronintop_asesoriaspar CHARACTER SET utf8 COLLATE utf8_general_ci;
+use ronintop_asesoriaspar;
 
 
 
