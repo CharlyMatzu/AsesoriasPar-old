@@ -5,9 +5,9 @@ use App\Utils;
 
 class NoContentException extends RequestException
 {
-    public function __construct(string $message = "", $extra = null)
+    public function __construct($message = "", $details = null)
     {
-        parent::__construct($message, Utils::$NO_CONTENT, $extra);
+        parent::__construct($message, Utils::$NO_CONTENT, $details);
     }
 
 }

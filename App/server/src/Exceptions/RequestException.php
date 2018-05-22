@@ -9,15 +9,20 @@ class RequestException extends Exception
 
     /**
      * RequestException constructor.
+     *
      * @param string $message response message
      * @param int $response_code response status code
-     * @param null $extra valores extra
+     * @param null $detail valores extra
      */
-    public function __construct(string $message = "", int $response_code, $extra = null)
+    public function __construct($message = "", $response_code, $detail = null)
     {
         parent::__construct($message);
         $this->status_code = $response_code;
-        $this->extra_data = $extra;
+        //Si el debug
+        if( DEBUG == 1 )
+            $this->extra_data = $detail;
+        else
+            $this->extra_data = "";
     }
 
     /**

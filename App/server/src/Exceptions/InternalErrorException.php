@@ -5,9 +5,10 @@ use App\Utils;
 
 class InternalErrorException extends RequestException
 {
-    public function __construct(string $message = "", $extra = null)
+    public function __construct($message = "", $details = null)
     {
-        parent::__construct($message, Utils::$INTERNAL_SERVER_ERROR, $extra);
+        parent::__construct("$message, Consultar a un administrador para verificar", Utils::$INTERNAL_SERVER_ERROR);
+        
     }
 
 }

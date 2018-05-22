@@ -5,9 +5,9 @@ use App\Utils;
 
 class ConflictException extends RequestException
 {
-    public function __construct(string $message = "", $extra = null)
+    public function __construct($message = "", $details = null)
     {
-        parent::__construct($message, Utils::$CONFLICT, $extra);
+        parent::__construct($message, Utils::$CONFLICT, $details);
     }
 
 }
