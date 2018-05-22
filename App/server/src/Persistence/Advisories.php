@@ -1,4 +1,4 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
 
 class Advisories extends Persistence{

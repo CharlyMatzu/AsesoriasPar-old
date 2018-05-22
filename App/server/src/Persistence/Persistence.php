@@ -1,9 +1,8 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Model\DataResult;
-use Persistence\Database\MySQLConexion;
-use Utils;
-//use Exceptions\PersistenciaException;
+use App\Model\DataResult;
+use App\Persistence\Database\MySQLConexion;
+use App\Utils;
 
 
 abstract class Persistence{
@@ -189,7 +188,7 @@ abstract class Persistence{
      * @param String $data Valor a cifrar
      * @return string Regresa un String cigrafo con md5
      */
-    public static function crypt(String $data){
+    public static function crypt($data){
         return md5($data);
     }
 

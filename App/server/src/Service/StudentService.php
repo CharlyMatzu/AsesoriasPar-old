@@ -1,15 +1,15 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
 
-use Exceptions\RequestException;
-use Model\Schedule;
-use Persistence\StudentsPersistence;
-use Model\Student;
-use Utils;
+use App\Exceptions\RequestException;
+use App\Model\Schedule;
+use App\Persistence\StudentsPersistence;
+use App\Model\Student;
+use App\Utils;
 
 class StudentService{
 

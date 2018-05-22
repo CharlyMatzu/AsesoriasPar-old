@@ -1,15 +1,15 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
-use Exceptions\BadRequestException;
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
-use Exceptions\RequestException;
-use Persistence\PeriodsPersistence;
-use Model\Period;
+use App\Exceptions\BadRequestException;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
+use App\Persistence\PeriodsPersistence;
+use App\Model\Period;
 use DateTime;
-use Utils;
+use App\Utils;
 
 class PeriodService{
 

@@ -1,11 +1,11 @@
-<?php namespace Controller;
+<?php namespace App\Controller;
 
-use Exceptions\RequestException;
-use Model\Subject;
-use Service\SubjectService;
+use App\Exceptions\RequestException;
+use App\Model\Subject;
+use App\Service\SubjectService;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Utils;
+use App\Utils;
 
 class SubjectController
 {
@@ -18,7 +18,7 @@ class SubjectController
         try {
             $subjectService = new SubjectService();
             $result = $subjectService->getSubjects();
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materias", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -36,7 +36,7 @@ class SubjectController
         try {
             $subjectService = new SubjectService();
             $result = $subjectService->getSubject_ById( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -95,8 +95,8 @@ class SubjectController
     public function deleteSubject($req, $res, $params){
         try {
             $subjectService = new SubjectService();
-            $result = $subjectService->changeStatus( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con exito", $result );
+            $subjectService->deleteSubject( $params['id'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

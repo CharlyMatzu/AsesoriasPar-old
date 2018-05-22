@@ -1,7 +1,7 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Model\Subject;
-use Utils;
+use App\Model\Subject;
+use App\Utils;
 
 class SubjectsPersistence extends Persistence{
     public function __construct(){}

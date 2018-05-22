@@ -1,7 +1,7 @@
-<?php namespace Exceptions;
+<?php namespace App\Exceptions;
 
 
-use Utils;
+use App\Utils;
 
 class UnauthorizedException extends RequestException
 {

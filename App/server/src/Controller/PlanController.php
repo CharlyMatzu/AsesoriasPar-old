@@ -1,10 +1,10 @@
-<?php namespace Controller;
+<?php namespace App\Controller;
 
-use Exceptions\RequestException;
-use Service\PlanService;
+use App\Exceptions\RequestException;
+use App\Service\PlanService;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Utils;
+use App\Utils;
 
 class PlanController
 {

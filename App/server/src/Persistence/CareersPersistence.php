@@ -1,8 +1,8 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Model\Career;
-use Model\DataResult;
-use Utils;
+use App\Model\Career;
+use App\Model\DataResult;
+use App\Utils;
 
 class CareersPersistence extends Persistence {
     public function __construct(){}

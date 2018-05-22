@@ -1,11 +1,11 @@
-<?php namespace Controller;
+<?php namespace App\Controller;
 
-use Exceptions\RequestException;
-use Model\Career;
-use Service\CareerService;
+use App\Exceptions\RequestException;
+use App\Model\Career;
+use App\Service\CareerService;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Utils;
+use App\Utils;
 
 class CareerController
 {

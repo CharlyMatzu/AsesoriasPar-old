@@ -1,14 +1,14 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
-use Exceptions\RequestException;
-use Model\DataResult;
-use Persistence\CareersPersistence;
-use Model\Career;
-use Utils;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
+use App\Model\DataResult;
+use App\Persistence\CareersPersistence;
+use App\Model\Career;
+use App\Utils;
 
 class CareerService{
 

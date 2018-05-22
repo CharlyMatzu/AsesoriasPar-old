@@ -1,14 +1,14 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
 
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
-use Exceptions\RequestException;
-use Persistence\SchedulesPersistence;
-use Model\Schedule;
-use Utils;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
+use App\Persistence\SchedulesPersistence;
+use App\Model\Schedule;
+use App\Utils;
 
 class ScheduleService{
 

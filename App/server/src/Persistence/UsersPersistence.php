@@ -1,7 +1,7 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Model\User;
-use Utils;
+use App\Model\User;
+use App\Utils;
 
 /**
  * Class Users

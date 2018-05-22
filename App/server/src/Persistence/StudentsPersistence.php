@@ -1,8 +1,8 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Model\Career;
-use Model\Student;
-use Utils;
+use App\Model\Career;
+use App\Model\Student;
+use App\Utils;
 
 class StudentsPersistence extends Persistence{
 

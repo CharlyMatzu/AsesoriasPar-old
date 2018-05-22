@@ -1,6 +1,6 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Model\Schedule;
+use App\Model\Schedule;
 
 class SchedulesPersistence extends Persistence{
 

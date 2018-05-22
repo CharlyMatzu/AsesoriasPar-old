@@ -1,17 +1,17 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
 
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
-use Exceptions\RequestException;
-use Model\DataResult;
-use Model\Student;
-use Persistence\UsersPersistence;
-use Model\User;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
+use App\Model\DataResult;
+use App\Model\Student;
+use App\Persistence\UsersPersistence;
+use App\Model\User;
 use PHPMailer\PHPMailer\Exception;
-use Utils;
+use App\Utils;
 
 class UserService{
 

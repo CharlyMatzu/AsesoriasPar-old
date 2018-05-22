@@ -1,11 +1,10 @@
 <?php namespace Api;
 
 require_once 'config.php';
-//require_once 'src/autoload.php';
 require_once 'vendor/autoload.php';
 
 
-use Middelware\AuthMiddelware;
+use App\Middelware\AuthMiddelware;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;
@@ -28,7 +27,7 @@ $config = [
 //Instanciando APP
 $app = new App($config);
 //Contenedores de controlladores y midd
-require_once 'includes/settings.php';
+require_once 'src/settings.php';
 
 //--------- NOTA:
 // --Los middelware se ejecutan antes y despues que los controllers
@@ -255,8 +254,9 @@ $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
-$app->post('/students/{id}/schedule/subjects', 'StudentController:addScheduleSubjects')
+$app->post('/students/{id}/schedule/{schedule}/subjects', 'StudentController:addScheduleSubjects')
     ->add('InputMiddelware:checkData_schedule_subjects')
+    ->add('InputMiddelware:checkParam_Schedule')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 

@@ -1,12 +1,12 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
-use Model\DataResult;
-use Persistence\PlansPeristence;
-use Utils;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
+use App\Model\DataResult;
+use App\Persistence\PlansPeristence;
+use App\Utils;
 
 class PlanService{
 

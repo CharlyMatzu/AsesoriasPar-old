@@ -1,15 +1,15 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
-use Exceptions\ConflictException;
-use Exceptions\InternalErrorException;
-use Exceptions\NoContentException;
-use Exceptions\NotFoundException;
-use Exceptions\RequestException;
-use Persistence\CareersPersistence;
-use Persistence\PlansPeristence;
-use Persistence\SubjectsPersistence;
-use Model\Subject;
-use Utils;
+use App\Exceptions\ConflictException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
+use App\Persistence\CareersPersistence;
+use App\Persistence\PlansPeristence;
+use App\Persistence\SubjectsPersistence;
+use App\Model\Subject;
+use App\Utils;
 
 class SubjectService{
 

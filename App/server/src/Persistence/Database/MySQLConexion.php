@@ -1,7 +1,7 @@
-<?php namespace Persistence\Database;
+<?php namespace App\Persistence\Database;
 
     use Exception;
-    use Exceptions\InternalErrorException;
+    use App\Exceptions\InternalErrorException;
     use mysqli;
 
     class MySQLConexion {

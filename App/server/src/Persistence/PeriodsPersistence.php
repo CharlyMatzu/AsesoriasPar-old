@@ -1,8 +1,8 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
 
-use Model\Period;
-use Utils;
+use App\Model\Period;
+use App\Utils;
 
 class PeriodsPersistence extends Persistence{
 

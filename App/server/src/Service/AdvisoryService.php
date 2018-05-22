@@ -1,10 +1,10 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
 
 use Carbon\Carbon;
 
-use Persistence\Advisories;
-use Model\Advisory;
+use App\Persistence\Advisories;
+use App\Model\Advisory;
 
 class AdvisoryService
 {

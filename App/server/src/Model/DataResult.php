@@ -1,4 +1,4 @@
-<?php namespace Model;
+<?php namespace App\Model;
 
 use mysqli_result;
 

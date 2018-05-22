@@ -1,16 +1,16 @@
-<?php namespace Service;
+<?php namespace App\Service;
 
-use Exceptions\ForbiddenException;
-use Exceptions\InternalErrorException;
-use Exceptions\UnauthorizedException;
+use App\Exceptions\ForbiddenException;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\UnauthorizedException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
-use Persistence\UsersPersistence;
+use App\Persistence\UsersPersistence;
 use PHPMailer\PHPMailer\Exception;
 use Slim\Http\Request;
 use Carbon\Carbon;
-use Utils;
+use App\Utils;
 
 class Auth
 {

@@ -16,7 +16,10 @@
     },
     "autoload":{
         "psr-4": {
-            ""
+            "App\\": "src"
+        },
+        "config": {
+            "optimize-autoload": true
         }
     }
 }

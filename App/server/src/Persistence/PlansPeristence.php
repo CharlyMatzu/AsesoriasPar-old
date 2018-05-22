@@ -1,6 +1,6 @@
-<?php namespace Persistence;
+<?php namespace App\Persistence;
 
-use Utils;
+use App\Utils;
 
 class PlansPeristence extends Persistence{
 

@@ -1,14 +1,14 @@
-<?php namespace Middelware;
+<?php namespace App\Middelware;
 
 
-use Model\Career;
-use Model\Period;
-use Model\Student;
-use Model\Subject;
-use Model\User;
+use App\Model\Career;
+use App\Model\Period;
+use App\Model\Student;
+use App\Model\Subject;
+use App\Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Utils;
+use App\Utils;
 
 class InputParamsMiddelware extends Middelware
 {
@@ -35,6 +35,25 @@ class InputParamsMiddelware extends Middelware
         $res = $next($req, $res);
         return $res;
     }
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkParam_Schedule($req, $res, $next)
+    {
+        $id = $this->getRouteParams($req)['schedule'];
+        //Verifica que sea un string numerico (no int porque viene como string)
+        if( !is_numeric($id) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
 
     /**
      * Verifica que el parametro enviado sea un valor valido
