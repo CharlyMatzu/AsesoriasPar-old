@@ -10,7 +10,7 @@
         private $datos = [
             'host' => "localhost",
             'user' => 'ronintop_asesoriaspar_user',
-            'pass' => 'ronintop_asesoriaspar_pass',
+            'pass' => 'asesoriaspar_pass',
             'db'   => 'ronintop_asesoriaspar'
         ];
         private $_connection;

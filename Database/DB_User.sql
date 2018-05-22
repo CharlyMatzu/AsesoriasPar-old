@@ -7,10 +7,10 @@
 DROP USER asesoriaspar_user;
 
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP 
-ON asesoriaspar.* TO 'asesoriaspar_user'@'localhost' IDENTIFIED BY 'asesoriaspar_pass';
+ON asesoriaspar.* TO 'ronintop_asesoriaspar_user'@'localhost' IDENTIFIED BY 'asesoriaspar_pass';
 FLUSH PRIVILEGES;
 
-SHOW GRANTS FOR 'asesoriaspar_user'@'localhost';
+SHOW GRANTS FOR 'ronintop_asesoriaspar_user'@'localhost';
 
 
 -- -----------Actualizar privilegios
