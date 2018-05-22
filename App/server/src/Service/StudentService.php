@@ -45,7 +45,7 @@ class StudentService{
         $result = $this->perStudents->getStudents();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Ocurrio un error al obtener usuarios");
+            throw new InternalErrorException("Ocurrio un error al obtener usuarios", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay estudiantes");
         else
@@ -81,7 +81,7 @@ class StudentService{
         //Verifica que id de itson no exista
         $result = $this->isItsonIdExist( $student->getItsonId() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al verificar id ITSON");
+            throw new InternalErrorException( "Ocurrio un error al verificar id ITSON", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "ITSON id ya existe" );
 

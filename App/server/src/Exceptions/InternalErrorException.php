@@ -14,7 +14,7 @@ class InternalErrorException extends RequestException
 
         //---Log de errores
         //TODO: cada vez que ocurra un error, se debe enviar correo al admin (nosotros)
-        AppLogger::makeErrorLog("Internal", $details, Logger::ERROR);
+        AppLogger::makeErrorLog("InternalError:", "$message: $details", Logger::ERROR);
     }
 
 }

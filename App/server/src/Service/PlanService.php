@@ -119,12 +119,12 @@ class PlanService{
         if( $status == Utils::$STATUS_DISABLE ){
             $this->perPlans->changeStatusToDisable($planId);
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("Error al deshabilitar plan");
+                throw new InternalErrorException("Error al deshabilitar plan", $result->getErrorMessage());
         }
         else if( $status == Utils::$STATUS_ENABLE ){
             $this->perPlans->changeStatusToEnable($planId);
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("Error al habilitar plan");
+                throw new InternalErrorException("Error al habilitar plan", $result->getErrorMessage());
         }
     }
 
