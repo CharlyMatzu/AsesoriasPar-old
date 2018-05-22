@@ -31,7 +31,7 @@ class CareerService{
         $result = $this->perCareers->getCareers();
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener careras", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCareers", "Ocurrio un error al obtener careras", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No hay carreras registradas");
@@ -54,7 +54,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ById( $id );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener la carera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCareerById", "Ocurrio un error al obtener la carera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -75,7 +75,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByName ($name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener la carera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCareerByName","Ocurrio un error al obtener la carera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -95,7 +95,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByShortName( $short_name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener la carera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCarrerByName", "Ocurrio un error al obtener la carera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -121,7 +121,7 @@ class CareerService{
 
         //Si ocurrio un error
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo obtener carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":isCarrerExistByName", "No se pudo obtener carrera", $result->getErrorMessage());
         //Si existe
         else if( $result->getOperation() == true )
            throw new ConflictException("Nombre o abreviacion ya existe");
@@ -132,7 +132,7 @@ class CareerService{
         $result = $this->perCareers->insertCareer( $name, $short_name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al registrar la carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."isCareerExistByName", "Ocurrio un error al registrar la carrera", $result->getErrorMessage());
 
     }
 
@@ -160,7 +160,7 @@ class CareerService{
             $result = $this->isCareerExist_ByName( $career->getName() );
 
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
+                throw new InternalErrorException(static::class.":updateCareer", "No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException("Nombre de carrera ya existe");
         }
@@ -170,7 +170,7 @@ class CareerService{
             $result = $this->isCareerExist_ByName( $career->getShortName() );
 
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
+                throw new InternalErrorException(static::class.":updateCareer", "No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException("Abreviaccion de carrera ya existe");
         }
@@ -179,7 +179,7 @@ class CareerService{
         $result = $this->perCareers->updateCareer( $career );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo actualizar carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."updateCareers", "No se pudo actualizar carrera", $result->getErrorMessage());
     }
 
     /**
@@ -202,7 +202,7 @@ class CareerService{
         $result = $this->perCareers->deleteCareer( $id );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo deshabilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."updateCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
     }
 
     /**
@@ -227,7 +227,7 @@ class CareerService{
         $result = $this->perCareers->changeStatusToDeleted( $careerID );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo deshabilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."disableCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
     }
 
 
@@ -247,7 +247,7 @@ class CareerService{
         $result = $this->perCareers->changeStatusToEnable( $careerID );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo habilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."enableCareers", "No se pudo habilitar carrera", $result->getErrorMessage());
     }
 
 

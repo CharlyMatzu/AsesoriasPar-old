@@ -33,13 +33,13 @@
              //Manejo de error
             if( mysqli_connect_error() ) {
                 //trigger_error("Error al tratar de conectar con MySQL: " . mysqli_connect_error(), E_USER_ERROR);
-                throw new InternalErrorException("Ocurrio un error tratar de conectar con MYSQL", mysqli_connect_error());
+                throw new InternalErrorException(static::class.":Connect", "Ocurrio un error tratar de conectar con MYSQL", mysqli_connect_error());
             }
 
             /* cambiar el conjunto de caracteres a utf8 para aceptar tildes y 'eñes' */
             if ( !$this->_connection->set_charset('utf8') ) {
                 //printf("Error cargando el conjunto de caracteres utf8: %s\n", $this->_connection->error);
-                throw new InternalErrorException("Ocurrio un error al codificar caracteres UTF8", $this->getError());
+                throw new InternalErrorException(static::class."UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
             }
         }
 

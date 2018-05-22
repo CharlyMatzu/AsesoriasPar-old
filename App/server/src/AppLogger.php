@@ -7,12 +7,12 @@ class AppLogger
 {
 
     /**
-     * @param $name string
+     * @param $logTitle string
      * @param $message string
      * @param $level int
      */
-    public static function makeErrorLog($name, $message, $level){
-        $log = new Logger($name);
+    public static function makeErrorLog($logTitle, $message, $level){
+        $log = new Logger($logTitle);
         $log->pushHandler(new StreamHandler(ROOT_PATH . '/logs/error.log', $level));
         $log->error( $message );
     }

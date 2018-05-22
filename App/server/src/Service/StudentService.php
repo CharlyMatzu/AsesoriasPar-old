@@ -29,7 +29,7 @@ class StudentService{
         $result = $this->perStudents->getStudent_ById( $id );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Ocurrio un error al obtener estudiante", $result->getErrorMessage());
+            throw new InternalErrorException( static::class.":getStudent_ById","Ocurrio un error al obtener estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe estudiante");
         else
@@ -45,7 +45,7 @@ class StudentService{
         $result = $this->perStudents->getStudents();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getStudents","Ocurrio un error al obtener usuarios", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay estudiantes");
         else
@@ -81,14 +81,14 @@ class StudentService{
         //Verifica que id de itson no exista
         $result = $this->isItsonIdExist( $student->getItsonId() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al verificar id ITSON", $result->getErrorMessage());
+            throw new InternalErrorException( static::class.":insertStudents","Ocurrio un error al verificar id ITSON", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "ITSON id ya existe" );
 
         //Se registra usuario
         $result = $this->perStudents->insertStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al registrar usuario");
+            throw new InternalErrorException( static::class."insertStudents","Ocurrio un error al registrar usuario", $result->getErrorMessage());
     }
 
 
@@ -108,7 +108,7 @@ class StudentService{
         if( $student_aux['itson_id'] != $student->getItsonId() ){
             $result = $this->isItsonIdExist( $student->getItsonId() );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "Ocurrio un error al verificar id ITSON");
+                throw new InternalErrorException( static::class.":updateStudent","Ocurrio un error al verificar id ITSON", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException( "ITSON id ya existe" );
         }
@@ -122,7 +122,7 @@ class StudentService{
         //Se actualizan datos de alumno
         $result = $this->perStudents->updateStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "Ocurrio un error al actualizar estudiante");
+            throw new InternalErrorException( static::class.":updateStudent","Ocurrio un error al actualizar estudiante", $result->getErrorMessage());
     }
 
 

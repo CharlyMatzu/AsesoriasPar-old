@@ -114,7 +114,7 @@ class Auth
         if( Utils::isEmpty( $result->getOperation() ) )
             throw new UnauthorizedException();
         else if( Utils::isError( Utils::isError( $result->getOperation() ) ) )
-            throw new InternalErrorException("Ocurrio un error al verificar usuario", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":authorize", "Ocurrio un error al verificar usuario", $result->getErrorMessage());
 
         //Obtiene el primer registro
         $user = UserService::makeUserModel($result->getData()[0]);

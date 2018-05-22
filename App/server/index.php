@@ -5,6 +5,7 @@ require_once 'vendor/autoload.php';
 require_once 'src/autoload.php';
 
 
+use App\Exceptions\InternalErrorException;
 use App\Middelware\AuthMiddelware;
 use Monolog\Logger;
 use Slim\Exception\MethodNotAllowedException;
@@ -304,10 +305,9 @@ $app->delete('/advisory/{id}', 'AdvisoryController:deleteAdvisory');
 try{
     $app->run();
 } catch (MethodNotAllowedException $e) {
-    //http_response_code(Utils::$INTERNAL_SERVER_ERROR);
-    exit("Metodo no permitido");
+    throw new InternalErrorException("Index", "Slim error",  $e->getMessage());
 } catch (NotFoundException $e) {
-    exit("No encontrado");
+    throw new InternalErrorException("Index", "Slim error",  $e->getMessage());
 } catch (\Exception $e) {
-    exit($e->getMessage());
+    throw new InternalErrorException("Index", "Slim error",  $e->getMessage());
 }
