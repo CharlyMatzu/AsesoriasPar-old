@@ -20,7 +20,7 @@ class PeriodsPersistence extends Persistence{
     //TODO: Los metodos que obtiene deben tomar en cuenta el status
 
     /**
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPeriods(){
         $query = $this->campos;
@@ -29,7 +29,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getCurrentPeriod(){
         $query = $this->campos.
@@ -40,7 +40,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $id
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPeriod_ById($id){
         $query = $this->campos."
@@ -52,7 +52,7 @@ class PeriodsPersistence extends Persistence{
     /**
      * @param $start
      * @param $end
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPeriods_Range( $start, $end ){
         $query = $this->campos."
@@ -64,7 +64,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $date
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPeriod_ByDate($date){
         $query = $this->campos."
@@ -74,7 +74,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getLastPeriod(){
         $query = $this->campos."
@@ -85,7 +85,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $date string fecha correspondiente para comparar
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPeriodWhereIsBetween( $date ){
         $query = "SELECT * FROM period 
@@ -99,7 +99,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $id
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPeriod_ByScheduleId( $id ){
         $query = $this->campos." 
@@ -112,7 +112,7 @@ class PeriodsPersistence extends Persistence{
     /**
      * @param $start string fecha de inicio
      * @param $end string fecha de termino
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function insertPeriod( $start, $end ){
         $query = "INSERT INTO period (date_start, date_end) 
@@ -122,7 +122,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $period Period
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function updatePeriod( $period ){
         $query = "UPDATE period c
@@ -134,7 +134,7 @@ class PeriodsPersistence extends Persistence{
     /**
      * cambia el estado a 0 indicando que esta eliminado o deshabilitado
      * @param $id int
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToDelete( $id ){
         $query = "UPDATE Period
@@ -146,7 +146,7 @@ class PeriodsPersistence extends Persistence{
     /**
      * cambia el estado a 2 indicando que esta habilitado
      * @param $id int
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToEnable( $id ){
         $query = "UPDATE Period
@@ -158,7 +158,7 @@ class PeriodsPersistence extends Persistence{
     /**
      * @param $id
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function deletePeriod($id)
     {

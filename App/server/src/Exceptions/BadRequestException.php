@@ -4,8 +4,8 @@ use App\Utils;
 
 class BadRequestException extends RequestException
 {
-    public function __construct($message = "", $details = null)
+    public function __construct($message = "")
     {
-        parent::__construct($message, Utils::$BAD_REQUEST, $details);
+        parent::__construct($message, Utils::$BAD_REQUEST);
     }
 }

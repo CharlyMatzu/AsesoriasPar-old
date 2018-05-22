@@ -6,11 +6,11 @@ use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
+
 use App\Model\DataResult;
 use App\Model\Student;
 use App\Persistence\UsersPersistence;
 use App\Model\User;
-use PHPMailer\PHPMailer\Exception;
 use App\Utils;
 
 class UserService{
@@ -105,7 +105,7 @@ class UserService{
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("Ocurrio un error al obtener usuario");
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("No se encontro usuario", $id);
+            throw new NotFoundException("No se encontro usuario");
         else
             return $result->getData();
     }
@@ -354,7 +354,9 @@ class UserService{
     }
 
     /**
-     * @param $id
+     * @param $id int
+     * @param $status int
+     *
      * @throws InternalErrorException
      * @throws NotFoundException
      */

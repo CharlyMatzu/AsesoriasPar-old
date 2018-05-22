@@ -20,7 +20,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $id int
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSchedule_Byid($id){
         $query = $this->SELECT."
@@ -31,7 +31,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $studentId int
      * @param $period int
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSchedule_ByStudentId_Period($studentId, $period){
         $query = $this->SELECT."
@@ -41,7 +41,7 @@ class SchedulesPersistence extends Persistence{
 
 
     /**
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSchedule_Last(){
         $query = $this->SELECT." 
@@ -60,7 +60,7 @@ class SchedulesPersistence extends Persistence{
      *
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getScheduleHours_ByScheduleId( $scheduleid, $orderType ){
         $query = "SELECT
@@ -79,7 +79,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param int $scheduleid
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getScheduleSubjects_ById($scheduleid)
     {
@@ -99,7 +99,7 @@ class SchedulesPersistence extends Persistence{
      * @param $studentId int
      * @param $periodId int
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function insertSchedule($studentId, $periodId ){
         $query = "INSERT INTO schedule(fk_student, fk_period) 
@@ -112,7 +112,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $scheduleId
      * @param $hour
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     //TODO: corregir
     public function insertScheduleHours($scheduleId, $hour){
@@ -126,7 +126,7 @@ class SchedulesPersistence extends Persistence{
      * @param $scheduleId int correspondiente al estudiante
      * @param $subject array de materias
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function insertScheduleSubjects($scheduleId, $subject){
         $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject) 
@@ -146,7 +146,7 @@ class SchedulesPersistence extends Persistence{
      *
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getHoursAndDays( $orderType ){
         $query = "SELECT 
@@ -162,7 +162,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * Obtiene solo los dias registrados sin repetir
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getDays(){
         $query = "SELECT DISTINCT day 

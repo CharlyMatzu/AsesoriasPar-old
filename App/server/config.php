@@ -10,7 +10,7 @@
     //  2 = Errors / Warning / Notices
     //  3 = Errors / Warning / Notices and autoload debug
     //------------------
-    define("DEBUG", 2);
+    define("DEBUG", 0);
 
     if( DEBUG == 1 )
         error_reporting(0);

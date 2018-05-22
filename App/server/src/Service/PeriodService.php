@@ -222,7 +222,7 @@ class PeriodService{
 
     /**
      * @param $periodId
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function isPeriodExist_ById( $periodId ){
         $result = $this->perPeriods->getPeriod_ById( $periodId );
@@ -237,7 +237,7 @@ class PeriodService{
 
     /**
      * @param $date
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function isPeriodBetweenOther( $date ){
         $result = $this->perPeriods->getPeriodWhereIsBetween( $date );

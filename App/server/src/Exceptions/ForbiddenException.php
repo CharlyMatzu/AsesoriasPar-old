@@ -5,9 +5,9 @@ use App\Utils;
 
 class ForbiddenException extends RequestException
 {
-    public function __construct($message = "", $details = null)
+    public function __construct($message = "")
     {
-        parent::__construct($message, Utils::$FORBIDDEN, $details);
+        parent::__construct($message, Utils::$FORBIDDEN);
     }
 
 }

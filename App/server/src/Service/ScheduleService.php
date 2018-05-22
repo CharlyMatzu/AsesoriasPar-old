@@ -164,7 +164,7 @@ class ScheduleService{
                 //se obtiene horario
                 $current_schedule = $this->getCurrentSchedule_ByStudentId( $studentId );
             }catch (RequestException $e){
-                $trans = SchedulesPersistence::rollbackTransaction();
+                SchedulesPersistence::rollbackTransaction();
                 throw new RequestException( $e->getMessage(), $e->getStatusCode() );
             }
 

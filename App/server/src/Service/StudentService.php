@@ -29,7 +29,7 @@ class StudentService{
         $result = $this->perStudents->getStudent_ById( $id );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Ocurrio un error al obtener estudiante");
+            throw new InternalErrorException("Ocurrio un error al obtener estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe estudiante");
         else
@@ -54,7 +54,7 @@ class StudentService{
 
     /**
      * @param $itsonId String
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function isItsonIdExist($itsonId){
         $result = $this->perStudents->getStudent_ByItsonId( $itsonId );

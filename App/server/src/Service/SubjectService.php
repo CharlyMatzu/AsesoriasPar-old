@@ -5,8 +5,6 @@ use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
-use App\Persistence\CareersPersistence;
-use App\Persistence\PlansPeristence;
 use App\Persistence\SubjectsPersistence;
 use App\Model\Subject;
 use App\Utils;
@@ -47,7 +45,7 @@ class SubjectService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("Ocurrio un error al obtener la materia por ID");
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe materia", $subject_id);
+            throw new NotFoundException("No existe materia");
         else
             return $result->getData();
     }
@@ -323,7 +321,7 @@ class SubjectService{
      * @param $plan int Plan Id
      * @param $career int Career id
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function isSubjectExist_ByName_ShortName( $name, $short_name, $plan, $career )
     {
@@ -347,7 +345,7 @@ class SubjectService{
 
     /**
      * @param $id
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function isSubjectExist_ById( $id )
     {

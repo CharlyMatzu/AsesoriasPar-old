@@ -36,7 +36,7 @@ class PlansPeristence extends Persistence{
     /**
      * Obtiene el plan que conincida con el año
      * @param $year
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPlan_ByYear( $year ){
         $query = $this->campos.
@@ -48,7 +48,7 @@ class PlansPeristence extends Persistence{
     /**
      * Busca las coincidencias con uno o mas valores numericos que concuerden con el año del plan
      * @param $number
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getPlan_BySearch( $number ){
         $query = $this->campos.
@@ -59,7 +59,7 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $year string año del plan
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function createPlan( $year ){
         $query = "INSERT INTO plan(year) VALUES('$year')";
@@ -71,7 +71,7 @@ class PlansPeristence extends Persistence{
      * @param $planID int
      * @param $year string
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function updatePlan( $planID, $year ){
         $query = "UPDATE plan SET year = '$year' WHERE plan_id = $planID";
@@ -81,7 +81,7 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $id
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToDisable($id ){
         $query = "UPDATE plan
@@ -92,7 +92,7 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $id
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToEnable($id ){
         $query = "UPDATE plan
@@ -104,7 +104,7 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $id
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function deletePlan($id)
     {

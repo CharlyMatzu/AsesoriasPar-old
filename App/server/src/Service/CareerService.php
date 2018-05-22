@@ -5,6 +5,7 @@ use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
+
 use App\Model\DataResult;
 use App\Persistence\CareersPersistence;
 use App\Model\Career;
@@ -53,7 +54,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ById( $id );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener la carera");
+            throw new InternalErrorException("Ocurrio un error al obtener la carera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -74,7 +75,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByName ($name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener la carera");
+            throw new InternalErrorException("Ocurrio un error al obtener la carera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -94,7 +95,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByShortName( $short_name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("Ocurrio un error al obtener la carera");
+            throw new InternalErrorException("Ocurrio un error al obtener la carera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -159,7 +160,7 @@ class CareerService{
             $result = $this->isCareerExist_ByName( $career->getName() );
 
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo comprobar existencia de carrera por Nombre");
+                throw new InternalErrorException("No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException("Nombre de carrera ya existe");
         }
@@ -169,7 +170,7 @@ class CareerService{
             $result = $this->isCareerExist_ByName( $career->getShortName() );
 
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("No se pudo comprobar existencia de carrera por Nombre");
+                throw new InternalErrorException("No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException("Abreviaccion de carrera ya existe");
         }
@@ -178,7 +179,7 @@ class CareerService{
         $result = $this->perCareers->updateCareer( $career );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo actualizar carrera");
+            throw new InternalErrorException("No se pudo actualizar carrera", $result->getErrorMessage());
     }
 
     /**
@@ -201,7 +202,7 @@ class CareerService{
         $result = $this->perCareers->deleteCareer( $id );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo deshabilitar carrera");
+            throw new InternalErrorException("No se pudo deshabilitar carrera", $result->getErrorMessage());
     }
 
     /**
@@ -226,39 +227,27 @@ class CareerService{
         $result = $this->perCareers->changeStatusToDeleted( $careerID );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo deshabilitar carrera");
+            throw new InternalErrorException("No se pudo deshabilitar carrera", $result->getErrorMessage());
     }
 
 
     /**
      * Meotodo para eliminar una carrera mediante el ID
+     *
      * @param $careerID
-     * @return array
+     *
+     * @return void
      * @throws InternalErrorException
      * @throws NotFoundException
      */
     public function enableCareer($careerID ){
         //Verificamos si la carrera existe
         //REGRESA TRUE O FALSE
-        $result = $this->isCareerExist_ById($careerID);
-
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new NotFoundException("Error al obtener Carrera por ID");
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("Carrera no existe");
-
-
+        $this->getCareer_ById($careerID);
         $result = $this->perCareers->changeStatusToEnable( $careerID );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("No se pudo habilitar carrera");
-        else
-            return Utils::makeArrayResponse(
-                "Se habilitó carrera con exito",
-                $careerID
-            );
+            throw new InternalErrorException("No se pudo habilitar carrera", $result->getErrorMessage());
     }
 
 

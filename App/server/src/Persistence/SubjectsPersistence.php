@@ -19,7 +19,7 @@ class SubjectsPersistence extends Persistence{
                         FROM subject s";
 
     /**
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubjects(){
         $query = $this->campos."
@@ -31,7 +31,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subjectID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ById($subjectID){
         $query = $this->campos."
@@ -43,7 +43,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $name
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ByName($name){
         $query = $this->campos."
@@ -55,7 +55,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $shortName
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ByShortName($shortName)
     {
@@ -68,7 +68,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $name
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubjects_BySearch_Name($name){
         $query = $this->campos."
@@ -83,7 +83,7 @@ class SubjectsPersistence extends Persistence{
      * @param $plan int
      * @param $career int
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ByName_ShortName($name, $plan, $career){
         $query = $this->campos."
@@ -98,7 +98,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $semester int
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubjects_BySemester( $semester )
     {
@@ -111,7 +111,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $planID int
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubjects_ByPlan( $planID )
     {
@@ -124,7 +124,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $careerID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubjects_ByCareer($careerID )
     {
@@ -141,7 +141,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $name string nombre de la materia
      * @param $careerID int Career ID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ByName_Career($name, $careerID)
     {
@@ -156,7 +156,7 @@ class SubjectsPersistence extends Persistence{
      * @param $name string nombre de la materia
      * @param $careerID int Career ID
      * @param $planID int plan ID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ByName_Career_Plan($name, $careerID, $planID)
     {
@@ -170,7 +170,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $careerID int Career ID
      * @param $planID int plan ID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getSubject_ByCareer_Plan($careerID, $planID)
     {
@@ -192,7 +192,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subject Subject
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function insertSubject( $subject )
     {
@@ -203,7 +203,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subject Subject
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function updateSubject($subject)
     {
@@ -215,7 +215,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subjectID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToDeleted($subjectID ){
         $query = "UPDATE subject
@@ -226,7 +226,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subjectID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToEnable($subjectID ){
         $query = "UPDATE subject
@@ -238,7 +238,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $subjectID int
      *
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function deleteSubject($subjectID ){
         $query = "DELETE FROM subject
@@ -249,7 +249,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subjectID
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
 //    public function changeStatusToEnable( $subjectID ){
 //        $query = "UPDATE subject
@@ -266,7 +266,7 @@ class SubjectsPersistence extends Persistence{
 //    /**
 //     * @param $sub_1 int
 //     * @param $sub_2 int
-//     * @return \Model\DataResult
+//     * @return \App\Model\DataResult
 //     */
 //    public function setSubjectRelation($sub_1, $sub_2)
 //    {
@@ -277,7 +277,7 @@ class SubjectsPersistence extends Persistence{
 //
 //    /**
 //     * @param $relation_id int
-//     * @return \Model\DataResult
+//     * @return \App\Model\DataResult
 //     */
 //    public function deleteSubjectRelation($relation_id)
 //    {
@@ -338,7 +338,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $idStudent
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
 //    public function getAvailScheduleSubs_SkipStudent( $idStudent, $idPeriod ){
 //        //Para que no se repita

@@ -6,6 +6,7 @@ require_once 'src/autoload.php';
 
 
 use App\Middelware\AuthMiddelware;
+use Monolog\Logger;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;
@@ -15,13 +16,7 @@ use \Slim\App;
 
 $config = [
     'settings' => [
-        'displayErrorDetails' => true,
-
-//        'logger' => [
-//            'name' => 'slim-app',
-//            'level' => Monolog\Logger::DEBUG, //Se requiere Monolog
-//            'path' => __DIR__ . '/../logs/app.log',
-//        ],
+        'displayErrorDetails' => false,
     ],
 ];
 

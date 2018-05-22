@@ -5,24 +5,17 @@ use Exception;
 class RequestException extends Exception
 {
     private $status_code;
-    private $extra_data;
 
     /**
      * RequestException constructor.
      *
      * @param string $message response message
      * @param int $response_code response status code
-     * @param null $detail valores extra
      */
-    public function __construct($message = "", $response_code, $detail = null)
+    public function __construct($message = "", $response_code)
     {
         parent::__construct($message);
         $this->status_code = $response_code;
-        //Si el debug
-        if( DEBUG == 1 )
-            $this->extra_data = $detail;
-        else
-            $this->extra_data = "";
     }
 
     /**
@@ -33,12 +26,5 @@ class RequestException extends Exception
         return $this->status_code;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getExtraData()
-    {
-        return $this->extra_data;
-    }
 
 }

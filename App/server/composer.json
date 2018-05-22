@@ -12,7 +12,8 @@
         "slim/slim": "^3.0",
         "phpmailer/phpmailer": "^6.0",
         "firebase/php-jwt": "^5.0",
-        "nesbot/carbon": "^1.27"
+        "nesbot/carbon": "^1.27",
+        "monolog/monolog": "^1.23"
     },
     "autoload":{
         "psr-4": {

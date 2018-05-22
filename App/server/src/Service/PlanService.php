@@ -4,6 +4,7 @@ use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
+
 use App\Model\DataResult;
 use App\Persistence\PlansPeristence;
 use App\Utils;
@@ -83,13 +84,7 @@ class PlanService{
      * @throws ConflictException
      */
     public function updatePlan($planId, $year){
-        $result = $this->isPlanExist_ById( $planId );
-
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("Error al obtener plan por ID", $result->getErrorMessage());
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe plan");
+        $result = $this->getPlan_ById( $planId );
 
         //Comprobando que no exista año
         $result = $this->isPlanExist_ByYear( $year );

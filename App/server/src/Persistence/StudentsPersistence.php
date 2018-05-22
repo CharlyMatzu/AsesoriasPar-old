@@ -25,7 +25,8 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @param $id int
-     * @return \Model\DataResult
+     *
+     * @return \App\Model\DataResult
      */
     public function getStudent_ById($id){
         $query =    $this->SELECT."
@@ -36,7 +37,7 @@ class StudentsPersistence extends Persistence{
     }
 
     /**
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function getStudents(){
         $query =    $this->SELECT."
@@ -55,7 +56,7 @@ class StudentsPersistence extends Persistence{
 
 //    /**
 //     * @param $id int
-//     * @return \Model\DataResult
+//     * @return \App\Model\DataResult
 //     */
 //    public function getStudent_ByUserId( $id ){
 //        $query = $this->SELECT."
@@ -132,7 +133,7 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @param $student Student
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function insertStudent( $student ){
         $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career)
@@ -148,7 +149,7 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @param $student Student
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function updateStudent( $student ){
         $query = "UPDATE  student s 
@@ -163,7 +164,7 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @param $idStudent
-     * @return \Model\DataResult
+     * @return \App\Model\DataResult
      */
     public function changeStatusToDeleted($idStudent ){
         $query = "UPDATE student s

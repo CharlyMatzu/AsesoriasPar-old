@@ -4,9 +4,9 @@ use App\Utils;
 
 class NotFoundException extends RequestException
 {
-    public function __construct($message = "", $details = null)
+    public function __construct($message = "")
     {
-        parent::__construct($message, Utils::$NOT_FOUND, $details);
+        parent::__construct($message, Utils::$NOT_FOUND);
     }
 
 }
