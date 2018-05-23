@@ -29,6 +29,17 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
+     * @param $periodId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdvisories_ByPeriod($periodId){
+        $query = $this->SELECT.
+            "WHERE h.fk_period = $periodId";
+        return self::executeQuery($query);
+    }
+
+    /**
      * @param $id int
      *
      * @return \App\Model\DataResult
@@ -55,32 +66,43 @@ class AdvisoriesPersistence extends Persistence{
                     FROM advisory_schedule ads
                     INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
                     INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
-                    WHERE ads.fk_advisory = $advisoryId";
+                    WHERE ads.fk_advisory = $advisoryId ";
         return self::executeQuery($query);
     }
-
 
 
     /**
+     * Obtiene todas las asesorias donde este relacionado
+     * @param $studentId int
      * @param $periodId int
-     *
      * @return \App\Model\DataResult
      */
-    public function getAdvisories_ByPeriod($periodId){
-        $query = $this->SELECT.
-                "WHERE h.fk_period = $periodId";
+    public function getAdvisories_ByStuden_ByPeriod($studentId, $periodId){
+        $query = $this->SELECT
+            ."";
         return self::executeQuery($query);
     }
 
-
-    public function getAdvisories_ByAdviser_ByPeriod($studentId){
+    /**
+     * Obtiene asesorias donde es asesor
+     * @param $studentId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdvisories_ByAdviser_ByPeriod($studentId, $periodId){
         $query = $this->SELECT
             ."";
         return self::executeQuery($query);
     }
 
 
-    public function getAdvisories_ByStudent_ByPeriod($studentId){
+    /**
+     * Obtiene asesorias donde es alumno
+     * @param $studentId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdvisories_ByAlumn_ByPeriod($studentId, $periodId){
         $query = $this->SELECT
             ."";
         return self::executeQuery($query);

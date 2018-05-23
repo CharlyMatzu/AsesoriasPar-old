@@ -36,6 +36,25 @@ class InputParamsMiddelware extends Middelware
         return $res;
     }
 
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkParam_Advisory($req, $res, $next)
+    {
+        $advisory = $this->getRouteParams($req)['advisory'];
+        //Verifica que sea un string numerico (no int porque viene como string)
+        if( !is_numeric($advisory) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
     /**
      * Verifica que el parametro enviado sea un valor valido
      * @param $req Request

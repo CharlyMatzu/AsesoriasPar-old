@@ -109,7 +109,7 @@ class StudentController
         try {
             $studentSer = new StudentService();
             $student_id = $params['id'];
-            $result = $studentSer->getCurrentSchedule( $student_id );
+            $result = $studentSer->getCurrentStudentSchedule_ById( $student_id );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
@@ -135,6 +135,31 @@ class StudentController
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
+
+
+    //-----------------------
+    // ADVISORIES
+    //-----------------------
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function getCurrentAdvisories_ByStudentId($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $student_id = $params['id'];
+            $result = $studentSer->getCurrentAdvisories_ByStudentId( $student_id );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 
 
 }

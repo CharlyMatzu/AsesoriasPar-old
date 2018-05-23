@@ -323,10 +323,28 @@ $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects'
 $app->get('/advisories', 'AdvisoryController:getCurrentAdvisories')
         ->add(AuthMiddelware::class);
 
-$app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById');
-$app->post('/advisories', 'AdvisoryController:createAdvisory');
-$app->put('/advisories/{id}', 'AdvisoryController:updateAdvisory');
-$app->delete('/advisories/{id}', 'AdvisoryController:deleteAdvisory');
+
+$app->get('/student/{id}/advisories', 'StudentController:getCurrentAdvisories_ByStudentId')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+$app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+
+$app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+
+
+
+
+
+//$app->post('/advisories', 'AdvisoryController:createAdvisory');
+//$app->put('/advisories/{id}', 'AdvisoryController:updateAdvisory');
+//$app->delete('/advisories/{id}', 'AdvisoryController:deleteAdvisory');
 
 
 

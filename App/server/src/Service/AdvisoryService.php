@@ -3,6 +3,7 @@
 
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
+use App\Exceptions\NotFoundException;
 use App\Utils;
 use Carbon\Carbon;
 
@@ -39,12 +40,68 @@ class AdvisoryService
         return $result->getData();
     }
 
-    public function getAdvisory_ById($id){
-        $advisory = $this->perAsesorias->getAdvisory_ById($id);
+    /**
+     * @param $student_id int
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getCurrentAdvisories_ByStudent($student_id)
+    {
+        $periodService = new PeriodService();
+        $period = $periodService->getCurrentPeriod();
+
+        $result = $this->perAsesorias->getAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getCurrentAdvisory_ByStudent",
+                "Error al obtener asesorias de estudiante", $result->getErrorMessage());
+        else if( Utils::isError( $result->getOperation() ) )
+            throw new NoContentException();
+
+        return $result->getData();
     }
 
+
+
+    /**
+     * @param $id int
+     *
+     * @return mixed
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getAdvisory_ById($id){
+        $result = $this->perAsesorias->getAdvisory_ById($id);
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getAdvisory_ById",
+                "Error al obtener asesoria", $result->getErrorMessage());
+        else if( Utils::isError( $result->getOperation() ) )
+            throw new NotFoundException("No existe asesorias");
+
+        return $result->getData()[0];
+    }
+
+
+    /**
+     * @param $id int
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
     public function getAdvisoryHours_ById($id){
-        $hours = $this->perAsesorias->getAdvisoryHours_ById($id);
+        $result = $this->perAsesorias->getAdvisoryHours_ById($id);
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getAdvisoryHours_ById",
+                "Error al obtener horas de asesoria", $result->getErrorMessage());
+        else if( Utils::isError( $result->getOperation() ) )
+            throw new NotFoundException("No existe asesorias");
+
+        return $result->getData();
+
     }
 
 //

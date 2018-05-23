@@ -151,7 +151,7 @@ class StudentService{
      * @return array
      * @throws RequestException
      */
-    public function getCurrentSchedule($studentId)
+    public function getCurrentStudentSchedule_ById($studentId)
     {
         //TODO: mover todo a un método en ScheduleService
 
@@ -218,6 +218,27 @@ class StudentService{
         //se envia a registrar horario
         $scheduleService = new ScheduleService();
         $scheduleService->insertSchedule( $studentId, $schedule_hours );
+    }
+
+
+    //----------------------- ADVISORIES
+
+    /**
+     * @param $student_id int
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws NoContentException
+     */
+    public function getCurrentAdvisories_ByStudentId($student_id)
+    {
+        //Se comprueba existencia de alumno
+        $this->getStudent_ById( $student_id );
+
+        //Se obtiene periodo actual
+        $scheduleService = new ScheduleService();
+        return $scheduleService->getCurrentSchedule_ByStudentId( $student_id );
     }
 
 
