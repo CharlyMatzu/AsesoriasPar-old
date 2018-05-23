@@ -270,11 +270,18 @@ $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
     ->add(AuthMiddelware::class);
 
 
+$app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeScheduleStatus')
+    ->add('InputMiddelware:checkData_schedule_Status')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+
 //-------------------ESTUDIANTE
 
 $app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
+
 
 //TODO: obtener horario especifico de alumno
 
@@ -291,13 +298,14 @@ $app->post('/students/{id}/schedule/{schedule}/subjects', 'StudentController:add
         ->add(AuthMiddelware::class);
 
 
+//TODO: mover a schedule con ruta corta
 $app->put('/students/{id}/schedule/{schedule}/hours', 'StudentController:updateScheduleHours')
         ->add('InputMiddelware:checkData_schedule_hours')
         ->add('InputMiddelware:checkParam_Schedule')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-
+//TODO: mover a schedule con ruta corta
 $app->put('/students/{id}/schedule/{schedule}/subjects', 'StudentController:updateScheduleSubjects')
         ->add('InputMiddelware:checkData_schedule_subjects')
         ->add('InputMiddelware:checkParam_Schedule')
@@ -305,16 +313,17 @@ $app->put('/students/{id}/schedule/{schedule}/subjects', 'StudentController:upda
         ->add(AuthMiddelware::class);
 
 
-//TODO: validacion de materias de horario
+//TODO: validacion de materias de horario (admin)
 //TODO: agregar: deshabilitar/habilitar horario
-//TODO: agregar: eliminar
-//TODO: agregar: actualizar horas/materias de horario
+//TODO: agregar: eliminar (admin)
 
 
 //--------------------------
 //  ADVISORY ROUTES
 //--------------------------
 //TODO: debe obtenerse solo materias validadas por admin
+//TODO: no debe poder solictarse la misma materia mientras una asesoria este activa con la misma
+//TODO: Al final del periodo, debe finalizarse todas las asesorias activas
 
 $app->get('/advisory', 'AdvisoryController:getAdvisorys');
 $app->get('/advisory/{id}', 'AdvisoryController:getAdvisory_ById');

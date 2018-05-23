@@ -1,0 +1,5 @@
+[2018-05-23 10:12:36] App\Service\ScheduleService:updateScheduleHours.ERROR: Error al registrar transaccion -->  [] []
+[2018-05-23 10:28:46] App\Service\ScheduleService:updateScheduleSubjects.ERROR: No existe materia -->  [] []
+[2018-05-23 10:29:15] App\Service\ScheduleService:updateScheduleSubjects.ERROR: No existe materia -->  [] []
+[2018-05-23 10:29:37] App\Service\ScheduleService:updateScheduleSubjects.ERROR: No existe materia -->  [] []
+[2018-05-23 10:29:58] App\Service\ScheduleService:updateScheduleSubjects.ERROR: No existe materia -->  [] []

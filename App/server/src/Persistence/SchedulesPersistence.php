@@ -67,9 +67,9 @@ class SchedulesPersistence extends Persistence{
     public function getScheduleHours_ByScheduleId( $scheduleid, $orderType ){
         $query = "SELECT
                         sdh.schedule_dh_id as 'id',
+                        sdh.fk_day_hour as 'day_hour_id',
                         dh.day as 'day',
-                        TIME_FORMAT(dh.hour, '%H:%i') as 'hour',
-                        sdh.fk_day_hour as 'day_hour_id'
+                        TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
                     WHERE sdh.fk_schedule = $scheduleid
@@ -82,16 +82,19 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param int $scheduleid
      * @return \App\Model\DataResult
+     * TODO: solo materias habilitadas
      */
     public function getScheduleSubjects_ById($scheduleid)
     {
         $query = "SELECT
                   ss.schedule_subject_id as 'id',
-                  s.name as 'subject',
-                  s.status as 'status'
+                  s.subject_id as 'subject_id',
+                  s.name as 'subject_name',
+                  ss.status as 'status'
+                  
                 FROM schedule_subjects ss
                 INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                WHERE ss.fk_schedule = $scheduleid";
+                WHERE ss.fk_schedule = $scheduleid AND s.status = ".Utils::$STATUS_ENABLE;
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -173,6 +176,34 @@ class SchedulesPersistence extends Persistence{
         //Obteniendo resultados
         return self::executeQuery($query);
     }
+
+
+    /**
+     * @param $scheduleId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function disableSchedule($scheduleId)
+    {
+        $query = "UPDATE schedule
+                  SET status = ".Utils::$STATUS_DISABLE."
+                  WHERE schedule_id = $scheduleId";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $scheduleId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function enableSchedule($scheduleId)
+    {
+        $query = "UPDATE schedule
+                  SET status = ".Utils::$STATUS_ENABLE."
+                  WHERE schedule_id = $scheduleId";
+        return  self::executeQuery($query);
+    }
+
 
     /**
      * @param $hdId int

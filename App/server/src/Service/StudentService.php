@@ -264,6 +264,7 @@ class StudentService{
      *
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws NoContentException
      */
     public function updateScheduleSubjects($studentId, $scheduleId, $subjects)
     {

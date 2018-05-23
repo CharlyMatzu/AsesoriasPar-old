@@ -18,7 +18,7 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $result = $scheduleService->getSchedule_ById( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Horario", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -35,7 +35,7 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $result = $scheduleService->getHoursAndDays();
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Horas y dias disponibles", $result );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -43,19 +43,23 @@ class ScheduleController
     }
 
 
-
     /**
      * @param $req Request
      * @param $res Response
+     * @param $params array
+     *
+     * @return Response
      */
-    public function createSchedule($req, $res){}
+    public function changeScheduleStatus($req, $res, $params){
+        try {
+            $scheduleService = new ScheduleService();
+            $scheduleService->changeSchedyleStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Modificaco estado de horario");
 
-
-    /**
-     * @param $req Request
-     * @param $res Response
-     */
-    public function updateSchedule($req, $res){}
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**
