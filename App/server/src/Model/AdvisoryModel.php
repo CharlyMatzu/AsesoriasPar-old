@@ -1,6 +1,6 @@
 <?php namespace App\Model;
 
-    class Advisory{
+    class AdvisoryModel{
 
         private $id;
         private $register_date;

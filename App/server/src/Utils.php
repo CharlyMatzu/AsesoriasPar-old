@@ -9,6 +9,7 @@ class Utils
     public static $STATUS_DISABLE = 0;
     public static $STATUS_NO_CONFIRM = 1;
     public static $STATUS_ENABLE = 2;
+    public static $STATUS_PENDING = 3;
 
 
     public static $ROLE_ADMIN = "admin";

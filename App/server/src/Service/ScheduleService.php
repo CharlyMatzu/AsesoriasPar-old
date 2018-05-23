@@ -217,7 +217,6 @@ class ScheduleService{
      * TODO: mover la transaccion hacia metodo padre
      */
     public function insertScheduleSubjects($scheduleid, $newSubjects){
-        //TODO: verificar que materia no este registrada en horario
 
         if( !SchedulesPersistence::initTransaction() )
             throw new InternalErrorException(static::class."InsertScheduleSubjects", "Error al iniciar tranasaccion");
@@ -230,10 +229,11 @@ class ScheduleService{
             throw new InternalErrorException(static::class."InsertScheduleSubjects", "Se detuvo insercion de materias");
         }
 
-        $subjectService = new SubjectService();
+
         foreach ($newSubjects as $sub ){
 
             //TODO: Comprueba si materia existe
+//            $subjectService = new SubjectService();
 //            try{
 //                $subjectService->getSubject_ById( $sub );
 //            }catch (RequestException $e){
@@ -243,13 +243,16 @@ class ScheduleService{
 
             //Si la materia no existe en el horario actual, se agrega
             if( !$this->isSubjectInArray($sub, $subjects) ){
+
                 //TODO: Cuando sea registrado, se debe enviar correo a admin avisando de un nuevo asesor
                 //TODO: cada nueva materia debe ponerse en estatus de no confirmado
+
                 $result = $this->schedulesPer->insertScheduleSubjects( $scheduleid, $sub );
                 if( Utils::isError( $result->getOperation() ) ) {
                     SchedulesPersistence::rollbackTransaction();
                     throw new InternalErrorException(static::class."insertScheduleSubjects", "Error al registrar materia de horario", $result->getErrorMessage());
                 }
+
             }
         }
 
@@ -354,7 +357,8 @@ class ScheduleService{
             $this->insertScheduleHours( $scheduleId, $newHours );
         }catch (RequestException $e){
 //            SchedulesPersistence::rollbackTransaction();
-            throw new InternalErrorException(static::class.":updateScheduleHours", $e->getMessage());
+            throw new InternalErrorException(static::class.":updateScheduleHours",
+                "Se detuvo actualizacion de horas de horario", $e->getMessage());
         }
 
 
@@ -401,13 +405,24 @@ class ScheduleService{
     public function updateScheduleSubjects($scheduleId, $newSubjects)
     {
         //Comprobando si existe horario
-        $this->getSchedule_ById( $scheduleId );
+        try{
+            $this->getSchedule_ById( $scheduleId );
+        }catch (InternalErrorException $e){
+            throw new InternalErrorException(static::class.":updateScheduleSubjects",
+                "se detuvo actualizacion de materias", $e->getMessage());
+        }
 
         //Se debe agregar las nuevas materias
         // las que ya no estan deben deshabilitarse
         //Si hay asesorias activas asociadas a esa materia, deben finalizarse y notificar a admin y a alumnos
         //---Se obtienen horas y dias
-        $subjects = $this->getScheduleSubjects_ById( $scheduleId );
+        $subjects = array();
+        try{
+            $this->getScheduleSubjects_ById( $scheduleId );
+        }catch (InternalErrorException $e){
+            throw new InternalErrorException(static::class.":updateScheduleSubjects",
+                "se detuvo actualizacion de materias", $e->getMessage());
+        }
 
         $trans = SchedulesPersistence::initTransaction();
         if( !$trans )
@@ -511,7 +526,7 @@ class ScheduleService{
 
     /**
      * @param $subject_id int
-     * @param $subjects array
+     * @param $subjects array|\mysqli_result
      *
      * @return bool
      */

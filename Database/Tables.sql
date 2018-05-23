@@ -103,26 +103,6 @@ CREATE TABLE student(
 );
 
 
-CREATE TABLE advisory_request(
-	advisory_id  	BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status   TINYINT NOT NULL DEFAULT 2,
-	
-	-- llaves foraneas
-	fk_adviser BIGINT,
-	FOREIGN KEY (fk_adviser) REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
-
-	fk_student BIGINT NOT NULL,
-	FOREIGN KEY (fk_student) REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
-
-	fk_subject BIGINT NOT NULL,
-	FOREIGN KEY (fk_subject) REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
-	
-);
-
-
-
-
 CREATE TABLE day_and_hour (
 	day_hour_id 		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	hour 		TIME NOT NULL,
@@ -161,7 +141,6 @@ CREATE TABLE schedule_days_hours(
 
 CREATE TABLE schedule_subjects(
 	schedule_subject_id			BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	approved 		TINYINT NOT NULL DEFAULT 0 COMMENT '0 = NO, 1 = SI',
 	date_register   TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	status			TINYINT NOT NULL DEFAULT 1,
 	
@@ -170,4 +149,35 @@ CREATE TABLE schedule_subjects(
 	FOREIGN KEY (fk_schedule) REFERENCES schedule(schedule_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	fk_subject  BIGINT NOT NULL,
 	FOREIGN KEY (fk_subject) REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE advisory_request(
+	advisory_id  	BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	status   TINYINT NOT NULL DEFAULT 3,
+	
+	-- llaves foraneas
+	fk_adviser BIGINT,
+	FOREIGN KEY (fk_adviser) REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
+
+	fk_student BIGINT NOT NULL,
+	FOREIGN KEY (fk_student) REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
+
+	-- Directamente con materia
+	fk_subject BIGINT NOT NULL,
+	FOREIGN KEY (fk_subject) REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
+	
+);
+
+CREATE TABLE advisory_schedule(
+	advisory_schedule BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	status   TINYINT NOT NULL DEFAULT 2,
+
+	-- ---------llaves foraneas
+	-- Directamente con horas
+	fk_hours BIGINT,
+	FOREIGN KEY (fk_hours) REFERENCES schedule_days_hours(schedule_dh_id) ON UPDATE CASCADE ON DELETE CASCADE
 );

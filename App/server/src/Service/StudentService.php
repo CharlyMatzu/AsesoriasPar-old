@@ -220,63 +220,6 @@ class StudentService{
         $scheduleService->insertSchedule( $studentId, $schedule_hours );
     }
 
-    /**
-     * @param $studentId
-     * @param $schedule_subjects
-     *
-     * @throws InternalErrorException
-     * @throws RequestException
-     */
-    public function addScheduleSubjects_current($studentId, $schedule_subjects )
-    {
-        //Se comprueba existencia de horario
-        $schedule = $this->getCurrentSchedule( $studentId );
-
-        //se envia a registrar horario
-        $scheduleService = new ScheduleService();
-        $scheduleService->insertScheduleSubjects($schedule['id'], $schedule_subjects );
-    }
-
-
-    /**
-     * @param $studentId int
-     * @param $scheduleId int
-     * @param $hours array
-     *
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     * @throws NoContentException
-     */
-    public function updateScheduleHours($studentId, $scheduleId, $hours)
-    {
-        $this->getStudent_ById($studentId);
-
-        //se envia a registrar horario
-        $scheduleService = new ScheduleService();
-        $scheduleService->updateScheduleHours( $scheduleId, $hours );
-    }
-
-
-    /**
-     * @param $studentId int
-     * @param $scheduleId int
-     * @param $subjects array
-     *
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     * @throws NoContentException
-     */
-    public function updateScheduleSubjects($studentId, $scheduleId, $subjects)
-    {
-        $this->getStudent_ById($studentId);
-
-        //se envia a registrar horario
-        $scheduleService = new ScheduleService();
-        $scheduleService->updateScheduleSubjects( $scheduleId, $subjects );
-    }
-
-
-
 
 
     public static function makeStudentModel( $data ){

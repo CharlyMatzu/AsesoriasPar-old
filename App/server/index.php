@@ -247,14 +247,14 @@ $app->put('/periods/{id}', 'PeriodController:updatePeriod')
 
 
 $app->patch('/periods/{id}/status/{status}', 'PeriodController:changeStatus')
-    ->add('InputMiddelware:checkParam_Status')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_Status')
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
 
 
 $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
 
 
 //--------------------------
@@ -262,28 +262,26 @@ $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
 //--------------------------
 
 $app->get('/schedule/source', 'ScheduleController:getHoursAndDays')
-    ->add(AuthMiddelware::class);
+        ->add(AuthMiddelware::class);
 
 
 $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
-    ->add('InputMiddelware:checkParam_id')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_id')
+        ->add(AuthMiddelware::class);
 
 
 $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeScheduleStatus')
-    ->add('InputMiddelware:checkData_schedule_Status')
-    ->add('InputMiddelware:checkParam_Id')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_Status')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
 
 //-------------------ESTUDIANTE
 
-$app->get('/students/{id}/schedule', 'StudentController:getCurrentStudentSchedule_ById')
+$app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStudentId')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
-
-//TODO: obtener horario especifico de alumno
 
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
         ->add('InputMiddelware:checkData_schedule_hours')
@@ -291,24 +289,21 @@ $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
         ->add(AuthMiddelware::class);
 
 
-$app->post('/students/{id}/schedule/{schedule}/subjects', 'StudentController:addScheduleSubjects')
+$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
         ->add('InputMiddelware:checkData_schedule_subjects')
-        ->add('InputMiddelware:checkParam_Schedule')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
 
-//TODO: mover a schedule con ruta corta
-$app->put('/students/{id}/schedule/{schedule}/hours', 'StudentController:updateScheduleHours')
+
+$app->put('/schedule/{id}/hours', 'ScheduleController:updateScheduleHours')
         ->add('InputMiddelware:checkData_schedule_hours')
-        ->add('InputMiddelware:checkParam_Schedule')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-//TODO: mover a schedule con ruta corta
-$app->put('/students/{id}/schedule/{schedule}/subjects', 'StudentController:updateScheduleSubjects')
+
+$app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects')
         ->add('InputMiddelware:checkData_schedule_subjects')
-        ->add('InputMiddelware:checkParam_Schedule')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
@@ -325,11 +320,13 @@ $app->put('/students/{id}/schedule/{schedule}/subjects', 'StudentController:upda
 //TODO: no debe poder solictarse la misma materia mientras una asesoria este activa con la misma
 //TODO: Al final del periodo, debe finalizarse todas las asesorias activas
 
-$app->get('/advisory', 'AdvisoryController:getAdvisorys');
-$app->get('/advisory/{id}', 'AdvisoryController:getAdvisory_ById');
-$app->post('/advisory', 'AdvisoryController:createAdvisory');
-$app->put('/advisory/{id}', 'AdvisoryController:updateAdvisory');
-$app->delete('/advisory/{id}', 'AdvisoryController:deleteAdvisory');
+$app->get('/advisories', 'AdvisoryController:getCurrentAdvisories')
+        ->add(AuthMiddelware::class);
+
+$app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById');
+$app->post('/advisories', 'AdvisoryController:createAdvisory');
+$app->put('/advisories/{id}', 'AdvisoryController:updateAdvisory');
+$app->delete('/advisories/{id}', 'AdvisoryController:deleteAdvisory');
 
 
 
