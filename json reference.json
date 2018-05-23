@@ -53,7 +53,7 @@ SINGIN
 	"password": "123456"
 }
 
-SIGNUP
+SIGNUP/UPDATE
 { 
 	"email": "carlosrozumaa@gmail.com",
 	"password": "123456",

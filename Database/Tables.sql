@@ -34,7 +34,7 @@ CREATE TABLE career (
 	career_id 			BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name 			VARCHAR(100) NOT NULL UNIQUE,
 	short_name		VARCHAR(10) UNIQUE,
-	status			TINYINT NOT NULL DEFAULT 1, -- 0 OFF, 1 ON
+	status			TINYINT NOT NULL DEFAULT 2, -- 0 OFF, 1 ON
 	date_register   TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
@@ -44,14 +44,14 @@ CREATE TABLE period(
 	date_start 		DATE NOT NULL,
 	date_end	 		DATE NOT NULL,
 	date_register   TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status    TINYINT NOT NULL DEFAULT 1  -- 0 OFF, 1 ON
+	status    TINYINT NOT NULL DEFAULT 2  -- 0 OFF, 1 ON
 );
 
 
 CREATE TABLE plan(
 	plan_id			BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	year 				VARCHAR(4) NOT NULL,
-	status			TINYINT NOT NULL DEFAULT 1, -- 0 OFF, 1 ON
+	status			TINYINT NOT NULL DEFAULT 2, -- 0 OFF, 1 ON
 	register_date 	TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE subject(
 	short_name      VARCHAR(10) NOT NULL,
 	description     VARCHAR(250) NULL,
 	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status			TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = Activo,
+	status			TINYINT NOT NULL DEFAULT 2, -- '0 = Inactivo, 1 = Activo,
 
 	-- Foranea	
 	fk_career BIGINT NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE student(
 	avatar 				VARCHAR(255) NULL,
 	facebook 			VARCHAR(100) NULL,
 	date_register   	TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status				TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = Activo,
+	status				TINYINT NOT NULL DEFAULT 2, -- '0 = Inactivo, 1 = Activo,
 	
 	-- llaves foraneas
 	fk_user BIGINT NOT NULL UNIQUE,
@@ -106,7 +106,7 @@ CREATE TABLE student(
 CREATE TABLE advisory_request(
 	advisory_id  	BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status   TINYINT NOT NULL DEFAULT 1,
+	status   TINYINT NOT NULL DEFAULT 2,
 	
 	-- llaves foraneas
 	fk_adviser BIGINT,
@@ -134,7 +134,7 @@ CREATE TABLE day_and_hour (
 CREATE TABLE schedule(
 	schedule_id 			BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date_register   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status			TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = Activo,
+	status			TINYINT NOT NULL DEFAULT 2, -- '0 = Inactivo, 1 = Activo,
 	
 	-- Foranea
 	fk_student 	BIGINT NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE schedule(
 
 CREATE TABLE schedule_days_hours(
 	schedule_dh_id 	BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	status	TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = Activo,
+	status	TINYINT NOT NULL DEFAULT 2,
 
 	-- Foreaneas
 	fk_day_hour INT NOT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE schedule_subjects(
 	schedule_subject_id			BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	approved 		TINYINT NOT NULL DEFAULT 0 COMMENT '0 = NO, 1 = SI',
 	date_register   TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	status			TINYINT NOT NULL DEFAULT 1, -- '0 = Inactivo, 1 = Activo,
+	status			TINYINT NOT NULL DEFAULT 1,
 	
 	-- Foranea	
 	fk_schedule BIGINT NOT NULL,

@@ -46,6 +46,43 @@ class UserController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function getUsersByStatus($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->getUsersByStatus( $params['status'] );
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function searchUsersByEmail($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->searchUserByEmail( $params['email'] );
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
 
     /**
      * @param $req Request

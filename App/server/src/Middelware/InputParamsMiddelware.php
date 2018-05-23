@@ -69,7 +69,32 @@ class InputParamsMiddelware extends Middelware
         if( !is_numeric($status) || $status === "" || $status == null )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
-        if( ($status != Utils::$STATUS_ENABLE) && ($status != Utils::$STATUS_DISABLE) )
+        if( ($status != Utils::$STATUS_ENABLE) &&
+            ($status != Utils::$STATUS_DISABLE) &&
+            ($status != Utils::$STATUS_NO_CONFIRM) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkParam_Email($req, $res, $next)
+    {
+        $email = $this->getRouteParams($req)['email'];
+        //Verifica que sea un string numerico (no int porque viene como string)
+        if( empty($email) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+
+        //Si no es un correo valido
+        if( !preg_match(Utils::EXPREG_EMAIL, $email) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
         $res = $next($req, $res);

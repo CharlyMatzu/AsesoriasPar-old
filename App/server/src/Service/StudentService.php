@@ -53,6 +53,25 @@ class StudentService{
     }
 
     /**
+     * @param $student_data string
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function searchStudents_ByData($student_data)
+    {
+        $result = $this->perStudents->searchStudents( $student_data );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class.":searchStudents_ByData","Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No hay estudiantes");
+
+        return $result->getData();
+    }
+
+    /**
      * @param $itsonId String
      * @return \App\Model\DataResult
      */
@@ -126,69 +145,6 @@ class StudentService{
     }
 
 
-//    /**
-//     * @param $student Student
-//     * @return array
-//     */
-//    public function updateStudent($student){
-//        $idUser = $student->getUser();
-//        $controlUser = new UserService();
-//
-//        $user = new User();
-//        $user->setId($idUser);
-//
-//        $result = $controlUser->insertUser($user);
-//        if ($result == false)
-//            throw new ConflictException("Usuario no existe");
-//        else if ($result == true) {
-//            $result = $this->ifUserExist($student);
-//            if ($result == true)
-//                throw new ConflictException("Estudiante ya existe");
-//            else if($result == false)
-//                $result = $this->ifExistCareer($student->getCareer());
-//            if ($result == false)
-//                throw new ConflictException("Carrera no existe");
-//            else if ($result == true) {
-//
-//                $result = $this->perStudents->updateStudent($student);
-//                if ($result['operation'] == Utils::$OPERATION_ERROR)
-//                    throw new InternalErrorException("Ocurrio un error al actualizar estudiante", $result['error']);
-//                else
-//                    return Utils::makeArrayResponse(
-//                        "Se actualizo estudiente con éxito",
-//                        'Correcto!'
-//                    );
-//            }
-//        }
-//        throw new ConflictException("Error!");
-//    }
-
-//    /**
-//     * @param $id int
-//     *
-//     * @return array
-//     * @throws ConflictException
-//     * @throws InternalErrorException
-//     */
-//    public function deleteStudent( $id )
-//    {
-//        try{
-//            $result = $this->getStudent_ById( $id );
-//        }catch (RequestException $e){
-//
-//        }
-//
-//        $result = $this->perStudents->changeStatusToDeleted( $id );
-//        if( $result['operation'] == Utils::$OPERATION_ERROR )
-//            throw new InternalErrorException("Ocurrio un error al eliminar el estudiante", $result['error']);
-//        else
-//            return Utils::makeArrayResponse(
-//                "Se elimino el estudiante con éxito",
-//                'Correcto!'
-//            );
-//    }
-
-
     /**
      * Obtiene todas las horas y dias de un horario asi como las materias
      * @param $studentId int
@@ -237,6 +193,7 @@ class StudentService{
 
         $student_schedule = [
             "id" => $schedule->getId(),
+            "status" => $schedule->getStatus(),
             "period" => $schedule->getPeriod(),
             "hours_days" => $hours_days,
             "subjects" => $subjects
@@ -281,6 +238,46 @@ class StudentService{
     }
 
 
+    /**
+     * @param $studentId int
+     * @param $scheduleId int
+     * @param $hours array
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws NoContentException
+     */
+    public function updateScheduleHours($studentId, $scheduleId, $hours)
+    {
+        $this->getStudent_ById($studentId);
+
+        //se envia a registrar horario
+        $scheduleService = new ScheduleService();
+        $scheduleService->updateScheduleHours( $scheduleId, $hours );
+    }
+
+
+    /**
+     * @param $studentId int
+     * @param $scheduleId int
+     * @param $subjects array
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function updateScheduleSubjects($studentId, $scheduleId, $subjects)
+    {
+        $this->getStudent_ById($studentId);
+
+        //se envia a registrar horario
+        $scheduleService = new ScheduleService();
+        $scheduleService->updateScheduleSubjects( $scheduleId, $subjects );
+    }
+
+
+
+
+
     public static function makeStudentModel( $data ){
         $student = new Student();
         //setting data
@@ -300,6 +297,7 @@ class StudentService{
         //Returning object
         return $student;
     }
+
 
 
 

@@ -29,6 +29,9 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
+    /**
+     * @return \App\Model\DataResult
+     */
     public function getEnableUsers()
     {
         $query = $this->SELECT.
@@ -36,10 +39,23 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
+    /**
+     * @return \App\Model\DataResult
+     */
     public function getDisabledUsers()
     {
         $query = $this->SELECT.
             "WHERE u.status = ".Utils::$STATUS_DISABLE;
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @return \App\Model\DataResult
+     */
+    public function getNoconfirmUsers()
+    {
+        $query = $this->SELECT.
+            "WHERE u.status = ".Utils::$STATUS_NO_CONFIRM;
         return  self::executeQuery($query);
     }
 
@@ -88,6 +104,13 @@ class UsersPersistence extends Persistence{
     public function getRoleUser($id){
         $query = $this->SELECT."
                 WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ENABLE;
+        return  self::executeQuery($query);
+    }
+
+    public function searchUsersByEmail($email)
+    {
+        $query = $this->SELECT."
+                WHERE u.email LIKE '%$email%'";
         return  self::executeQuery($query);
     }
 
@@ -167,6 +190,8 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
+
+
     /**
      * @param $id int
      * @return \App\Model\DataResult
@@ -177,6 +202,8 @@ class UsersPersistence extends Persistence{
                   WHERE user_id = $id";
         return  self::executeQuery($query);
     }
+
+
 
 
 }

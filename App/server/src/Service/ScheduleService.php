@@ -1,6 +1,7 @@
 <?php namespace App\Service;
 
 
+use App\AppLogger;
 use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
@@ -9,6 +10,8 @@ use App\Exceptions\RequestException;
 use App\Persistence\SchedulesPersistence;
 use App\Model\Schedule;
 use App\Utils;
+use Monolog\Logger;
+use PHPMailer\PHPMailer\Exception;
 
 class ScheduleService{
 
@@ -91,7 +94,7 @@ class ScheduleService{
 
     /**
      * @param $id int
-     * @return \mysqli_result|null
+     * @return \mysqli_result|array|null
      * @throws InternalErrorException
      * @throws NoContentException
      */
@@ -135,7 +138,12 @@ class ScheduleService{
 
         //Se obtiene periodo actual
         $periodService = new PeriodService();
-        $period = $periodService->getCurrentPeriod();
+        $period = null;
+        try{
+            $period = $periodService->getCurrentPeriod();
+        }catch (NoContentException $e){
+            throw new ConflictException( $e->getMessage() );
+        }
 
         //vericicar que no tenga periodo registrado
         try{
@@ -179,15 +187,24 @@ class ScheduleService{
 
     /**
      * @param $scheduleid int
-     * @param $hours array
+     * @param $newHours array
      *
      * @throws InternalErrorException
+     * @throws NoContentException
      */
-    public function insertScheduleHours($scheduleid, $hours){
-        foreach ( $hours as $hour ){
-            $result = $this->schedulesPer->insertScheduleHours( $scheduleid, $hour );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class, "Error al registrar horas de horario", $result->getErrorMessage());
+    public function insertScheduleHours($scheduleid, $newHours){
+
+        //Se obtiene horas actuales
+        $hours = $this->getScheduleHoursAndDays_ById( $scheduleid );
+
+        foreach ($newHours as $h ){
+            //Si no exsiste, se agrega
+            if( !in_array($h, $hours) ){
+                $result = $this->schedulesPer->insertScheduleHours( $scheduleid, $h );
+                if( Utils::isError( $result->getOperation() ) )
+                    throw new InternalErrorException(static::class, "Error al registrar horas de horario", $result->getErrorMessage());
+            }
+            //Si ya exite, no se hace nada
         }
     }
 
@@ -204,6 +221,7 @@ class ScheduleService{
         if( !SchedulesPersistence::initTransaction() )
             throw new InternalErrorException(static::class."InsertScheduleSubjects", "Error al iniciar tranasaccion");
 
+        //TODO: no debe repetirse
         $subjectService = new SubjectService();
         foreach ( $subjects as $sub ){
             //Comprueba si materia existe
@@ -214,6 +232,7 @@ class ScheduleService{
                 throw new RequestException( $e->getMessage(), $e->getStatusCode() );
             }
 
+            //TODO: Cuando sea registrado, se debe enviar correo a admin avisando de un nuevo asesor
             $result = $this->schedulesPer->insertScheduleSubjects( $scheduleid, $sub );
             if( Utils::isError( $result->getOperation() ) ) {
                 SchedulesPersistence::rollbackTransaction();
@@ -224,152 +243,6 @@ class ScheduleService{
         if( !SchedulesPersistence::commitTransaction() )
             throw new InternalErrorException(static::class."InsertScheduleSubjects","Error al registrar tranasaccion");
     }
-
-
-
-
-
-//    //------------------------ REGISTRO DE HORARIO
-//
-//    /**
-//     * @param $idStudent
-//     * @param $hours
-//     * @param $subjects
-//     * @return array
-//     */
-//    public function insertStudentSchedule( $idStudent, $hours, $subjects ){
-//
-//        //Iniciamos transaccion
-//        //TODO: Agregar verificacion
-//        SchedulesPersistence::initTransaction();
-//
-//        $result = $this->getCurrentPeriod();
-//        if( $result === 'error' ){
-//            return Functions::makeArrayResponse(
-//                'error',
-//                'period',
-//                "No se pudo obtener el ciclo actual"
-//            );
-//        }
-//        else if( $result === null ){
-//            return Functions::makeArrayResponse(
-//                false,
-//                'period',
-//                "No hay un ciclo actual disponible"
-//            );
-//        }
-//        //Se guarda id del ciclo actual
-//        $cycleid = $result['id'];
-//        //Verificamos que no tenga un schedule
-//        $result = $this->haveStudentCurrSchedule($idStudent);
-//        if( $result === 'error' ){
-//            return Functions::makeArrayResponse(
-//                'error',
-//                'schedule',
-//                "No se pudo verificar existencia de schedule del student"
-//            );
-//        }
-//        //Si ya tiene un schedule registrado en el ciclo actual
-//        else if( $result === true ){
-//            return Functions::makeArrayResponse(
-//                false,
-//                'schedule',
-//                "Student ya tiene un schedule registrado"
-//            );
-//        }
-//
-//
-//        //------------REGISTRO DE HORARIO
-//
-//        //Verificamos que usuario exista
-//        $conStudents = new StudentControl();
-//        $result = $conStudents->isStudentExist_ById( $idStudent );
-//        if( $result === 'error' ){
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                'error',
-//                'student',
-//                "No se pudo verificar student"
-//            );
-//        }
-//        else if( $result === null ){
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                false,
-//                'student',
-//                "Student no existe"
-//            );
-//        }
-//
-//
-//        //---------HORARIO
-//        $result = $this->schedulesPer->insertSchedule( $idStudent, $cycleid );
-//        if( !$result ) {
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                'error',
-//                'schedule',
-//                "Ocurrio un error al registrar schedule"
-//            );
-//        }
-//
-//        //Se obtiene schedule (la referencia principal) del student
-//        $result = $this->getCurrentScheduleMain_ByStudentId($idStudent);
-//        if( $result === 'error' ){
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                false,
-//                'schedule',
-//                "No se pudo obtener schedule registrado"
-//            );
-//        }
-//        else if( $result === null ){
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                "error",
-//                'schedule',
-//                "No se encontro schedule registrado del student"
-//            );
-//        }
-//        //Se saca id del schedule
-//        $idSchedule = $result['id'];
-//
-//        //---------HORAS
-//        //Se registran horas
-//        //TODO: verificar las horas antes de registrar
-//        $result = $this->schedulesPer->insertScheduleHours( $idSchedule, $hours );
-//        if( !$result ) {
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                'error',
-//                'hours',
-//                "No se pudieron registrar las horas del schedule"
-//            );
-//        }
-//
-//        //---------MATERIAS
-//        //TODO: vericicar las materias antes de registrar
-//        $result = $this->schedulesPer->insertScheduleSubjects( $idSchedule, $subjects );
-//        if( !$result ) {
-//            SchedulesPersistence::rollbackTransaction();
-//            return Functions::makeArrayResponse(
-//                'error',
-//                'subjects',
-//                "No se pudieron registrar las materias del schedule"
-//            );
-//        }
-//
-//        //Si el registro resulto éxitoso
-//
-//        //Si sale bien
-//        SchedulesPersistence::commitTransaction();
-//        return Functions::makeArrayResponse(
-//            true,
-//            static::class,
-//            "Se registro schedule con éxito"
-//        );
-//    }
-
 
 
 //    public function getCurrAvailSchedules_SkipStudent($subjectId, $studentId){
@@ -405,6 +278,7 @@ class ScheduleService{
         $schedule->setPeriod( $s['period_id'] );
         $schedule->setStudent( $s['student_id'] );
         $schedule->setRegisterDate( $s['register_date'] );
+        $schedule->setStatus( $s['status'] );
 
         return $schedule;
     }
@@ -420,7 +294,180 @@ class ScheduleService{
         return $hoursAndDays;
     }
 
+    /**
+     * @param $scheduleId int
+     * @param $newHours array
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws NoContentException
+     */
+    public function updateScheduleHours($scheduleId, $newHours)
+    {
+        //Comprobando si existe horario
+        $this->getSchedule_ById( $scheduleId );
+
+        //Se debe agregar las nuevas horas
+        // las que ya no estan deben deshabilitarse
+        //Si hay asesorias activas asociadas a esa hora, deben finalizarse y notificar a admin y a alumnos
+
+        //---Se obtienen horas y dias
+        $hours = $this->getScheduleHoursAndDays_ById( $scheduleId );
+
+        $trans = SchedulesPersistence::initTransaction();
+        if( !$trans )
+            throw new InternalErrorException(static::class.":updateScheduleHours", "Error al iniciar transaccion");
+
+        //Se comparan cuales ya no estan para deshabilitar
+        //NOTA: se le puede poner un try/catch para que continue a pesar del error
+
+        try{
+            foreach ( $hours as $hu ){
+                //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
+                if( !in_array($hu['id'], $newHours) ){
+                    $this->disableHour($hu['id']);
+                }
+                //si exta ya existe, se habilita
+                else{
+                    $this->enableHour($hu['id']);
+                }
+            }
+        }catch (RequestException $e){
+            SchedulesPersistence::rollbackTransaction();
+            throw new InternalErrorException(static::class.":updateScheduleHours", $e->getMessage());
+        }
+
+        //Se registran horas
+        try{
+            $this->insertScheduleHours( $scheduleId, $newHours );
+        }catch (RequestException $e){
+            SchedulesPersistence::rollbackTransaction();
+            throw new InternalErrorException(static::class.":updateScheduleHours", $e->getMessage());
+        }
 
 
+        $trans = SchedulesPersistence::commitTransaction();
+        if( !$trans )
+            throw new InternalErrorException(static::class.":updateScheduleHours", "Error al registrar transaccion");
+
+    }
+
+
+    /**
+     * @param $scheduleId int
+     * @param $newSubjects array
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function updateScheduleSubjects($scheduleId, $newSubjects)
+    {
+        //Comprobando si existe horario
+        $this->getSchedule_ById( $scheduleId );
+
+        //Se debe agregar las nuevas materias
+        // las que ya no estan deben deshabilitarse
+        //Si hay asesorias activas asociadas a esa materia, deben finalizarse y notificar a admin y a alumnos
+        //---Se obtienen horas y dias
+        $subjects = $this->getScheduleSubjects_ById( $scheduleId );
+
+        $trans = SchedulesPersistence::initTransaction();
+        if( !$trans )
+            throw new InternalErrorException(static::class.":updateScheduleSubjects", "Error al iniciar transaccion");
+
+        //Se comparan cuales ya no estan para deshabilitar
+        //NOTA: se le puede poner un try/catch para que continue a pesar del error
+
+        try{
+            foreach ( $subjects as $sub ){
+                //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
+                if( !in_array($sub['id'], $newSubjects) ){
+                    $this->disableSubjec($sub['id']);
+                }
+                //si exta ya existe, se habilita
+                else{
+                    $this->enableSubject($sub['id']);
+                }
+            }
+        }catch (RequestException $e){
+            SchedulesPersistence::rollbackTransaction();
+            throw new InternalErrorException(static::class.":updateScheduleSubjects", $e->getMessage());
+        }
+
+        //Se registran horas
+        try{
+            $this->insertScheduleSubjects( $scheduleId, $newSubjects );
+        }catch (RequestException $e){
+            SchedulesPersistence::rollbackTransaction();
+            throw new InternalErrorException(static::class.":updateScheduleSubjects", $e->getMessage());
+        }
+
+
+        $trans = SchedulesPersistence::commitTransaction();
+        if( !$trans )
+            throw new InternalErrorException(static::class.":updateScheduleHours", "Error al registrar transaccion");
+    }
+
+
+    //-----------------HORAS
+
+    /**
+     * @param $hourId int
+     *
+     * @throws InternalErrorException
+     */
+    private function disableHour($hourId)
+    {
+        //TODO: notificar a usuarios asociados
+        $result = $this->schedulesPer->disableScheduleHour($hourId);
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( static::class.":disableHour",
+                "Error al deshabilitar hora de horario: $hourId", $result->getErrorMessage() );
+
+    }
+
+    /**
+     * @param $hourId INT
+     *
+     * @throws InternalErrorException
+     */
+    private function enableHour($hourId)
+    {
+        $result = $this->schedulesPer->enableScheduleHour($hourId);
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( static::class.":enableHour",
+                "Error al habilitar hora de horario: $hourId", $result->getErrorMessage() );
+    }
+
+
+    //------------------MATERIAS
+
+    /**
+     * @param $subId int
+     *
+     * @throws InternalErrorException
+     */
+    private function disableSubjec($subId)
+    {
+        //TODO: notificar a usuarios asociados
+        $result = $this->schedulesPer->disableScheduleSubject($subId);
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( static::class.":disableSubject",
+                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+
+    }
+
+    /**
+     * @param $subId INT
+     *
+     * @throws InternalErrorException
+     */
+    private function enableSubject($subId)
+    {
+        $result = $this->schedulesPer->enableScheduleSubject($subId);
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( static::class.":enableSubject",
+                "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
+    }
 
 }

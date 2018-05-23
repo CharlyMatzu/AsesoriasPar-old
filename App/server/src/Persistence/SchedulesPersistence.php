@@ -1,6 +1,7 @@
 <?php namespace App\Persistence;
 
 use App\Model\Schedule;
+use App\Utils;
 
 class SchedulesPersistence extends Persistence{
 
@@ -8,6 +9,7 @@ class SchedulesPersistence extends Persistence{
 
     private $SELECT = "SELECT
                             s.schedule_id as 'id',
+                            s.status as 'status',
                             s.date_register 'register_date',
                             s.fk_period as 'period_id',
                             s.fk_student as 'student_id'
@@ -170,6 +172,59 @@ class SchedulesPersistence extends Persistence{
                   ORDER BY day_number";
         //Obteniendo resultados
         return self::executeQuery($query);
+    }
+
+    /**
+     * @param $hdId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function disableScheduleHour($hdId)
+    {
+        $query = "UPDATE schedule_days_hours
+                  SET status = ".Utils::$STATUS_DISABLE."
+                  WHERE schedule_dh_id = $hdId";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $hdId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function enableScheduleHour($hdId)
+    {
+        $query = "UPDATE schedule_days_hours
+                  SET status = ".Utils::$STATUS_ENABLE."
+                  WHERE schedule_dh_id = $hdId";
+        return  self::executeQuery($query);
+    }
+
+
+    /**
+     * @param $subjectId
+     *
+     * @return \App\Model\DataResult
+     */
+    public function disableScheduleSubject($subjectId)
+    {
+        $query = "UPDATE schedule_subjects
+                  SET status = ".Utils::$STATUS_DISABLE."
+                  WHERE schedule_subject_id = $subjectId";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $subjectId int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function enableScheduleSubject($subjectId)
+    {
+        $query = "UPDATE schedule_subjects
+                  SET status = ".Utils::$STATUS_ENABLE."
+                  WHERE schedule_subject_id = $subjectId";
+        return  self::executeQuery($query);
     }
 
 

@@ -48,6 +48,28 @@ class StudentController
     /**
      * @param $req Request
      * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function searchStudents($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $result = $studentSer->searchStudents_ByData( $params['student_data'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
      * @return Response
      */
     public function updateStudent($req, $res, $params)
@@ -129,6 +151,45 @@ class StudentController
             $subjects = $req->getAttribute('schedule_subjects');
             $studentSer->addScheduleSubjects_current( $params['id'], $subjects );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materias agregadas");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function updateScheduleHours($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $hours = $req->getAttribute('schedule_hours');
+            $studentSer->updateScheduleHours( $params['id'], $params['schedule'], $hours );
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Horas actualizadas");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function updateScheduleSubjects($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $subjects = $req->getAttribute('schedule_subjects');
+            $studentSer->updateScheduleSubjects( $params['id'], $params['schedule'], $subjects );
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materias actualizadas");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

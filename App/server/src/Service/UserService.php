@@ -39,22 +39,42 @@ class UserService{
             return $result->getData();
     }
 
+    public function getUsersByStatus($status)
+    {
+        if( $status == Utils::$STATUS_ENABLE ){
+            $result = $this->userPer->getEnableUsers();
 
-    /**
-     * @return \mysqli_result|null
-     * @throws InternalErrorException
-     * @throws NoContentException
-     */
-    public function getEnableUsers(){
-        $result = $this->userPer->getEnableUsers();
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NoContentException("No hay usuarios");
 
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."getEnableUsers","Ocurrio un error al obtener usuarios", $result->getErrorMessage());
-        else if( Utils::isEmpty($result->getOperation()) )
-            throw new NoContentException("No hay usuarios");
-        else
             return $result->getData();
+        }
+        else if( $status == Utils::$STATUS_DISABLE ){
+            $result = $this->userPer->getDisabledUsers();
+
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NoContentException("No hay usuarios");
+
+            return $result->getData();
+        }
+        else{
+            $result = $this->userPer->getNoconfirmUsers();
+
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NoContentException("No hay usuarios");
+
+            return $result->getData();
+        }
+
+
     }
+
 
 
     /**
@@ -115,7 +135,7 @@ class UserService{
      * @throws NoContentException
      * @return \mysqli_result
      */
-    public function getLastUser(){
+    private function getLastUser(){
         $result = $this->userPer->getUser_Last();
 
         if( Utils::isError($result->getOperation()) )
@@ -127,11 +147,13 @@ class UserService{
     }
 
 
+
+
     /**
      * @param $id
      * @return bool|DataResult
      */
-    public function isUserExist($id){
+    private function isUserExist($id){
         $result = $this->userPer->getUser_ById($id);
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
@@ -180,7 +202,27 @@ class UserService{
     }
 
 
-    public function isEmailUsed($email){
+    /**
+     * @param $email
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function searchUserByEmail($email)
+    {
+        $result = $this->userPer->searchUsersByEmail( $email );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class."searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No se encontraron usuarios");
+
+        return $result->getData();
+    }
+
+
+    private function isEmailUsed($email){
         $result = $this->userPer->getUser_ByEmail( $email );
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
@@ -462,7 +504,6 @@ class UserService{
         //Returning object
         return $user;
     }
-
 
 
 

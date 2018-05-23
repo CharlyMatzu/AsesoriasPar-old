@@ -46,6 +46,27 @@ class StudentsPersistence extends Persistence{
         return $this->executeQuery($query);
     }
 
+    /**
+     * @param $data string
+     * @return \App\Model\DataResult
+     */
+    public function searchStudents($data)
+    {
+        $query =    $this->SELECT."
+                        SELECT * FROM student s
+                        WHERE (s.first_name LIKE '%$data%') OR
+                              (s.last_name LIKE '%$data%') OR 
+                              (s.phone LIKE '%$data%') OR 
+                              (s.itson_id LIKE '%$data%')";
+        //Obteniendo resultados
+        return $this->executeQuery($query);
+    }
+
+    /**
+     * @param $itsonId
+     *
+     * @return \App\Model\DataResult
+     */
     public function getStudent_ByItsonId($itsonId){
         $query =    $this->SELECT."
                     INNER JOIN career c ON c.career_id = s.fk_career
@@ -175,4 +196,3 @@ class StudentsPersistence extends Persistence{
 
 
 }
-?>
