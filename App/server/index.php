@@ -83,7 +83,7 @@ $app->post('/users', 'UserController:createUser')
 //TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
 //Crear un usuario y un estudiante a la vez
-$app->post('/users/student', 'UserController:createUserAndStudent')
+$app->post('/users/student', 'UserController:studentSignup')
         ->add('InputMiddelware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddelware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 

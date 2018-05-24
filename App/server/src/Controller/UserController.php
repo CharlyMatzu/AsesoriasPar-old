@@ -113,7 +113,7 @@ class UserController
      * @param $res Response
      * @return Response
      */
-    public function createUserAndStudent($req, $res)
+    public function studentSignup($req, $res)
     {
         try {
             $userServ = new UserService();
