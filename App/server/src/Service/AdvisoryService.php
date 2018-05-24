@@ -1,6 +1,7 @@
 <?php namespace App\Service;
 
 
+use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
@@ -103,6 +104,68 @@ class AdvisoryService
         return $result->getData();
 
     }
+
+
+    /**
+     * @param $student_id int
+     * @param $subject int
+     *
+     * @throws ConflictException
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
+     */
+    public function insertAdvisory_CurrentPeriod($student_id, $subject)
+    {
+        //se obtiene periodo actual
+        $periodServ = new PeriodService();
+        $period = $periodServ->getCurrentPeriod();
+
+        //Se buscan asesorias activas en el mismo periodo que tengan la misma materia del mismo asesor
+        $advisories = $this->perAsesorias->getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject, $period['id']);
+        if( Utils::isError( $advisories->getOperation() ) )
+            throw new InternalErrorException(static::class.":insertAdvisory_CurrentPeriod",
+                "Error al obtener asesorias", $advisories->getErrorMessage());
+
+        $result = $this->isAdvisoryRedundant( $subject, $advisories->getData() );
+        if( $result )
+            throw new ConflictException("Ya existe asesorias con dicha materia activa");
+
+
+        //Se verifica que materia exista
+        $subjectServ = new SubjectService();
+        $subjectServ->getSubject_ById( $subject );
+
+        //Se registra asesorias
+        $result = $this->perAsesorias->insertAdvisory( $student_id, $subject, $period['id'] );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":insertAdvisory",
+                "Error al registrar asesorias", $advisories->getErrorMessage());
+    }
+
+
+
+    /**
+     * @param $subject_id int
+     * @param $advisories array|\mysqli_result
+     *
+     * @return bool
+     */
+    private function isAdvisoryRedundant($subject_id, $advisories){
+
+        //Si esta vacio, no es redundante
+        if( empty($advisories) )
+            return false;
+
+        foreach ( $advisories as $ad ){
+            //Si se encuentra una asesorias activa de la misma materia, entonces es redundante
+            if( $ad['subject_id'] == $subject_id && $ad['status'] == Utils::$STATUS_ACTIVE )
+                return true;
+        }
+
+        return false;
+    }
+
 
 //
 //    /**

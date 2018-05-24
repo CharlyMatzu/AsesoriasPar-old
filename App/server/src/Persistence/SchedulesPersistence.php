@@ -132,10 +132,11 @@ class SchedulesPersistence extends Persistence{
      * @param $subject array de materias
      *
      * @return \App\Model\DataResult
+     * TODO: status debe ser 1 para confirmar por admin
      */
     public function insertScheduleSubjects($scheduleId, $subject){
-        $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject) 
-                      VALUES ($scheduleId, $subject)";
+        $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject, status) 
+                      VALUES ($scheduleId, $subject, ".Utils::$STATUS_ACTIVE.")";
 
         return self::executeQuery($query);
     }
@@ -255,6 +256,33 @@ class SchedulesPersistence extends Persistence{
         $query = "UPDATE schedule_subjects
                   SET status = ".Utils::$STATUS_ENABLE."
                   WHERE schedule_subject_id = $subjectId";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $subject_id int
+     * @param $period_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdvisers_BySubject_ByPeriod($subject_id, $period_id)
+    {
+        $query = "SELECT
+                    s2.student_id as 'student_id',
+                    u.email,
+                    s2.first_name,
+                    s2.last_name,
+                    s2.phone,
+                    s2.itson_id,
+                    s2.avatar as 'avatar'
+                  FROM schedule s
+                  INNER JOIN student s2 ON s.fk_student = s2.student_id
+                  INNER JOIN user u ON s2.fk_user = u.user_id
+                  INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
+                  WHERE ss.fk_subject = $subject_id AND
+                        ss.status = ".Utils::$STATUS_ACTIVE." AND
+                        u.status = ".Utils::$STATUS_ACTIVE." AND
+                        s.fk_period = $period_id";
         return  self::executeQuery($query);
     }
 

@@ -75,7 +75,7 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $hours = $req->getAttribute('schedule_hours');
-            $scheduleService->updateScheduleHours( $params['schedule'], $hours );
+            $scheduleService->updateScheduleHours( $params['id'], $hours );
             return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Horas actualizadas");
 
         } catch (RequestException $e) {

@@ -128,6 +128,30 @@ class ScheduleService{
 
 
     /**
+     * @param $subject_id int
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getCurrentAdvisers_BySubject($subject_id)
+    {
+        $periodServ = new PeriodService();
+        $period = $periodServ->getCurrentPeriod();
+
+        $result = $this->schedulesPer->getAdvisers_BySubject_ByPeriod( $subject_id, $period['id'] );
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getCurrentAdvisers_BySubject",
+                "Error al obtener asesores por materias por periodo",  $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException();
+
+        return $result->getData();
+    }
+
+
+    /**
      * @param $studentId int
      * @param $schedule_hours array
      *
@@ -190,12 +214,15 @@ class ScheduleService{
      * @param $newHours array
      *
      * @throws InternalErrorException
-     * @throws NoContentException
      */
     public function insertScheduleHours($scheduleid, $newHours){
 
         //Se obtiene horas actuales
-        $hours = $this->getScheduleHoursAndDays_ById( $scheduleid );
+        $hours = array();
+        try{
+            $hours = $this->getScheduleHoursAndDays_ById( $scheduleid );
+        }catch (NoContentException $e){}
+
 
         foreach ($newHours as $h ){
             //Si no exsiste, se agrega
@@ -218,6 +245,10 @@ class ScheduleService{
      */
     public function insertScheduleSubjects($scheduleid, $newSubjects){
 
+        //Verifica que exista horario
+        $this->getSchedule_ById( $scheduleid );
+        //TODO: si horario esa deshabilitado o ya paso el periodo, no debe poder modificarse
+
         if( !SchedulesPersistence::initTransaction() )
             throw new InternalErrorException(static::class."InsertScheduleSubjects", "Error al iniciar tranasaccion");
 
@@ -227,7 +258,7 @@ class ScheduleService{
         }catch (InternalErrorException $e){
             SchedulesPersistence::rollbackTransaction();
             throw new InternalErrorException(static::class."InsertScheduleSubjects", "Se detuvo insercion de materias");
-        }
+        }catch (NoContentException $e){}
 
 
         foreach ($newSubjects as $sub ){
@@ -250,7 +281,7 @@ class ScheduleService{
                 $result = $this->schedulesPer->insertScheduleSubjects( $scheduleid, $sub );
                 if( Utils::isError( $result->getOperation() ) ) {
                     SchedulesPersistence::rollbackTransaction();
-                    throw new InternalErrorException(static::class."insertScheduleSubjects", "Error al registrar materia de horario", $result->getErrorMessage());
+                    throw new InternalErrorException(static::class.":insertScheduleSubjects", "Error al registrar materia de horario", $result->getErrorMessage());
                 }
 
             }
@@ -415,10 +446,11 @@ class ScheduleService{
         //Se debe agregar las nuevas materias
         // las que ya no estan deben deshabilitarse
         //Si hay asesorias activas asociadas a esa materia, deben finalizarse y notificar a admin y a alumnos
+
         //---Se obtienen horas y dias
         $subjects = array();
         try{
-            $this->getScheduleSubjects_ById( $scheduleId );
+            $subjects = $this->getScheduleSubjects_ById( $scheduleId );
         }catch (InternalErrorException $e){
             throw new InternalErrorException(static::class.":updateScheduleSubjects",
                 "se detuvo actualizacion de materias", $e->getMessage());
@@ -556,6 +588,8 @@ class ScheduleService{
         }
         return false;
     }
+
+
 
 
 }

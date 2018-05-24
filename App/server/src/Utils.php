@@ -6,10 +6,15 @@ class Utils
     const HEADER_AUTH = "Authorization";
     const TIMEZONE = 'America/Phoenix';
 
+    //-------General
     public static $STATUS_DISABLE = 0;
     public static $STATUS_NO_CONFIRM = 1;
     public static $STATUS_ENABLE = 2;
-    public static $STATUS_PENDING = 3;
+
+    //-------Advisories
+    public static $STATUS_CANCELED = 0;
+    public static $STATUS_PENDING = 1;
+    public static $STATUS_ACTIVE = 2;
 
 
     public static $ROLE_ADMIN = "admin";

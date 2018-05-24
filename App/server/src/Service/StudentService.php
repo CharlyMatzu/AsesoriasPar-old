@@ -225,6 +225,25 @@ class StudentService{
 
     /**
      * @param $student_id int
+     * @param $subject int
+     *
+     * @throws ConflictException
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
+     */
+    public function createAdvisoryCurrentPeriod($student_id, $subject)
+    {
+        //Se comprueba existencia de alumno
+        $this->getStudent_ById( $student_id );
+
+        //Se obtiene periodo actual
+        $advisoryService = new AdvisoryService();
+        $advisoryService->insertAdvisory_CurrentPeriod( $student_id, $subject );
+    }
+
+    /**
+     * @param $student_id int
      *
      * @return \mysqli_result
      * @throws InternalErrorException

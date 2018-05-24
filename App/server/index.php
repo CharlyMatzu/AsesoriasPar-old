@@ -17,7 +17,7 @@ use \Slim\App;
 
 $config = [
     'settings' => [
-        'displayErrorDetails' => false,
+        'displayErrorDetails' => true,
     ],
 ];
 
@@ -53,51 +53,58 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 //  USER ROUTES
 //--------------------------
+
+//Obtiene todos los usuarios
 $app->get('/users', 'UserController:getUsers')
         ->add(AuthMiddelware::class);
 
-
+//Obtiene usuarios con un status especifico
 $app->get('/users/status/{status}', 'UserController:getUsersByStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add(AuthMiddelware::class);
 
-
+//busca usuarios por correo (coincidencias)
 $app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
     ->add('InputMiddelware:checkParam_Email')
     ->add(AuthMiddelware::class);
 
 //TODO: obtener por rol
 
+//Obtiene usuario por ID
 $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
         ->add('InputMiddelware:checkData_User') //Es el registro de estudiante
         ->add('InputMiddelware:checkData_Role'); //Es el registro de estudiante
 
 //TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
+//Crear un usuario y un estudiante a la vez
 $app->post('/users/student', 'UserController:createUserAndStudent')
         ->add('InputMiddelware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddelware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
-
+//Permite autenticarse (signin)
 $app->post('/users/auth', 'UserController:auth')
         ->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
 
-
+//Actualiza datos de usuario
 $app->put('/users/{id}', 'UserController:updateUser')
         ->add('InputMiddelware:checkData_User')
         ->add('InputMiddelware:checkData_Role')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//Cambia estado de usuario
 $app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//Elimina a un usuario
 $app->delete('/users/{id}', 'UserController:deleteUser')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
@@ -105,59 +112,75 @@ $app->delete('/users/{id}', 'UserController:deleteUser')
 //--------------------------
 //  CAREER ROUTES
 //--------------------------
+
+//Obtiene carreras
 $app->get('/careers', 'CareerController:getCareers')
         ->add(AuthMiddelware::class);
 
+//Obtiene carrera por Id
 $app->get('/careers/{id}', 'CareerController:getCareer_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//TODO: obtener materias por carrera
+
+//Crear carrera
 $app->post('/careers', 'CareerController:createCareer')
         ->add('InputMiddelware:checkData_Career')
         ->add(AuthMiddelware::class);
 
+//Cambia estado de carrera
 $app->patch('/careers/{id}/status/{status}', 'CareerController:changeStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//Actualiza carrera
 $app->put('/careers/{id}', 'CareerController:updateCareer')
         ->add('InputMiddelware:checkData_Career')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-
+//Elimina carrera
 $app->delete('/careers/{id}', 'CareerController:deleteCareer')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
 
-
-
 //--------------------------
 //  PLAN ROUTES
 //--------------------------
+
+//Obtiene planes
 $app->get('/plans', 'PlanController:getPlans')
         ->add(AuthMiddelware::class);
 
+//Obtiene plan por id
 $app->get('/plans/{id}', 'PlanController:getPlan_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//TODO: obtener materias por plan
+
+//Crea un plan
 $app->post('/plans', 'PlanController:createPlan')
         ->add('InputMiddelware:checkData_Plan')
         ->add(AuthMiddelware::class);
 
+//cambia status de un plan
 $app->patch('/plans/{id}/status/{status}', 'PlanController:changeStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+
+//Actualiza plan
 $app->put('/plans/{id}', 'PlanController:updatePlan')
         ->add('InputMiddelware:checkData_Plan')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//elimina plan
 $app->delete('/plans/{id}', 'PlanController:deletePlan')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
@@ -165,32 +188,37 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 //--------------------------
 //  SUBJECT ROUTES
 //--------------------------
+
+//Obtiene materias
 $app->get('/subjects', 'SubjectController:getSubjects')
         ->add(AuthMiddelware::class);
 
 //TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
 
+//Obtiene materia por id
 $app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//crear materia
 $app->post('/subjects', 'SubjectController:createSubject')
         ->add('InputMiddelware:checkData_Subject')
         ->add(AuthMiddelware::class);
 
 
+//cambia estado de materia
 $app->patch('/subjects/{id}/status/{status}', 'SubjectController:chanteStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
-
+//Actualiza materia
 $app->put('/subjects/{id}', 'SubjectController:updateSubject')
         ->add('InputMiddelware:checkData_Subject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
-
+//Elimina materia
 $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
@@ -199,14 +227,17 @@ $app->delete('/subjects/{id}', 'SubjectController:deleteSubject')
 //--------------------------
 //  STUDENT ROUTES
 //--------------------------
+
+//Obtiene estudiantes
 $app->get('/students', 'StudentController:getStudents')
     ->add(AuthMiddelware::class);
 
-
+//obtiene estudiante por id
 $app->get('/students/{id}', 'StudentController:getStudent_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
+//Busca estudiante por coincidencias (todos los campos de string)
 $app->get('/students/search/{student_data}', 'StudentController:searchStudents')
 //    ->add('InputMiddelware:checkParam_Data')
     ->add(AuthMiddelware::class);
@@ -218,6 +249,8 @@ $app->get('/students/search/{student_data}', 'StudentController:searchStudents')
 //    ->add(AuthMiddelware::class);
 
 
+//Actualiza datos de usuario
+//TODO: update avatar, facebook, etc.
 $app->put('/students/{id}', 'StudentController:updateStudent')
     ->add('InputMiddelware:checkData_Student')
     ->add('InputMiddelware:checkParam_Id')
@@ -227,31 +260,36 @@ $app->put('/students/{id}', 'StudentController:updateStudent')
 //--------------------------
 //  PERIOD ROUTES
 //--------------------------
+
+//Obtiene periodos
 $app->get('/periods', 'PeriodController:getPeriods')
     ->add(AuthMiddelware::class);
 
 //TODO: Obtener asesorias de un periodo
 
+//Obtiene periodo por id
 $app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
     ->add('InputMiddelware:checkParam_id')
     ->add(AuthMiddelware::class);
 
+//Crea periodo
 $app->post('/periods', 'PeriodController:createPeriod')
     ->add('InputMiddelware:checkData_Period')
     ->add(AuthMiddelware::class);
 
+//actualiza periodo
 $app->put('/periods/{id}', 'PeriodController:updatePeriod')
     ->add('InputMiddelware:checkData_Period')
     ->add('InputMiddelware:checkParam_id')
     ->add(AuthMiddelware::class);
 
-
+//cambia status de periodo
 $app->patch('/periods/{id}/status/{status}', 'PeriodController:changeStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
-
+//elimina periodo
 $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
@@ -261,15 +299,32 @@ $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
 //  SCHEDULE, HOURS AND DAYS ROUTES
 //--------------------------
 
+//Obtiene horas y dias disponibles para utilizar
 $app->get('/schedule/source', 'ScheduleController:getHoursAndDays')
         ->add(AuthMiddelware::class);
 
 
+//obtiene horario por id
 $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
+//Obtiene todos los asesores activos del periodo actual
+//$app->get('/schedule/advisers', 'ScheduleController:getCurrentAdvisers')
+//    ->add('InputMiddelware:checkParam_id')
+//    ->add(AuthMiddelware::class);
 
+
+//obtiene asesores disponibles (activos) por materia
+$app->get('/subject/{id}/advisers', 'SubjectController:getCurrentAdvisers_BySubject')
+    ->add('InputMiddelware:checkParam_id')
+    ->add(AuthMiddelware::class);
+
+//TODO: obtener asesores disponibles de dicha por materia
+//TODO: obtener horario de Asesor y comparar con Solicitante
+
+
+//Cambia estado de horario
 $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeScheduleStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_Id')
@@ -278,30 +333,34 @@ $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeSchedule
 
 //-------------------ESTUDIANTE
 
+//Obtiene horario actual de estudiante
 $app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStudentId')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
-
+//crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
         ->add('InputMiddelware:checkData_schedule_hours')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-
+//agrega materias a horario
 $app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
         ->add('InputMiddelware:checkData_schedule_subjects')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
 
+//TODO: obtener materias de horario
+//TODO: deshabilitar para ser asesor
 
+//actualiza horas de horario
 $app->put('/schedule/{id}/hours', 'ScheduleController:updateScheduleHours')
         ->add('InputMiddelware:checkData_schedule_hours')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
-
+//actualiza materias de horario
 $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects')
         ->add('InputMiddelware:checkData_schedule_subjects')
         ->add('InputMiddelware:checkParam_Id')
@@ -316,34 +375,48 @@ $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects'
 //--------------------------
 //  ADVISORY ROUTES
 //--------------------------
-//TODO: debe obtenerse solo materias validadas por admin
+//TODO: debe obtenerse solo materias validadas por admin (status = 2)
 //TODO: no debe poder solictarse la misma materia mientras una asesoria este activa con la misma
 //TODO: Al final del periodo, debe finalizarse todas las asesorias activas
 
+
+//Obtiene asesorias actuales
 $app->get('/advisories', 'AdvisoryController:getCurrentAdvisories')
         ->add(AuthMiddelware::class);
 
 
+//Obtiene asesorias de estudiante
 $app->get('/student/{id}/advisories', 'StudentController:getCurrentAdvisories_ByStudentId')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
-$app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
-
-
+//Obtiene horas de asesoria asignada
 $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
 
+//--------------STUDENT
+//Obtiene asesoria por id
+$app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
+//crear asesoria por estudiante
+$app->post('/student/{id}/advisories', 'AdvisoryController:createStudentAdvisory')
+        ->add('InputMiddelware:checkData_advisory_subject')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
 
+//asigna asesoria
+//$app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviserAndHours')
+//        ->add('InputMiddelware:checkParam_Id')
+//        ->add(AuthMiddelware::class);
 
-
-//$app->post('/advisories', 'AdvisoryController:createAdvisory');
-//$app->put('/advisories/{id}', 'AdvisoryController:updateAdvisory');
+//$app->put('/advisories/{id}/hours', 'AdvisoryController:updateAdvisoryHours');
+//
+//$app->patch('/advisories/{id}/status/{status}', 'AdvisoryController:changeStatus');
+//
 //$app->delete('/advisories/{id}', 'AdvisoryController:deleteAdvisory');
 
 

@@ -86,12 +86,16 @@ class PeriodsPersistence extends Persistence{
     /**
      * @param $date string fecha correspondiente para comparar
      * @return \App\Model\DataResult
+     * /TODO: debe ser capaz de saber si se empalma con diferentes fechas y no solo la ultima
      */
     public function getPeriodWhereIsBetween( $date ){
         $query = "SELECT * FROM period 
                   WHERE '$date' <= (
                       -- Obtiene la fecha de cierra del ultimo periodo
-                      SELECT date_end FROM period ORDER BY period_id DESC LIMIT 1
+                      SELECT 
+                        date_end 
+                        FROM period 
+                        ORDER BY period_id DESC LIMIT 1
 	              );";
         //Obteniendo resultados
         return self::executeQuery($query);

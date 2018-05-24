@@ -44,6 +44,26 @@ class SubjectController
     }
 
 
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCurrentAdvisers_BySubject($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->getCurrentAdvisers_BySubject( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
     /**
      * @param $req Request
      * @param $res Response

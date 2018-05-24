@@ -160,6 +160,26 @@ class StudentController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function createStudentAdvisory_CurrentPeriod($req, $res, $params)
+    {
+        try {
+            $studentSer = new StudentService();
+            $student_id = $params['id'];
+            $subject = $req->getAttribute('advisory_subject');
+            $studentSer->createAdvisoryCurrentPeriod( $student_id,  $subject);
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Asesoria creada con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 
 
 }

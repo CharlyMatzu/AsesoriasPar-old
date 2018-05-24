@@ -360,6 +360,22 @@ class SubjectService{
         return $result;
     }
 
+    /**
+     * @param $subject_id int
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getCurrentAdvisers_BySubject($subject_id)
+    {
+        //Comprobando que existe materia
+        $this->getSubject_ById( $subject_id );
+
+        $scheduleServ = new ScheduleService();
+        return $scheduleServ->getCurrentAdvisers_BySubject( $subject_id );
+    }
+
     //----------------------
     // MATERIAS RELACIONADAS
     //----------------------

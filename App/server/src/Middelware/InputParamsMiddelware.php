@@ -421,6 +421,9 @@ class InputParamsMiddelware extends Middelware
         if( empty($params['hours']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
+        if( !is_array($params['hours']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
         //Verificando que sean datos numericos
         $hours = $params['hours'];
         foreach ( $hours as $hour ){
@@ -451,6 +454,10 @@ class InputParamsMiddelware extends Middelware
         if( empty($params['subjects']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
+
+        if( !is_array($params['subjects']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
         //Verificando que sean datos numericos
         $subjects = $params['subjects'];
         foreach ( $subjects as $sub ){
@@ -459,6 +466,42 @@ class InputParamsMiddelware extends Middelware
         }
 
         $req = $req->withAttribute('schedule_subjects', $subjects);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     *
+     * @return Response
+     */
+    public function checkData_advisory_subject($req, $res, $next){
+
+        $params = $req->getParsedBody();
+        if( !isset($params['subject']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
+                "Faltan parametros, Se requiere: subject");
+
+        if( empty($params['subject']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: vacio");
+
+        //no debe ser array
+        if( is_array($params['subject']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
+                "Parametros invalidos: no debe ser array");
+
+        //Verificando que sean datos numericos
+        $subject = $params['subjects'];
+        if( !is_numeric($subject) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
+                "Parametros invalidos: no es numerico");
+
+        $req = $req->withAttribute('advisory_subjects', $subject);
 
         $res = $next($req, $res);
         return $res;

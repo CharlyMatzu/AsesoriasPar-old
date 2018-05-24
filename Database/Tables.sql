@@ -56,7 +56,7 @@ CREATE TABLE plan(
 );
 
 CREATE TABLE subject(
-	subject_id 			BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	subject_id 		BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	semester 		INT NOT NULL,
 	name 			VARCHAR(100) NOT NULL,
 	short_name      VARCHAR(10) NOT NULL,
@@ -156,6 +156,8 @@ CREATE TABLE schedule_subjects(
 CREATE TABLE advisory_request(
 	advisory_id  	BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	date_start DATETIME NULL, -- Fecha de asignacion
+	date_end DATETIME NULL, -- Fecha de finalizacion
 	status   TINYINT NOT NULL DEFAULT 3,
 	
 	-- llaves foraneas
@@ -164,6 +166,9 @@ CREATE TABLE advisory_request(
 
 	fk_student BIGINT NOT NULL,
 	FOREIGN KEY (fk_student) REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	
+	fk_period 	INT NOT NULL,
+	FOREIGN KEY (fk_period) REFERENCES period(period_id) ON UPDATE CASCADE ON DELETE CASCADE,
 
 	-- Directamente con materia
 	fk_subject BIGINT NOT NULL,
@@ -171,12 +176,16 @@ CREATE TABLE advisory_request(
 	
 );
 
+
 CREATE TABLE advisory_schedule(
-	advisory_schedule BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	advisory_schedule_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	status   TINYINT NOT NULL DEFAULT 2,
 
 	-- ---------llaves foraneas
+	-- Directamente con horas
+	fk_advisory BIGINT,
+	FOREIGN KEY (fk_advisory) REFERENCES advisory_request(advisory_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	-- Directamente con horas
 	fk_hours BIGINT,
 	FOREIGN KEY (fk_hours) REFERENCES schedule_days_hours(schedule_dh_id) ON UPDATE CASCADE ON DELETE CASCADE
