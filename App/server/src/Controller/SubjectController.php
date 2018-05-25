@@ -1,0 +1,143 @@
+<?php namespace App\Controller;
+
+use App\Exceptions\RequestException;
+use App\Model\Subject;
+use App\Service\SubjectService;
+use Slim\Http\Request;
+use Slim\Http\Response;
+use App\Utils;
+
+class SubjectController
+{
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @return Response
+     */
+    public function getSubjects($req, $res){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->getSubjects();
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getSubject_ById($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->getSubject_ById( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCurrentAdvisers_BySubject($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->getCurrentAdvisers_BySubject( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @return Response
+     */
+    public function createSubject($req, $res){
+        try {
+            $subjectService = new SubjectService();
+            $subject = $req->getAttribute('subject_data');
+            $subjectService->insertSubject( $subject );
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materia registrada con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function updateSubject($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            /* @var $subject Subject */
+            $subject = $req->getAttribute('subject_data');
+            $subject->setId( $params['id'] );
+
+            $subjectService->updateSubject( $subject );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia actualizada");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function deleteSubject($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $subjectService->deleteSubject( $params['id'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function changeStatus($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $subjectService->changeStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Estado de materia modificado con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+}

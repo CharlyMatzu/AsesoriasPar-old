@@ -53,7 +53,7 @@ SINGIN
 	"password": "123456"
 }
 
-SIGNUP
+SIGNUP/UPDATE
 { 
 	"email": "carlosrozumaa@gmail.com",
 	"password": "123456",
@@ -71,8 +71,16 @@ SINGUP
 	//Usuario
 	"email": "carlosrozuma@gmail.com",
 	"password": "123456",
-	"role": "basic",
 	//Estudiante
+	"career": 1,
+	"first_name": "carlos",
+	"last_name": "Zuñiga",
+	"itson_id": "162156",
+	"phone": "4182747"
+}
+
+UPDATE
+{	
 	"career": 1,
 	"first_name": "carlos",
 	"last_name": "Zuñiga",
@@ -84,7 +92,7 @@ SINGUP
 -----------------------------
 SCHEDULE
 -----------------------------
-INSERT
+INSERT schedule / Update hours
 {
 	"hours": [1,2,3,4,5]
 }
@@ -92,4 +100,19 @@ INSERT
 SUBJECTS
 {
 	"subjects": [1,2,3,4]
+}
+
+
+-----------------------------
+ADVISORY
+-----------------------------
+NEW REQUEST
+{
+	"subjects": 1
+}
+
+ASSIGN
+{
+	"adviser": 1,
+	"schedule": [1,2,4]
 }
