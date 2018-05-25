@@ -85,7 +85,7 @@ class PlansPeristence extends Persistence{
      */
     public function changeStatusToDisable($id ){
         $query = "UPDATE plan
-                  SET status = ".Utils::$STATUS_DISABLE.",
+                  SET status = ".Utils::$STATUS_DISABLE."
                   WHERE plan_id = $id";
         return  self::executeQuery($query);
     }
@@ -96,7 +96,7 @@ class PlansPeristence extends Persistence{
      */
     public function changeStatusToEnable($id ){
         $query = "UPDATE plan
-                  SET status = ".Utils::$STATUS_ENABLE.",
+                  SET status = ".Utils::$STATUS_ENABLE."
                   WHERE plan_id = $id";
         return  self::executeQuery($query);
     }

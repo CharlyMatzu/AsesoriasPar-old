@@ -58,6 +58,7 @@ $app->get('/', function(Request $request, Response $response, $params){
 $app->get('/users', 'UserController:getUsers')
         ->add(AuthMiddelware::class);
 
+//TODO: hacer mas descriptiva
 //Obtiene usuarios con un status especifico
 $app->get('/users/status/{status}', 'UserController:getUsersByStatus')
         ->add('InputMiddelware:checkParam_Status')
@@ -167,6 +168,7 @@ $app->post('/plans', 'PlanController:createPlan')
         ->add('InputMiddelware:checkData_Plan')
         ->add(AuthMiddelware::class);
 
+//TODO: hacer mas descriptivo
 //cambia status de un plan
 $app->patch('/plans/{id}/status/{status}', 'PlanController:changeStatus')
         ->add('InputMiddelware:checkParam_Status')
@@ -238,16 +240,11 @@ $app->get('/students/{id}', 'StudentController:getStudent_ById')
     ->add(AuthMiddelware::class);
 
 //Busca estudiante por coincidencias (todos los campos de string)
-$app->get('/students/search/{student_data}', 'StudentController:searchStudents')
-//    ->add('InputMiddelware:checkParam_Data')
+$app->get('/students/search/{search_student}', 'StudentController:searchStudents')
+    ->add('InputMiddelware:checkParam_search_student')
     ->add(AuthMiddelware::class);
 
-
-//Obtener correos tipo gmail para agregar y enviarles correos
-//$app->get('/students/search/{student_data}', 'StudentController:searchStudents')
-//    ->add('InputMiddelware:checkParam_Id')
-//    ->add(AuthMiddelware::class);
-
+//TODO: Obtener correos tipo gmail para agregar y enviarles correos
 
 //Actualiza datos de usuario
 //TODO: update avatar, facebook, etc.

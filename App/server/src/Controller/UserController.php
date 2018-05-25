@@ -190,7 +190,7 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Desactivado con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status modificado con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

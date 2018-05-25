@@ -183,26 +183,19 @@ class CareerService{
     }
 
     /**
-     * @param $id
+     * @param $career_id
      *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function deleteCareer($id)
+    public function deleteCareer($career_id)
     {
-        $result = $this->isCareerExist_ById(id);
+        //Se verifica si carrera existe
+        $this->getCareer_ById( $career_id );
 
-
+        $result = $this->perCareers->deleteCareer( $career_id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new NotFoundException("Error al obtener Carrera por ID");
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("Carrera no existe");
-
-        $result = $this->perCareers->deleteCareer( $id );
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."updateCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."deleteCareer", "No se pudo eliminar carrera", $result->getErrorMessage());
     }
 
     /**

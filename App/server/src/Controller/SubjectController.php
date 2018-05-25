@@ -92,7 +92,6 @@ class SubjectController
     public function updateSubject($req, $res, $params){
         try {
             $subjectService = new SubjectService();
-
             /* @var $subject Subject */
             $subject = $req->getAttribute('subject_data');
             $subject->setId( $params['id'] );

@@ -13,12 +13,16 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //-----------------------
 // MONOLOG
 //-----------------------
-$container['logger'] = function($c) {
-    $logger = new \Monolog\Logger('slimlogger');
-    $file_handler = new \Monolog\Handler\StreamHandler(ROOT_PATH . '/logs/slim.log');
-    $logger->pushHandler($file_handler);
-    return $logger;
-};
+//https://www.projek.xyz/slim-monolog/
+//https://akrabat.com/logging-errors-in-slim-3/
+//https://www.slimframework.com/docs/v3/tutorial/first-app.html
+
+//$app['logger'] = function($c) {
+//    $logger = new \Monolog\Logger('slimlogger');
+//    $file_handler = new \Monolog\Handler\StreamHandler(ROOT_PATH . '/logs/slim.log');
+//    $logger->pushHandler($file_handler);
+//    return $logger;
+//};
 
 
 //-----------------------

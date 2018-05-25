@@ -92,7 +92,7 @@ UPDATE
 -----------------------------
 SCHEDULE
 -----------------------------
-INSERT
+INSERT schedule / Update hours
 {
 	"hours": [1,2,3,4,5]
 }
@@ -106,6 +106,13 @@ SUBJECTS
 -----------------------------
 ADVISORY
 -----------------------------
+NEW REQUEST
 {
 	"subjects": 1
+}
+
+ASSIGN
+{
+	"adviser": 1,
+	"schedule": [1,2,4]
 }

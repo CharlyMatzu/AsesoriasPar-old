@@ -70,7 +70,7 @@ class SubjectsPersistence extends Persistence{
      * @param $name
      * @return \App\Model\DataResult
      */
-    public function getSubjects_BySearch_Name($name){
+    public function searchSubjects_ByName($name){
         $query = $this->campos."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      WHERE s.name LIKE '$name' OR s.short_name LIKE '$name'";

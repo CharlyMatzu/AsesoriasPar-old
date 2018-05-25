@@ -55,7 +55,7 @@ class StudentController
     {
         try {
             $studentSer = new StudentService();
-            $result = $studentSer->searchStudents_ByData( $params['student_data'] );
+            $result = $studentSer->searchStudents_ByData( $params['search_student'] );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {

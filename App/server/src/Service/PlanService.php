@@ -108,21 +108,17 @@ class PlanService{
      * @throws NotFoundException
      */
     public function changeStatus($planId, $status){
-        $result = $this->isPlanExist_ById( $planId );
 
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":changeStatus","Error al obtener plan por ID" );
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe plan");
+        //Verifica que plan exista
+        $this->getPlan_ById( $planId );
 
         if( $status == Utils::$STATUS_DISABLE ){
-            $this->perPlans->changeStatusToDisable($planId);
+            $result = $this->perPlans->changeStatusToDisable($planId);
             if( Utils::isError($result->getOperation()) )
                 throw new InternalErrorException(static::class.":changeStatus","Error al deshabilitar plan", $result->getErrorMessage());
         }
         else if( $status == Utils::$STATUS_ENABLE ){
-            $this->perPlans->changeStatusToEnable($planId);
+            $result = $this->perPlans->changeStatusToEnable($planId);
             if( Utils::isError($result->getOperation()) )
                 throw new InternalErrorException(static::class.":changeStatus","Error al habilitar plan", $result->getErrorMessage());
         }
@@ -135,16 +131,12 @@ class PlanService{
      * @throws NotFoundException
      */
     public function deletePlan($planId){
-        $result = $this->isPlanExist_ById( $planId );
 
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":deletePlan","Error al obtener plan por ID", $result->getErrorMessage());
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe plan");
+        //Verifica que plan exista
+        $this->getPlan_ById( $planId );
 
         //Inteta registrar
-        $this->perPlans->deletePlan($planId);
+        $result = $this->perPlans->deletePlan($planId);
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException(static::class.":deletePlan","Error al eliminar plan", $result->getErrorMessage());

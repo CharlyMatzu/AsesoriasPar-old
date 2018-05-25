@@ -53,11 +53,11 @@ class StudentsPersistence extends Persistence{
     public function searchStudents($data)
     {
         $query =    $this->SELECT."
-                        SELECT * FROM student s
-                        WHERE (s.first_name LIKE '%$data%') OR
-                              (s.last_name LIKE '%$data%') OR 
-                              (s.phone LIKE '%$data%') OR 
-                              (s.itson_id LIKE '%$data%')";
+                    INNER JOIN career c ON c.career_id = s.fk_career
+                    WHERE (s.first_name LIKE '%$data%') OR
+                          (s.last_name LIKE '%$data%') OR 
+                          (s.phone LIKE '%$data%') OR 
+                          (s.itson_id LIKE '%$data%')";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }

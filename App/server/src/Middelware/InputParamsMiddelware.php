@@ -44,6 +44,24 @@ class InputParamsMiddelware extends Middelware
      * @param $next callable
      * @return Response
      */
+    public function checkParam_search_student($req, $res, $next)
+    {
+//        $student_search = $this->getRouteParams($req)['search_student'];
+
+        //TODO: validar un poco
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
     public function checkParam_Advisory($req, $res, $next)
     {
         $advisory = $this->getRouteParams($req)['advisory'];
@@ -88,9 +106,10 @@ class InputParamsMiddelware extends Middelware
         if( !is_numeric($status) || $status === "" || $status == null )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
-        if( ($status != Utils::$STATUS_ENABLE) &&
-            ($status != Utils::$STATUS_DISABLE) &&
-            ($status != Utils::$STATUS_NO_CONFIRM) )
+        if( ($status != Utils::$STATUS_ENABLE)
+            && ($status != Utils::$STATUS_DISABLE)
+            //&& ($status != Utils::$STATUS_NO_CONFIRM)
+        )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
         $res = $next($req, $res);
@@ -112,9 +131,11 @@ class InputParamsMiddelware extends Middelware
         if( empty($email) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
+        //TODO: no debe contener caracteres extraños
+
         //Si no es un correo valido
-        if( !preg_match(Utils::EXPREG_EMAIL, $email) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+//        if( !preg_match(Utils::EXPREG_EMAIL, $email) )
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -506,4 +527,7 @@ class InputParamsMiddelware extends Middelware
         $res = $next($req, $res);
         return $res;
     }
+
+
+
 }
