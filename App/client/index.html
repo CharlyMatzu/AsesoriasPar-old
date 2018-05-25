@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="AsesoriasPar">
+<head>
+    <meta charset="UTF-8">
+    <title>Asesorias Par</title>
+
+    <!--VENDOR-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--ANGULARJS-->
+    <script src="vendor/angularjs/angularjs.min.js"></script>
+    <script src="vendor/angularjs/angular-route.min.js"></script>
+    <script src="vendor/angularjs/angular-local-storage.min.js"></script>
+    <!--Custom angularJS-->
+    <script src="app.module.js"></script>
+    <script src="app.routes.js"></script>
+    <!-- SERVICES -->
+    <script src="app/components/users/usersService.js"></script>
+    <!--CONTROLLERS-->
+    <script src="app/components/users/usersController.js"></script>
+
+</head>
+<body>
+
+    <div ng-view=""></div>
+
+</body>
+</html>
