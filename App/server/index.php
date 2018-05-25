@@ -239,7 +239,7 @@ $app->get('/students/{id}', 'StudentController:getStudent_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
-//Busca estudiante por coincidencias (todos los campos de string)
+//Busca estudiante por coincidencias (todos los campos de string: nombre, apellido, correo, telefono)
 $app->get('/students/search/{search_student}', 'StudentController:searchStudents')
     ->add('InputMiddelware:checkParam_search_student')
     ->add(AuthMiddelware::class);
