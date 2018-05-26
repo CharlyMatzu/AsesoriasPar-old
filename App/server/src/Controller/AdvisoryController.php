@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
+use App\Model\Subject;
 use App\Service\AdvisoryService;
 use App\Utils;
 use Slim\Http\Request;
@@ -67,8 +68,22 @@ class AdvisoryController
     /**
      * @param $req Request
      * @param $res Response
+     * @param $params array
+     * @return Response
      */
-    public function createAdvisory($req, $res){}
+    public function createStudentAdvisory($req, $res, $params)
+    {
+        try {
+            $advisoryServ = new AdvisoryService();
+            /* @var $subject_id int */
+            $subject_id = $req->getAttribute('advisory_subject');
+            $advisoryServ->insertAdvisory_CurrentPeriod( $params['id'], $subject_id);
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asesoria registrada con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**

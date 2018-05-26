@@ -35,7 +35,7 @@ class AdvisoryService
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class."getAdvisories_CurrentPeriod",
                 "Error al obtener asesorias en periodo actual", $result->getErrorMessage());
-        else if( Utils::isError( $result->getOperation() ) )
+        else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 
         return $result->getData();
@@ -127,10 +127,7 @@ class AdvisoryService
             throw new InternalErrorException(static::class.":insertAdvisory_CurrentPeriod",
                 "Error al obtener asesorias", $advisories->getErrorMessage());
 
-        $result = $this->isAdvisoryRedundant( $subject, $advisories->getData() );
-        if( $result )
-            throw new ConflictException("Ya existe asesorias con dicha materia activa");
-
+        $this->checkAdvisoryRedundant( $advisories->getData() );
 
         //Se verifica que materia exista
         $subjectServ = new SubjectService();
@@ -144,26 +141,25 @@ class AdvisoryService
     }
 
 
-
     /**
-     * @param $subject_id int
      * @param $advisories array|\mysqli_result
-     *
-     * @return bool
+     * @return void
+     * @throws ConflictException
      */
-    private function isAdvisoryRedundant($subject_id, $advisories){
+    private function checkAdvisoryRedundant($advisories ){
 
         //Si esta vacio, no es redundante
         if( empty($advisories) )
-            return false;
+            return;
 
         foreach ( $advisories as $ad ){
-            //Si se encuentra una asesorias activa de la misma materia, entonces es redundante
-            if( $ad['subject_id'] == $subject_id && $ad['status'] == Utils::$STATUS_ACTIVE )
-                return true;
+            //Si se encuentra una asesorias activa de la misma materia
+            // en estado activa o pendiente, entonces es redundante
+            if( $ad['status'] == Utils::$STATUS_ACTIVE )
+                throw new ConflictException("Ya existe asesorias con dicha materia activa");
+            else if( $ad['status'] == Utils::$STATUS_PENDING )
+                throw new ConflictException("Ya existe asesorias con dicha materia pendiente");
         }
-
-        return false;
     }
 
 

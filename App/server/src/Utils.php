@@ -15,8 +15,9 @@ class Utils
     public static $STATUS_CANCELED = 0;
     public static $STATUS_PENDING = 1;
     public static $STATUS_ACTIVE = 2;
+    public static $STATUS_FINALIZED = 3;
 
-
+    //--------ROLES
     public static $ROLE_ADMIN = "admin";
     public static $ROLE_MOD = "moderator";
     public static $ROLE_BASIC = "basic";

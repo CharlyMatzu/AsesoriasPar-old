@@ -400,7 +400,7 @@ $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
         ->add(AuthMiddelware::class);
 
 //crear asesoria por estudiante
-$app->post('/student/{id}/advisories', 'AdvisoryController:createStudentAdvisory')
+$app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisory')
         ->add('InputMiddelware:checkData_advisory_subject')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);

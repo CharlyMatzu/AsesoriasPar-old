@@ -65,5 +65,5 @@ $container['ScheduleController'] = function($c){
     return new App\Controller\ScheduleController();
 };
 $container['AdvisoryController'] = function($c){
-    return new App\Controller\StudentController();
+    return new App\Controller\AdvisoryController();
 };

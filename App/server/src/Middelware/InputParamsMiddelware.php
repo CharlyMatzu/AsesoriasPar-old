@@ -521,12 +521,12 @@ class InputParamsMiddelware extends Middelware
                 "Parametros invalidos: no debe ser array");
 
         //Verificando que sean datos numericos
-        $subject = $params['subjects'];
+        $subject = $params['subject'];
         if( !is_numeric($subject) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
                 "Parametros invalidos: no es numerico");
 
-        $req = $req->withAttribute('advisory_subjects', $subject);
+        $req = $req->withAttribute('advisory_subject', $subject);
 
         $res = $next($req, $res);
         return $res;

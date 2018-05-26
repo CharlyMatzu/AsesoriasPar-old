@@ -11,21 +11,21 @@ class AdvisoriesPersistence extends Persistence{
 //s_advi.student_id as 'adviser_id',
 //TODO: obtener datos de estudiantes
     private $SELECT = "SELECT
-                        ar.advisory_id as 'id',
-                        ar.date_start as 'date_start',
-                        ar.date_end as 'date_end',
-                        ar.date_register as 'date_register',
-                        ar.status as 'status',
-                        ar.fk_period as 'period_id',
-                        ar.fk_student as 'alumn_id',
-                        ar.fk_adviser as 'adviser_id',
-                        s.subject_id as 'subject_id'
-                    FROM advisory_request ar
-                    INNER JOIN student s_alum ON s_alum.student_id = ar.fk_student
-                    INNER JOIN student s_advi ON s_advi.student_id = ar.fk_adviser
-                    INNER JOIN schedule_subjects hm ON hm.schedule_subject_id = ar.fk_subject
-                    INNER JOIN subject s ON s.subject_id = hm.fk_subject
-                    INNER JOIN schedule h ON h.schedule_id = hm.fk_schedule ";
+                      ar.advisory_id as 'id',
+                      ar.date_start as 'date_start',
+                      ar.date_end as 'date_end',
+                      ar.date_register as 'date_register',
+                      ar.status as 'status',
+                      ar.fk_period as 'period_id',
+                      ar.fk_student as 'alumn_id',
+                      ar.fk_adviser as 'adviser_id',
+                      ar.fk_subject as 'subject_id'
+                  FROM advisory_request ar
+                  INNER JOIN student s_alum ON s_alum.student_id = ar.fk_student
+                  INNER JOIN subject s ON s.subject_id = ar.fk_subject
+                  LEFT JOIN student s_advi ON s_advi.student_id = ar.fk_adviser
+                  LEFT JOIN schedule_subjects hm ON hm.schedule_subject_id = ar.fk_subject
+                  LEFT JOIN schedule h ON h.schedule_id = hm.fk_schedule ";
 
 
     /**
@@ -142,7 +142,7 @@ class AdvisoriesPersistence extends Persistence{
      *
      * @return \App\Model\DataResult
      */
-    public function getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject_id, $period_id)
+    public function getAdvisories_ByStudent_BySubject_ByPeriod( $student_id, $subject_id, $period_id )
     {
         $query = $this->SELECT.
                     "WHERE (ar.fk_student = $student_id) AND 
