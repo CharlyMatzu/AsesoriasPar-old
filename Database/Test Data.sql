@@ -1,12 +1,12 @@
 INSERT INTO user(email, password, fk_role, status) VALUES
-('una cosa@gmail.com', md5('freedom'), 'basic', 2),
+('unacosa@gmail.com', md5('freedom'), 'basic', 2),
 ('loquesea@gmail.com', md5('freedom'), 'basic', 2),
 ('algunos@gmail.com', md5('freedom'), 'basic', 2),
 ('otracosa@gmail.com', md5('freedom'), 'basic', 2);
 
 
 
-INSERT INTO Career(name, short_name) VALUES 
+INSERT INTO career(name, short_name) VALUES 
 ('Ingenieria en software', 'ISW'),
 ('Ingeniería Electromecánico', 'IEM'),
 ('Ingeniería en Electrónica', 'IE'),
@@ -22,20 +22,20 @@ INSERT INTO student(itson_id, first_name, last_name, phone, fk_user, fk_career) 
 
 
 -- aaaa-mm-dd
-INSERT INTO Period(date_start, date_end) VALUES
+INSERT INTO period(date_start, date_end) VALUES
 ('2017-08-08','2017-12-03'),
 ('2018-01-01','2017-05-03'),
 ('2018-08-08','2018-12-03');
 
 
 
-INSERT INTO Plan(year) VALUES
+INSERT INTO plan(year) VALUES
 ('2009'),
 ('2016');
 
 
 
-INSERT INTO Subject(name, short_name, semester, description, fk_plan, fk_career) VALUES
+INSERT INTO subject(name, short_name, semester, description, fk_plan, fk_career) VALUES
 ('MAT-1', 'M1', 1, 'PRUEBA', 1,1),
 ('MAT-2', 'M2', 1, 'PRUEBA', 1,1),
 ('MAT-3', 'M3', 2, 'PRUEBA', 1,1),

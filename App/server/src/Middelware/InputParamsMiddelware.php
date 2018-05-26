@@ -182,7 +182,7 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['email']) || !isset($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password, role");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password");
 
         if( empty($params['email']) || empty($params['password']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");

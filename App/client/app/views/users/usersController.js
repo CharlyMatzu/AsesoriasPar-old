@@ -1,49 +1,31 @@
 app.controller('UsersController', function($scope, $http, UsersService){
-    $scope.loading = true;
+    $scope.newUser = false;
     $scope.users = [];
+    $scope.loader = {
+        loading: true,
+        message: "Cargando"
+    };
 
-    //Cargando controllador, obtiene usuarios
-    $scope.getAll = function(){
-        $http({
-            method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/users"
-        }).then(function(success){
-            
-            console.log( success.data );
-            $scope.users = success.data;
 
-        }, function(error){
-            console.log( error );
-        });    
+    $scope.add = function(user){
+        UsersService.addUser(function(response){
+            $scope.getUsers();
+        }, user);
     }
-    
-    $scope.delete = function(user_id){
-        $http({
-            method: 'DELETE',
-            url: "http://api.asesoriaspar.com/index.php/users/"+user_id
-        }).then(function (response){
-            console.log( response.data.message );
-            $scope.getAll();
-        },function (response){
-            console.log( response.data.message );
+
+    $scope.getUsers = function(){
+        UsersService.getUsers(function(response){
+            $scope.users = response;
         });
     }
 
-    $scope.insert = function(user){
-        $http({
-            method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/users"
-        }).then(function(success){
-            
-            console.log( success.data );
-            $scope.users = success.data;
-
-        }, function(error){
-            console.log( error );
-        });    
+    $scope.deleteUser = function(user_id){
+        UsersService.deleteUser(function(response){
+            $scope.getUsers();
+        }, user_id);
     }
 
-    //Obtiene todos por default
-    $scope.getAll();
+    //Se carguen datos al iniciar pagina
+    $scope.getUsers();
 
 });
