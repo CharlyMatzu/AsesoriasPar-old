@@ -43,7 +43,7 @@ class AdvisoriesPersistence extends Persistence{
      */
     public function getAdvisories_ByPeriod($periodId){
         $query = $this->SELECT.
-            "WHERE h.fk_period = $periodId";
+            "WHERE ar.fk_period = $periodId";
         return self::executeQuery($query);
     }
 

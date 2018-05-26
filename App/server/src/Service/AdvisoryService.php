@@ -33,7 +33,7 @@ class AdvisoryService
 
         $result = $this->perAsesorias->getAdvisories_ByPeriod( $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."getAdvisories_CurrentPeriod",
+            throw new InternalErrorException(static::class.":getCurrentAdvisories",
                 "Error al obtener asesorias en periodo actual", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -121,13 +121,17 @@ class AdvisoryService
         $periodServ = new PeriodService();
         $period = $periodServ->getCurrentPeriod();
 
+
+        //TODO: no debe estar empalmada con otra asesoria a la misma hora/dia (activa: status 2)
+
+
         //Se buscan asesorias activas en el mismo periodo que tengan la misma materia del mismo asesor
         $advisories = $this->perAsesorias->getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject, $period['id']);
         if( Utils::isError( $advisories->getOperation() ) )
             throw new InternalErrorException(static::class.":insertAdvisory_CurrentPeriod",
                 "Error al obtener asesorias", $advisories->getErrorMessage());
 
-        $this->checkAdvisoryRedundant( $advisories->getData() );
+        $this->checkAdvisoryRedundancy( $advisories->getData() );
 
         //Se verifica que materia exista
         $subjectServ = new SubjectService();
@@ -146,7 +150,7 @@ class AdvisoryService
      * @return void
      * @throws ConflictException
      */
-    private function checkAdvisoryRedundant($advisories ){
+    private function checkAdvisoryRedundancy($advisories ){
 
         //Si esta vacio, no es redundante
         if( empty($advisories) )
