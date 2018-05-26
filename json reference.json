@@ -108,7 +108,7 @@ ADVISORY
 -----------------------------
 NEW REQUEST
 {
-	"subjects": 1
+	"subject": 1
 }
 
 ASSIGN

@@ -57,7 +57,7 @@ class AdvisoryService
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getCurrentAdvisory_ByStudent",
                 "Error al obtener asesorias de estudiante", $result->getErrorMessage());
-        else if( Utils::isError( $result->getOperation() ) )
+        else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 
         return $result->getData();
@@ -78,8 +78,8 @@ class AdvisoryService
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getAdvisory_ById",
                 "Error al obtener asesoria", $result->getErrorMessage());
-        else if( Utils::isError( $result->getOperation() ) )
-            throw new NotFoundException("No existe asesorias");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe asesoria");
 
         return $result->getData()[0];
     }
@@ -98,7 +98,7 @@ class AdvisoryService
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getAdvisoryHours_ById",
                 "Error al obtener horas de asesoria", $result->getErrorMessage());
-        else if( Utils::isError( $result->getOperation() ) )
+        else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe asesorias");
 
         return $result->getData();
