@@ -181,6 +181,23 @@ class SubjectService{
     /**------------------------INSERT , UPDATE , DELETE , SEARCH --------------------------------- **/
 
     /**
+     * @param $name string
+     * @param $plan_id int
+     * @param $career_od int
+     * @throws ConflictException
+     * @throws InternalErrorException
+     */
+    private function checkSubjectNameExists_ByPeriod_ByCareer($name, $plan_id, $career_od){
+        try{
+            //Verifica que no exista el nombre
+            $this->getSubject_ByName_ShortName( $name, $plan_id, $career_od );
+            //si lanza exepcion, existe
+            throw new ConflictException("Nombre/abreviacion ya existe: $name");
+            //Si no se encuentra nada, no hay problema
+        }catch (NoContentException $e){}
+    }
+
+    /**
      * @param $subject Subject objeto de materia
      * @throws InternalErrorException
      * @throws RequestException
@@ -189,16 +206,8 @@ class SubjectService{
 
         //------------Verificamos que la materia no exista
         //TODO: verificar que no sea el mismo nombre dentro de la misma carrera/plan, se puede repetir en otros...
-
-        try{
-            //Verifica que no exista el nombre
-            $this->getSubject_ByName( $subject->getName(), $subject->getPlan(), $subject->getCareer() );
-            //Verifica que no exista la abreviacion
-            $this->getSubject_ByName( $subject->getShortName(), $subject->getPlan(), $subject->getCareer() );
-
-            //Si no se encuentra nada, no hay problema
-        }catch (NoContentException $e){}
-
+        $this->checkSubjectNameExists_ByPeriod_ByCareer( $subject->getName(), $subject->getPlan(), $subject->getCareer() );
+        $this->checkSubjectNameExists_ByPeriod_ByCareer( $subject->getShortName(), $subject->getPlan(), $subject->getCareer() );
 
 
         //------------Verificamos que la carrera exista
@@ -230,26 +239,18 @@ class SubjectService{
 
 
         //------------DATOS QUE CAMBIARON
-        try{
-            //Si cambio nombre, se verifica
-            if( $subject_aux['name'] != $subject->getName() ) {
-                //Debe lanzar exception para que sea correcto
-                $this->getSubject_ByName($subject->getName(), $subject->getPlan(), $subject->getCareer());
-                throw new ConflictException("Nombre ya existe");
-            }
-            //Si no encuentra nada, no hay problema
-        }catch (NoContentException $e){}
-
-
-        try{
-            //Si cambio abreviacion, se verifica
-            if( $subject_aux['short_name'] != $subject->getShortName() ) {
-                //Debe lanzar exception para que sea correcto
-                $this->getSubject_ByName($subject->getShortName(), $subject->getPlan(), $subject->getCareer());
-                throw new ConflictException("Abreviacion ya existe");
-            }
-            //Si no encuentra nada, no hay problema
-        }catch (NoContentException $e){}
+        //Si cambio nombre, se verifica
+        if( $subject_aux['name'] != $subject->getName() ) {
+            //Debe lanzar exception para que sea correcto
+            $this->checkSubjectNameExists_ByPeriod_ByCareer(
+                $subject->getName(), $subject->getPlan(), $subject->getCareer() );
+        }
+        //Si cambio abreviacion, se verifica
+        if( $subject_aux['short_name'] != $subject->getShortName() ) {
+            //Debe lanzar exception para que sea correcto
+            $this->checkSubjectNameExists_ByPeriod_ByCareer(
+                $subject->getShortName(), $subject->getPlan(), $subject->getCareer() );
+        }
 
 
 
@@ -265,7 +266,8 @@ class SubjectService{
         //-------------Registrando materia
         $result = $this->perSubjects->updateSubject( $subject );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":updateSubject","Ocurrio un error al actualizar la materia", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":updateSubject",
+                "Ocurrio un error al actualizar la materia", $result->getErrorMessage());
     }
 
 
@@ -281,21 +283,20 @@ class SubjectService{
      */
     public function changeStatus($subjectID, $new_status ){
 
-        $result = $this->isSubjectExist_ById( $subjectID );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":changeStatus","Error al obtener materia por ID", $result->getErrorMessage());
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe materia");
+        //comprueba si materia existe
+        $this->getSubject_ById( $subjectID );
 
         if( $new_status == Utils::$STATUS_DISABLE ){
             $result = $this->perSubjects->changeStatusToDeleted( $subjectID );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":changeStatus","Error al deshabilitar materia", $result->getErrorMessage());
+                throw new InternalErrorException(static::class.":changeStatus",
+                    "Error al deshabilitar materia", $result->getErrorMessage());
         }
         else if( $new_status == Utils::$STATUS_ENABLE ){
             $result = $this->perSubjects->changeStatusToEnable( $subjectID );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":changeStatus","Error al habilitar materia", $result->getErrorMessage());
+                throw new InternalErrorException(static::class.":changeStatus",
+                    "Error al habilitar materia", $result->getErrorMessage());
         }
     }
 
@@ -306,11 +307,8 @@ class SubjectService{
      */
     public function deleteSubject($subjectID ){
 
-        $result = $this->isSubjectExist_ById( $subjectID );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":deleteSubject","Error al obtener materia por ID", $result->getErrorMessage());
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("No existe materia");
+        //comprueba si materia existe
+        $this->getSubject_ById( $subjectID );
 
         $result = $this->perSubjects->deleteSubject( $subjectID );
         if( Utils::isError( $result->getOperation() ) )
@@ -326,7 +324,7 @@ class SubjectService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getSubject_ByName($name, $plan, $career )
+    public function getSubject_ByName_ShortName($name, $plan, $career )
     {
         $result = $this->perSubjects->getSubject_ByName_ShortName( $name, $plan, $career );
 

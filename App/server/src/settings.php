@@ -17,11 +17,18 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //https://akrabat.com/logging-errors-in-slim-3/
 //https://www.slimframework.com/docs/v3/tutorial/first-app.html
 
-//$app['logger'] = function($c) {
-//    $logger = new \Monolog\Logger('slimlogger');
-//    $file_handler = new \Monolog\Handler\StreamHandler(ROOT_PATH . '/logs/slim.log');
-//    $logger->pushHandler($file_handler);
-//    return $logger;
+/**
+ * @var $request \Slim\Http\Request
+ * @var $Response \Slim\Http\Request
+ * @var $exception Exception
+ */
+//$container['errorHandler'] = function($c) {
+//    return function ($request, $response, $exception) use ($c){
+//        return $c['response']->withStatus(500)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Something went wrong!');
+//           throw new \App\Exceptions\InternalErrorException("SLIM", "Ocurrio un error", $exception);
+//    };
 //};
 
 

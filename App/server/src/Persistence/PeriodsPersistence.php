@@ -166,7 +166,7 @@ class PeriodsPersistence extends Persistence{
      */
     public function deletePeriod($id)
     {
-        $query = "DELETE FROM Period
+        $query = "DELETE FROM period
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }

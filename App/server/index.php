@@ -209,7 +209,7 @@ $app->post('/subjects', 'SubjectController:createSubject')
 
 
 //cambia estado de materia
-$app->patch('/subjects/{id}/status/{status}', 'SubjectController:chanteStatus')
+$app->patch('/subjects/{id}/status/{status}', 'SubjectController:changeStatus')
         ->add('InputMiddelware:checkParam_Status')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);

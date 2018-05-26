@@ -4,9 +4,13 @@ app.config( function ($routeProvider) {
             controller: "",
             templateUrl: "app/components/home/homeView.html"
         })
-        .when("/users", {
-            controller: "UsersController",
-            templateUrl: "app/components/users/usersView.html"
+        .when("/signin", {
+            controller: "",
+            templateUrl: "app/components/home/signinView.html"
         })
+        // .when("/users", {
+        //     controller: "UsersController",
+        //     templateUrl: "app/components/users/usersView.html"
+        // })
         .otherwise("/");
 });

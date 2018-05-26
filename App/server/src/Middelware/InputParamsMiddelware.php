@@ -156,12 +156,12 @@ class InputParamsMiddelware extends Middelware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: role");
 
         if( empty($params['role']) || empty($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
 
         if( $params['role'] != Utils::$ROLE_BASIC &&
             $params['role'] != Utils::$ROLE_MOD &&
             $params['role'] != Utils::$ROLE_ADMIN)
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
 
 
         $req = $req->withAttribute('role_data', $params['role']);
@@ -352,9 +352,13 @@ class InputParamsMiddelware extends Middelware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: year");
 
         if( empty($params['year']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan");
 
-        //TODO: validar formato, tipo, etc..
+        if( ( !is_numeric($params['year']) ) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan");
+
+        if( ( strlen( $params['year'] ) != 4 ) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan");
 
         $res = $next($req, $res);
         return $res;

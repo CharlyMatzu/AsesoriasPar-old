@@ -114,17 +114,18 @@ class CareerService{
      * @throws InternalErrorException
      */
     public function insertCareers( $name, $short_name ){
+
         //Verificamos que la carrera no exista
-        //REGRESA TRUE O FALSE
-
-        $result = $this->isCareerExist_ByName_ShortName($name, $short_name);
-
-        //Si ocurrio un error
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":isCarrerExistByName", "No se pudo obtener carrera", $result->getErrorMessage());
-        //Si existe
-        else if( $result->getOperation() == true )
-           throw new ConflictException("Nombre o abreviacion ya existe");
+        try{
+            $this->getCareer_ByName_ShortName( $name );
+            throw new ConflictException("Nombre ya existe");
+            //Si no encuentra nada, no hay problema
+        }catch (NoContentException $e){}
+        try{
+            $this->getCareer_ByName_ShortName( $short_name );
+            throw new ConflictException("abreviacion ya existe");
+            //Si no encuentra nada, no hay problema
+        }catch (NoContentException $e){}
 
 
 
@@ -132,7 +133,7 @@ class CareerService{
         $result = $this->perCareers->insertCareer( $name, $short_name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."isCareerExistByName", "Ocurrio un error al registrar la carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":insertCareer", "Ocurrio un error al registrar la carrera", $result->getErrorMessage());
 
     }
 
@@ -145,41 +146,37 @@ class CareerService{
     public function updateCarrers( $career ){
 
         //Verificamos si la carrera existe
-        /* @var $career_aux Career */
-        $career_aux = null;
-        try{
-            $result = $this->getCareer_ById( $career->getId() );
-            $career_aux = self::makeObject_career( $result[0] );
-        }catch (RequestException $e){
-            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
-        }
+        $career_aux = $this->getCareer_ById( $career->getId() );
 
         //-----------verificamos que dato cambio
         //---Nombre
-        if( $career_aux->getName() !== $career->getName() ){
-            $result = $this->isCareerExist_ByName( $career->getName() );
+        try{
+            //Si cambio nombre, se verifica
+            if( $career_aux['name'] != $career->getName() ) {
+                //Debe lanzar exception para que sea correcto
+                $this->getCareer_ByName_ShortName( $career->getName() );
+                throw new ConflictException("Nombre ya existe");
+            }
+            //Si no encuentra nada, no hay problema
+        }catch (NoContentException $e){}
 
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":updateCareer", "No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
-            else if( $result->getOperation() == true )
-                throw new ConflictException("Nombre de carrera ya existe");
-        }
+        //-------shortname
+        try{
+            //Si cambio nombre, se verifica
+            if( $career_aux['short_name'] != $career->getShortName() ) {
+                //Debe lanzar exception para que sea correcto
+                $this->getCareer_ByName_ShortName( $career->getShortName() );
+                throw new ConflictException("Abreviacion ya existe");
+            }
+            //Si no encuentra nada, no hay problema
+        }catch (NoContentException $e){}
 
-        //----Short name
-        if( $career_aux->getShortName() !== $career->getShortName() ){
-            $result = $this->isCareerExist_ByName( $career->getShortName() );
-
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":updateCareer", "No se pudo comprobar existencia de carrera por Nombre", $result->getErrorMessage());
-            else if( $result->getOperation() == true )
-                throw new ConflictException("Abreviaccion de carrera ya existe");
-        }
 
         // Si sale bien, Inicia REGISTRO de Career
         $result = $this->perCareers->updateCareer( $career );
-
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."updateCareers", "No se pudo actualizar carrera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class."updateCareers",
+                "No se pudo actualizar carrera", $result->getErrorMessage());
     }
 
     /**
@@ -206,19 +203,9 @@ class CareerService{
      */
     public function disableCareer($careerID ){
         //Verificamos si la carrera existe
-        //REGRESA TRUE O FALSE
-        $result = $this->isCareerExist_ById($careerID);
-
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new NotFoundException("Error al obtener Carrera por ID");
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("Carrera no existe");
-
+        $this->getCareer_ById( $careerID );
 
         $result = $this->perCareers->changeStatusToDeleted( $careerID );
-
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class."disableCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
     }
@@ -244,80 +231,14 @@ class CareerService{
     }
 
 
-    /**
-     * Metodo para verificar que la carrera existe o no mediante el ID de la carrera
-     * @param $id
-     * @return bool|DataResult
-     */
-    public function isCareerExist_ById($id ){
-
-        $result = $this->perCareers->getCareer_ById( $id );
-
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
-
-        return $result;
-    }
-
-    /**
-     * Metodo para verificar si existe la carrera mediante el nombre de la carrera
-     *
-     * @param $name
-     * @param $short_name
-     *
-     * @return bool|DataResult
-     */
-    public function isCareerExist_ByName_ShortName( $name, $short_name){
-
-        //----------POR NOMBRE
-        $result = $this->perCareers->getCareer_ByName_ShortName( $name );
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
-
-
-        //----------POR ABREVIACION
-        $result = $this->perCareers->getCareer_ByName_ShortName( $short_name );
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
-
-        return $result;
-    }
-
-    /**
-     * Metodo para verificar si existe la carrera mediante el nombre de la carrera
-     *
-     * @param $name
-     *
-     * @return bool|DataResult
-     */
-    public function isCareerExist_ByName( $name){
-
-        $result = $this->perCareers->getCareer_ByName_ShortName( $name );
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
-
-
-        return $result;
-    }
-
-
 //    /**
-//     * Metodo para verificar si existe la carrera mediante el nombre corto (Abreviacion) de la carrera
-//     * @param $short_name
-//     * @return DataResult
+//     * Metodo para verificar que la carrera existe o no mediante el ID de la carrera
+//     * @param $id
+//     * @return bool|DataResult
 //     */
-//    public function isCareerExist_ByShort_name( $short_name ){
+//    public function isCareerExist_ById($id ){
 //
-//        $result = $this->perCareers->getCareer_ByShortName( $short_name );
+//        $result = $this->perCareers->getCareer_ById( $id );
 //
 //        if( Utils::isSuccessWithResult( $result->getOperation() ) )
 //            $result->setOperation(true);
@@ -327,6 +248,27 @@ class CareerService{
 //
 //        return $result;
 //    }
+
+    /**
+     * Metodo para verificar si existe la carrera mediante el nombre de la carrera
+     *
+     * @param $name string
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getCareer_ByName_ShortName($name){
+
+        $result = $this->perCareers->getCareer_ByName_ShortName( $name );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getCareer_ByName_ShortName",
+                "Error al obtener carrera por nombre/abreviacion", $result->getErrorMessage() );
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("");
+
+        return $result->getData();
+    }
 
 
 

@@ -39,6 +39,8 @@ class UserService{
             return $result->getData();
     }
 
+
+
     public function getUsersByStatus($status)
     {
         if( $status == Utils::$STATUS_ENABLE ){
@@ -149,20 +151,6 @@ class UserService{
 
 
 
-    /**
-     * @param $id
-     * @return bool|DataResult
-     */
-    private function isUserExist($id){
-        $result = $this->userPer->getUser_ById($id);
-
-        if( Utils::isSuccessWithResult($result->getOperation()) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty($result->getOperation()) )
-            $result->setOperation(false);
-
-        return $result;
-    }
 
 
     /**
