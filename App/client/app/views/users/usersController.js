@@ -15,7 +15,8 @@ app.controller('UsersController', function($scope, $http, UsersService){
 
     $scope.getUsers = function(){
         UsersService.getUsers(function(response){
-            $scope.users = response;
+            if( response.status == NO_CONTENT)
+                $scope.loader = { message: "No hay usuarios registrados" };
         });
     }
 
