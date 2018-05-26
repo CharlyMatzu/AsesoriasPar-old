@@ -1,0 +1,52 @@
+<div class="container">
+    <h2>{{title}}</h2>
+    <form class="" ng-submit="signup()">
+
+        <h3>Datos de estudiante</h3>
+        <div class="form-group">
+            <label for="first_name" class="sr-only form-label" readonly>Nombre:</label>
+            <input type="text" id="first_name" ng-model="student.first_name" class="form-control" placeholder="Nombre">
+        </div>
+
+        <div class="form-group">
+            <label for="last_name" class="sr-only form-label" readonly>Apellido:</label>
+            <input type="text" id="last_name" ng-model="student.last_name" class="form-control" placeholder="Apellido">
+        </div>
+
+        <div class="form-group">
+            <label for="itson_id" class="sr-only form-label" readonly>ID ITSON:</label>
+            <input type="text" id="itson_id" ng-model="student.itson_id" class="form-control" placeholder="Id itson">
+        </div>
+
+        <div class="form-group">
+            <label for="phone" class="sr-only form-label" readonly>Telefono:</label>
+            <input type="text" id="phone" ng-model="student.phone" class="form-control" placeholder="Telefono">
+        </div>
+
+
+        <div class="form-group">
+            <label for="career" class="form-label" readonly>Carrera:</label>
+            <select class="form-control" name="career" id="career" ng-model="student.career">
+                <option value="1">Carrera</option>
+            </select>
+        </div>
+
+        <h3>Datos de acceso</h3>
+        <div class="form-group">
+            <label for="email" class="sr-only form-label" readonly>Correo:</label>
+            <input type="text" id="email" ng-model="student.email" class="form-control" placeholder="Correo">
+        </div>
+
+        <div class="form-group">
+            <label for="pass" class="sr-only form-label" readonly>Contraseña:</label>
+            <input type="password" id="pass" ng-model="student.pass" class="form-control" placeholder="Contraseña">
+        </div>
+
+        <div class="form-group">
+            <label for="pass2" class="sr-only form-label" readonly>Re-ingrese contraseña:</label>
+            <input type="password" id="pass2" ng-model="student.pass2" class="form-control" placeholder="Re-ingrese contraseña">
+        </div>
+    
+        <button class="btn btn-primary">Iniciar sesion</button>
+    </form>
+</div>

@@ -1,15 +1,17 @@
-app.service('UsersServices', function($http){
+app.service('UsersService', function($http){
 
-    this.data = [];
+    // this.data = [];
     
     this.getAll = function(){
         $http({
             method: 'GET',
             url: "http://api.asesoriaspar.com/index.php/users"
         }).then(function(success){
-            this.data = success.data.data;
-            console.log( this.data );
-            return this.data;
+            
+            var data = success.data;
+            console.log( data );
+            return data;
+
         }, function(error){
             console.log( error );
         });
