@@ -1,5 +1,20 @@
 app.service('UsersService', function($http){
 
+
+    this.changeStatus = function(user_id, status, successCallback, errorCallback){
+        $http({
+            method: 'PATCH',
+            url: "http://api.asesoriaspar.com/index.php/users/"+user_id+"/status/"+status
+        }).then(function(success){
+            var data = success.data;
+            // console.log( success );
+            successCallback(success);
+        }, function(error){
+            // console.log( error );
+            errorCallback(error);
+        });
+    }
+
     
     this.getUsers = function(successCallback, errorCallback){
         $http({

@@ -1,3 +1,12 @@
+//--------------------- STATUS
+
+const DISABLED = 0;
+const NO_CONFIRM = 1;
+const ENABLED = 2;
+
+
+//---------------------HTTP RESPONSES
+
 // OKs
 const OK = 200;
 const CREATED = 201;

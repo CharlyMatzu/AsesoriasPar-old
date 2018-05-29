@@ -1,6 +1,7 @@
 <div class="container">
     <h1>Usuarios registrados</h1>
     <button ng-click="newUser.show  = true" ng-disabled="newUser.show" class="btn btn-primary">Nuevo</button>
+    <button ng-click="getUsers()" class="btn btn-primary">Recargar</button>
     <!-- <p ng-show="alert" ng-class="alert alert-(alert.type)" role="alert">{{alert.message}}</p> -->
     
     <div ng-show="newUser.show">
@@ -42,10 +43,10 @@
                 </td>
                 <td>
                     
-                    <button ng-click="edit(user.id)" class="btn btn-primary">Editar</button>
-                    <button ng-show="user.status == 0" ng-click="enable(user.id)" class="btn btn-success">Habilitar</button>
-                    <button ng-show="user.status == 2 || user.status == 1" ng-click="disable(user.id)" class="btn btn-warning">Deshabilitar</button>
-                    <button ng-click="deleteUser(user.id)" class="btn btn-danger">Eliminar</button>
+                    <button ng-click="edit(user.id)" class="opt-user-{{user.id}} btn btn-primary">Editar</button>
+                    <button ng-show="user.status == 0" ng-click="enable(user.id)" class="opt-user-{{user.id}} btn btn-success">Habilitar</button>
+                    <button ng-show="user.status == 2 || user.status == 1" ng-click="disable(user.id)" class="opt-user-{{user.id}} btn btn-warning">Deshabilitar</button>
+                    <button ng-click="delete(user.id)" class="opt-user-{{user.id}} btn btn-danger">Eliminar</button>
                     
                 </td>
             </tr>
