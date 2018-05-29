@@ -4,30 +4,46 @@
     <meta charset="UTF-8">
     <title>Asesorias Par</title>
 
-    <!--VENDOR-->
+    <!--_________________________VENDOR___________________________-->
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!--ANGULARJS-->
-    <script src="vendor/angularjs/angularjs.min.js"></script>
-    <script src="vendor/angularjs/angular-route.min.js"></script>
-    <script src="vendor/angularjs/angular-local-storage.min.js"></script>
-    <!--Custom angularJS-->
-    <script src="app.module.js"></script>
-    <script src="app.routes.js"></script>
-
-    <!-- ASSETS - JS -->
-    <script src="assets/js/statusCodes.js"></script>
-    
-    <!-- SERVICES -->
-    <script src="app/views/users/usersService.js"></script>
-    <script src="app/views/signup/signupService.js"></script>
-    <!--CONTROLLERS-->
-    <script src="app/views/users/usersController.js"></script>
-    <script src="app/views/signup/signupController.js"></script>
+    <link rel="stylesheet" href="vendor/angular-notification/angular-ui-notification.min.css">
+    <link rel="stylesheet" href="vendor/loader/loader.css">
 
 </head>
 <body>
 
+    <h3>MENU</h3>
+    <nav>
+        <ul>
+            <li><a href="#!/">Home</a></li>
+            <li><a href="#!/users">Users</a></li>
+        </ul>
+    </nav>
     <div ng-view=""></div>
+    
+
+
+    <!--ANGULARJS-->
+    <script src="vendor/angularjs/angularjs.min.js"></script>
+    <script src="vendor/angularjs/angular-route.min.js"></script>
+    <!-- <script src="vendor/angularjs/angular-local-storage.min.js"></script> -->
+    <script src="vendor/angular-notification/angular-ui-notification.min.js"></script>
+    
+
+    <!--_________________________CUTSOM___________________________-->
+    <!-- ASSETS - JS -->
+    <script src="assets/js/statusCodes.js"></script>
+
+    <!--Custom angularJS-->
+    <script src="app.module.js"></script>
+    <script src="app.routes.js"></script>
+
+    <!-- SERVICES -->
+    <script src="app/components/users/usersService.js"></script>
+    <script src="app/components/signup/signupService.js"></script>
+    <!--CONTROLLERS-->
+    <script src="app/components/users/usersController.js"></script>
+    <script src="app/components/signup/signupController.js"></script>
 
 </body>
 </html>

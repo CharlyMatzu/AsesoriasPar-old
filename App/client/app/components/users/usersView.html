@@ -1,0 +1,49 @@
+<div class="container">
+    <h1>Usuarios registrados</h1>
+    <button ng-click="newUser.show  = true" ng-disabled="newUser.show" class="btn btn-primary">Nuevo</button>
+    <!-- <p ng-show="alert" ng-class="alert alert-(alert.type)" role="alert">{{alert.message}}</p> -->
+    
+    <div ng-show="newUser.show">
+        <form action="" ng-submit="add(user)">
+            <input required type="email" class="form-control" placeholder="Email" ng-model="user.email">
+            <input required type="password" class="form-control" placeholder="password" ng-model="user.pass">
+            
+            <select class="form-control" name="" id="" ng-model="user.role">
+                <option value="basic" selected>Basico</option>
+                <option value="admin">Administrador</option>
+            </select>
+            <button class="btn btn-success">Registrar usuario</button>
+            <button "btn btn-default" ng-click="newUser.show  = false" >Cancelar</button>
+            <span ng-show="newUser.status" class="loader"></span>
+        </form>
+    </div>
+    <br><br>
+    
+    <div>
+        <p ng-hide="users.length > 0">{{status}}</p>
+        <table ng-show="users.length > 0" border="1px solid" width="100%">
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Fecha registro</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Opciones</th>
+            </tr>
+            <tr ng-repeat="user in users">
+                <td>{{user.id}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.register_date}}</td>
+                <td>{{user.role}}</td>
+                <td>{{getStatus(user.status)}}</td>
+                <td>
+                    
+                    <button ng-click="edit(user.id)">Editar</button>
+                    <!-- <button ng-show="" ng-click="disable(user.id)">Deshabilitar</button> -->
+                    <!-- <button ng-click="deleteUser(user.id)" class="btn btn-danger">Eliminar</button> -->
+                    
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

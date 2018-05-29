@@ -158,6 +158,7 @@ CREATE TABLE advisory_request(
 	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	date_start DATETIME NULL, -- Fecha de asignacion
 	date_end DATETIME NULL, -- Fecha de finalizacion
+	description TEXT,
 	status   TINYINT NOT NULL DEFAULT 3,
 	
 	-- llaves foraneas

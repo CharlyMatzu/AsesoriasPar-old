@@ -1,6 +1,7 @@
 <?php namespace App\Middelware;
 
 
+use App\Model\AdvisoryModel;
 use App\Model\Career;
 use App\Model\Period;
 use App\Model\Student;
@@ -505,28 +506,32 @@ class InputParamsMiddelware extends Middelware
      *
      * @return Response
      */
-    public function checkData_advisory_subject($req, $res, $next){
+    public function checkData_advisory($req, $res, $next){
 
         $params = $req->getParsedBody();
-        if( !isset($params['subject']) )
+        if( !isset($params['subject']) || !isset($params['description']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Faltan parametros, Se requiere: subject");
+                "Faltan parametros, Se requiere: subject, description");
 
-        if( empty($params['subject']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: vacio");
+        if( empty($params['subject']) || empty($params['description']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: campos vacios");
 
         //no debe ser array
         if( is_array($params['subject']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: no debe ser array");
+                "Parametros invalidos: subject no debe ser array");
 
         //Verificando que sean datos numericos
         $subject = $params['subject'];
         if( !is_numeric($subject) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: no es numerico");
+                "Parametros invalidos: subject no es numerico");
 
-        $req = $req->withAttribute('advisory_subject', $subject);
+        $advisory = new AdvisoryModel();
+        $advisory->setSubject( $subject );
+        $advisory->setDescription( $params['description'] );
+
+        $req = $req->withAttribute('advisory_data', $advisory);
 
         $res = $next($req, $res);
         return $res;

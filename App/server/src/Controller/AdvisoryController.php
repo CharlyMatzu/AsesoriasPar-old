@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
+use App\Model\AdvisoryModel;
 use App\Model\Subject;
 use App\Service\AdvisoryService;
 use App\Utils;
@@ -75,9 +76,11 @@ class AdvisoryController
     {
         try {
             $advisoryServ = new AdvisoryService();
-            /* @var $subject_id int */
-            $subject_id = $req->getAttribute('advisory_subject');
-            $advisoryServ->insertAdvisory_CurrentPeriod( $params['id'], $subject_id);
+            /* @var $advisory AdvisoryModel */
+            $advisory = $req->getAttribute('advisory_data');
+            //Se adiciona estudiante a objeto
+            $advisory->setStudent( $params['id'] );
+            $advisoryServ->insertAdvisory_CurrentPeriod( $advisory);
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asesoria registrada con exito");
 
         } catch (RequestException $e) {
