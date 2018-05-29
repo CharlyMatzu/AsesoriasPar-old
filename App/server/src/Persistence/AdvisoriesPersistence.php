@@ -1,6 +1,7 @@
 <?php namespace App\Persistence;
 
 
+use App\Model\AdvisoryModel;
 use App\Utils;
 
 class AdvisoriesPersistence extends Persistence{
@@ -152,10 +153,17 @@ class AdvisoriesPersistence extends Persistence{
     }
 
 
-    public function insertAdvisory($student_id, $subject, $period)
+    /**
+     * @param $advisory AdvisoryModel
+     * @param $period_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function insertAdvisory($advisory, $period_id)
     {
-        $query = "INSERT INTO advisory_request(status, fk_student, fk_subject, fk_period)
-                  VALUES(".Utils::$STATUS_PENDING.", $student_id, $subject, $period)";
+        $query = "INSERT INTO advisory_request(status, description, fk_student, fk_subject, fk_period)
+                  VALUES(".Utils::$STATUS_PENDING.", ".$advisory->getDescription().", 
+                  ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
         return self::executeQuery($query);
     }
 

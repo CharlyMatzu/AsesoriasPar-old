@@ -176,7 +176,8 @@ class Utils
      */
     public static function makeMessageJSONResponse($res, $statusCode, $message)
     {
-        return $res->withStatus($statusCode)->withJson( ["message" => $message] );
+//        return $res->withStatus($statusCode)->withJson( ["message" => $message] );
+        return $res->withStatus($statusCode)->write( $message );
     }
 
     /**

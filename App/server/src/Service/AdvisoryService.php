@@ -107,26 +107,27 @@ class AdvisoryService
 
 
     /**
-     * @param $student_id int
-     * @param $subject int
+     * @param $advisory AdvisoryModel
      *
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NoContentException
      * @throws NotFoundException
      */
-    public function insertAdvisory_CurrentPeriod($student_id, $subject)
+    public function insertAdvisory_CurrentPeriod($advisory)
     {
         //se obtiene periodo actual
         $periodServ = new PeriodService();
         $period = $periodServ->getCurrentPeriod();
 
+        $student_id = $advisory->getStudent();
+        $subject_id = $advisory->getSubject();
 
         //TODO: no debe estar empalmada con otra asesoria a la misma hora/dia (activa: status 2)
 
 
         //Se buscan asesorias activas en el mismo periodo que tengan la misma materia del mismo asesor
-        $advisories = $this->perAsesorias->getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject, $period['id']);
+        $advisories = $this->perAsesorias->getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
         if( Utils::isError( $advisories->getOperation() ) )
             throw new InternalErrorException(static::class.":insertAdvisory_CurrentPeriod",
                 "Error al obtener asesorias", $advisories->getErrorMessage());
@@ -135,10 +136,10 @@ class AdvisoryService
 
         //Se verifica que materia exista
         $subjectServ = new SubjectService();
-        $subjectServ->getSubject_ById( $subject );
+        $subjectServ->getSubject_ById( $subject_id );
 
         //Se registra asesorias
-        $result = $this->perAsesorias->insertAdvisory( $student_id, $subject, $period['id'] );
+        $result = $this->perAsesorias->insertAdvisory( $advisory, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":insertAdvisory",
                 "Error al registrar asesorias", $advisories->getErrorMessage());

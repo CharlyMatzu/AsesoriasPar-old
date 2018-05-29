@@ -108,7 +108,8 @@ ADVISORY
 -----------------------------
 NEW REQUEST
 {
-	"subject": 1
+	"subject": 1,
+	"description" "Descripcion detallada o breve"
 }
 
 ASSIGN

@@ -4,6 +4,9 @@
 
         private $id;
         private $register_date;
+        private $date_start;
+        private $date_end;
+        private $description;
         private $status;
         private $student;
         private $adviser;
@@ -60,7 +63,7 @@
         }
 
         /**
-         * @return Student
+         * @return Student|int
          */
         public function getStudent()
         {
@@ -68,7 +71,7 @@
         }
 
         /**
-         * @param Student $student
+         * @param Student|int $student
          */
         public function setStudent($student)
         {
@@ -92,7 +95,7 @@
         }
 
         /**
-         * @return Subject
+         * @return Subject|int
          */
         public function getSubject()
         {
@@ -100,11 +103,61 @@
         }
 
         /**
-         * @param Subject $subject
+         * @param Subject|int $subject
          */
         public function setSubject($subject)
         {
             $this->subject = $subject;
         }
+
+        /**
+         * @return mixed
+         */
+        public function getDateStart()
+        {
+            return $this->date_start;
+        }
+
+        /**
+         * @param mixed $date_start
+         */
+        public function setDateStart($date_start)
+        {
+            $this->date_start = $date_start;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDateEnd()
+        {
+            return $this->date_end;
+        }
+
+        /**
+         * @param mixed $date_end
+         */
+        public function setDateEnd($date_end)
+        {
+            $this->date_end = $date_end;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDescription()
+        {
+            return $this->description;
+        }
+
+        /**
+         * @param mixed $description
+         */
+        public function setDescription($description)
+        {
+            $this->description = $description;
+        }
+
+
 
     }

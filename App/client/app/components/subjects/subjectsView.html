@@ -1,0 +1,53 @@
+<div class="container">
+<h1>Materias registradas</h1>
+<button ng-click="newSubject.show = true" ng-disabled="newSubject.show" class="btn btn-primary">Nuevo</button>
+<!-- <p ng-show="alert" ng-class="alert alert-(alert.type)" role="alert">{{alert.message}}</p> -->
+
+<div ng-show="newSubject.show">
+    <form action="" ng-submit="add(subject)">
+        <input required type="text" class="form-control" placeholder="Nombre" ng-model="subject.name">
+        <input required type="text" class="form-control" placeholder="Short_name" ng-model="subject.short_name">
+        <input required type="text" class="form-control" placeholder="Descripcion" ng-model="subject.description">
+        <input required type="text" class="form-control" placeholder="Semestre" ng-model="subject.semester">
+        <input required type="text" class="form-control" placeholder="Plan" ng-model="subject.plan_id">
+        <input required type="text" class="form-control" placeholder="Carera" ng-model="subject.career_id">
+
+        <button class="btn btn-success" >Registrar Materia</button>
+        <button "btn btn-default" ng-click="newSubject.show  = false" >Cancelar</button>
+        <span ng-show="newSubject.status" class="loader"></span>
+    </form>
+</div>
+<br><br>
+
+<div >
+    <p ng-hide="subjects.length > 0">{{status}}</p>
+    <table ng-show="subjects.length > 0" border="1px solid" width="100%">
+        <tr>
+            <th>Id</th>
+            <th>Semestre</th>
+            <th>Nombre</th>
+            <th>Short_name</th>
+            <th>Descripcion</th>
+            <th>Estado</th>
+            <th>Career ID</th>
+            <th>Plan ID</th>
+            <th>Opciones</th>
+        </tr>
+        <tr ng-repeat="subject in subjects">
+            <td>{{subject.id}}</td>
+            <td>{{subject.semester}}</td>
+            <td>{{subject.name}}</td>
+            <td>{{subject.short_name}}</td>
+            <td>{{subject.description}}</td>
+            <td>{{getStatus(subject.status)}}</td>
+            <td>{{subject.career_id}}</td>
+            <td>{{subject.plan_id}}</td>
+            <td>
+                <button ng-click="deleteSubject(subject.id)" class="btn btn-danger">Eliminar</button>
+               <!-- <button ng-click="disable(user)" class="btn btn-warning">Deshabilitar</button>
+                <button ng-click="edit(user)" class="btn btn-primary">Editar</button> -->
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
