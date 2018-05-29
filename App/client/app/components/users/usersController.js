@@ -8,19 +8,6 @@ app.controller('UsersController', function($scope, $http, Notification, UsersSer
     $scope.status = "Cargando usuarios..."
 
 
-    $scope.errorSnack = function(errorMessage){
-        Notification.error( errorMessage );
-    }
-
-    $scope.getStatus = function(status){
-        if( status == 0 )
-            return "CERO";
-        else if( status == 1 )
-            return "UNO";
-        else if( status == 2 )
-            return "DOS";
-    }
-
 
     $scope.getUsers = function(){
         UsersService.getUsers(
@@ -35,7 +22,7 @@ app.controller('UsersController', function($scope, $http, Notification, UsersSer
                     
             },
             function( error ){
-                $scope.errorSnack("Error al obtener usuarios");
+                Notification.error("Error al obtener usuarios");
             });
     }
 
@@ -51,7 +38,7 @@ app.controller('UsersController', function($scope, $http, Notification, UsersSer
                 $scope.getUsers();
             }, 
             function(error){
-                $scope.errorSnack("Error al registrar usuario: "+error.data.message);
+                Notification.error("Error al registrar usuario: "+error.data.message);
             });
     }
 
@@ -61,7 +48,7 @@ app.controller('UsersController', function($scope, $http, Notification, UsersSer
                 $scope.getUsers();
             },
             function(error){
-                $scope.errorSnack("Error al eliminar usuarios");
+                Notification.error("Error al eliminar usuarios");
             });
     }
 
