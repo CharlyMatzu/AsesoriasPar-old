@@ -7,12 +7,7 @@
     class MySQLConexion {
 
 
-        private $datos = [
-            'host' => "localhost",
-            'user' => 'ronintop_asesoriaspar_user',
-            'pass' => 'asesoriaspar_pass',
-            'db'   => 'ronintop_asesoriaspar'
-        ];
+
         private $_connection;
 
         /**
@@ -22,12 +17,33 @@
          */
         public function __construct() {
 
+            //Obteniendo JSON
+            $path_config = file_get_contents(ROOT_PATH."/connection.config.json");
+            $json_config = json_decode( $path_config );
+
+
+            if( !isset($json_config->mode) || !isset($json_config->connection) )
+                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+
+            //Obteniendo el modo y las conexiones
+            $mode = $json_config->mode;
+            $connections = $json_config->connection; //objetos de conexion
+
+            //Se obtiene conexion especifica, si no existe, se lanza error
+            if( !isset($connections->$mode) )
+                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+
+            $con = $connections->$mode;
+
+            if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
+                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+
             //Datos de conexion
             $this->_connection = new mysqli(
-                $this->datos['host'],
-                $this->datos['user'],
-                $this->datos['pass'],
-                $this->datos['db']
+                $con->host,
+                $con->user,
+                $con->pass,
+                $con->db
             );
 
              //Manejo de error
