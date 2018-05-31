@@ -1,0 +1,23 @@
+
+/* Margin */
+.basic-right-margin{
+    margin-right: 5px;
+}
+
+
+/* Addon button */
+.input-group-btn .btn{
+    padding: 8px 12px;
+}
+
+
+/* Table text color */
+th{
+    /* background-color: #007bff; */
+    color: #000 !important;
+    font-weight: bold !important;
+}
+
+tbody tr td{
+    color: #212121;
+}

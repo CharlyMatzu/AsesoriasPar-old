@@ -1,11 +1,9 @@
-app.controller('UsersController', function($scope, $http, Notification, UsersService){
-    $scope.newUser = {
-        show: false,
-        status: false
-    };
+app.controller('UsersController', function($scope, $http, $window, Notification, UsersService){
+    $scope.page.title = "Usuarios > Registrados";
 
     $scope.users = [];
-    $scope.status = "Cargando usuarios..."
+    $scope.status = "";
+    $scope.loading = false;
 
 
     /**
@@ -20,9 +18,16 @@ app.controller('UsersController', function($scope, $http, Notification, UsersSer
         });
     }
 
+    $scope.goToNewUser = function(){
+        $window.location.href = '#!/usuarios/nuevo';
+    }
+
 
 
     $scope.getUsers = function(){
+        $scope.status = "";
+        $scope.loading = true;
+
         UsersService.getUsers(
             function(success){
                 if( success.status == NO_CONTENT ){
@@ -32,32 +37,18 @@ app.controller('UsersController', function($scope, $http, Notification, UsersSer
                     // Notification.success('Datos obtenidos');
                     $scope.users = success.data;
                 }
+                //Enabling refresh button
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data.message);
+                $scope.status = "Error";
+                //Enabling refresh button
+                $scope.loading = false;
             });
     }
 
-
-    /**
-     * 
-     * @param {*} user 
-     */
-    $scope.add = function(user){
-        //Se pone en cargando
-        $scope.newUser.status = true
-
-        //Se hace peticion
-        UsersService.addUser(user, 
-            function(success){
-                Notification.success('Datos obtenidos');
-                $scope.getUsers();
-            }, 
-            function(error){
-                Notification.error("Error al registrar usuario: "+error.data.message);
-            });
-    }
 
     $scope.delete = function(user_id){
         //Deshabilita botones

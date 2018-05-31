@@ -2215,6 +2215,7 @@ textarea {
 .card-outline-info .card-header {
   background: #1976d2 none repeat scroll 0 0;
   border-color: #1976d2;
+  margin-bottom: 30px;
 }
 .card-outline-inverse {
   border-color: #2f3d4a;
