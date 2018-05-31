@@ -6,25 +6,45 @@
                     <h4 class="m-b-0 text-white">Formulario de registro</h4>
                 </div>
                 <div class="card-body">
+                    <!-- _______Alerts_______ -->
+                    <div ng-show="error.status" class="alert alert-danger fade show">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <strong>Santo guacamole!</strong> Ocurrio un error: {{error.message}}
+                    </div>
+                    <div ng-show="success" class="alert alert-success fade show">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <strong>Good Job!</strong> Se ha registrado usuario correctamente.
+                    </div>
+
+                    <!-- _______Form________ -->
                     <form ng-submit="addUser(user)">
                         <div class="form-group">
                             <label for="email">Correo electronico</label>    
-                            <input type="email" id="email" ng-model="user.email" class="form-control" placeholder="Correo electronico">
+                            <input type="email" id="email" ng-model="user.email" class="form-control" placeholder="Correo electronico" required>
                         </div>
     
                         <div class="form-group">
-                            <label for="pass2">Contraseña</label>    
-                            <input type="password" id="pass" ng-model="user.pass" class="form-control" placeholder="Contraseña">
+                            <label for="pass">Contraseña</label>    
+                            <input type="password" id="pass" ng-model="user.pass" class="form-control" placeholder="Contraseña" required>
                         </div>
     
                         <div class="form-group">
                             <label for="pass2">Re-ingresar Contraseña</label>    
-                            <input type="password" id="pass2" ng-model="user.pass2" class="form-control" placeholder="Contraseña">
+                            <input type="password" id="pass2" ng-model="user.pass2" class="form-control" placeholder="Contraseña" required>
                         </div>
+
+                        <div class="form-group">
+                                <label for="role">Rol de usuario</label>    
+                                <select id="role" ng-model="user.role" class="form-control" required>
+                                    <option value="moderator" selected>Moderator</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
     
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Registrar</button>
+                            <button type="submit" ng-disabled="loading" class="btn btn-success"><i class="fa fa-check"></i> Registrar</button>
                             <button type="reset" class="btn btn-inverse">Limpiar</button>
+                            <span ng-show="loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
                         </div>
                     </form>
                 </div>

@@ -10,6 +10,23 @@
     padding: 8px 12px;
 }
 
+/* Color buttons */
+.btn.btn-success:disabled{
+    background-color: #26dad2;
+    border-color: #26dad2;
+}
+
+.btn.btn-success{
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+
+/* alerts */
+.alert-success{
+    color: #707070 !important;
+}
+
 
 /* Table text color */
 th{
