@@ -31,7 +31,8 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         UsersService.getUsers(
             function(success){
                 if( success.status == NO_CONTENT ){
-                    Notification.primary('No hay usuarios registrados');
+                    $scope.status = "No se encontraron usuarios";
+                    $scope.users = [];
                 }
                 else{
                     // Notification.success('Datos obtenidos');
@@ -50,6 +51,36 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
     }
 
 
+    $scope.searchUser = function(data){
+        if( data == null || data == "" ) 
+            return;
+
+
+        $scope.status = "";
+        $scope.loading = true;
+
+        UsersService.searchUsers(data,
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    $scope.status = "No se encontraron usuarios";
+                    $scope.users = [];
+                }
+                else{
+                    $scope.users = success.data;
+                }
+                //Enabling refresh button
+                $scope.loading = false;
+                    
+            },
+            function( error ){
+                Notification.error("Error al obtener usuarios: " + error.data);
+                $scope.status = "Error";
+                //Enabling refresh button
+                $scope.loading = false;
+            });
+    }
+
+
     $scope.delete = function(user_id){
         //Deshabilita botones
         $scope.disableButtons(true, user_id);
@@ -57,7 +88,6 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         UsersService.deleteUser(user_id,
             function(success){
                 Notification.success("Usuario eliminado con exito");
-                //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getUsers();
             },
             function(error){
@@ -98,7 +128,6 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         UsersService.changeStatus(user_id, DISABLED, 
             function(success){
                 Notification.success("Deshabilitado con exito");
-                //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getUsers();
             },
             function(error){
@@ -107,6 +136,8 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 $scope.disableButtons(false, user_id);
             });
     }
+
+    
 
     
 

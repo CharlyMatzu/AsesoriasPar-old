@@ -12,7 +12,7 @@ use ronintop_asesoriaspar;
 
 
 CREATE TABLE role(
-	name 	     	VARCHAR(20) NOT NULL PRIMARY KEY,
+	name 	    VARCHAR(20) NOT NULL PRIMARY KEY,
 	description VARCHAR(100) NULL
 );
 
@@ -158,6 +158,7 @@ CREATE TABLE advisory_request(
 	date_register TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	date_start DATETIME NULL, -- Fecha de asignacion
 	date_end DATETIME NULL, -- Fecha de finalizacion
+	rating tinyint, -- Cuando el alumno califica
 	description TEXT,
 	status   TINYINT NOT NULL DEFAULT 3,
 	

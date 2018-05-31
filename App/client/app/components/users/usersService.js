@@ -30,6 +30,22 @@ app.service('UsersService', function($http){
         });
     }
 
+    this.searchUsers = function(data,successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: "http://api.asesoriaspar.com/index.php/users/search/"+data
+        }).then(function(success){
+            var data = success.data;
+            // console.log( success );
+            successCallback(success);
+        }, function(error){
+            // console.log( error );
+            errorCallback(error);
+        });
+    }
+
+    
+
     this.addUser = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',

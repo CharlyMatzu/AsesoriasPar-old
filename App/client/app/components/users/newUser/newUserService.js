@@ -21,7 +21,7 @@ app.service('NewUserService', function($http){
     this.addUser = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.asesoriaspar.com/index.php/usersaaa",
+            url: "http://api.asesoriaspar.com/index.php/users",
             data: {
                 email: user.email,
                 password: user.pass,

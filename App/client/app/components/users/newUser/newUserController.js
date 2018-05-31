@@ -1,10 +1,12 @@
 app.controller('NewUserController', function($scope, $http, $timeout, NewUserService, Notification){
     $scope.page.title = "Usuarios > Nuevo";
     $scope.loading = false;
-    // $scope.error = {
-    //     status: false,
-    //     message: ""
-    // };
+
+    //TODO: hacer variables globales y adicionar funciones
+    $scope.error = {
+        status: false,
+        message: ""
+    };
     $scope.success = false;
 
     /**
@@ -17,6 +19,10 @@ app.controller('NewUserController', function($scope, $http, $timeout, NewUserSer
             Notification.warning('Contraseñas no coinciden');
             return false;
         }
+        if( user.role == null || user.role == "" ){
+            Notification.warning('No se ha seleccionado un rol');
+            return false;
+        }
             
         return true;
     }
@@ -26,6 +32,9 @@ app.controller('NewUserController', function($scope, $http, $timeout, NewUserSer
      * @param {*} user 
      */
     $scope.addUser = function(user){
+
+        $scope.success = false;
+        $scope.error.status = false;
         
         if( !validate(user) )
             return;
@@ -35,34 +44,23 @@ app.controller('NewUserController', function($scope, $http, $timeout, NewUserSer
 
         NewUserService.addUser(user,
             function(success){
-                
+                $scope.success = true;
+                $scope.loading = false;
+
+                $timeout(function(){
+                    $scope.success = false;
+                },3000);
             },
             function (error){
-                
+                $scope.loading = false;
+                $scope.error.status = true;
+                $scope.error.message = error.data;
+
+                $timeout(function(){
+                    $scope.error.status = false;
+                },5000);        
             });
 
-        //Se hace peticion
-        // NewUserService.addUser(user, 
-        //     function(success){
-        //         $scope.success = true;
-        //         $scope.loading = false;
-        //         $scope.getUsers();
-
-        //         $timeout(function(){
-        //             $scope.success = false;
-        //         },2000);
-        //     }, 
-        //     function(error){
-        //         $scope.loading = false;
-
-        //         $scope.error = {
-        //             status = true,
-        //             message: "asdad"
-        //         }
-        //         $timeout(function(){
-        //             $scope.error.status = false;
-        //         },2000);
-        //     });
     }
 
 });

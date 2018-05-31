@@ -18,7 +18,7 @@ class Utils
     public static $STATUS_FINALIZED = 3;
 
     //--------ROLES
-    public static $ROLE_ADMIN = "admin";
+    public static $ROLE_ADMIN = "administrator";
     public static $ROLE_MOD = "moderator";
     public static $ROLE_BASIC = "basic";
 
