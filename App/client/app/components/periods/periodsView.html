@@ -1,62 +1,106 @@
-<div class="container">
-    <h1>Periodos registrados</h1>
-    <button ng-click="newPeriod = true" class="btn btn-primary">Nuevo periodo</button>
-    <button ng-click="updatePeriod = true" class="btn btn-primary">Editar periodo</button>
-    <button ng-click="updateStatusPeriod = true" class="btn btn-primary">Cambiar Status</button>
-    <br><br>
+<div class="container-fluid">
 
-    <div class="row">
-        <div class="col-sm-6">
-            <div ng-show="newPeriod">
-                <form action="" ng-submit="add(period)">
-                    <input required type="date" class="form-control" placeholder="Fecha de inicio" ng-model="period.start"><br>
-                    <input required type="date" class="form-control" placeholder="Fecha de fin" ng-model="period.end"><br>       
-                    <button class="btn btn-success" >Registrar periodo</button>
-                </form>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div ng-show="updatePeriod">
-                <form action="" ng-submit="update(period)">
-                    <input required type="number" class="form-control" placeholder="ID periodo" ng-model="period.id"><br>
-                    <input required type="date" class="form-control" placeholder="Fecha de inicio" ng-model="period.start"><br>
-                    <input required type="date" class="form-control" placeholder="Fecha de fin" ng-model="period.end"><br>       
-                    <button class="btn btn-success" >Actualizar periodo</button>
-                </form>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div ng-show="updateStatusPeriod">
-                <form action="" ng-submit="updateStatus(period)">
-                    <input required type="text" class="form-control" placeholder="Id periodo" ng-model="period.id"><br>
-                    <input required type="text" class="form-control" placeholder="Status" ng-model="period.status"><br>       
-                    <button class="btn btn-success" >Cambiar status periodo</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <br><br>
+        <div class="row">
+            <!-- Nuevo -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Nuevo Periodo</h3>
+                        <form action="" ng-submit="addPeriod(newPeriod)">
+                            <div class="form-group">
+                                <label for="start">Fecha de inicio:</label>
+                                <!-- TODO: agregar un min para la fecha de inicio-->
+                                <input type="date" id="start" class="form-control" ng-model="newPeriod.start" required>
+                            </div>
 
-    <div style="width: 800px">
-        <p ng-hide="periods.length > 0">{{loader.message}}</p>
-        <table ng-show="periods.length > 0" border="1px solid" width="100%">
-            <tr>
-                <th>ID</th>
-                <th>Fecha inicio</th>
-                <th>Fecha fin</th>
-                <th>Registro</th>
-                <th>Estatus</th>
-            </tr>
-            <tr ng-repeat="period in periods">
-                <td>{{period.id}}</td>
-                <td >{{period.start}}</td>
-                <td >{{period.end}}</td>
-                <td>{{period.date_register}}</td>
-                <td>{{period.status}}</td>
-                <td>
-                    <button ng-click="deletePeriod(period.id)" class="btn btn-danger btn-sm">Eliminar</button>
-                </td>
-            </tr>
-        </table>
+                            <div class="form-group">
+                                <label for="end">Fecha de termino:</label>
+                                <!-- TODO: agregar un min para la fecha de cierre posterior a la de inicio-->
+                                <input type="date" id="end" class="form-control"  ng-model="newPeriod.end" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Registrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- end nuevo -->
+
+
+            <!-- Update -->
+            <div class="col-lg-6" ng-show="showForm">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Actualizar Periodo</h3>
+                        <form action="" ng-submit="updatePeriod(period)">
+                            <div class="form-group">
+                                <label for="start">Fecha de inicio:</label>
+                                <!-- TODO: agregar un min para la fecha de inicio-->
+                                <input type="date" id="start" class="form-control" ng-model="period.start" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end">Fecha de termino:</label>
+                                <!-- TODO: agregar un min para la fecha de cierre posterior a la de inicio-->
+                                <input type="date" id="end" class="form-control"  ng-model="period.end" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- end update -->
+    
+    
+        </div>
+        <!-- end row -->
+    
+
+        
+        <!-- Tabla -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline-info">
+                    <div class="card-header">
+                        <h4 class="m-b-0 text-white">Periodos registrados</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Messge -->
+                        <p ng-hide="periods.length > 0">{{loading.message}}</p>
+                        
+                        <!-- Table -->
+                        <div ng-show="periods.length > 0" class="table-responsive">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Fecha de inicio</th>
+                                    <th>Fecha de termino</th>
+                                    <th>Fecha de registro</th>
+                                    <th>Estado</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                <tr ng-repeat="p in periods">
+                                    <td>{{p.id}}</td>
+                                    <td>{{p.start}}</td>
+                                    <td>{{p.end}}</td>
+                                    <td>{{p.register_date}}</td>
+                                    <td>
+                                        <span ng-show="p.status == 0" class="badge badge-danger">Deshabilitado</span>
+                                        <span ng-show="p.status == 2" class="badge badge-success">Activo</span>
+                                        <span ng-show="p.status == 3" class="badge badge-primary">Finalizado</span>
+                                    </td>
+                                    <td>
+                                        <button ng-click="editPeriod(p)" class="opt-period-{{p.id}} btn btn-primary">Editar</button>
+                                        <button ng-show="p.status == 0" ng-click="enablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-success">Habilitar</button>
+                                        <button ng-show="p.status == 2" ng-click="disablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-warning">Deshabilitar</button>
+                                        <button ng-click="deletePeriod(p.id)" class="opt-period-{{p.id}} btn btn-danger">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end table -->
+        </div>
+    
     </div>
-</div>

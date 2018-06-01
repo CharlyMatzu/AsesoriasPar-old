@@ -17,6 +17,7 @@ class Utils
     public static $STATUS_CANCELED = 0;
     public static $STATUS_PENDING = 1;
     public static $STATUS_ACTIVE = 2;
+    //also for period
     public static $STATUS_FINALIZED = 3;
 
     //--------ROLES
@@ -234,10 +235,11 @@ class Utils
      * @return bool
      */
     public static function validateDateTime($date){
-        $formatSlash = 'Y/m/d';
-        $d = DateTime::createFromFormat($formatSlash, $date);
+        $format = 'Y/m/d';
+//        $format = 'd/m/Y';
+        $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
-        return $d && $d->format($formatSlash) === $date;
+        return $d && $d->format($format) === $date;
     }
 
 }

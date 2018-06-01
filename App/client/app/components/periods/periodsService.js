@@ -1,77 +1,66 @@
 
 app.service('PeriodsService', function($http){
     // this.data = [];
-    this.getPeriods = function(callback){
+    this.getPeriods = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://asesoriaspar.ronintopics.com/index.php/periods"
+            url: "http://api.asesoriaspar.com/index.php/periods"
         }).then(function(success){
-            var data = success.data;
-            console.log( data );
-            callback(data);
+            successCallback(success);
         }, function(error){
-            console.log( error );
-            callback(data);
+            errorCallback(error);
         });
     }
 
-    this.addPeriod = function(callback, period){
+    this.addPeriod = function(period, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://asesoriaspar.ronintopics.com/index.php/periods",
+            url: "http://api.asesoriaspar.com/index.php/periods",
             data: {
                 start: period.start,
                 end: period.end
             }
         }).then(function(success){
-            console.log( success );
-            callback(success) 
+            successCallback(success) 
         }, function(error){
-            console.log( error );
-            callback(error)
+            errorCallback(error)
         });
     }
 
-    this.updatePeriod = function(callback, period){
+    this.updatePeriod = function(period, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://asesoriaspar.ronintopics.com/index.php/periods/"+period.id,
+            url: "http://api.asesoriaspar.com/index.php/periods/"+period.id,
             data: {
                 start: period.start,
                 end: period.end
             }
         }).then(function (success){
-            console.log( success );
-            callback(success);
+            successCallback(success);
         },function (error){
-            console.log( error );
-            callback(error);
+            errorCallback(error);
         });
     }
     
-    this.updateStatusPeriod = function(callback, period){
+    this.changeStatus = function(period_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: "http://asesoriaspar.ronintopics.com/index.php/periods/"+period.id+"/status/"+period.status
+            url: "http://api.asesoriaspar.com/index.php/periods/"+period_id+"/status/"+status
         }).then(function (success){
-            console.log( success );
-            callback(success);
+            successCallback(success);
         },function (error){
-            console.log( error );
-            callback(error);
+            errorCallback(error);
         });
     }
 
-    this.deletePeriod = function(callback, period_id){
+    this.deletePeriod = function(period_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://asesoriaspar.ronintopics.com/index.php/periods/"+period_id
+            url: "http://api.asesoriaspar.com/index.php/periods/"+period_id
         }).then(function (success){
-            // console.log( response.data.message );
-            callback(success);
+            successCallback(success);
         },function (error){
-            // console.log( response.data.message );
-            callback(error);
+            errorCallback(error);
         });
     }
     

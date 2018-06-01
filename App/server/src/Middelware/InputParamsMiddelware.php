@@ -424,7 +424,7 @@ class InputParamsMiddelware extends Middelware
 
         //Formato de fecha invalido: aaaa/mm/dd
         if( !Utils::validateDateTime($params['start']) || !Utils::validateDateTime($params['end']))
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Fechas invalidas: aaaa/mm/dd o aaaa-mm-dd");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Fechas invalidas: aaaa/mm/dd");
 
 
 

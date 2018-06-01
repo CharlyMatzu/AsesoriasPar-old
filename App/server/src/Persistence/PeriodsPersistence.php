@@ -13,7 +13,7 @@ class PeriodsPersistence extends Persistence{
                           period_id as 'id',
                           date_start as 'start',
 	                      date_end as 'end',
-	                      date_register,
+	                      date_register as 'register_date',
 	                      status  as 'status'
                         FROM period ";
 
@@ -119,8 +119,8 @@ class PeriodsPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function insertPeriod( $start, $end ){
-        $query = "INSERT INTO period (date_start, date_end) 
-                  VALUES('$start', '$end')";
+        $query = "INSERT INTO period (date_start, date_end, status) 
+                  VALUES('$start', '$end', ".Utils::$STATUS_DISABLE.")";
         return  self::executeQuery($query);
     }
 
@@ -142,7 +142,7 @@ class PeriodsPersistence extends Persistence{
      */
     public function changeStatusToDelete( $id ){
         $query = "UPDATE Period
-                  SET status = ".Utils::$STATUS_DISABLE.",
+                  SET status = ".Utils::$STATUS_DISABLE."
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }
@@ -154,7 +154,7 @@ class PeriodsPersistence extends Persistence{
      */
     public function changeStatusToEnable( $id ){
         $query = "UPDATE Period
-                  SET status = ".Utils::$STATUS_ENABLE.",
+                  SET status = ".Utils::$STATUS_ENABLE."
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }
