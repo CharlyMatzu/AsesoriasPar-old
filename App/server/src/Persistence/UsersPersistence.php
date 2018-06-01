@@ -32,6 +32,16 @@ class UsersPersistence extends Persistence{
     /**
      * @return \App\Model\DataResult
      */
+    public function getStaffUsers()
+    {
+        $query = $this->SELECT.
+            "WHERE r.name = '".Utils::$ROLE_MOD."' OR r.name = '".Utils::$ROLE_ADMIN."'";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @return \App\Model\DataResult
+     */
     public function getEnableUsers()
     {
         $query = $this->SELECT.

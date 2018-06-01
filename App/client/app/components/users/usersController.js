@@ -1,9 +1,17 @@
 app.controller('UsersController', function($scope, $http, $window, Notification, UsersService){
-    $scope.page.title = "Usuarios > Registrados";
+    $scope.page.title = "Staff > Registrados";
+    $scope.user = {
+        id: 0,
+        email: "",
+        pass: "",
+        role: ""
+    };
 
     $scope.users = [];
     $scope.status = "";
     $scope.loading = false;
+
+    $scope.update = false;
 
 
     /**
@@ -23,7 +31,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
     }
 
 
-
+    //TODO: obtener solo usuarios moderador/admin
     $scope.getUsers = function(){
         $scope.status = "";
         $scope.loading = true;
@@ -51,6 +59,10 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
     }
 
 
+    /**
+     * 
+     * @param {String} data Informacion a buscar (correo)
+     */
     $scope.searchUser = function(data){
         if( data == null || data == "" ) 
             return;
@@ -81,7 +93,80 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
     }
 
 
-    $scope.delete = function(user_id){
+    /**
+     * 
+     * @param {*} user 
+     * @return bool
+     */
+    var validate = function(user){
+        if( user.id == 0 || user.id == "" || user.id == null){
+            Notification.error("Hay un error con el ID: contactar a un administrador");
+            return false;
+        }
+        if( user.pass != user.pass2 ){
+            Notification.warning('Contraseñas no coinciden');
+            return false;
+        }
+        if( user.role == null || user.role == "" ){
+            Notification.warning('No se ha seleccionado un rol');
+            return false;
+        }
+            
+        return true;
+    }
+
+
+    /**
+     * Encargado de abrir el panel de edicion
+     * @param {*} user 
+     */
+    $scope.editUser = function(user){
+        if( user.role == "basic" ){
+            Notification.warning("No soporta tipo Basic, se debe arreglar");
+            return;
+        }
+
+        //Asignacion de datos al formulario
+        $scope.user.id = user.id;
+        $scope.user.email = user.email;
+        $scope.user.pass = user.pass;
+        $scope.user.role = user.role;
+        //Open update form
+        $scope.update = true;
+    }
+
+    $scope.updateUser = function(user){
+        if( !validate(user) )
+            return;
+        
+
+        UsersService.updateUser(user,
+            function(success){
+                Notification.success("Actualizado con exito");
+                $scope.getUsers();
+            },
+            function(error){
+                Notification.error("Error: "+error.data);
+            }
+
+        );
+        
+        
+        //Close form
+        $scope.update = false;
+        //Clean value
+        $scope.user.id = 0;
+        $scope.user.email = "";
+        $scope.user.pass = "";
+        $scope.user.role = "";
+    }
+
+
+    /**
+     * 
+     * @param {int} user_id ID del usuario
+     */
+    $scope.deleteUser = function(user_id){
         //Deshabilita botones
         $scope.disableButtons(true, user_id);
 
@@ -97,7 +182,11 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
             });
     }
 
-    $scope.enable = function(user_id){
+    /**
+     * 
+     * @param {int} user_id ID del usuario
+     */
+    $scope.enableUSer = function(user_id){
         //Deshabilita botones
         $scope.disableButtons(true, user_id);
 
@@ -120,7 +209,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
      * 
      * @param {int} user_id ID del usuario
      */
-    $scope.disable = function(user_id){
+    $scope.disableUser = function(user_id){
         //Deshabilita botones
         $scope.disableButtons(true, user_id);
 

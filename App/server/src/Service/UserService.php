@@ -32,7 +32,25 @@ class UserService{
         $result = $this->userPer->getUsers();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."getUsers", "Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getUsers", "Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No hay usuarios");
+        else
+            return $result->getData();
+    }
+
+    /**
+     * @return mixed
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getStaffUsers()
+    {
+        $result = $this->userPer->getStaffUsers();
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class.":getStaffUsers",
+                "Ocurrio un error al obtener usuarios mod/admin", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay usuarios");
         else
@@ -488,6 +506,7 @@ class UserService{
         //Returning object
         return $user;
     }
+
 
 
 

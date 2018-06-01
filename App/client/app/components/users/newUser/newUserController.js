@@ -1,6 +1,9 @@
 app.controller('NewUserController', function($scope, $http, $timeout, NewUserService, Notification){
     $scope.page.title = "Usuarios > Nuevo";
     $scope.loading = false;
+    $scope.update = false;
+
+    
 
     //TODO: hacer variables globales y adicionar funciones
     $scope.error = {

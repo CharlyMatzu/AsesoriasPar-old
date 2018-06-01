@@ -14,7 +14,7 @@ use \Slim\Http\Request;
 use \Slim\Http\Response;
 use \Slim\App;
 
-
+//TODO: quitar cuando este en produccion
 $config = [
     'settings' => [
         'displayErrorDetails' => true,
@@ -57,6 +57,11 @@ $app->get('/', function(Request $request, Response $response, $params){
 //Obtiene todos los usuarios
 $app->get('/users', 'UserController:getUsers')
         ->add(AuthMiddelware::class);
+
+
+//Obtiene todos los usuarios con rol: Mod/Admin
+$app->get('/users/staff', 'UserController:getStaffUsers')
+    ->add(AuthMiddelware::class);
 
 //TODO: hacer mas descriptiva
 //Obtiene usuarios con un status especifico

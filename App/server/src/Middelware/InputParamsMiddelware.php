@@ -159,7 +159,8 @@ class InputParamsMiddelware extends Middelware
         if( empty($params['role']) || empty($params['password']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
 
-        if( $params['role'] != Utils::$ROLE_BASIC &&
+        //El tipo basic es solo con estudiante
+        if( //$params['role'] != Utils::$ROLE_BASIC &&
             $params['role'] != Utils::$ROLE_MOD &&
             $params['role'] != Utils::$ROLE_ADMIN)
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
@@ -185,6 +186,7 @@ class InputParamsMiddelware extends Middelware
         if( !isset($params['email']) || !isset($params['password']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password");
 
+        //FIXME: debe poder aceptar password vacio para el caso del update
         if( empty($params['email']) || empty($params['password']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 

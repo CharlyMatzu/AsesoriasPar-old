@@ -6,11 +6,9 @@ app.service('UsersService', function($http){
             method: 'PATCH',
             url: "http://api.asesoriaspar.com/index.php/users/"+user_id+"/status/"+status
         }).then(function(success){
-            var data = success.data;
-            // console.log( success );
+            var data = success.data;            
             successCallback(success);
         }, function(error){
-            // console.log( error );
             errorCallback(error);
         });
     }
@@ -19,13 +17,12 @@ app.service('UsersService', function($http){
     this.getUsers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/users"
+            url: "http://api.asesoriaspar.com/index.php/users/staff"
         }).then(function(success){
             var data = success.data;
-            // console.log( success );
+            
             successCallback(success);
         }, function(error){
-            // console.log( error );
             errorCallback(error);
         });
     }
@@ -36,10 +33,9 @@ app.service('UsersService', function($http){
             url: "http://api.asesoriaspar.com/index.php/users/search/"+data
         }).then(function(success){
             var data = success.data;
-            // console.log( success );
+            
             successCallback(success);
         }, function(error){
-            // console.log( error );
             errorCallback(error);
         });
     }
@@ -56,10 +52,9 @@ app.service('UsersService', function($http){
                 role: user.role
             }
         }).then(function(success){
-            // console.log( success );
+            
             successCallback(success) 
         }, function(error){
-            // console.log( error );
             errorCallback(error)
         });
     }
@@ -67,17 +62,16 @@ app.service('UsersService', function($http){
     this.updateUser = function(user, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.asesoriaspar.com/index.php/users/".user_id,
+            url: "http://api.asesoriaspar.com/index.php/users/"+user.id,
             data: {
                 email: user.email,
                 password: user.pass,
                 role: user.role
             }
         }).then(function(success){
-            // console.log( success );
+            
             successCallback(success) 
         }, function(error){
-            // console.log( error );
             errorCallback(error)
         });
     }
@@ -87,10 +81,8 @@ app.service('UsersService', function($http){
             method: 'DELETE',
             url: "http://api.asesoriaspar.com/index.php/users/"+user_id
         }).then(function (success){
-            // console.log( response.data.message );
             successCallback(success);
         },function (error){
-            // console.log( response.data.message );
             errorCallback(error);
         });
     }
