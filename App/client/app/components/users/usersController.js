@@ -111,7 +111,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $scope.user.pass = user.pass;
         $scope.user.role = user.role;
         //Open update form
-        $scope.updateForm = true;
+        $scope.showForm = true;
     }
 
     $scope.updateFormUser = function(user){

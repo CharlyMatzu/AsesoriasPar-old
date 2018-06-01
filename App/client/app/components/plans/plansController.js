@@ -1,23 +1,29 @@
 app.controller('PlansController', function($scope, $http,Notification, PlansService){
+    $scope.page.title = "Planes academicos"
     $scope.plans = [];
-    
+
+    $scope.showForm = false;
+    $scope.newPlan = "";
     
 
     $scope.getPlans = function(){
         PlansService.getPlans(
             function(success){
-                if( success.status == NO_CONTENT ){
-                    Notification.primary('No hay plan registrados');
-                }
-                else{
-                    Notification.success('Datos obtenidos');
+                if( success.status == NO_CONTENT )
+                    $scope.loading.message = "No se encontraron planes";
+                else
                     $scope.plans = success.data;
-                }
+
+                //Enabling refresh button
+                // $scope.loading.status = false;
                     
             },
             function( error ){
-                $scope.errorSnack("Error al obtener usuarios");
-            });
+                Notification.error("Error al obtener usuarios: " + error.data);
+                $scope.loading.message = "Ocurrio un error =(";
+                $scope.loading.status = false;
+            }
+        );
     }
     
     $scope.add = function(plan){
@@ -60,6 +66,6 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
     }
 
     //Se carguen datos al iniciar pagina
-    // $scope.getPlans();
+    $scope.getPlans();
 
 });

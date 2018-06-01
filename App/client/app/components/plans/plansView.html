@@ -1,19 +1,81 @@
 <div class="container-fluid">
 
     <div class="row">
-        <!-- Panel de opciones -->
-        <div class="col-lg-12">
+        <!-- Nuevo -->
+        <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
-                    asdadsa
+                    <h3>Nuevo plan</h3>
+                    <form action="" ng-submit="">
+                        <div class="form-group">
+                            <label for="anio">Año:</label>
+                            <input type="text" id="anio" class="form-control" placeholder="20##">
+                        </div>
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                    </form>
                 </div>
             </div>
         </div>
+        <!-- end nuevo -->
+
+
+        <!-- Tabla -->
+        <div class="col-lg-8">
+            <div class="card card-outline-info">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white">Planes registrados</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive table-">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Año</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="p in plans">
+                                <td>{{p.year}}</td>
+                                <td>{{p.register_date}}</td>
+                                <td>
+                                    <span ng-show="p.status == 0" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="p.status == 2" class="badge badge-success">Activo</span>
+                                </td>
+                                <td>
+                                        <button ng-click="editPlan(user)" class="opt-plan-{{p.id}} btn btn-primary">Editar</button>
+                                        <button ng-show="p.status == 0" ng-click="enablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-success">Habilitar</button>
+                                        <button ng-show="p.status == 2" ng-click="disablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-warning">Deshabilitar</button>
+                                        <button ng-click="deletPlan(p.id)" class="opt-plan-{{p.id}} btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end table -->
+
+        <!-- Update -->
+        <div class="col-lg-4" ng-show="showForm">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Actualizar plan</h3>
+                    <form action="" ng-submit="">
+                        <div class="form-group">
+                            <label for="anio">Año:</label>
+                            <input type="text" id="anio" class="form-control" placeholder="20##" >
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- end Update -->
+
     </div>
 
     <div class="row">
-        <!-- Tabla -->
-        <div class="col-lg-6"></div>
+        
         <!-- Formulario -->
         <div class="col-lg-6"></div>
     </div>
