@@ -11,7 +11,7 @@
                         <button ng-click="goToNewUser()" class="btn btn-primary basic-right-margin">
                             <i class="fa fa-plus"></i> Nuevo usuario
                         </button>
-                        <button ng-click="getUsers()" ng-disabled="loading" class="btn btn-primary basic-right-margin">
+                        <button ng-click="getUsers()" ng-disabled="loading.status" class="btn btn-primary basic-right-margin">
                                 <i class="fa fa-refresh"></i> Recargar
                         </button>
                         <!-- Search -->
@@ -32,7 +32,7 @@
 
 
 
-    <div class="row" ng-show="updateForm">
+    <div class="row" ng-show="showForm">
         <div class="col-lg-12">
             <div class="card card-outline-info">
                 <div class="card-header">
@@ -68,10 +68,10 @@
                         </div>
     
                         <div class="form-actions">
-                            <button type="submit" ng-disabled="loading" class="btn btn-success"><i class="fa fa-check"></i> Actualizar</button>
+                            <button type="submit" ng-disabled="loading.status" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
                             <button type="reset" class="btn btn-inverse">Limpiar</button>
                             <button type="button" ng-click="update = false" class="btn btn-default">Cancelar</button>
-                            <span ng-show="loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
+                            <span ng-show="loading.status"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
                         </div>
                     </form>
                 </div>
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="card-body">
-                    <p ng-hide="users.length > 0">{{status}}</p>
+                    <p ng-hide="users.length > 0">{{loading.message}}</p>
                     <div class="table-responsive">
                         <table ng-show="users.length > 0" class="table table-bordered">
                             <tr>
@@ -113,7 +113,7 @@
                                     
                                     <button ng-click="editUser(user)" class="opt-user-{{user.id}} btn btn-primary">Editar</button>
                                     <button ng-show="user.status == 0" ng-click="enableUser(user.id)" class="opt-user-{{user.id}} btn btn-success">Habilitar</button>
-                                    <!-- <button ng-show="user.status == 1" ng-click="sendEmailConfirm(user.id)" class="opt-user-{{user.id}} btn btn-primary">Reenviar correo</button> -->
+                                    <button ng-show="user.status == 1" ng-click="" class="opt-user-{{user.id}} btn btn-primary">Reenviar</button>
                                     <button ng-show="user.status == 2" ng-click="disableUser(user.id)" class="opt-user-{{user.id}} btn btn-warning">Deshabilitar</button>
                                     <button ng-click="deleteUser(user.id)" class="opt-user-{{user.id}} btn btn-danger">Eliminar</button>
                                     

@@ -7,13 +7,17 @@
                 </div>
                 <div class="card-body">
                     <!-- _______Alerts_______ -->
-                    <div ng-show="error.status" class="alert alert-danger fade show">
+                    <div ng-show="alert.type == 'error'" class="alert alert-danger fade show">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <strong>Santo guacamole!</strong> Ocurrio un error: {{error.message}}
+                        <strong>Santo guacamole!</strong> Ocurrio un error: {{alert.message}}
                     </div>
-                    <div ng-show="success" class="alert alert-success fade show">
+                    <div ng-show="alert.type == 'warning'" class="alert alert-warning fade show">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <strong>Good Job!</strong> Se ha registrado usuario correctamente.
+                        <strong>Ups!</strong>  {{alert.message}}
+                    </div>
+                    <div ng-show="alert.type == 'success'" class="alert alert-success fade show">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <strong>Good Job!</strong> {{alert.message}}
                     </div>
 
                     <!-- _______Form________ -->
@@ -42,7 +46,7 @@
                         </div>
     
                         <div class="form-actions">
-                            <button type="submit" ng-disabled="loading" class="btn btn-success"><i class="fa fa-check"></i> Registrar</button>
+                            <button type="submit" ng-disabled="loading.status" class="btn btn-success"><i class="fa fa-check"></i> Registrar</button>
                             <button type="reset" class="btn btn-inverse">Limpiar</button>
                             <span ng-show="loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
                         </div>

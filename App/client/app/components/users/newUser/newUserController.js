@@ -3,14 +3,6 @@ app.controller('NewUserController', function($scope, $http, $timeout, NewUserSer
     $scope.loading = false;
     $scope.update = false;
 
-    
-
-    //TODO: hacer variables globales y adicionar funciones
-    $scope.error = {
-        status: false,
-        message: ""
-    };
-    $scope.success = false;
 
     /**
      * 
@@ -35,35 +27,34 @@ app.controller('NewUserController', function($scope, $http, $timeout, NewUserSer
      * @param {*} user 
      */
     $scope.addUser = function(user){
-
-        $scope.success = false;
-        $scope.error.status = false;
-        
         if( !validate(user) )
             return;
 
+        
+        //Para quitar alerts actuales
+        $scope.alert.type = '';
         //Se pone en cargando
-        $scope.loading = true;
+        $scope.loading.status = true;
 
+        //Peticion
         NewUserService.addUser(user,
             function(success){
-                $scope.success = true;
-                $scope.loading = false;
-
-                $timeout(function(){
-                    $scope.success = false;
-                },3000);
+                $scope.alert.type = 'success';
+                $scope.alert.message = "Se ha registrado usuario correctamente"
+                $scope.loading.status = false;
             },
             function (error){
-                $scope.loading = false;
-                $scope.error.status = true;
-                $scope.error.message = error.data;
+                if( error.status == CONFLICT )
+                    $scope.alert.type = 'warning';
+                else
+                    $scope.alert.type = 'error';
 
-                $timeout(function(){
-                    $scope.error.status = false;
-                },5000);        
-            });
-
+                $scope.alert.message = error.data;
+                $scope.loading.status = false;
+                
+            }
+        );
     }
+
 
 });

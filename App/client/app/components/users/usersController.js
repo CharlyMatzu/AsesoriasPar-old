@@ -1,5 +1,7 @@
 app.controller('UsersController', function($scope, $http, $window, Notification, UsersService){
     $scope.page.title = "Staff > Registrados";
+    
+    $scope.users = [];
     $scope.user = {
         id: 0,
         email: "",
@@ -7,55 +9,34 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         role: ""
     };
 
-    $scope.users = [];
-    $scope.status = "";
-    $scope.loading = false;
-
-    $scope.updateForm = false;
-
-
     /**
-     * Funcion para habilitar/deshabilitar los botones de un elemento para que no se presionen de nuevo
-     * @param {bool} disabled TRUE para deshabilitar, FALSE para habilitar
-     * @param {int} id id del usuario al cual hacen referencia los botones de la tabla
+     * redirect
      */
-    $scope.disableButtons = function(disabled, id){
-        $('.opt-user-'+id).each(function(){
-            //console.log("Elemento: "+$(this).text() );
-            $(this).prop('disabled', disabled);
-        });
-    }
-
     $scope.goToNewUser = function(){
         $window.location.href = '#!/usuarios/nuevo';
     }
 
 
-    //TODO: obtener solo usuarios moderador/admin
     $scope.getUsers = function(){
-        $scope.status = "";
-        $scope.loading = true;
+        $scope.loading.status = true;
 
         UsersService.getUsers(
             function(success){
                 if( success.status == NO_CONTENT ){
-                    $scope.status = "No se encontraron usuarios";
+                    $scope.loading.status = "No se encontraron usuarios";
                     $scope.users = [];
                 }
                 else{
-                    // Notification.success('Datos obtenidos');
                     $scope.users = success.data;
                 }
                 //Enabling refresh button
-                $scope.loading = false;
+                $scope.loading.status = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data.message);
-                $scope.status = "Error";
-                //Enabling refresh button
-                $scope.loading = false;
-            });
+            }
+        );
     }
 
 
@@ -67,29 +48,27 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         if( data == null || data == "" ) 
             return;
 
-
-        $scope.status = "";
-        $scope.loading = true;
+        $scope.users = [];
+        $scope.loading.status = true;
+        $scope.loading.message = "Buscando usuarios con "+data;
 
         UsersService.searchUsers(data,
             function(success){
-                if( success.status == NO_CONTENT ){
-                    $scope.status = "No se encontraron usuarios";
-                    $scope.users = [];
-                }
-                else{
+                if( success.status == NO_CONTENT )
+                    $scope.loading.message = "No se encontraron usuarios";
+                else
                     $scope.users = success.data;
-                }
+
                 //Enabling refresh button
-                $scope.loading = false;
+                $scope.loading.status = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data);
-                $scope.status = "Error";
-                //Enabling refresh button
-                $scope.loading = false;
-            });
+                $scope.loading.message = "Ocurrio un error =(";
+                $scope.loading.status = false;
+            }
+        );
     }
 
 
@@ -184,7 +163,8 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 Notification.error("Error al eliminar usuarios: " + error.data.message);
                 //Habilita botones
                 $scope.disableButtons(false, user_id);
-            });
+            }
+        );
     }
 
     /**
@@ -206,7 +186,8 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 Notification.error("Error al Habilitar usuario: " + error.data.message);
                 //Habilita botones
                 $scope.disableButtons(false, user_id);
-            });
+            }
+        );
     }
 
 
@@ -228,12 +209,10 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 Notification.error("Error al deshabilitar usuario: " + error.data.message);
                 //Habilita botones
                 $scope.disableButtons(false, user_id);
-            });
+            }
+        );
     }
 
-    
-
-    
 
     //Se carguen datos al iniciar pagina
     $scope.getUsers();
