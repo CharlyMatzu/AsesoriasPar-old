@@ -4,7 +4,7 @@ app.service('NewUserService', function($http){
     // this.getRoles = function(successCallback, errorCallback){
     //     $http({
     //         method: 'POST',
-    //         url: "http://api.asesoriaspar.com/index.php/",
+    //         url: "http://asesoriaspar.ronintopics.com/index.php/",
     //         data: {
     //             email: user.email,
     //             password: user.pass,
@@ -21,7 +21,7 @@ app.service('NewUserService', function($http){
     this.addUser = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.asesoriaspar.com/index.php/users",
+            url: "http://asesoriaspar.ronintopics.com/index.php/users",
             data: {
                 email: user.email,
                 password: user.pass,

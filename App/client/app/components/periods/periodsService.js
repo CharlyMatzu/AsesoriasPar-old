@@ -4,7 +4,7 @@ app.service('PeriodsService', function($http){
     this.getPeriods = function(callback){
         $http({
             method: 'GET',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/periods"
+            url: "http://asesoriaspar.ronintopics.com/index.php/periods"
         }).then(function(success){
             var data = success.data;
             console.log( data );
@@ -18,7 +18,7 @@ app.service('PeriodsService', function($http){
     this.addPeriod = function(callback, period){
         $http({
             method: 'POST',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/periods",
+            url: "http://asesoriaspar.ronintopics.com/index.php/periods",
             data: {
                 start: period.start,
                 end: period.end
@@ -35,7 +35,7 @@ app.service('PeriodsService', function($http){
     this.updatePeriod = function(callback, period){
         $http({
             method: 'PUT',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/periods/"+period.id,
+            url: "http://asesoriaspar.ronintopics.com/index.php/periods/"+period.id,
             data: {
                 start: period.start,
                 end: period.end
@@ -52,7 +52,7 @@ app.service('PeriodsService', function($http){
     this.updateStatusPeriod = function(callback, period){
         $http({
             method: 'PATCH',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/periods/"+period.id+"/status/"+period.status
+            url: "http://asesoriaspar.ronintopics.com/index.php/periods/"+period.id+"/status/"+period.status
         }).then(function (success){
             console.log( success );
             callback(success);
@@ -65,7 +65,7 @@ app.service('PeriodsService', function($http){
     this.deletePeriod = function(callback, period_id){
         $http({
             method: 'DELETE',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/periods/"+period_id
+            url: "http://asesoriaspar.ronintopics.com/index.php/periods/"+period_id
         }).then(function (success){
             // console.log( response.data.message );
             callback(success);

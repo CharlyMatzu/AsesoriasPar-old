@@ -290,21 +290,21 @@ class UserService{
         //Verifica que email no exista
         $result = $this->isEmailUsed( $user->getEmail() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class."insertUser","Ocurrio un error al verificar email de usuario");
+            throw new InternalErrorException( static::class."insertUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "Email ya existe" );
 
         //Se verifica rol
         $result = $this->isRoleExists( $user->getRole() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":insertUser","Ocurrio un error al verificar rol");
+            throw new InternalErrorException( static::class.":insertUser","Ocurrio un error al verificar rol", $result->getErrorMessage());
         else if( $result->getOperation() == false )
             throw new NotFoundException( "No existe rol asignado" );
 
         //Se registra usuario
         $result = $this->userPer->insertUser( $user );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":insertUser","Ocurrio un error al registrar usuario");
+            throw new InternalErrorException( static::class.":insertUser","Ocurrio un error al registrar usuario", $result->getErrorMessage());
     }
 
 
@@ -399,7 +399,7 @@ class UserService{
             $result = $this->isEmailUsed( $user->getEmail() );
             //Operacion
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al verificar email de usuario");
+                throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException( "Email ya existe" );
         }
@@ -410,7 +410,7 @@ class UserService{
             //Se verifica rol
             $result = $this->isRoleExists( $user->getRole() );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al verificar rol");
+                throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al verificar rol", $result->getErrorMessage());
             else if( $result->getOperation() == false )
                 throw new NotFoundException( "No existe rol asignado" );
         }
@@ -419,7 +419,7 @@ class UserService{
         //Se actualiza usuario
         $result = $this->userPer->updateUser( $user );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al actualizar usuario");
+            throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al actualizar usuario", $result->getErrorMessage());
 
     }
 
@@ -439,12 +439,12 @@ class UserService{
         if( $status == Utils::$STATUS_DISABLE ){
             $result = $this->userPer->changeStatusToDisable( $user_id );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( static::class.":changeStatus","Ocurrio un error al deshabilitar usuario");
+                throw new InternalErrorException( static::class.":changeStatus","Ocurrio un error al deshabilitar usuario", $result->getErrorMessage());
         }
         else if( $status == Utils::$STATUS_ENABLE ){
             $result = $this->userPer->changeStatusToEnable( $user_id );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( static::class.":changeStatus","Ocurrio un error al habilitar usuario");
+                throw new InternalErrorException( static::class.":changeStatus","Ocurrio un error al habilitar usuario", $result->getErrorMessage());
         }
 
     }
@@ -459,50 +459,15 @@ class UserService{
         //Verificando si existe usuario
         $result = $this->userPer->getUser_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":deleteUser","Ocurrio un error al obtener usuario");
+            throw new InternalErrorException( static::class.":deleteUser","Ocurrio un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe usuario");
 
         //Eliminando usuario (cambiando status)
         $result = $this->userPer->deleteUser_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":deleteUser","Ocurrio un error al eliminar usuario");
+            throw new InternalErrorException( static::class.":deleteUser","Ocurrio un error al eliminar usuario", $result->getErrorMessage());
     }
-
-
-//    public function searchUser($search_by, $data_search)
-//    {
-//        if ($search_by === "id") {
-//            $result = $this->getUser_ById($data_search);
-//            if ($result == false)
-//                throw new ConflictException("Usuario no existe por id");
-//        } else if ($search_by === "email") {
-//            $result = $this->getUser_ByEmail($data_search);
-//            if ($result == false)
-//                throw new ConflictException("Usuario no existe por email");
-//        } else if($search_by === "users"){
-//            $result = $this->getUsers();
-//            if ($result == false)
-//                throw new ConflictException("Usuarios no existen");
-//        } else{
-//            $response = [
-//                "result" => "Error en los datos",
-//                "message" => "Verifique los datos"
-//            ];
-//            return $response;
-//        }
-//
-//        if( $result['operation'] == Utils::$OPERATION_ERROR )
-//            throw new InternalErrorException("Ocurrio un error al registrar usuario", $result['error']);
-//        else
-//            return Utils::makeArrayResponse(
-//                "Busqueda exitosa",
-//                $result
-//            );
-//    }
-
-
-
 
 
 

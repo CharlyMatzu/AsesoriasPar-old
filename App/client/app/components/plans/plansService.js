@@ -4,7 +4,7 @@ app.service('PlansService', function($http){
     this.getPlans = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/plans"
+            url: "http://asesoriaspar.ronintopics.com/index.php/plans"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -15,7 +15,7 @@ app.service('PlansService', function($http){
     this.insertPlan = function(plan, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.asesoriaspar.com/index.php/plans",
+            url: "http://asesoriaspar.ronintopics.com/index.php/plans",
             data: {
                 year: plan
             }
@@ -29,7 +29,7 @@ app.service('PlansService', function($http){
     this.updatePlan = function(plan, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.asesoriaspar.com/index.php/plans/"+plan.id,
+            url: "http://asesoriaspar.ronintopics.com/index.php/plans/"+plan.id,
             data: {
                 year: plan.year
             }
@@ -43,7 +43,7 @@ app.service('PlansService', function($http){
     this.deletePlan = function(plan_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://api.asesoriaspar.com/index.php/plans/"+plan_id
+            url: "http://asesoriaspar.ronintopics.com/index.php/plans/"+plan_id
         }).then(function (success){
             successCallback(success);
         },function (error){
@@ -56,7 +56,7 @@ app.service('PlansService', function($http){
     this.changeStatus = function(plan_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: "http://api.asesoriaspar.com/index.php/plans/"+plan_id+"/status/"+status
+            url: "http://asesoriaspar.ronintopics.com/index.php/plans/"+plan_id+"/status/"+status
         }).then(function(success){
             successCallback(success);
         }, function(error){

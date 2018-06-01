@@ -223,7 +223,7 @@ class UsersPersistence extends Persistence{
      */
     public function getRole_ByName($roleName)
     {
-        $query = "SELECT * FROM Role WHERE name = '$roleName'";
+        $query = "SELECT * FROM role WHERE name = '$roleName'";
         return  self::executeQuery($query);
     }
 

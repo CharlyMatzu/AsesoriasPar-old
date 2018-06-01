@@ -6,7 +6,7 @@ app.service('CareersService', function($http){
     this.getCareers = function(callback){
         $http({
             method: 'GET',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/careers"
+            url: "http://asesoriaspar.ronintopics.com/index.php/careers"
         }).then(function(success){
             var data = success.data;
             console.log( data );
@@ -21,7 +21,7 @@ app.service('CareersService', function($http){
     this.addCareer = function(callback, career){
         $http({
             method: 'POST',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/careers",
+            url: "http://asesoriaspar.ronintopics.com/index.php/careers",
             data: {
                 name: career.name,
                 short_name: career.short_name
@@ -38,7 +38,7 @@ app.service('CareersService', function($http){
     this.updateCareer = function(callback, career){
         $http({
             method: 'PUT',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/careers/"+career.id,
+            url: "http://asesoriaspar.ronintopics.com/index.php/careers/"+career.id,
             data: {
                 name: career.name,
                 short_name: career.short_name
@@ -55,7 +55,7 @@ app.service('CareersService', function($http){
     this.updateStatusCareer = function(callback, career){
         $http({
             method: 'PATCH',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/careers/"+career.id+"/status/"+career.status
+            url: "http://asesoriaspar.ronintopics.com/index.php/careers/"+career.id+"/status/"+career.status
         }).then(function (success){
             console.log( success );
             callback(success);
@@ -68,7 +68,7 @@ app.service('CareersService', function($http){
     this.deleteCareer = function(callback, career_id){
         $http({
             method: 'DELETE',
-            url: "http://localhost:81/www/AsesoriasParWeb3/App/server/index.php/careers/"+career_id
+            url: "http://asesoriaspar.ronintopics.com/index.php/careers/"+career_id
         }).then(function (success){
             // console.log( response.data.message );
             callback(success);

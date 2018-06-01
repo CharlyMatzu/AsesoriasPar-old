@@ -4,7 +4,7 @@ app.service('SubjectsService', function($http){
     this.getSubjects = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://192.168.1.73:8080/Asesorias-Par-Web/App/server/index.php/subjects"
+            url: "http://asesoriaspar.ronintopics.com/index.php/subjects"
         }).then(function(success){
             var data = success.data;
             console.log( success );
@@ -18,7 +18,7 @@ app.service('SubjectsService', function($http){
     this.addSubject = function(subject, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://192.168.1.73:8080/Asesorias-Par-Web/App/server/index.php/subjects",
+            url: "http://asesoriaspar.ronintopics.com/index.php/subjects",
             data: {
                 name: subject.name,
                 short_name: subject.short_name,
@@ -39,7 +39,7 @@ app.service('SubjectsService', function($http){
     this.updateSubject = function(subject_id, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://192.168.1.73:8080/Asesorias-Par-Web/App/server/index.php/subjects/"+subject_id,
+            url: "http://asesoriaspar.ronintopics.com/index.php/subjects/"+subject_id,
             data: {
                 email: user.email,
                 password: user.pass,
@@ -57,7 +57,7 @@ app.service('SubjectsService', function($http){
     this.deleteSubject = function(subject_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://192.168.1.73:8080/Asesorias-Par-Web/App/server/index.php/subjects/"+subject_id
+            url: "http://asesoriaspar.ronintopics.com/index.php/subjects/"+subject_id
         }).then(function (success){
             // console.log( response.data.message );
             successCallback(success);
