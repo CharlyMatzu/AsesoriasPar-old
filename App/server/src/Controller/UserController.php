@@ -100,6 +100,25 @@ class UserController
     }
 
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function searchStaffUsersByEmail($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->searchStaffUser_ByEmail( $params['email'] );
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
 
     /**
      * @param $req Request

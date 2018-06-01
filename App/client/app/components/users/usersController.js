@@ -11,7 +11,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
     $scope.status = "";
     $scope.loading = false;
 
-    $scope.update = false;
+    $scope.updateForm = false;
 
 
     /**
@@ -132,13 +132,16 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $scope.user.pass = user.pass;
         $scope.user.role = user.role;
         //Open update form
-        $scope.update = true;
+        $scope.updateForm = true;
     }
 
-    $scope.updateUser = function(user){
+    $scope.updateFormUser = function(user){
         if( !validate(user) )
             return;
         
+
+        //Deshabilita botones
+        $scope.disableButtons(true, user.id);
 
         UsersService.updateUser(user,
             function(success){
@@ -147,13 +150,15 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
             },
             function(error){
                 Notification.error("Error: "+error.data);
+                //Habilita botones
+                $scope.disableButtons(false, user.id);
             }
 
         );
         
         
         //Close form
-        $scope.update = false;
+        $scope.updateForm = false;
         //Clean value
         $scope.user.id = 0;
         $scope.user.email = "";
@@ -186,7 +191,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
      * 
      * @param {int} user_id ID del usuario
      */
-    $scope.enableUSer = function(user_id){
+    $scope.enableUser = function(user_id){
         //Deshabilita botones
         $scope.disableButtons(true, user_id);
 

@@ -1,11 +1,20 @@
 var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification']);
 
     app.run(function($rootScope){
-        //Se define variable global
+
+        //-----------VARIABLES GLOBALES
         $rootScope.page = {
             title: "PAGE TITLE"
-        }
+        };
+
+
+        //-----------FUNCIONES GLOBALES
+        
     });
+
+
+
+
 
     // .controller('MainController', function($scope, $http){
     //     $scope.page.title = "MAIN";

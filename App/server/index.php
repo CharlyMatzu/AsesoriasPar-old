@@ -74,6 +74,11 @@ $app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
     ->add('InputMiddelware:checkParam_Email')
     ->add(AuthMiddelware::class);
 
+//busca usuarios por correo (coincidencias)
+$app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail')
+    ->add('InputMiddelware:checkParam_Email')
+    ->add(AuthMiddelware::class);
+
 //TODO: obtener por rol
 
 //Obtiene usuario por ID

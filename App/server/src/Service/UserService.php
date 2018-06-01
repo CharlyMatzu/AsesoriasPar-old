@@ -9,6 +9,7 @@ use App\Exceptions\RequestException;
 
 use App\Model\DataResult;
 use App\Model\Student;
+use App\Persistence\Persistence;
 use App\Persistence\UsersPersistence;
 use App\Model\User;
 use App\Utils;
@@ -217,10 +218,30 @@ class UserService{
      */
     public function searchUserByEmail($email)
     {
-        $result = $this->userPer->searchUsersByEmail( $email );
+        $result = $this->userPer->searchUsers_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException(static::class."searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No se encontraron usuarios");
+
+        return $result->getData();
+    }
+
+    /**
+     * @param $email
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function searchStaffUser_ByEmail($email)
+    {
+        $result = $this->userPer->searchStaffUsers_ByEmail( $email );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class.":searchStaffUserByEmail",
+                "Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron usuarios");
 
@@ -362,12 +383,12 @@ class UserService{
 
         //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
         //TODO: no debe eliminarse usuario con cron
-
-        //Verificacion de usuario
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":insertUserAndStudent","Ocurrio un error al obtener usuario");
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe usuario");
+//
+//        //Verificacion de usuario
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( static::class.":updateUser","Ocurrio un error al obtener usuario");
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            throw new NotFoundException("No existe usuario");
 
         //Verifica que email
         $user_db = self::makeUserModel( $result->getData()[0] );
@@ -382,6 +403,7 @@ class UserService{
             else if( $result->getOperation() == true )
                 throw new ConflictException( "Email ya existe" );
         }
+
 
         //Si cambio el rol
         if( $user_db !== $user->getRole() ){

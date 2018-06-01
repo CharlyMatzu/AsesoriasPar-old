@@ -117,10 +117,28 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-    public function searchUsersByEmail($email)
+    /**
+     * @param $email
+     *
+     * @return \App\Model\DataResult
+     */
+    public function searchUsers_ByEmail($email)
     {
         $query = $this->SELECT."
                 WHERE u.email LIKE '%$email%'";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $email
+     *
+     * @return \App\Model\DataResult
+     */
+    public function searchStaffUsers_ByEmail($email)
+    {
+        $query = $this->SELECT."
+                WHERE u.email LIKE '%$email%' AND 
+                (r.name = '".Utils::$ROLE_MOD."' OR r.name = '".Utils::$ROLE_ADMIN."')";
         return  self::executeQuery($query);
     }
 
@@ -160,11 +178,20 @@ class UsersPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function updateUser( $user ){
-        $passC = self::crypt( $user->getPassword() );
-
         $query = "UPDATE user u
-                         SET u.email = '".$user->getEmail()."', u.password = '".$passC."', u.fk_role = '".$user->getRole()."'   
+                         SET    u.email = '".$user->getEmail()."',
+                                u.fk_role = '".$user->getRole()."'   
                          WHERE u.user_id = ".$user->getId();
+
+        //Si hay password, se agrega
+        if( !empty($user->getPassword()) ){
+            $passC = self::crypt( $user->getPassword() );
+            $query = "UPDATE user u
+                         SET    u.email = '".$user->getEmail()."',
+                                u.password = '".$passC."', 
+                                u.fk_role = '".$user->getRole()."'   
+                         WHERE u.user_id = ".$user->getId();
+        }
         return  self::executeQuery($query);
     }
 

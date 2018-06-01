@@ -30,7 +30,7 @@ app.service('UsersService', function($http){
     this.searchUsers = function(data,successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/users/search/"+data
+            url: "http://api.asesoriaspar.com/index.php/users/search/"+data+"/staff"
         }).then(function(success){
             var data = success.data;
             
