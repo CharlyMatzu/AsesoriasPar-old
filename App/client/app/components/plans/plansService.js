@@ -12,12 +12,12 @@ app.service('PlansService', function($http){
         });
     }
 
-    this.addPlan = function(plan, successCallback, errorCallback){
+    this.insertPlan = function(plan, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.asesoriaspar.com/index.php/index.php/plans",
+            url: "http://api.asesoriaspar.com/index.php/plans",
             data: {
-                year: plan.year
+                year: plan
             }
         }).then(function(success){
             successCallback(success) 
@@ -29,7 +29,7 @@ app.service('PlansService', function($http){
     this.updatePlan = function(plan, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.asesoriaspar.com/index.php/index.php/plans/"+plan.plan_id,
+            url: "http://api.asesoriaspar.com/index.php/plans/"+plan.id,
             data: {
                 year: plan.year
             }
@@ -43,13 +43,28 @@ app.service('PlansService', function($http){
     this.deletePlan = function(plan_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://api.asesoriaspar.com/index.php/index.php/plans/"+plan_id
+            url: "http://api.asesoriaspar.com/index.php/plans/"+plan_id
         }).then(function (success){
             successCallback(success);
         },function (error){
             errorCallback(error);
         });
     }
+
+
+    
+    this.changeStatus = function(plan_id, status, successCallback, errorCallback){
+        $http({
+            method: 'PATCH',
+            url: "http://api.asesoriaspar.com/index.php/plans/"+plan_id+"/status/"+status
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    }
+
+
     
     
 

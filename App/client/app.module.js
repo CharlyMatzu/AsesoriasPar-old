@@ -37,10 +37,10 @@ var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification']);
         /**
          * Funcion para habilitar/deshabilitar los botones de un elemento para que no se presionen de nuevo
          * @param {bool} disabled TRUE para deshabilitar, FALSE para habilitar
-         * @param {int} id id del usuario al cual hacen referencia los botones de la tabla
+         * @param {String} btnClass clase de referencia de botones a deshabilitar/habilitar
          */
-        $rootScope.disableButtons = function(disabled, id){
-            $('.opt-user-'+id).each(function(){
+        $rootScope.disableButtons = function(disabled, btnClass){
+            $(btnClass).each(function(){
                 //console.log("Elemento: "+$(this).text() );
                 $(this).prop('disabled', disabled);
             });

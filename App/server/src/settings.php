@@ -17,11 +17,7 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //https://akrabat.com/logging-errors-in-slim-3/
 //https://www.slimframework.com/docs/v3/tutorial/first-app.html
 
-/**
- * @var $request \Slim\Http\Request
- * @var $Response \Slim\Http\Request
- * @var $exception Exception
- */
+
 //$container['errorHandler'] = function($c) {
 //    return function ($request, $response, $exception) use ($c){
 //        return $c['response']->withStatus(500)
@@ -30,6 +26,17 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //           throw new \App\Exceptions\InternalErrorException("SLIM", "Ocurrio un error", $exception);
 //    };
 //};
+
+
+//Override the default Not Found Handler
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $c['response']
+            ->withStatus(404)
+            ->withHeader('Content-Type', 'text/html')
+            ->write('Page not found');
+    };
+};
 
 
 //-----------------------

@@ -19,11 +19,14 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
 
     $scope.getUsers = function(){
         $scope.loading.status = true;
+        $scope.loading.message = "Obteniendo registros";
+
+
 
         UsersService.getUsers(
             function(success){
                 if( success.status == NO_CONTENT ){
-                    $scope.loading.status = "No se encontraron usuarios";
+                    $scope.loading.message = "No se encontraron usuarios";
                     $scope.users = [];
                 }
                 else{
@@ -114,13 +117,17 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $scope.showForm = true;
     }
 
-    $scope.updateFormUser = function(user){
+    $scope.updateUser = function(user){
         if( !validate(user) )
             return;
+
+        $scope.showForm = false;
         
+        $scope.loading.status = true;
+        $scope.loading.message = "Cargando registros";
 
         //Deshabilita botones
-        $scope.disableButtons(true, user.id);
+        $scope.disableButtons(true, '.opt-user-'+user.id);
 
         UsersService.updateUser(user,
             function(success){
@@ -130,7 +137,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
             function(error){
                 Notification.error("Error: "+error.data);
                 //Habilita botones
-                $scope.disableButtons(false, user.id);
+                $scope.disableButtons(false, '.opt-user-'+user.id);
             }
 
         );
@@ -152,7 +159,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
      */
     $scope.deleteUser = function(user_id){
         //Deshabilita botones
-        $scope.disableButtons(true, user_id);
+        $scope.disableButtons(true, '.opt-user-'+user_id);
 
         UsersService.deleteUser(user_id,
             function(success){
@@ -162,7 +169,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
             function(error){
                 Notification.error("Error al eliminar usuarios: " + error.data.message);
                 //Habilita botones
-                $scope.disableButtons(false, user_id);
+                $scope.disableButtons(false, '.opt-user-'+user_id);
             }
         );
     }
@@ -173,7 +180,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
      */
     $scope.enableUser = function(user_id){
         //Deshabilita botones
-        $scope.disableButtons(true, user_id);
+        $scope.disableButtons(true, '.opt-user-'+user_id);
 
         Notification('Procesando...');
         UsersService.changeStatus(user_id, ENABLED, 
@@ -185,7 +192,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
             function(error){
                 Notification.error("Error al Habilitar usuario: " + error.data.message);
                 //Habilita botones
-                $scope.disableButtons(false, user_id);
+                $scope.disableButtons(false, '.opt-user-'+user_id);
             }
         );
     }
@@ -197,7 +204,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
      */
     $scope.disableUser = function(user_id){
         //Deshabilita botones
-        $scope.disableButtons(true, user_id);
+        $scope.disableButtons(true, '.opt-user-'+user_id);
 
         Notification('Procesando...');
         UsersService.changeStatus(user_id, DISABLED, 
@@ -208,7 +215,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
             function(error){
                 Notification.error("Error al deshabilitar usuario: " + error.data.message);
                 //Habilita botones
-                $scope.disableButtons(false, user_id);
+                $scope.disableButtons(false, '.opt-user-'+user_id);
             }
         );
     }

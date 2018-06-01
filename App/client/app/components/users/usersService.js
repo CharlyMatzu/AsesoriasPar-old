@@ -6,7 +6,6 @@ app.service('UsersService', function($http){
             method: 'PATCH',
             url: "http://api.asesoriaspar.com/index.php/users/"+user_id+"/status/"+status
         }).then(function(success){
-            var data = success.data;            
             successCallback(success);
         }, function(error){
             errorCallback(error);
@@ -19,8 +18,6 @@ app.service('UsersService', function($http){
             method: 'GET',
             url: "http://api.asesoriaspar.com/index.php/users/staff"
         }).then(function(success){
-            var data = success.data;
-            
             successCallback(success);
         }, function(error){
             errorCallback(error);
@@ -32,8 +29,6 @@ app.service('UsersService', function($http){
             method: 'GET',
             url: "http://api.asesoriaspar.com/index.php/users/search/"+data+"/staff"
         }).then(function(success){
-            var data = success.data;
-            
             successCallback(success);
         }, function(error){
             errorCallback(error);
@@ -52,7 +47,6 @@ app.service('UsersService', function($http){
                 role: user.role
             }
         }).then(function(success){
-            
             successCallback(success) 
         }, function(error){
             errorCallback(error)
@@ -69,7 +63,6 @@ app.service('UsersService', function($http){
                 role: user.role
             }
         }).then(function(success){
-            
             successCallback(success) 
         }, function(error){
             errorCallback(error)

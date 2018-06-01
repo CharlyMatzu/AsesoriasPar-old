@@ -355,13 +355,13 @@ class InputParamsMiddelware extends Middelware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: year");
 
         if( empty($params['year']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: no debe estar vacio");
 
         if( ( !is_numeric($params['year']) ) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan, debe ser numerico");
 
         if( ( strlen( $params['year'] ) != 4 ) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: deben ser 4 digitos");
 
         $res = $next($req, $res);
         return $res;
