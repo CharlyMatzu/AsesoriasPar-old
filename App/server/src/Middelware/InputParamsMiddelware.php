@@ -7,6 +7,9 @@ use App\Model\Period;
 use App\Model\Student;
 use App\Model\Subject;
 use App\Model\User;
+use Carbon\Carbon;
+use PHPMailer\PHPMailer\Exception;
+use Carbon\Exceptions\InvalidDateException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Utils;
@@ -417,7 +420,13 @@ class InputParamsMiddelware extends Middelware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: start, end");
 
         if( empty($params['start']) || empty($params['end']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
+
+        //Formato de fecha invalido: aaaa/mm/dd
+        if( !Utils::validateDateTime($params['start']) || !Utils::validateDateTime($params['end']))
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Fechas invalidas: aaaa/mm/dd o aaaa-mm-dd");
+
+
 
         //TODO: verificar el formato de la fecha
         //TODO: verificar que no sea antes de NOW
