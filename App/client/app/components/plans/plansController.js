@@ -1,24 +1,7 @@
 app.controller('PlansController', function($scope, $http,Notification, PlansService){
-    $scope.newPlan = {
-        show: false,
-        status: false
-    };
     $scope.plans = [];
     
-    $scope.status = "Cargando plan..."
-
-    $scope.errorSnack = function(errorMessage){
-        Notification.error( errorMessage );
-    }
-
-    $scope.getStatus = function(status){
-        if( status == 0 )
-            return "CERO";
-        else if( status == 1 )
-            return "UNO";
-        else if( status == 2 )
-            return "DOS";
-    }
+    
 
     $scope.getPlans = function(){
         PlansService.getPlans(
@@ -77,6 +60,6 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
     }
 
     //Se carguen datos al iniciar pagina
-    $scope.getPlans();
+    // $scope.getPlans();
 
 });

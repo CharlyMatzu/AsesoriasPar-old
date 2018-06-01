@@ -1,41 +1,21 @@
-<div class="container">
-<h1>Plan registrados</h1>
-<button ng-click="newPlan.show = true" ng-disabled="newPlan.show" class="btn btn-primary">Nuevo</button>
-<!-- <p ng-show="alert" ng-class="alert alert-(alert.type)" role="alert">{{alert.message}}</p> -->
+<div class="container-fluid">
 
-<div ng-show="newPlan.show">
-    <form action="" ng-submit="add(plan)">
-        <input required type="number" class="form-control" placeholder="Años" ng-model="plan.year">
-    
-        <button class="btn btn-success" >Registrar plan</button>
-        <button "btn btn-default" ng-click="newPlan.show  = false" >Cancelar</button>
-        <span ng-show="newPlan.status" class="loader"></span>
-    </form>
-</div>
-<br><br>
+    <div class="row">
+        <!-- Panel de opciones -->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    asdadsa
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <p ng-hide="plans.length > 0">{{status}}</p>
-    <table ng-show="plans.length > 0" border="1px solid" width="100%">
-        <tr>
-            <th>Id</th>
-            <th>Year</th>
-            <th>Status</th>
-            <th>Fecha Registro</th>
-            <th>Opciones</th>
-        </tr>
-        <tr ng-repeat="plan in plans">
-            <td>{{plan.plan_id}}</td>
-            <td>{{plan.year}}</td>
-            <td>{{getStatus(plan.status)}}</td>
-            <td>{{plan.register_date}}</td>
-            <td>
-                <button ng-click="edit(plan)" class="btn btn-primary">Editar</button> 
-                <button ng-click="deletePlan(plan.plan_id)" class="btn btn-danger">Eliminar</button>
-                <!-- <button ng-click="disable(user)">Deshabilitar</button>-->
-                
-            </td>
-        </tr>
-    </table>
-</div>
+    <div class="row">
+        <!-- Tabla -->
+        <div class="col-lg-6"></div>
+        <!-- Formulario -->
+        <div class="col-lg-6"></div>
+    </div>
+
 </div>
