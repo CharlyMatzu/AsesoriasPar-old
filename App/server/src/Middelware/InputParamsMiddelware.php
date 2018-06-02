@@ -319,17 +319,13 @@ class InputParamsMiddelware extends Middelware
         if( !isset($params['name']) || !isset($params['short_name']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: name, short_name");
 
+        //TODO: podria dejarse abreviacion vacio
         if( empty($params['name']) || empty($params['short_name']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros vacios");
 
         $name = $params['name'];
         $short_name = $params['short_name'];
 
-        //TODO validar
-//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
-//            !preg_match(Utils::EXPREG_PASS, $pass) ||
-//            !Utils::isRole($role) )
-//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
         //Se crea objeto
         $career = new Career();

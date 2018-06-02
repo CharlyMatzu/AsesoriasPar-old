@@ -1,2 +1,0 @@
-[2018-06-02 01:46:12] App\Service\PeriodService:changeStatus.ERROR: No se pudo deshabilitar periodo --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE period_id = 1' at line 3 [] []
-[2018-06-02 01:46:38] App\Service\PeriodService:changeStatus.ERROR: No se pudo deshabilitar periodo --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE period_id = 1' at line 3 [] []

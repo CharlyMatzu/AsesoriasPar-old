@@ -67,12 +67,19 @@ class CareersPersistence extends Persistence {
 
     /**
      * Se obtiene la carrera por nombre corto (Abreviacion) de la carrera
+     *
      * @param $name
+     * @param null $career_id
+     *
      * @return DataResult|bool
      */
-    public function getCareer_ByName_ShortName( $name ){
+    public function getCareer_ByName_ShortName( $name, $career_id = null ){
         $query = $this->campos."
                      WHERE name = '$name' OR short_name = '$name'";
+
+        if( $career_id != null )
+            $query = $this->campos."
+                     WHERE ( name = '$name' OR short_name = '$name') AND career_id <> $career_id";
         //Obteniendo resultados
         return self::executeQuery($query);
     }

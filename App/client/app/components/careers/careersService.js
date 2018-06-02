@@ -1,80 +1,69 @@
-
-app.service('CareersService', function($http){
-
-    // this.data = [];
+app.service('CareerService', function($http){
     
-    this.getCareers = function(callback){
+
+    this.getCareers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers"
+            url: "http://api.asesoriaspar.com/index.php/careers"
         }).then(function(success){
-            var data = success.data;
-            console.log( data );
-            callback(data);
-
+            successCallback(success);
         }, function(error){
-            console.log( error );
-            callback(data);
+            errorCallback(error);
         });
     }
 
-    this.addCareer = function(callback, career){
+    this.addCareer = function(career, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers",
+            url: "http://api.asesoriaspar.com/index.php/careers",
             data: {
                 name: career.name,
                 short_name: career.short_name
             }
         }).then(function(success){
-            console.log( success );
-            callback(success) 
+            successCallback(success) 
         }, function(error){
-            console.log( error );
-            callback(error)
+            errorCallback(error)
         });
     }
 
-    this.updateCareer = function(callback, career){
+    this.updateCareer = function(career, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers/"+career.id,
+            url: "http://api.asesoriaspar.com/index.php/careers/"+career.id,
             data: {
                 name: career.name,
                 short_name: career.short_name
             }
         }).then(function (success){
-            console.log( success );
-            callback(success);
+            successCallback(success);
         },function (error){
-            console.log( error );
-            callback(error);
-        });
-    }
-
-    this.updateStatusCareer = function(callback, career){
-        $http({
-            method: 'PATCH',
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers/"+career.id+"/status/"+career.status
-        }).then(function (success){
-            console.log( success );
-            callback(success);
-        },function (error){
-            console.log( error );
-            callback(error);
+            errorCallback(error);
         });
     }
     
-    this.deleteCareer = function(callback, career_id){
+    this.changeStatus = function(career_id, status, successCallback, errorCallback){
         $http({
-            method: 'DELETE',
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers/"+career_id
+            method: 'PATCH',
+            url: "http://api.asesoriaspar.com/index.php/careers/"+career_id+"/status/"+status
         }).then(function (success){
-            // console.log( response.data.message );
-            callback(success);
+            successCallback(success);
         },function (error){
-            // console.log( response.data.message );
-            callback(error);
+            errorCallback(error);
         });
     }
+
+    this.deleteCareer = function(career_id, successCallback, errorCallback){
+        $http({
+            method: 'DELETE',
+            url: "http://api.asesoriaspar.com/index.php/careers/"+career_id
+        }).then(function (success){
+            successCallback(success);
+        },function (error){
+            errorCallback(error);
+        });
+    }
+    
+    
+
 });
