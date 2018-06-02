@@ -118,6 +118,16 @@
                                 <i class="fa fa-book"></i><span class="hide-menu">Carreras</span>
                             </a>
                         </li>
+                        <li> 
+                            <a class="has-arrow" href="#" aria-expanded="false">
+                                <i class="fa fa-book"></i>
+                                <span class="hide-menu">Materias</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="#!/materias">Registradas</a></li>
+                                <li><a href="#!/materias/nuevo">Nuevo materia</a></li>
+                            </ul>
+                        </li>
 
 
                         <li class="nav-devider"></li>
@@ -126,9 +136,7 @@
                         <li> 
                             <a class="has-arrow" href="#" aria-expanded="false">
                                 <i class="fa fa-users"></i>
-                                <span class="hide-menu">Staff
-                                    <!-- <span class="label label-rouded label-danger pull-right">6</span> -->
-                                </span>
+                                <span class="hide-menu">Staff</span>
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="#!/usuarios">Registrados</a></li>
@@ -140,9 +148,7 @@
                         <li> 
                             <a class="has-arrow" href="#" aria-expanded="false">
                                 <i class="fa fa-graduation-cap"></i>
-                                <span class="hide-menu">Estudiantes
-                                    <!-- <span class="label label-rouded label-danger pull-right">6</span> -->
-                                </span>
+                                <span class="hide-menu">Estudiantes</span>
                             </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="#!/estudiantes">Registrados</a></li>
@@ -421,6 +427,10 @@
     <!-- subject -->
     <script src="app/components/subjects/subjectsService.js"></script>
     <script src="app/components/subjects/subjectsController.js"></script>
+
+        <!-- new subject -->
+        <script src="app/components/subjects/newSubject/newSubjectService.js"></script>
+        <script src="app/components/subjects/newSubject/newSubjectController.js"></script>
     
     <!--signup-->
     <!-- <script src="app/components/signup/signupService.js"></script>

@@ -14,7 +14,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
      */
     $scope.getCareers = function(){
 
-        $scope.showForm = false;
+        $scope.showUpdateForm = false;
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
 
@@ -59,7 +59,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
     $scope.editCareer = function(career){
         $scope.career = career
 
-        $scope.showForm = true;
+        $scope.showUpdateForm = true;
     }
 
 

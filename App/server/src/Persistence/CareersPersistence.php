@@ -77,6 +77,7 @@ class CareersPersistence extends Persistence {
         $query = $this->campos."
                      WHERE name = '$name' OR short_name = '$name'";
 
+        //El id es para omitir el registro en la busqueda
         if( $career_id != null )
             $query = $this->campos."
                      WHERE ( name = '$name' OR short_name = '$name') AND career_id <> $career_id";

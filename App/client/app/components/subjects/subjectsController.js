@@ -1,67 +1,198 @@
-app.controller('SubjectsController', function($scope, $http,Notification, SubjectsService){
-    $scope.newSubject = {
-        show: false,
-        status: false
-    };
-
+app.controller('SubjectsController', function($scope, $http, Notification, SubjectService){
+    $scope.page.title = "Materias > Registros";
+    
     $scope.subjects = [];
-    $scope.status = "Cargando usuarios..."
+    $scope.plans = [];
+    $scope.careers = [];
 
-    $scope.errorSnack = function(errorMessage){
-        Notification.error( errorMessage );
+    $scope.subject = {
+        name: null,
+        short_name: null,
+        description: null,
+        career: null,
+        semester: null,
+        plan: null
     }
 
-    $scope.getStatus = function(status){
-        if( status == 0 )
-            return "CERO";
-        else if( status == 1 )
-            return "UNO";
-        else if( status == 2 )
-            return "DOS";
-    }
+    //TODO: antes de obtener datos debe registrarse una carrera y un plan
+
+    
+    /**
+     * Obtiene materias registrados
+     */
     $scope.getSubjects = function(){
-        SubjectsService.getSubjects(
+
+        $scope.showUpdateForm = false;
+        $scope.loading.status = true;
+        $scope.loading.message = "Obteniendo registros";
+
+        SubjectService.getSubjects(
             function(success){
                 if( success.status == NO_CONTENT ){
-                    Notification.primary('No hay materias registradas');
+                    //Notification.primary("no hay registros");
+                    $scope.loading.message = "No hay registros";
                 }
-                else{
-                    Notification.success('Datos obtenidos');
+                else
                     $scope.subjects = success.data;
-                }
-                    
-            },
-            function( error ){
-                $scope.errorSnack("Error al obtener materia");
-            });
-    }
-    $scope.add = function(subject){
-        //Se pone en cargando
-        $scope.newSubject.status = true
 
-        //Se hace peticion
-        SubjectsService.addSubject(subject, 
-            function(success){
-                Notification.success('Datos obtenidos');
-                $scope.getSubjects();
-            }, 
+                $scope.loading.status = false;
+            },
             function(error){
-                $scope.errorSnack("Error al registrar materia: "+error.data.message);
-            });
+                Notification.error("Error al obtener materias: "+error.data);
+                $scope.loading.status = false;
+                $scope.loading.message = "Error: "+error.data;
+            }
+        );
     }
 
     
-    $scope.deleteSubject = function(subject_id){
-        SubjectsService.deleteSubject(subject_id,
+
+    /**
+     * 
+     * @param {*} subject 
+     */
+    $scope.editSubject = function(subject){
+        Notification("Cargando datos...");
+        $scope.disableButtons(true, '.opt-subjects-'+subject.id);
+        
+        //Se obtienen Carreras
+        SubjectService.getCareers(
+
             function(success){
+                Notification.success("Carreras cargadas");
+
+                $scope.careers = success.data;
+                
+                //Se obtien planes
+                SubjectService.getPlans(
+                    function(success){
+                        Notification.success("Planes cargados");
+                        $scope.plans = success.data;
+
+                        //Se agregan igualan campos
+                        // y Asignando valores
+                        $scope.subject.id = subject.id;
+                        $scope.subject.name = subject.name;
+                        $scope.subject.short_name = subject.short_name;
+                        $scope.subject.description = subject.description;
+                        //++ para que funcione al ser input number
+                        $scope.subject.semester = ++subject.semester;
+                        $scope.subject.plan = subject.plan_id;
+                        $scope.subject.career = subject.career_id;
+
+                        //Se abre form
+                        $scope.showUpdateForm = true;
+                    },
+                    function(error){
+                        Notification.error("Error al cargar planes, se detuvo actualizacion");
+                        $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+                    }
+                );
+            },
+            function(error){
+                Notification.error("Error al cargar carreras, se detuvo actualizacion");
+                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+            }
+        );
+    }
+
+
+    $scope.updateSubject = function(subject){
+
+        Notification("Procesando...");
+
+        if( subject.career == null || subject.career == "" ){
+            Notification.warning("Debe seleccionar una carrera");
+            return;
+        }
+        if( subject.plan == null || subject.plan == "" ){
+            Notification.warning("Debe seleccionar una Plan");
+            return;
+        }
+        if( subject.semester == null || subject.semester == "" || 
+            subject.semester < 1 || subject.semester > 12 ){
+            Notification.warning("Semestre debe ser numerico y debe estar entre 1 y 12");
+            return;
+        }
+
+
+        
+        $scope.disableButtons(true, '.opt-subjects-'+subject.id);
+        
+        SubjectService.updateSubject(subject, 
+            function(success){
+                Notification.success("Actualizado con exito");
                 $scope.getSubjects();
             },
             function(error){
-                $scope.errorSnack("Error al eliminar materia");
-            });
+                Notification.error("Error: "+error.data);
+                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+            }
+        );
     }
 
-    //Se carguen datos al iniciar pagina
+
+    
+
+    $scope.deleteSubject = function(subject_id){
+
+        Notification("Procesando...");
+        //Deshabilita botones
+        $scope.disableButtons(true, '.opt-subject-'+subject_id);
+        
+        SubjectService.deleteSubject(subject_id,
+            function(success){
+                Notification.success("Eliminado con exito");
+                $scope.getSubjects();
+            },
+            function(error){
+                Notification.success("Error: "+error.data);
+                $scope.disableButtons(false, '.opt-subject-'+subject_id);
+            }
+        );
+    }
+
+    /**
+     * 
+     * @param {*} subject_id 
+     */
+    $scope.disableSubject = function(subject_id){
+        $scope.disableButtons(true, '.opt-subject-'+subject_id);
+        Notification("Procesando...");
+
+        SubjectService.changeStatus(subject_id, DISABLED,
+            function(success){
+                Notification.success("Deshabilitado con exito");
+                $scope.getSubjects();
+            },
+            function(error){
+                Notification.error("Error al Deshabilitar materia: "+error.data);
+                $scope.disableButtons(false, '.opt-subject-'+subject_id);
+            }
+        );
+    }
+
+    /**
+     * 
+     * @param {*} subject_id 
+     */
+    $scope.enableSubject = function(subject_id){
+        $scope.disableButtons(true, '.opt-subject-'+subject_id);
+        Notification("Procesando...");
+
+        SubjectService.changeStatus(subject_id, ENABLED,
+            function(success){
+                Notification.success("habilitado con exito");
+                $scope.getSubjects();
+            },
+            function(error){
+                Notification.error("Error al habilitar materia: "+error.data);
+                $scope.disableButtons(false, '.opt-subject-'+subject_id);
+            }
+        );
+    }
+
+    //Obtiene todos por default
     $scope.getSubjects();
 
 });

@@ -30,7 +30,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
      */
     $scope.getPeriods = function(){
 
-        $scope.showForm = false;
+        $scope.showUpdateForm = false;
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
 
@@ -89,7 +89,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
         $scope.period.start = new Date(period.start);
         $scope.period.end = new Date(period.end);
 
-        $scope.showForm = true;
+        $scope.showUpdateForm = true;
     }
 
 

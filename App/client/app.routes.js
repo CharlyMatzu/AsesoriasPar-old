@@ -21,6 +21,16 @@ app.config( function ($routeProvider) {
             templateUrl: "app/components/careers/careersView.html"
         })
 
+        .when("/materias", {
+            controller: "SubjectsController",
+            templateUrl: "app/components/subjects/subjectsView.html"
+        })
+
+        .when("/materias/nuevo", {
+            controller: "NewSubjectController",
+            templateUrl: "app/components/subjects/newSubject/newSubjectView.html"
+        })
+
 
         //--------------USUARIOS (STAFF)
         .when("/usuarios", {

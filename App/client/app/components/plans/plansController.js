@@ -7,7 +7,7 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
         year: 0
     };
 
-    $scope.showForm = false;
+    $scope.showUpdateForm = false;
     $scope.newPlan = "";
     
 
@@ -16,7 +16,7 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
         //Vaciando campo
         $scope.plans = [];
 
-        $scope.showForm = false;
+        $scope.showUpdateForm = false;
 
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
@@ -50,7 +50,6 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
             return;
         }
         
-
         Notification.primary('Procesando registro...');
 
         //Se hace peticion
@@ -63,13 +62,14 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
                 Notification.error("Error al registrar plan: "+error.data);
             });
     }
+    
 
     $scope.editPlan = function(plan){
         $scope.plan.id = plan.id;
         $scope.plan.year = plan.year;
 
         //Muestra form
-        $scope.showForm = true;
+        $scope.showUpdateForm = true;
     }
 
 

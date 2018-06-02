@@ -6,10 +6,10 @@
             <div class="card" id="update">
                 <div class="card-body">
                     <h3>Nuevo plan</h3>
-                    <form action="" ng-submit="addPlan(year)">
+                    <form action="" ng-submit="addPlan(newPlan)">
                         <div class="form-group">
-                            <label for="year">Ingrese plan:</label>
-                            <input type="text" id="year" class="form-control" placeholder="Plan a 4 digitos" ng-model="year" required>
+                            <label for="plan">Ingrese plan:</label>
+                            <input type="text" id="plan" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
                         </div>
                         <button type="submit" class="btn btn-success">Registrar</button>
                     </form>
@@ -19,7 +19,7 @@
         <!-- end nuevo -->
 
         <!-- Update -->
-        <div class="col-lg-6" ng-show="showForm">
+        <div class="col-lg-6" ng-show="showUpdateForm">
                 <div class="card">
                     <div class="card-body">
                         <h3>Actualizar plan</h3>
@@ -32,7 +32,7 @@
                                 <input type="text" id="year" class="form-control" ng-model="plan.year" >
                             </div>
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button type="button" ng-click="showForm = false" class="btn btn-inverse">Cancelar</button>
+                            <button type="button" ng-click="showUpdateForm = false" class="btn btn-inverse">Cancelar</button>
                         </form>
                     </div>
                 </div>

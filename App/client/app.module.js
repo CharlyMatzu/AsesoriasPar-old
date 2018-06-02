@@ -1,6 +1,7 @@
 var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification']);
 
     app.run(function($rootScope){
+        //TODO: metodo para verificar si esta logeado
 
         //-----------VARIABLES GLOBALES
         $rootScope.page = {
@@ -30,7 +31,9 @@ var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification']);
         //     message: "",
         // };
         
-        $rootScope.showForm = false;
+        $rootScope.showUpdateForm = false;
+        $rootScope.showCreateForm = false;
+        $rootScope.showModalForm = false;
 
 
         //-----------FUNCIONES GLOBALES

@@ -382,11 +382,21 @@ class InputParamsMiddelware extends Middelware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, 
             Se requiere: name, short_name, description, semester, plan, career");
 
-        if( empty($params['name']) || empty($params['short_name']) || empty($params['description']) ||
-            empty($params['semester']) || empty($params['plan']) || empty($params['career']))
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+        //Solo campos que se ocupan
+        if( empty($params['name']) || empty($params['semester']) || empty($params['plan']) || empty($params['career']))
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
 
         //TODO: validar formato, tipo, etc..
+        if( !is_numeric($params['semester']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Semestre no es numerico");
+
+        if( !is_numeric($params['plan']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Plan no es numerico");
+
+        if( !is_numeric($params['career']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Carrera no es numerico");
+
+
         $subject = new Subject();
         $subject->setName( $params['name'] );
         $subject->setShortName( $params['short_name'] );

@@ -21,7 +21,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
 
-
+        $scope.users = [];
 
         UsersService.getUsers(
             function(success){
@@ -114,14 +114,14 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $scope.user.pass = user.pass;
         $scope.user.role = user.role;
         //Open update form
-        $scope.showForm = true;
+        $scope.showUpdateForm = true;
     }
 
     $scope.updateUser = function(user){
         if( !validate(user) )
             return;
 
-        $scope.showForm = false;
+        $scope.showUpdateForm = false;
         
         $scope.loading.status = true;
         $scope.loading.message = "Cargando registros";
