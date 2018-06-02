@@ -1,18 +1,34 @@
 app.service('SignupService', function($http){
-
-    this.signup = function(data){
+    
+    this.getCareers = function(successCallback, errorCallback){
         $http({
-            method: 'POST',
-            url: "http://api.asesoriaspar.com/index.php/users/student",
-            data: data
-        }).then( function(success){
-            
-            console.log( success );
-
+            method: 'GET',
+            //TODO: cambiar URL para obtener solo carreras activas
+            url: "http://asesoriaspar.ronintopics.com/index.php/careers"
+        }).then(function(success){
+            successCallback(success);
         }, function(error){
-            
-            console.log( error );
+            errorCallback(error);
+        });
+    }
 
+    this.singup = function(student, successCallback, errorCallback){
+        $http({
+            method: 'PATCH',
+            url: "http://asesoriaspar.ronintopics.com/index.php/users/student",
+            data: {
+                email: student.email,
+                pass: status.pass,
+                first_name: student.first_name,
+                last_name: student.last_name,
+                career: student.career,
+                itson_id: student.itson_id,
+                phone: student.phone
+            }
+        }).then(function (success){
+            successCallback(success);
+        },function (error){
+            errorCallback(error);
         });
     }
 

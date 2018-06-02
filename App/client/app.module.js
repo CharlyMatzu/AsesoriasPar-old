@@ -1,12 +1,15 @@
-var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification']);
+var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification', 'LocalStorageModule']);
 
-    app.run(function($rootScope){
+    app.run(function($rootScope, $window, localStorageService){
         //TODO: metodo para verificar si esta logeado
 
         //-----------VARIABLES GLOBALES
         $rootScope.page = {
             title: "PAGE TITLE"
         };
+
+        //User
+        $rootScope.user = {},
 
         //-STATUS VARIABLES
         $rootScope.alert = {
@@ -48,6 +51,36 @@ var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification']);
                 $(this).prop('disabled', disabled);
             });
         }
+
+
+        /**
+         * 
+         */
+        $rootScope.signOut = function(){
+            //Borra datos del local storage
+            localStorageService.set( 'user', null );
+            goToSignin();
+        }
+
+
+        $rootScope.isLogged = function(){
+            if( localStorageService.get( 'user' ) ){
+                //Si existe, se inicializa lista con lo que esta guardado
+                $scope.user = localStorageService.get( 'user' );
+                //Se verifica token en servidor
+            }
+            else{
+                //Si no hay, redirecciona
+                goToSignin();
+            }
+        }
+
+        var goToSignin = function(){
+            $window.location.href = '#!/signin';
+        }
+
+        //Checa login
+        //$rootScope.isLogged();
         
     });
 
