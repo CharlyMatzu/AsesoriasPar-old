@@ -1,9 +1,117 @@
 .main{
+    padding: 20px 0;
+
+    //------------ PROFILE
     .section-profile{
-        background-color: peru;
-    }
+        .avatar-container{
+            width: 230px;
+            height: 230px;
+            background-color: #212121;
+            border-radius: 7px;
+            overflow: hidden;
+            
+            img{
+                width: 100%;
+            }
+        }
     
+        .data{
+            font-family: calibri;
+    
+            .name{
+                margin-bottom: 15px;
+            }
+            .data-item{
+                color: #404040;
+                display: block;
+                margin-bottom: 5px;
+    
+                .icon{
+                    width: 35px;
+                }
+            }
+        }
+    } 
+    //-------END PROFILE
+
+
+    //------- CONTENT
     .section-content{
-        background-color: tomato;
+        .advisories{
+
+            .item{
+                display: inline-block;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                padding: 10px;
+                border: 1px solid rgba(#212121, .3);
+                border-radius: 7px;
+                width: 100%;
+                max-width: 200px;
+                height: 250px;
+                overflow: hidden;
+                text-align: center;
+                cursor: pointer;
+                transition: .3s;
+                &:hover{
+                    // background-color: rgba(#212121, .1);
+                    box-shadow: 0 3px 5px rgba(#212121, .2);
+                }
+                
+                .avatar{
+                    margin: 0 auto;
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    img{
+                        width: 100%;
+                    }
+                }
+                .info{
+                    position: relative;
+                    
+                    .student{
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                    }
+                    .subject{
+                        margin-bottom: 10px;
+                    }
+                    .status{
+                    }
+                }
+            }
+
+            .new{
+                border-color: #3A99D9;
+                &:hover{
+                    background-color: rgba(#3A99D9, .1);
+                }
+
+                .icon-container{
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                    .icon{
+                        border: 2px solid #3A99D9;
+                        border-radius: 50%;
+                        width: 80px;
+                        height: 80px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 2.5em;
+                        color: #3A99D9;
+                    }
+                }
+                
+            }
+        }
     }
+    //-------END CONTENT
 }
+
