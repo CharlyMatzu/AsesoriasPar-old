@@ -38,3 +38,5 @@
     //------------------
     //include_once ROOT_PATH . DS . "autoload.php";
     //include_once VENDOR_PATH. DS ."autoload.php";
+
+    define("SERVER_URL", "http://api.asesoriaspar.com/");
