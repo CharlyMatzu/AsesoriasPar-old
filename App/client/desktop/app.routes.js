@@ -1,9 +1,13 @@
 app.config( function ($routeProvider) {
     $routeProvider
         
-        .when("/", {
-            controller: "HomeController",
-            templateUrl: "app/components/home/homeView.html"
+        .when("/asesorias", {
+            controller: "AdvisoriesController",
+            templateUrl: "app/components/advisories/advisoriesView.html"
         })
-        .otherwise("/");
+        .when("/horario", {
+            controller: "ScheduleController",
+            templateUrl: "app/components/schedule/scheduleView.html"
+        })
+        .otherwise("/asesorias");
 });

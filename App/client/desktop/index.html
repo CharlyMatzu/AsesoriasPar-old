@@ -29,22 +29,22 @@
                     <div class="collapse navbar-collapse" id="menu">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="#!asesorias">Asesorias <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Features</a>
+                                <a class="nav-link" href="#!horario">Horario</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="#">Pricing</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">About</a>
-                            </li>
+                            </li> -->
                         </ul>
-                        <form class="form-inline my-2 my-lg-0">
+                        <!-- <form class="form-inline my-2 my-lg-0">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        </form> -->
                     </div>
                 </div>
             </nav>
@@ -114,11 +114,13 @@
     <script src="app.module.js"></script>
     <script src="app.routes.js"></script>
 
+    <!-- asesorias -->
+    <script src="app/components/advisories/advisoriesService.js"></script>
+    <script src="app/components/advisories/advisoriesController.js"></script>
 
-    <script src="app/components/home/homeService.js"></script>
-    <script src="app/components/home/homeController.js"></script>
-
-
+    <!-- horario -->
+    <script src="app/components/schedule/scheduleService.js"></script>
+    <script src="app/components/schedule/scheduleController.js"></script>
 
 </body>
 </html>
