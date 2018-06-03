@@ -370,6 +370,26 @@ class UserService{
         $trans = UsersPersistence::commitTransaction();
         if( !$trans )
             throw new InternalErrorException(static::class.":insertUserAndStudent","Error al realizar commit de transaccion");
+
+        $this->sendConfirmEmail( $user->getEmail() );
+    }
+
+
+    /**
+     * @param $email String
+     * @throws InternalErrorException
+     */
+    public function sendConfirmEmail($email){
+        //Se envia correo de confirmacion TODO: debe enviarse a una cola
+        $msg = "Se ha registrado en la plataforma de Asesoriaspar.ronintopics.com, para confirmar su correo haga clic en el siguiente enlace
+                <a href='#'> http://client.asesoriaspar.com/#!confirmar/ </a>";
+        $mailServ = new MailService();
+
+        try{
+            $mailServ->sendMail( [$email], "Confirmacion de correo", $msg, $msg);
+        }catch (InternalErrorException $e){
+            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al enviar correo de confirmacion");
+        }
     }
 
 

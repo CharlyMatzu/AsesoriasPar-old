@@ -168,8 +168,8 @@ class UsersPersistence extends Persistence{
      */
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
-        $query = "INSERT INTO user (email, password, fk_role)
-                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."')";
+        $query = "INSERT INTO user (email, password, fk_role, status)
+                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', ".Utils::$STATUS_NO_CONFIRM.")";
         return  self::executeQuery($query);
     }
 

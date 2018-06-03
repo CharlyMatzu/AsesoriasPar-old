@@ -53,12 +53,13 @@ app.controller('SignupController', function($scope, $window, $timeout, Notificat
             function(success){
                 Notification.success("Bien!");
                 $scope.alert.type = 'success';
-                $scope.alert.message = "Registrado con exito, redireccionando";
+                $scope.alert.message = "Registrado con exito, se ha enviado un correo de confirmacion, redireccionando";
                 $scope.loading.status = false;
                 
                 $scope.student = {};
 
                 $timeout(function(){
+                    $scope.alert.type = '';
                     $window.location.href = '#!/signin';
                 }, 2000);
             },

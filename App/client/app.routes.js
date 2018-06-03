@@ -8,5 +8,9 @@ app.config( function ($routeProvider) {
             controller: "SignupController",
             templateUrl: "app/components/signup/signupView.html"
         })
+        .when("/confirm/:token", {
+            controller: "ConfirmController",
+            templateUrl: "app/components/confirm/confirmView.html"
+        })
         .otherwise("/signin");
 });
