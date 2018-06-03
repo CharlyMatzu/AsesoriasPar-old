@@ -8,11 +8,67 @@
 
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../vendor/angular-notification/angular-ui-notification.min.css">
-    <link rel="stylesheet" href="../vendor/loader/loader.css">
+    <!-- custom -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 <body>
+
+    <div class="main-wrapper">
+        <!-- header -->
+        <header>
+            <!-- MAIN MENU -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+            
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+            <!-- end menu -->
+        </header>
+        <!-- end header -->
+
+
+        
+        <!-- start main -->
+        <div class="main">
+            <!-- content -->
+            <div ng-view=""></div>
+            <!-- end content -->
+        </div>
+        <!-- end main -->
+        
+
+
+        <!-- footer -->
+        <!-- <footer>Hello Footer</footer> -->
+        <!-- end footer -->
+    </div>
     
-    <div ng-view=""></div>
+    
     
 
 
