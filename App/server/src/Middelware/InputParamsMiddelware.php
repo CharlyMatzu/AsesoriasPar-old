@@ -3,6 +3,7 @@
 
 use App\Model\AdvisoryModel;
 use App\Model\Career;
+use App\Model\MailModel;
 use App\Model\Period;
 use App\Model\Student;
 use App\Model\Subject;
@@ -170,6 +171,52 @@ class InputParamsMiddelware extends Middelware
 
 
         $req = $req->withAttribute('role_data', $params['role']);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkData_Mail($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['address']) || !isset($params['subject']) || !isset($params['body']) || !isset($params['plainBody']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: address, subject, body, plainBody");
+
+        if( empty($params['address']) || empty($params['subject']) || empty($params['body']) || empty($params['plainBody']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
+
+        if( !is_array($params['address']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Address debe ser array de correos");
+
+
+        foreach ( $params['address'] as $address ){
+            //Si esta vacio
+            if( empty($address) )
+                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Address no valido: vacio");
+            if( !is_string($address) )
+                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Address no valido: No es Email");
+            //TODO: validar
+//            if(  !preg_match(Utils::EXPREG_EMAIL, $address ) )
+//                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Address no valido: No es email valido");
+        }
+
+
+        $mail = new MailModel();
+        $mail->setAddress( $params['address'] );
+        $mail->setSubject( $params['subject'] );
+        $mail->setBody( $params['body'] );
+        $mail->setPlainBody( $params['plainBody'] );
+
+
+        $req = $req->withAttribute('mail_data', $mail);
 
         $res = $next($req, $res);
         return $res;

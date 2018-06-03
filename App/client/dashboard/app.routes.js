@@ -32,7 +32,7 @@ app.config( function ($routeProvider) {
         })
 
 
-        //--------------USUARIOS (STAFF)
+        //--------------USUARIOS
         .when("/usuarios", {
             controller: "UsersController",
             templateUrl: "app/components/users/usersView.html"
@@ -41,5 +41,21 @@ app.config( function ($routeProvider) {
             controller: "NewUserController",
             templateUrl: "app/components/users/newUser/newUserView.html"
         })
+
+        // .when("/estudiantes", {
+        //     controller: "StudentsController",
+        //     templateUrl: "app/components/students/studentsView.html"
+        // })
+        // .when("/estudiantes/nuevo", {
+        //     controller: "NewStudentController",
+        //     templateUrl: "app/components/students/newStudent/newStudentView.html"
+        // })
+
+        //----------------APP
+        .when("/correo", {
+            // controller: "EmailController",
+            templateUrl: "app/components/email/emailView.html"
+        })
+
         .otherwise("/");
 });

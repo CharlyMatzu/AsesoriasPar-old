@@ -56,7 +56,9 @@ $app->get('/', function(Request $request, Response $response, $params){
 //  GENERAL routes
 //--------------------------
 
-//$app->get('/test/mail', 'MailController:sendMail');
+$app->post('/mail/send', 'MailController:sendMail')
+        ->add('InputMiddelware:checkData_Mail')
+        ->add(AuthMiddelware::class);
 
 //--------------------------
 //  USER ROUTES
@@ -69,7 +71,7 @@ $app->get('/users', 'UserController:getUsers')
 
 //Obtiene todos los usuarios con rol: Mod/Admin
 $app->get('/users/staff', 'UserController:getStaffUsers')
-    ->add(AuthMiddelware::class);
+        ->add(AuthMiddelware::class);
 
 //TODO: hacer mas descriptiva
 //Obtiene usuarios con un status especifico
@@ -79,13 +81,13 @@ $app->get('/users/status/{status}', 'UserController:getUsersByStatus')
 
 //busca usuarios por correo (coincidencias)
 $app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
-    ->add('InputMiddelware:checkParam_Email')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_Email')
+        ->add(AuthMiddelware::class);
 
 //busca usuarios por correo (coincidencias)
 $app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail')
-    ->add('InputMiddelware:checkParam_Email')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_Email')
+        ->add(AuthMiddelware::class);
 
 //TODO: obtener por rol
 

@@ -19,7 +19,8 @@ class MailController
     public function sendMail($req, $res){
         try {
             $mailServ = new MailService();
-//            $mailServ->sendMail();
+            $mail = $req->getAttribute("mail_data");
+            $mailServ->sendMail($mail);
             return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Correo enviado");
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
