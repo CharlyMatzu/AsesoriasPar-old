@@ -50,6 +50,14 @@ $app->get('/', function(Request $request, Response $response, $params){
     $response->write("Welcome to the API");
 });
 
+
+
+//--------------------------
+//  GENERAL routes
+//--------------------------
+
+//$app->get('/test/mail', 'MailController:sendMail');
+
 //--------------------------
 //  USER ROUTES
 //--------------------------

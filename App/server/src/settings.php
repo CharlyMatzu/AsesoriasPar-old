@@ -49,6 +49,9 @@ $container['InputMiddelware'] = function($c){
 //-----------------------
 //Controllers methods
 //-----------------------
+$container['MailController'] = function($c){
+    return new App\Controller\MailController();
+};
 
 $container['UserController'] = function($c){
     return new App\Controller\UserController();

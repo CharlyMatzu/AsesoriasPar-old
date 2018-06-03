@@ -1,0 +1,5 @@
+[2018-06-03 06:19:07] App\Mailer--Mailer.ERROR: Error al enviar correo --> SMTP Error: Could not connect to SMTP host. [] []
+[2018-06-03 06:19:46] App\Mailer--Mailer.ERROR: Error al enviar correo --> SMTP Error: Could not connect to SMTP host. [] []
+[2018-06-03 06:21:13] App\Mailer--Mailer.ERROR: Error al enviar correo --> SMTP Error: Could not connect to SMTP host. [] []
+[2018-06-03 06:41:38] App\Mailer--Mailer.ERROR: Error al enviar correo --> Invalid address:  (From): mail.ronintopics.com [] []
+[2018-06-03 06:53:55] App\Mailer--Mailer.ERROR: Error al enviar correo --> Invalid address:  (to): carlosrozuma@gmail.com,                                  juan_elchapo19@hotmail.com,                                  Jrobertho-96@hotmail.com [] []
