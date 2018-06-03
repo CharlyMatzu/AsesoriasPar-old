@@ -1,6 +1,6 @@
-var app = angular.module("LoginApp", ['ngRoute', 'ui-notification', 'LocalStorageModule']);
+var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification', 'LocalStorageModule']);
 
-    app.run(function($rootScope, $window, $timeout, localStorageService){
+    app.run(function($rootScope, $window, localStorageService){
         //TODO: metodo para verificar si esta logeado
 
         //-----------VARIABLES GLOBALES
@@ -58,38 +58,49 @@ var app = angular.module("LoginApp", ['ngRoute', 'ui-notification', 'LocalStorag
          */
         $rootScope.signOut = function(){
             //Borra datos del local storage
-            localStorageService.remove('user-id');
-            localStorageService.remove('user-role');
-            localStorageService.remove('user-token');
+            localStorageService.set( 'user', null );
             goToSignin();
-        }
-
-        $rootScope.signIn = function(id, role, token){
-            //Borra datos del local storage
-            localStorageService.set( 'user-id', id );
-            localStorageService.set( 'user-role', role );
-            localStorageService.set( 'user-token', token );
-
-            $timeout(function(){
-                $window.location.href = 'dashboard.html';
-            }, 2000);
         }
 
 
         $rootScope.isLogged = function(){
-            if( localStorageService.get( 'user-token' ) ){
+            if( localStorageService.get( 'user' ) ){
                 //Si existe, se inicializa lista con lo que esta guardado
-                $scope.user = localStorageService.get( 'user-token' );
+                $scope.user = localStorageService.get( 'user' );
                 //Se verifica token en servidor
             }
             else{
                 //Si no hay, redirecciona
-                $window.location.href = '#!/signin';
+                goToSignin();
             }
         }
 
+        var goToSignin = function(){
+            $window.location.href = '#!/signin';
+        }
 
         //Checa login
         //$rootScope.isLogged();
         
     });
+
+
+
+
+
+    // .controller('MainController', function($scope, $http){
+    //     $scope.page.title = "MAIN";
+    // });
+
+    //-------------Angular Notifications
+    // app .config(function(NotificationProvider) {
+    //     NotificationProvider.setOptions({
+    //         delay: 2000,
+    //         startTop: 20,
+    //         startRight: 10,
+    //         verticalSpacing: 20,
+    //         horizontalSpacing: 20,
+    //         positionX: 'left',
+    //         positionY: 'bottom'
+    //     });
+    // });
