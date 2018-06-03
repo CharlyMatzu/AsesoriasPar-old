@@ -181,7 +181,7 @@ class UserController
             $userServ = new UserService();
             $user = $req->getAttribute('user_auth');
             $result = $userServ->signIn( $user->getEmail(), $user->getPassword() );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Autenticado con exito");
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

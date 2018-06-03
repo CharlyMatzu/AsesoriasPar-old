@@ -46,10 +46,8 @@
     
                                     <div class="form-group">
                                         <label>Carrera:</label>
-                                        <select class="form-control">
-                                            <option value="" ng-model="student.career" required>
-                                                <option ng-repeat="c in careers" value="c.id">{{c.name}}</option>
-                                            </option>
+                                        <select class="form-control" ng-model="student.career">
+                                            <option ng-repeat="c in careers" value="{{c.id}}">{{c.name}}</option>
                                         </select>
                                     </div>
     

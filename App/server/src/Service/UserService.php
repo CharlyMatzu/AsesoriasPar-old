@@ -127,7 +127,8 @@ class UserService{
             $token = Auth::getToken( $user->getId() );
 
             return [
-                "id" => $user->getId(),
+                "user_id" => $user->getId(),
+                "user_role" => $user->getRole(),
                 "token" => $token,
             ];
         }

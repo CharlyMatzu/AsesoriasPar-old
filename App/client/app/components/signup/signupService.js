@@ -4,7 +4,7 @@ app.service('SignupService', function($http){
         $http({
             method: 'GET',
             //TODO: cambiar URL para obtener solo carreras activas
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers"
+            url: "http://api.asesoriaspar.com/index.php/careers"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -12,13 +12,13 @@ app.service('SignupService', function($http){
         });
     }
 
-    this.singup = function(student, successCallback, errorCallback){
+    this.signup = function(student, successCallback, errorCallback){
         $http({
-            method: 'PATCH',
-            url: "http://asesoriaspar.ronintopics.com/index.php/users/student",
+            method: 'POST',
+            url: "http://api.asesoriaspar.com/index.php/users/student",
             data: {
                 email: student.email,
-                pass: status.pass,
+                password: student.pass,
                 first_name: student.first_name,
                 last_name: student.last_name,
                 career: student.career,
