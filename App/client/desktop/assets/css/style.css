@@ -127,7 +127,12 @@
       animation-name: active;
       -webkit-animation-duration: 1s;
       animation-duration: 1s;
-      color: #fff; }
+      color: #fff;
+      -webkit-transition: .3s;
+      -o-transition: .3s;
+      transition: .3s; }
+      .schedule-container .schedule .column-item .active:hover {
+        background-color: #eb4141 !important; }
 
 @-webkit-keyframes active {
   from {

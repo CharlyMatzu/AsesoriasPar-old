@@ -9,5 +9,9 @@ app.config( function ($routeProvider) {
             controller: "ScheduleController",
             templateUrl: "app/components/schedule/scheduleView.html"
         })
+        .when("/horario/actualizar", {
+            controller: "HoursAndDaysController",
+            templateUrl: "app/components/schedule/hoursAndDaysView.html"
+        })
         .otherwise("/asesorias");
 });

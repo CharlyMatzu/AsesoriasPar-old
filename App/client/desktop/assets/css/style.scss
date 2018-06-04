@@ -176,7 +176,11 @@
                 background-color: #FF5555;
                 animation-name: active;
                 animation-duration: 1s;
-                color: #fff
+                color: #fff;
+                transition: .3s;
+                &:hover{
+                    background-color: #FF5555 - 20 !important;
+                }
             }
 
             @keyframes active {

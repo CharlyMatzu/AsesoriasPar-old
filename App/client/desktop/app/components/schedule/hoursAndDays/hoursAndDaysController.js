@@ -1,4 +1,4 @@
-app.controller('ScheduleController', function($scope, $http, Notification, ScheduleService){
+app.controller('HoursAndDaysController', function($scope, $http, Notification, HoursAndDaysService){
 
     $scope.daysAndHours = [];
     $scope.status = {
