@@ -1,8 +1,9 @@
 app.controller('ScheduleController', function($scope, $http, Notification, ScheduleService){
 
-    $scope.id = 3;
+    $scope.studentID = 3;
     $scope.daysAndHours = [];
     $scope.schedule = {};
+    var backupSelectedItems = [];
     $scope.showUpdateHours = false;
     $scope.period = {};
     var count = 0;
@@ -34,7 +35,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                     //Se manda a llamar la siguiente funcion
                     //TODO: cambiar por id de localstorage
                     //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
-                    getStudentSchedule( $scope.id );
+                    getStudentSchedule( $scope.studentID );
                 }
                 
             },
@@ -179,7 +180,12 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             if( $(event.currentTarget ).hasClass('cell-hour') ){
                 //agrega/quita clase
                 $( event.currentTarget ).toggleClass('active');
-                //TODO: Agregar/quitar elementos de un array al seleccionar
+                
+                //Agrega o quita un elemento si se selecciono
+                // if( backupSelectedItems.includes(event.currentTarget) )
+                //     backupSelectedItems.splice(event.currentTarget);
+                // else
+                //     backupSelectedItems.push(event.currentTarget)
             }
         }
     }
@@ -188,32 +194,71 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     loadData();
 
 
-
-    $scope.updateScheduleHours = function(){
-        //obtenemos todos los elementos activos
-        
+    $scope.initUpdateHours = function(){
+        //Obtiene todos los elementos con .active
+        $('.schedule .active').each(function(){
+            backupSelectedItems.push($(this));
+            
+        });
+        //Se activa actualizador
+        $scope.showUpdateHours = true; 
     }
+
 
     $scope.cancelUpdate = function(){
         Notification("Cancelado");
-        $scope.showUpdateHours = false;  
+        $scope.showUpdateHours = false;
         // $scope.loading.status = true;
 
         //TODO: cambiar por id de localstorage
         //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
         //Recarga contenido
-        // getStudentSchedule( $scope.id );
+        // getStudentSchedule( $scope.studentID );
+
+
+        //Le quita eleentos a todos
+        $('.schedule .active').each(function(){
+            $(this).removeClass('active');
+        });
+        //Pone elementos seleccionados como estaban
+        if( backupSelectedItems.length > 0 ){
+            for( var i=0; i < backupSelectedItems.length; i++ ){
+                backupSelectedItems[i].addClass('active');
+            }
+            //Limpia array
+            backupSelectedItems = [];
+        }
     }
 
-    $scope.updateSubjects = function(schedule_id){
+    $scope.updateScheduleHours = function(schedule_id){
         $scope.loading.status = true;
 
         //Obtenemos todos los elementos con la clase .active
+        let selectedItems = [];
         $('.schedule .active').each(function(){
-            console.log("Funciona");
+            let item = $(this).data('hour-day-id');
+            selectedItems.push( item );
         });
 
         //Peticiones
+        ScheduleService.updateScheduleHours(schedule_id, selectedItems,
+            function(success){
+                Notification.success("Horario actualizado con exito");
+                // $scope.showUpdateHours = false;
+                // $scope.loading.status = false;
+                //TODO: recargar datos
+                getStudentSchedule( $scope.studentID );
+            },
+            function(error){
+                Notification.error("Error al actualziar horario: "+error.data);
+                $scope.loading.status = false;
+            }
+        );
+    }
+
+    $scope.updateScheduleSubjects = function(){
+        //obtenemos todos los elementos activos
+        
     }
 
 });

@@ -508,17 +508,17 @@ class InputParamsMiddelware extends Middelware
         if( !isset($params['hours']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: hours");
 
-        if( empty($params['hours']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+//        if( empty($params['hours']) )
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
         if( !is_array($params['hours']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Debe ser un array");
 
         //Verificando que sean datos numericos
         $hours = $params['hours'];
         foreach ( $hours as $hour ){
             if( !is_numeric($hour) )
-                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Valores deben ser numericos");
         }
 
         $req = $req->withAttribute('schedule_hours', $hours);

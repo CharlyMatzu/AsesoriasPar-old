@@ -47,4 +47,31 @@ app.service('ScheduleService', function($http){
         });
     } 
 
+
+    this.updateScheduleHours = function(schedule_id, hours, successCallback, errorCallback){
+        $http({
+            method: 'PUT',
+            url: "http://api.asesoriaspar.com/index.php/schedule/"+schedule_id+"/hours",
+            data: {
+                hours: hours
+            }
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    } 
+
+
+    this.updateScheduleSubjects = function(schedule_id, subjects, successCallback, errorCallback){
+        $http({
+            method: 'PUT',
+            url: "http://api.asesoriaspar.com/index.php/schedule/"+schedule_id+"/subjects"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    } 
+
 });

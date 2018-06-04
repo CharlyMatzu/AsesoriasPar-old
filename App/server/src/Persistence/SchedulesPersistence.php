@@ -72,7 +72,7 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
-                    WHERE sdh.fk_schedule = $scheduleid
+                    WHERE sdh.fk_schedule = $scheduleid AND sdh.status = ".Utils::$STATUS_ENABLE."
                     ORDER BY $orderType";
 
 

@@ -104,6 +104,27 @@
       .main .section-content .new-advisorie-container .content {
         color: #fff; }
 
+.subject-container {
+  margin-bottom: 20px; }
+  .subject-container .subjects {
+    padding: 20px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .subject-container .subjects .item {
+      padding: 7px 12px;
+      margin-right: 10px;
+      border-radius: 10px;
+      color: #1B95E0;
+      font-weight: bold;
+      border: 1px solid #1B95E0;
+      -webkit-transition: .3s;
+      -o-transition: .3s;
+      transition: .3s; }
+      .subject-container .subjects .item:hover {
+        background-color: #1B95E0;
+        color: #fff; }
+
 .schedule-container .schedule {
   width: 100%;
   display: -webkit-box;

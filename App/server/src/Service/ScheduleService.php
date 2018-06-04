@@ -356,9 +356,9 @@ class ScheduleService{
         //Si hay asesorias activas asociadas a esa hora, deben finalizarse y notificar a admin y a alumnos
 
         //---Se obtienen horas y dias
-        $hours = array();
+        $days_hours = array();
         try{
-            $hours = $this->getScheduleHours_ById( $scheduleId );
+            $days_hours = $this->getScheduleHours_ById( $scheduleId );
             //si esta vacio, no hay problema
         }catch (NoContentException $e){}
 
@@ -370,14 +370,18 @@ class ScheduleService{
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
 
         try{
-            foreach ( $hours as $hu ){
-                //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
-                if( !in_array($hu['day_hour_id'], $newHours) ){
-                    $this->disableHour($hu['id']);
-                }
-                //si exta ya existe, se habilita
-                else{
-                    $this->enableHour($hu['id']);
+            //Recorre cada dia
+            foreach ( $days_hours as $days ){
+                //Recorre las horas
+                foreach( $days['data'] as $hour ){
+                    //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
+                    if( !in_array($hour['day_hour_id'], $newHours) ){
+                        $this->disableHour($hour['id']);
+                    }
+                    //si exta ya existe, se habilita
+                    else{
+                        $this->enableHour($hour['id']);
+                    }
                 }
             }
         }catch (RequestException $e){
@@ -586,9 +590,11 @@ class ScheduleService{
     private function isHoursInArray($hour_id, $hours)
     {
         //Si coinciden, es que si existe
-        foreach ($hours as $s ){
-            if( $s['day_hour_id'] == $hour_id )
-                return true;
+        foreach ($hours as $data ){
+            foreach ( $data['data'] as $hour ){
+                if( $hour['day_hour_id'] == $hour_id )
+                    return true;
+            }
         }
         return false;
     }
