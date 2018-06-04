@@ -127,8 +127,8 @@ class StudentController
     {
         try {
             $studentSer = new StudentService();
-            $hours = $req->getAttribute('schedule_hours');
-            $studentSer->createSchedule( $params['id'], $hours );
+//            $hours = $req->getAttribute('schedule_hours');
+            $studentSer->createSchedule( $params['id'] );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Horario de alumno creado");
 
         } catch (RequestException $e) {

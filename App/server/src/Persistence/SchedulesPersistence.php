@@ -154,7 +154,7 @@ class SchedulesPersistence extends Persistence{
      * @see SchedulesPersistence::ORDER_BY_HOUR
      * @return \App\Model\DataResult
      */
-    public function getHoursAndDays( $orderType ){
+    public function getDaysAndHours($orderType ){
         $query = "SELECT 
                         dh.day_hour_id as 'id',
                         day as 'day',

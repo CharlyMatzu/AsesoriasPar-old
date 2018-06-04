@@ -360,16 +360,16 @@ $app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStu
     ->add(AuthMiddelware::class);
 
 //crea horario (horas)
-//$app->post('/students/{id}/schedule', 'StudentController:createSchedule')
+$app->post('/students/{id}/schedule', 'StudentController:createSchedule')
 //        ->add('InputMiddelware:checkData_schedule_hours')
-//        ->add('InputMiddelware:checkParam_Id')
-//        ->add(AuthMiddelware::class);
-
-//agrega materias a horario
-$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
-        ->add('InputMiddelware:checkData_schedule_subjects')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+//agrega materias a horario
+//$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
+//        ->add('InputMiddelware:checkData_schedule_subjects')
+//        ->add('InputMiddelware:checkParam_Id')
+//        ->add(AuthMiddelware::class);
 
 
 //TODO: obtener materias de horario

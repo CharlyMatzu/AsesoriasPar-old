@@ -64,26 +64,26 @@ class ScheduleService{
 
 
 
-    public function getDays(){
-        $result = $this->schedulesPer->getDays();
-        if( !is_array($result) )
-            return $result;
-        else{
-            $days = array();
-            foreach( $result as $day ){
-                $days[] = $day['day'];
-            }
-            return $days;
-        }
-    }
+//    public function getDays(){
+//        $result = $this->schedulesPer->getDays();
+//        if( !is_array($result) )
+//            return $result;
+//        else{
+//            $days = array();
+//            foreach( $result as $day ){
+//                $days[] = $day['day'];
+//            }
+//            return $days;
+//        }
+//    }
 
     /**
      * @return array
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getHoursAndDays(){
-        $result = $this->schedulesPer->getHoursAndDays( SchedulesPersistence::ORDER_BY_DAY );
+    public function getDaysAndHours(){
+        $result = $this->schedulesPer->getDaysAndHours( SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class,"Error al obtener dias y horas", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
@@ -98,7 +98,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleHoursAndDays_ById($id)
+    public function getScheduleHours_ById($id)
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
@@ -153,11 +153,10 @@ class ScheduleService{
 
     /**
      * @param $studentId int
-     * @param $schedule_hours array
      *
      * @throws RequestException
      */
-    public function insertSchedule($studentId, $schedule_hours)
+    public function insertSchedule($studentId)
     {
 
         //Se obtiene periodo actual
@@ -182,9 +181,9 @@ class ScheduleService{
         }catch (NoContentException $e){
 
             //----------COMIENZA TRANSACCION
-            $trans = SchedulesPersistence::initTransaction();
-            if( !$trans )
-                throw new InternalErrorException(static::class."InsertSchedule", "Error al iniciar transaccion");
+//            $trans = SchedulesPersistence::initTransaction();
+//            if( !$trans )
+//                throw new InternalErrorException(static::class."InsertSchedule", "Error al iniciar transaccion");
 
             //Si no tiene horario, se registra
             $result = $this->schedulesPer->insertSchedule( $studentId, $period['id'] );
@@ -192,17 +191,17 @@ class ScheduleService{
                 throw new InternalErrorException(static::class,"No se pudo registrar horario", $result->getErrorMessage());
 
 
-            //Se obtiene horario de alumno en periodo actual
-            $current_schedule = $this->getCurrentSchedule_ByStudentId( $studentId );
-
-            //TODO: comprobar que horas existen
-            //Se registran horas
-            $this->insertScheduleHours( $current_schedule['id'], $schedule_hours );
+//            //Se obtiene horario de alumno en periodo actual
+//            $current_schedule = $this->getCurrentSchedule_ByStudentId( $studentId );
+//
+//            //TODO: comprobar que horas existen
+//            //Se registran horas
+//            $this->insertScheduleHours( $current_schedule['id'], $schedule_hours );
 
             //Se guardan los registros
-            $trans = SchedulesPersistence::commitTransaction();
-            if( !$trans )
-                throw new InternalErrorException(static::class.":InsertSchedule", "Error al registrar transaccion");
+//            $trans = SchedulesPersistence::commitTransaction();
+//            if( !$trans )
+//                throw new InternalErrorException(static::class.":InsertSchedule", "Error al registrar transaccion");
             //----------FIN TRANSACCION
         }
 
@@ -220,7 +219,7 @@ class ScheduleService{
         //Se obtiene horas actuales
         $hours = array();
         try{
-            $hours = $this->getScheduleHoursAndDays_ById( $scheduleid );
+            $hours = $this->getScheduleHours_ById( $scheduleid );
         }catch (NoContentException $e){}
 
 
@@ -346,7 +345,6 @@ class ScheduleService{
      *
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws NoContentException
      */
     public function updateScheduleHours($scheduleId, $newHours)
     {
@@ -358,7 +356,11 @@ class ScheduleService{
         //Si hay asesorias activas asociadas a esa hora, deben finalizarse y notificar a admin y a alumnos
 
         //---Se obtienen horas y dias
-        $hours = $this->getScheduleHoursAndDays_ById( $scheduleId );
+        $hours = array();
+        try{
+            $hours = $this->getScheduleHours_ById( $scheduleId );
+            //si esta vacio, no hay problema
+        }catch (NoContentException $e){}
 
         $trans = SchedulesPersistence::initTransaction();
         if( !$trans )
@@ -454,7 +456,9 @@ class ScheduleService{
         }catch (InternalErrorException $e){
             throw new InternalErrorException(static::class.":updateScheduleSubjects",
                 "se detuvo actualizacion de materias", $e->getMessage());
-        }
+
+            //No hay problema
+        }catch (NoContentException $e){}
 
         $trans = SchedulesPersistence::initTransaction();
         if( !$trans )
@@ -556,38 +560,38 @@ class ScheduleService{
                 "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
     }
 
-//    /**
-//     * @param $subject_id int
-//     * @param $subjects array|\mysqli_result
-//     *
-//     * @return bool
-//     */
-//    private function isSubjectInArray($subject_id, $subjects)
-//    {
-//        //Si coinciden, es que si existe
-//        foreach ( $subjects as $s ){
-//            if( $s['subject_id'] == $subject_id )
-//                return true;
-//        }
-//        return false;
-//    }
+    /**
+     * @param $subject_id int
+     * @param $subjects array|\mysqli_result
+     *
+     * @return bool
+     */
+    private function isSubjectInArray($subject_id, $subjects)
+    {
+        //Si coinciden, es que si existe
+        foreach ( $subjects as $s ){
+            if( $s['subject_id'] == $subject_id )
+                return true;
+        }
+        return false;
+    }
 
 
-//    /**
-//     * @param $hour_id int
-//     * @param $hours array
-//     *
-//     * @return bool
-//     */
-//    private function isHoursInArray($hour_id, $hours)
-//    {
-//        //Si coinciden, es que si existe
-//        foreach ($hours as $s ){
-//            if( $s['day_hour_id'] == $hour_id )
-//                return true;
-//        }
-//        return false;
-//    }
+    /**
+     * @param $hour_id int
+     * @param $hours array
+     *
+     * @return bool
+     */
+    private function isHoursInArray($hour_id, $hours)
+    {
+        //Si coinciden, es que si existe
+        foreach ($hours as $s ){
+            if( $s['day_hour_id'] == $hour_id )
+                return true;
+        }
+        return false;
+    }
 
     /**
      * @param $schedule array|\mysqli_result
@@ -608,10 +612,20 @@ class ScheduleService{
             for( ; $continue && $index < count($schedule); ){
                 //Si el dia (primer foreach) es igual al del array, entonces pertenece al dia y se agrega
                 if( $schedule[$index]['day'] === $day['day'] ) {
-                    $schedule_day_hour[] = [
-                        "id" => $schedule[$index]['id'],
-                        "hour" => $schedule[$index]['hour']
-                    ];
+                    if( isset($schedule[$index]['day_hour_id']) ){
+                        $schedule_day_hour[] = [
+                            "id" => $schedule[$index]['id'],
+                            "day_hour_id" => $schedule[$index]['day_hour_id'],
+                            "hour" => $schedule[$index]['hour']
+                        ];
+                    }
+                    else{
+                        $schedule_day_hour[] = [
+                            "id" => $schedule[$index]['id'],
+                            "hour" => $schedule[$index]['hour']
+                        ];
+                    }
+
                     //Aumenta contador
                     $index++;
                 }

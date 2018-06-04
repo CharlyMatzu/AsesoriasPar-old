@@ -156,46 +156,38 @@ class StudentService{
         //TODO: mover todo a un método en ScheduleService
 
         //Se verifica que exista estudiante
-        try {
-            $this->getStudent_ById($studentId);
-        } catch (RequestException $e) {
-            throw new RequestException($e->getMessage(), $e->getStatusCode());
-        }
+        $this->getStudent_ById($studentId);
 
         //Se obtiene horario de estudiante
         /* @var $schedule Schedule */
-        $schedule = null;
         $scheduleService = new ScheduleService();
-        try {
-            $schedule = $scheduleService->getCurrentSchedule_ByStudentId($studentId);
-            $schedule = ScheduleService::makeScheduleModel($schedule);
-        } catch (RequestException $e) {
-            throw new RequestException($e->getMessage(), $e->getStatusCode());
-        }
+        $schedule = $scheduleService->getCurrentSchedule_ByStudentId($studentId);
+        $schedule = ScheduleService::makeScheduleModel($schedule);
 
         //se obtiene horas de horario
-        $hours_days = null;
+        $hours_days = array();
         try {
-            $hours_days = $scheduleService->getScheduleHoursAndDays_ById($schedule->getId());
-        } catch (RequestException $e) {
+            $hours_days = $scheduleService->getScheduleHours_ById($schedule->getId());
+            //Si no tiene horas, no hay problema
+        }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());
-        }
+            //Si no hay horas, no hay problema
+        }catch (NoContentException $e){}
 
         //se obtiene materias (si hay)
-        $subjects = null;
+        $subjects = array();
         try {
             $subjects = $scheduleService->getScheduleSubjects_ById($schedule->getId());
         }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());
-        }catch (NoContentException $e){
-            //No hay problema
-        }
+            //Si no tiene materias, no hay problema
+        }catch (NoContentException $e){}
 
         $student_schedule = [
             "id" => $schedule->getId(),
             "status" => $schedule->getStatus(),
             "period" => $schedule->getPeriod(),
-            "hours_days" => $hours_days,
+            "days_hours" => $hours_days,
             "subjects" => $subjects
         ];
 
@@ -205,19 +197,18 @@ class StudentService{
 
     /**
      * @param $studentId int
-     * @param $schedule_hours array
      * @throws InternalErrorException
      * @throws NotFoundException
      * @throws RequestException
      */
-    public function createSchedule($studentId, $schedule_hours )
+    public function createSchedule($studentId )
     {
         //Se comprueba existencia de alumno
         $this->getStudent_ById( $studentId );
 
         //se envia a registrar horario
         $scheduleService = new ScheduleService();
-        $scheduleService->insertSchedule( $studentId, $schedule_hours );
+        $scheduleService->insertSchedule( $studentId );
     }
 
 

@@ -131,8 +131,6 @@
       -webkit-transition: .3s;
       -o-transition: .3s;
       transition: .3s; }
-      .schedule-container .schedule .column-item .active:hover {
-        background-color: #eb4141 !important; }
 
 @-webkit-keyframes active {
   from {
@@ -155,6 +153,9 @@
   transition: .3s; }
   .schedule-container .selectable .column-item .cell-hour:hover {
     background-color: #c9c7c7; }
+
+.schedule-container .selectable .column-item .active:hover {
+  background-color: #eb4141 !important; }
 
 .fadeIn {
   -webkit-animation-duration: .4s;

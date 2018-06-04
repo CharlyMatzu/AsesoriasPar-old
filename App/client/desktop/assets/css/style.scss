@@ -178,9 +178,6 @@
                 animation-duration: 1s;
                 color: #fff;
                 transition: .3s;
-                &:hover{
-                    background-color: #FF5555 - 20 !important;
-                }
             }
 
             @keyframes active {
@@ -207,6 +204,12 @@
                 transition: .3s;
                 &:hover{
                     background-color: #DDDBDB - 20;
+                }
+            }
+            // --------- COLUMNT ITEM ACTIVE STATE
+            .active{
+                &:hover{
+                    background-color: #FF5555 - 20 !important;
                 }
             }
         }
