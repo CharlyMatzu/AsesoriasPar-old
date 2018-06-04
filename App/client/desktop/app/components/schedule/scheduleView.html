@@ -1,21 +1,22 @@
 <h2>Horario</h2>
 <hr>
 
-<div class="schedule-section">
-    <!-- schedule -->
-    <div class="schedule-container">
-        <div class="schedule">
-            
-            <div class="column-item" ng-repeat="dh in daysAndHours">
-                <div class="day-item">{{dh.day}}</div>
-                <div class="hour-item">{{dh.hour}}</div>
-            </div>
-
+<!-- schedule -->
+<div class="schedule-container">
+    <p ng-hide="daysAndHours.length > 0">{{status.message}}</p>
+    <div class="schedule selectable" ng-show="daysAndHours.length > 0">
+        
+        <div class="column-item" ng-repeat="dh in daysAndHours">
+            <div class="cell-item cell-header">{{dh.day}}</div>
+            <div class="cell-item cell-hour" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="dh.day_number" data-hour-id="data.id">{{data.hour}}</div>
         </div>
+
     </div>
+    <!-- end schedule -->
+</div>
+<!-- end schedule container -->
 
 
-    <div class="subject-container">
-        Subjects
-    </div>
+<div class="subject-container">
+    Subjects
 </div>

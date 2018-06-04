@@ -1,3 +1,4 @@
+
 .main{
     padding: 20px 0;
 
@@ -136,6 +137,89 @@
     }
     //-------END CONTENT
 }
+
+
+
+
+
+
+
+// ------------------------------
+//  SCHEDULE
+//-------------------------------
+.schedule-container{
+    .schedule{
+        width: 100%;
+        display: flex;
+
+        .column-item{
+            flex: 1; // Let all the flexible items be the same length
+            display: inline-block;
+
+            // background-color: peru;
+            text-align: center;
+
+            .cell-item{
+                color: #212121;
+                padding: 10px 20px;
+                background: #DDDBDB;
+                border: 2px solid #fff;
+            }
+
+            .cell-header{
+                background: #92E55A;
+                font-weight: bold;
+            }
+
+            // --------- COLUMNT ITEM ACTIVE STATE
+            .active{
+                background-color: #FF5555;
+                animation-name: active;
+                animation-duration: 1s;
+                color: #fff
+            }
+
+            @keyframes active {
+                from {
+                    background-color: rgba(#FF5555, 0);
+                }
+                to {
+                    background-color: rgba(#FF5555, 1);
+                }
+            }
+        }
+
+        // --------- COLUMN HIDDE STATE
+        .hide{
+            display: none;
+        }
+    }
+
+    // ---------Schedule table when is selectable
+    .selectable{
+        .column-item{
+            .cell-hour{
+                cursor: pointer;
+                transition: .3s;
+                &:hover{
+                    background-color: #DDDBDB - 20;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+// ------------------------
+// EXTRAS
+// ------------------------
 
 
 

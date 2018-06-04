@@ -106,7 +106,7 @@ class ScheduleService{
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
-        return $result->getData();
+        return $this->formatSchedule($result->getData());
     }
 
     /**
@@ -605,13 +605,15 @@ class ScheduleService{
             $schedule_day_hour = array();
             $continue = true;
 
-            for( ; $continue && $index < count($schedule); $index++){
+            for( ; $continue && $index < count($schedule); ){
                 //Si el dia (primer foreach) es igual al del array, entonces pertenece al dia y se agrega
                 if( $schedule[$index]['day'] === $day['day'] ) {
                     $schedule_day_hour[] = [
                         "id" => $schedule[$index]['id'],
                         "hour" => $schedule[$index]['hour']
                     ];
+                    //Aumenta contador
+                    $index++;
                 }
                 else{
                     //detiene ciclo
