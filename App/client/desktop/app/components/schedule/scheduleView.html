@@ -9,10 +9,15 @@
         <hr>
         <p ng-hide="daysAndHours.length > 0">{{status.message}}</p>
         
-        <button class="btn btn-primary" ng-show="daysAndHours.length > 0" ng-disabled="loading.status">Actualizar Horario</button>
+        <button class="btn btn-primary" ng-show="!showUpdateHours" ng-disabled="loading.status" ng-click="showUpdateHours = true">Actualizar Horario</button>
+        
+        <!-- Botones de accion -->
+        <button class="btn btn-danger" ng-disabled="loading.status" ng-show="showUpdateHours" ng-disabled="loading.status" ng-click="cancelUpdate()">Cancelar</button>
+        
+        <button class="btn btn-success" ng-show="showUpdateHours" ng-click="updateScheduleHours(schedule.id)">Guardar</button>
         <br><br>
 
-        <div class="schedule" ng-show="daysAndHours.length > 0">
+        <div class="schedule ng-class:{'selectable': showUpdateHours}" ng-show="daysAndHours.length > 0">
             
             <div class="column-item" ng-repeat="dh in daysAndHours">
                 <div class="cell-item cell-header">{{dh.day}}</div>

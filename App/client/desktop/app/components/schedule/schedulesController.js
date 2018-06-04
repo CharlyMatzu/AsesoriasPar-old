@@ -1,7 +1,9 @@
 app.controller('ScheduleController', function($scope, $http, Notification, ScheduleService){
 
+    $scope.id = 3;
     $scope.daysAndHours = [];
     $scope.schedule = {};
+    $scope.showUpdateHours = false;
     $scope.period = {};
     var count = 0;
     $scope.loading = {
@@ -32,7 +34,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                     //Se manda a llamar la siguiente funcion
                     //TODO: cambiar por id de localstorage
                     //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
-                    getStudentSchedule(3);
+                    getStudentSchedule( $scope.id );
                 }
                 
             },
@@ -84,6 +86,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
      */
     var getStudentSchedule = function(studen_id){
         $scope.loading.message = "Obteniendo horario de alumno";
+        $scope.showUpdateHours = false;
 
         ScheduleService.getStudentSchedule(studen_id,
             function(success){
@@ -123,6 +126,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 Notification.error("Error al iniciarlizar horario");
                 $scope.loading.status = false;
                 $scope.loading.message = "Ocurrio un error";
+                $scope.loading.status = false;
             }
         );
     }
@@ -168,16 +172,48 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
      * @param {EventTarget} event 
      */
     $scope.toggleHour = function(event){
+        
         //Verifica si el padre tiene "selectable"
         if( $( event.currentTarget ).parents().hasClass('selectable') ){
             //verifica si es de tipo hora
             if( $(event.currentTarget ).hasClass('cell-hour') ){
                 //agrega/quita clase
                 $( event.currentTarget ).toggleClass('active');
+                //TODO: Agregar/quitar elementos de un array al seleccionar
             }
         }
     }
 
+    //Iniciar la carga de datos
     loadData();
+
+
+
+    $scope.updateScheduleHours = function(){
+        //obtenemos todos los elementos activos
+        
+    }
+
+    $scope.cancelUpdate = function(){
+        Notification("Cancelado");
+        $scope.showUpdateHours = false;  
+        // $scope.loading.status = true;
+
+        //TODO: cambiar por id de localstorage
+        //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
+        //Recarga contenido
+        // getStudentSchedule( $scope.id );
+    }
+
+    $scope.updateSubjects = function(schedule_id){
+        $scope.loading.status = true;
+
+        //Obtenemos todos los elementos con la clase .active
+        $('.schedule .active').each(function(){
+            console.log("Funciona");
+        });
+
+        //Peticiones
+    }
 
 });

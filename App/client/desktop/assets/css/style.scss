@@ -38,6 +38,7 @@
 
     //------- CONTENT
     .section-content{
+        padding-bottom: 200px;
 
 
         // advisories
@@ -208,8 +209,26 @@
             }
             // --------- COLUMNT ITEM ACTIVE STATE
             .active{
+                background-color: #404040;
                 &:hover{
-                    background-color: #FF5555 - 20 !important;
+                    background-color: #404040 - 20 !important;
+                }
+            }
+
+            .active{
+                background-color: #404040;
+                animation-name: selected;
+                animation-duration: 1s;
+                color: #fff;
+                transition: .3s;
+            }
+
+            @keyframes selected {
+                from {
+                    background-color: rgba(#404040, 0);
+                }
+                to {
+                    background-color: rgba(#404040, 1);
                 }
             }
         }
