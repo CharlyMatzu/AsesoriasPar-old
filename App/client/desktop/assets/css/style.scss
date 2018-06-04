@@ -37,6 +37,9 @@
 
     //------- CONTENT
     .section-content{
+
+
+        // advisories
         .advisories{
 
             .item{
@@ -111,7 +114,56 @@
                 
             }
         }
+
+        .new-advisorie-container{
+            position: fixed;
+            z-index: 100;
+            background-color: #303030;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: none;
+            // display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .content{
+                color: #fff;
+            }
+        }
+        // end advisories
     }
     //-------END CONTENT
 }
 
+
+
+.fadeIn{
+    animation-duration: .4s;
+    animation-name: fadeIn;
+}
+
+.fadeOut{
+    opacity: 0;
+    animation-duration: .4s;
+    animation-name: fadeOut;
+}
+
+@keyframes fadeIn{
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

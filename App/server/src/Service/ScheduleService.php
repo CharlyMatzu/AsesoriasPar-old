@@ -78,7 +78,7 @@ class ScheduleService{
     }
 
     /**
-     * @return \mysqli_result
+     * @return array
      * @throws InternalErrorException
      * @throws NoContentException
      */
@@ -89,7 +89,7 @@ class ScheduleService{
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
-        return $result->getData();
+        return $this->formatSchedule($result->getData());
     }
 
     /**
@@ -556,37 +556,76 @@ class ScheduleService{
                 "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
     }
 
-    /**
-     * @param $subject_id int
-     * @param $subjects array|\mysqli_result
-     *
-     * @return bool
-     */
-    private function isSubjectInArray($subject_id, $subjects)
-    {
-        //Si coinciden, es que si existe
-        foreach ( $subjects as $s ){
-            if( $s['subject_id'] == $subject_id )
-                return true;
-        }
-        return false;
-    }
+//    /**
+//     * @param $subject_id int
+//     * @param $subjects array|\mysqli_result
+//     *
+//     * @return bool
+//     */
+//    private function isSubjectInArray($subject_id, $subjects)
+//    {
+//        //Si coinciden, es que si existe
+//        foreach ( $subjects as $s ){
+//            if( $s['subject_id'] == $subject_id )
+//                return true;
+//        }
+//        return false;
+//    }
 
 
+//    /**
+//     * @param $hour_id int
+//     * @param $hours array
+//     *
+//     * @return bool
+//     */
+//    private function isHoursInArray($hour_id, $hours)
+//    {
+//        //Si coinciden, es que si existe
+//        foreach ($hours as $s ){
+//            if( $s['day_hour_id'] == $hour_id )
+//                return true;
+//        }
+//        return false;
+//    }
+
     /**
-     * @param $hour_id int
-     * @param $hours array
-     *
-     * @return bool
+     * @param $schedule array|\mysqli_result
+     * @return array
      */
-    private function isHoursInArray($hour_id, $hours)
-    {
-        //Si coinciden, es que si existe
-        foreach ($hours as $s ){
-            if( $s['day_hour_id'] == $hour_id )
-                return true;
+    public function formatSchedule( $schedule ){
+        $daysArray = $this->schedulesPer->getDays()->getData();
+        $formatedSchedule = array();
+        //Se recorre cada dia
+        $index = 0;
+
+        foreach ( $daysArray as $day ){
+
+            //se recorre el array para encontrar los similares
+            $schedule_day_hour = array();
+            $continue = true;
+
+            for( ; $continue && $index < count($schedule); $index++){
+                //Si el dia (primer foreach) es igual al del array, entonces pertenece al dia y se agrega
+                if( $schedule[$index]['day'] === $day['day'] ) {
+                    $schedule_day_hour[] = [
+                        "id" => $schedule[$index]['id'],
+                        "hour" => $schedule[$index]['hour']
+                    ];
+                }
+                else{
+                    //detiene ciclo
+                    $continue = false;
+                }
+            }
+            //Se agrega acumulado al schedule principal
+            $formatedSchedule[] = [
+                "day" => $day['day'],
+                "day_number" => $day['day_number'],
+                "data" => $schedule_day_hour
+            ];
         }
-        return false;
+        return $formatedSchedule;
     }
 
 

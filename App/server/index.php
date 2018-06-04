@@ -284,6 +284,10 @@ $app->get('/periods', 'PeriodController:getPeriods')
 
 //TODO: Obtener asesorias de un periodo
 
+//TODO: periodo activo
+$app->get('/periods/current', 'PeriodController:getCurrentPeriod')
+    ->add(AuthMiddelware::class);
+
 //Obtiene periodo por id
 $app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
     ->add('InputMiddelware:checkParam_id')

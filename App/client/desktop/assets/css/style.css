@@ -84,3 +84,57 @@
         align-items: center;
         font-size: 2.5em;
         color: #3A99D9; }
+  .main .section-content .new-advisorie-container {
+    position: fixed;
+    z-index: 100;
+    background-color: #303030;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    .main .section-content .new-advisorie-container .content {
+      color: #fff; }
+
+.fadeIn {
+  -webkit-animation-duration: .4s;
+  animation-duration: .4s;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn; }
+
+.fadeOut {
+  opacity: 0;
+  -webkit-animation-duration: .4s;
+  animation-duration: .4s;
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut; }
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+@keyframes fadeOut {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }

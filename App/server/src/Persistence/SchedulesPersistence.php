@@ -158,7 +158,8 @@ class SchedulesPersistence extends Persistence{
         $query = "SELECT 
                         dh.day_hour_id as 'id',
                         day as 'day',
-                        TIME_FORMAT(hour, '%H:%i') as 'hour'
+                        TIME_FORMAT(hour, '%H:%i') as 'hour',
+                        day_number as 'day_number'
                         FROM day_and_hour dh
                       ORDER BY $orderType";
         //Obteniendo resultados
@@ -171,7 +172,7 @@ class SchedulesPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function getDays(){
-        $query = "SELECT DISTINCT day 
+        $query = "SELECT DISTINCT day, day_number 
                   FROM day_and_hour 
                   ORDER BY day_number";
         //Obteniendo resultados
