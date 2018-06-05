@@ -31,6 +31,23 @@ class UserController
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
+     */
+    public function getStaffUsers($req, $res)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->getStaffUsers();
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
      * @param $params array
      * @return Response
      */
@@ -75,6 +92,25 @@ class UserController
         try {
             $userServ = new UserService();
             $result = $userServ->searchUserByEmail( $params['email'] );
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function searchStaffUsersByEmail($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->searchStaffUser_ByEmail( $params['email'] );
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
@@ -145,7 +181,7 @@ class UserController
             $userServ = new UserService();
             $user = $req->getAttribute('user_auth');
             $result = $userServ->signIn( $user->getEmail(), $user->getPassword() );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Autenticado con exito");
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

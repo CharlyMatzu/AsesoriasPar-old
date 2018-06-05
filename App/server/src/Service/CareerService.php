@@ -154,7 +154,7 @@ class CareerService{
             //Si cambio nombre, se verifica
             if( $career_aux['name'] != $career->getName() ) {
                 //Debe lanzar exception para que sea correcto
-                $this->getCareer_ByName_ShortName( $career->getName() );
+                $this->getCareer_ByName_ShortName( $career->getName(), $career->getId() );
                 throw new ConflictException("Nombre ya existe");
             }
             //Si no encuentra nada, no hay problema
@@ -165,7 +165,7 @@ class CareerService{
             //Si cambio nombre, se verifica
             if( $career_aux['short_name'] != $career->getShortName() ) {
                 //Debe lanzar exception para que sea correcto
-                $this->getCareer_ByName_ShortName( $career->getShortName() );
+                $this->getCareer_ByName_ShortName( $career->getShortName(), $career->getId() );
                 throw new ConflictException("Abreviacion ya existe");
             }
             //Si no encuentra nada, no hay problema
@@ -254,13 +254,15 @@ class CareerService{
      *
      * @param $name string
      *
+     * @param null $career_id
+     *
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getCareer_ByName_ShortName($name){
+    public function getCareer_ByName_ShortName($name, $career_id = null){
 
-        $result = $this->perCareers->getCareer_ByName_ShortName( $name );
+        $result = $this->perCareers->getCareer_ByName_ShortName( $name, $career_id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getCareer_ByName_ShortName",
                 "Error al obtener carrera por nombre/abreviacion", $result->getErrorMessage() );

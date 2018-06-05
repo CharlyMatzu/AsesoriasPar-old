@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="Desktop">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Asesorias par | Escritorio</title>
+
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../vendor/angular-notification/angular-ui-notification.min.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome/css/font-awesome.min.css">
+    <!-- custom -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <!-- header -->
+        <header>
+            <!-- MAIN MENU -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+            
+                    <div class="collapse navbar-collapse" id="menu">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#!asesorias">Asesorias <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#!horario">Horario</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li> -->
+                        </ul>
+                        <!-- <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form> -->
+                    </div>
+                </div>
+            </nav>
+            <!-- end menu -->
+        </header>
+        <!-- end header -->
+
+
+        
+        <!-- start main -->
+        <div class="main">
+            <!-- content -->
+            <div class="container">
+                <div class="row">
+                    
+                    <!-- profile -->
+                    <div class="section-profile col-xs-12 col-lg-3">
+                        <div class="avatar-container">
+                            <img src="https://avatars3.githubusercontent.com/u/3618925?s=460&v=4" class="image-responsive" alt="Avatar">
+                        </div>
+            
+                        <div class="data">
+                            <h2 class="name">Nombre</h2>
+                            <!-- FIXME: desbordamiento -->
+                            <span class="data-item"><i class="icon fa fa-envelope"></i>carlosrozuma@gmail.com</span>
+                            <span class="data-item"><i class="icon fa fa-graduation-cap"></i>Ingenieria en software</span>
+                            <span class="data-item"><i class="icon fa fa-id-card"></i>ID: 00000162156</span>
+                            <span class="data-item"><i class="icon fa fa-phone"></i>Telefono</span>
+                            <span class="data-item"><i class="icon fa fa-facebook"></i>Facebook</span>
+                        </div>
+                    </div>
+                    <!-- end profile -->
+            
+            
+                    <!-- content -->
+                    <div class="section-content col-xs-12 col-lg-9">
+                        <div ng-view=""></div>
+                    </div>
+                    <!-- end content -->
+                </div>
+            </div>
+                
+            <!-- end content -->
+        </div>
+        <!-- end main -->
+        
+
+
+        <!-- footer -->
+        <!-- <footer>Hello Footer</footer> -->
+        <!-- end footer -->
+    </div>
+    
+    
+    
+
+
+    <!-- _____________SCRIPTS_______________ -->
+    <script src="../vendor/angularjs/angularjs.min.js"></script>
+    <script src="../vendor/angularjs/angular-route.min.js"></script>
+    <script src="../vendor/angularjs/angular-local-storage.min.js"></script>
+    <script src="../vendor/angular-notification/angular-ui-notification.min.js"></script>
+    <script src="../vendor/jquery/jquery.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- CUSTOM -->
+    <script src="../assets/js/utils.js"></script>
+    <script src="app.module.js"></script>
+    <script src="app.routes.js"></script>
+
+    <!-- asesorias -->
+    <script src="app/components/advisories/advisoriesService.js"></script>
+    <script src="app/components/advisories/advisoriesController.js"></script>
+
+    <!-- horario -->
+    <script src="app/components/schedule/scheduleService.js"></script>
+    <script src="app/components/schedule/scheduleController.js"></script>
+
+</body>
+</html>

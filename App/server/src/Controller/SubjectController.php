@@ -28,6 +28,22 @@ class SubjectController
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
+     */
+    public function getEnabledSubjects($req, $res){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->getEnabledSubjects();
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
      * @param $params array
      *
      * @return Response
@@ -42,7 +58,40 @@ class SubjectController
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getSubject_Search($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->getSubject_Search( $params['career'],$params['semester'],$params['plan'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+/**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function searchSubjects_ByName($req, $res, $params){
+        try {
+            $subjectService = new SubjectService();
+            $result = $subjectService->searchSubjects_ByName( $params['name'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**

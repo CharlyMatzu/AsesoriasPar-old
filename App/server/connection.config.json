@@ -1,5 +1,5 @@
 {
-  "mode": "production",
+  "mode": "local",
   "nota": "para cambiar la conexion, debes cambiar el MODE por el nombre del objeto de conexion de alguno de abajo",
   "connection": {
     "production": {

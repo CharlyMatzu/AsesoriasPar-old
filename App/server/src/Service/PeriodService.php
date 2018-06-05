@@ -118,7 +118,8 @@ class PeriodService{
         $result = $this->isPeriodBetweenOther( $start );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":createPeriod","Ocurrio un error al comprobar periodo entre fechas", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":createPeriod",
+                "Ocurrio un error al comprobar periodo entre fechas", $result->getErrorMessage());
 
         else if( $result->getOperation() == true )
             throw new ConflictException("Periodo se empalma con otro");
@@ -127,7 +128,8 @@ class PeriodService{
         $dateStart = new DateTime( $start );
         $dateEnd = new DateTime( $end );
 
-        //TODO: envitar que la fecha de termino sea antes o igual a la de inicio
+        //FIXME: envitar que la fecha de termino sea antes o igual a la de inicio
+        //TODO: debe validar que fecha de cierre no se empalme con otra o hacer que la ultima fecha de cierre(+ un dia) sea la valida en adelante
         if( $dateEnd <= $dateStart )
             throw new ConflictException("Fecha de cierra incorrecta debe ser posterior a la de inicio");
 
@@ -136,7 +138,8 @@ class PeriodService{
         $result = $this->perPeriods->insertPeriod( $start, $end );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":insertPeriod","Ocurrio un error al registrar periodo", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":createPeriod",
+                "Ocurrio un error al registrar periodo", $result->getErrorMessage());
     }
 
 //   ------------------------------------- UPDATE CYCLES
@@ -148,13 +151,13 @@ class PeriodService{
      * @throws RequestException
      */
     public function updatePeriod( $period ){
-        //TODO: comprobar que las fechas sean correctas (empalmadas, inicio antes de fin, formatos)
 
-        try{
-            $this->getPeriod_ById( $period->getId() );
-        }catch (RequestException $e){
-            throw new RequestException($e->getMessage(), $e->getStatusCode());
-        }
+        //Comprobante existencia
+        $this->getPeriod_ById( $period->getId() );
+
+        //TODO: comprobar que las fechas sean correctas (empalmadas, inicio antes de fin, formatos)
+        if( $period->getDateEnd() <= $period->getDateStart() )
+            throw new ConflictException("Fecha de cierra incorrecta, debe ser posterior a la de inicio");
 
         //Se actualiza
         $result = $this->perPeriods->updatePeriod( $period );

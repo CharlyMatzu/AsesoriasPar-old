@@ -1,3 +1,14 @@
+----------------------------
+EMAIL
+-----------------------------
+{
+	"address": [ "carlosrozuma@gmail.com", "c_01_12@hotmail.com" ],
+	"subject": "Test",
+	"body": "Probando mail",
+	"plainBody": "Probando mail"
+}
+
+
 -----------------------------
 CAREER
 -----------------------------

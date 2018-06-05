@@ -1,0 +1,75 @@
+
+/* Margin */
+.basic-right-margin{
+    margin-right: 5px;
+}
+
+
+/* Addon button */
+.input-group-btn .btn{
+    padding: 8px 12px;
+}
+
+/* Color buttons */
+.btn.btn-success:disabled{
+    background-color: #26dad2;
+    border-color: #26dad2;
+}
+
+.btn.btn-success{
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+
+/* alerts */
+.alert-success{
+    color: #707070 !important;
+}
+
+
+/* Table text color */
+th{
+    /* background-color: #007bff; */
+    color: #000 !important;
+    font-weight: bold !important;
+}
+
+tbody tr td{
+    color: #212121;
+}
+
+
+/*-------------- Login Form */
+.login-content{
+    margin: 0;
+}
+
+.login-form h1{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form .form-header{
+    text-align: center;
+    background-color: #4680ff;
+    padding: 7px;
+    margin-bottom: 15px;
+}
+
+.login-form .form-header h3{
+    color: #fff;
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+

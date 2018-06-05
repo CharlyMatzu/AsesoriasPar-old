@@ -3,7 +3,7 @@
 -- ----------------------------
 
 INSERT INTO role(name, description) VALUES
-('admin', "Control de asesorias, usuarios, registros, etc."),
+('administrator', "Control de asesorias, usuarios, registros, etc."),
 ('moderator', "Control de asesorias"),
 ('basic', "Solo el control de su perfil de usuario y solicitu de asesorias");
 

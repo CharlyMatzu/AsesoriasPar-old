@@ -1,0 +1,53 @@
+<div class="unix-login">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="login-content card">
+
+                    <div class="login-form">
+                        <h1>Inicio de sesion</h1>
+
+                        <!-- _______Alerts_______ -->
+                        <div ng-show="alert.type == 'error'" class="alert alert-danger fade show">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <strong>Santo guacamole!</strong> Ocurrio un error: {{alert.message}}
+                        </div>
+                        <div ng-show="alert.type == 'warning'" class="alert alert-warning fade show">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <strong>Ups!</strong>  {{alert.message}}
+                        </div>
+                        <div ng-show="alert.type == 'success'" class="alert alert-success fade show">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <strong>Good Job!</strong> {{alert.message}}
+                        </div>
+
+
+                        <form ng-submit="signin(user)">
+                            <div class="form-group">
+                                <label>Correo electronico</label>
+                                <input type="email" class="form-control" placeholder="Email" ng-model="user.email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" placeholder="Password" ng-model="user.pass" required>
+                            </div>
+                            <label class="pull-right">
+                                <a href="#">Olvidaste tu contraseña ?</a>
+                            </label>
+
+                            <button ng-disabled="loading.status" type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">
+                                <span ng-hide="loading.status">Iniciar sesion</span>
+                                <span ng-show="loading.status"><li class="fa fa-spinner fa-spin"></li></span>
+                            </button>
+
+                            <div class="register-link m-t-15 text-center">
+                                <p>No tienes una cuenta ? <a href="#!/signup"> Registrarse</a></p>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

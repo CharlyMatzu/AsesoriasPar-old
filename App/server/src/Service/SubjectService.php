@@ -34,6 +34,24 @@ class SubjectService{
     }
 
     /**
+     * @return array|null|string
+     * @throws NoContentException
+     * @throws InternalErrorException
+     */
+    public function getEnabledSubjects()
+    {
+        $result = $this->perSubjects->getSubjects_ByStatus( Utils::$STATUS_ENABLE );
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getEnabledSubjects",
+                "Ocurrio un error al obtener materias", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("No se encontraron materias reistrados");
+        else
+            return $result->getData();
+    }
+
+    /**
      * @param $subject_id
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -48,6 +66,23 @@ class SubjectService{
             throw new NotFoundException("No existe materia");
         else
             return $result->getData()[0];
+    }
+
+    /**
+     * @param $subject_id
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     *///TODO: Regresar materias relacionadas
+    public function getSubject_Search( $subject_career,$subject_semester,$subject_plan ){
+        $result = $this->perSubjects->getSubject_Search( $subject_career,$subject_semester,$subject_plan );
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getSubject_Search","Ocurrio un error al obtener las materias", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe materia");
+        else
+            return $result->getData();
     }
 
     /**
@@ -184,13 +219,15 @@ class SubjectService{
      * @param $name string
      * @param $plan_id int
      * @param $career_od int
+     * @param null $subject_id
+     *
      * @throws ConflictException
      * @throws InternalErrorException
      */
-    private function checkSubjectNameExists_ByPeriod_ByCareer($name, $plan_id, $career_od){
+    private function checkSubjectNameExists_ByPeriod_ByCareer($name, $plan_id, $career_od, $subject_id = null){
         try{
             //Verifica que no exista el nombre
-            $this->getSubject_ByName_ShortName( $name, $plan_id, $career_od );
+            $this->getSubject_ByName_ShortName( $name, $plan_id, $career_od,  $subject_id);
             //si lanza exepcion, existe
             throw new ConflictException("Nombre/abreviacion ya existe: $name");
             //Si no se encuentra nada, no hay problema
@@ -243,13 +280,13 @@ class SubjectService{
         if( $subject_aux['name'] != $subject->getName() ) {
             //Debe lanzar exception para que sea correcto
             $this->checkSubjectNameExists_ByPeriod_ByCareer(
-                $subject->getName(), $subject->getPlan(), $subject->getCareer() );
+                $subject->getName(), $subject->getPlan(), $subject->getCareer(), $subject->getId() );
         }
         //Si cambio abreviacion, se verifica
         if( $subject_aux['short_name'] != $subject->getShortName() ) {
             //Debe lanzar exception para que sea correcto
             $this->checkSubjectNameExists_ByPeriod_ByCareer(
-                $subject->getShortName(), $subject->getPlan(), $subject->getCareer() );
+                $subject->getShortName(), $subject->getPlan(), $subject->getCareer(), $subject->getId() );
         }
 
 
@@ -320,13 +357,15 @@ class SubjectService{
      * @param $name String Career name/short_name
      * @param $plan int Plan Id
      * @param $career int Career id
+     * @param null $subject_id
+     *
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getSubject_ByName_ShortName($name, $plan, $career )
+    public function getSubject_ByName_ShortName($name, $plan, $career, $subject_id = null )
     {
-        $result = $this->perSubjects->getSubject_ByName_ShortName( $name, $plan, $career );
+        $result = $this->perSubjects->getSubject_ByName_ShortName( $name, $plan, $career, $subject_id );
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":isSubjectExist_ByName_ShortName",
@@ -371,6 +410,8 @@ class SubjectService{
         $scheduleServ = new ScheduleService();
         return $scheduleServ->getCurrentAdvisers_BySubject( $subject_id );
     }
+
+
 
     //----------------------
     // MATERIAS RELACIONADAS

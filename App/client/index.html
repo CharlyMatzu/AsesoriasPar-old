@@ -1,37 +1,69 @@
 <!DOCTYPE html>
-<html lang="es" ng-app="AsesoriasPar">
-<head>
-    <meta charset="UTF-8">
-    <title>Asesorias Par</title>
+<html lang="es" ng-app="LoginApp">
 
-    <!--_________________________VENDOR___________________________-->
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <title>Login | AsesoriasPar</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="assets/css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="assets/css/helper.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+
     <link rel="stylesheet" href="vendor/angular-notification/angular-ui-notification.min.css">
     <link rel="stylesheet" href="vendor/loader/loader.css">
-
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
+    <!--[if lt IE 9]>
+    <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
-<body>
 
-    <h3>MENU</h3>
-    <nav>
-        <ul>
-            <li><a href="#!/">Home</a></li>
-            <li><a href="#!/users">Users</a></li>
-        </ul>
-    </nav>
-    <div ng-view=""></div>
-    
-
+<body class="fix-header fix-sidebar">
+    <!-- Preloader - style you can find in spinners.css -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- Main wrapper  -->
+    <div id="main-wrapper">
+        <div ng-view=""></div>
+    </div>
 
 
     <!--_________________________SCRIPTS___________________________-->
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    <script src="assets/js/lib/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/js/lib/bootstrap/js/popper.min.js"></script>
+    <script src="assets/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="assets/js/jquery.slimscroll.js"></script>
+    <!--Menu sidebar -->
+    <script src="assets/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="assets/js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="assets/js/custom.min.js"></script>
+
+    
     <!--ANGULARJS-->
     <script src="vendor/angularjs/angularjs.min.js"></script>
     <script src="vendor/angularjs/angular-route.min.js"></script>
-    <!-- <script src="vendor/angularjs/angular-local-storage.min.js"></script> -->
+    <script src="vendor/angularjs/angular-local-storage.min.js"></script>
     <script src="vendor/angular-notification/angular-ui-notification.min.js"></script>
-    <script src="vendor/jquery/jquery.js"></script>
-    
+    <!-- <script src="vendor/jquery/jquery.js"></script> -->
 
     <!--_______CUTSOM_______-->
     <!-- ASSETS - JS -->
@@ -41,29 +73,20 @@
     <script src="app.module.js"></script>
     <script src="app.routes.js"></script>
 
-    <!-- users -->
-    <script src="app/components/users/usersService.js"></script>
-    <script src="app/components/users/usersController.js"></script>
+    <!--signin-->
+    <script src="app/components/signin/signinService.js"></script>
+    <script src="app/components/signin/signinController.js"></script>
 
-    <!-- period -->
-    <script src="app/components/periods/periodsService.js"></script>
-    <script src="app/components/periods/periodsController.js"></script>
-
-    <!-- career -->
-    <script src="app/components/careers/careersService.js"></script>
-    <script src="app/components/careers/careersController.js"></script>
-
-    <!-- plans -->
-    <script src="app/components/plans/plansService.js"></script>
-    <script src="app/components/plans/plansController.js"></script>
-
-    <!-- subject -->
-    <script src="app/components/subjects/subjectsService.js"></script>
-    <script src="app/components/subjects/subjectsController.js"></script>
-    
     <!--signup-->
-    <!-- <script src="app/components/signup/signupService.js"></script>
-    <script src="app/components/signup/signupController.js"></script> -->
+    <script src="app/components/signup/signupService.js"></script>
+    <script src="app/components/signup/signupController.js"></script>
+
+    <!--confirm-->
+    <script src="app/components/confirm/confirmService.js"></script>
+    <script src="app/components/confirm/confirmController.js"></script>
+
+    
 
 </body>
+
 </html>

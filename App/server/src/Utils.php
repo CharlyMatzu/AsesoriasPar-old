@@ -1,4 +1,6 @@
 <?php namespace App;
+use DateTime;
+
 class Utils
 {
 
@@ -15,10 +17,11 @@ class Utils
     public static $STATUS_CANCELED = 0;
     public static $STATUS_PENDING = 1;
     public static $STATUS_ACTIVE = 2;
+    //also for period
     public static $STATUS_FINALIZED = 3;
 
     //--------ROLES
-    public static $ROLE_ADMIN = "admin";
+    public static $ROLE_ADMIN = "administrator";
     public static $ROLE_MOD = "moderator";
     public static $ROLE_BASIC = "basic";
 
@@ -225,6 +228,18 @@ class Utils
             return true;
         else
             return false;
+    }
+
+    /**
+     * @param $date String
+     * @return bool
+     */
+    public static function validateDateTime($date){
+        $format = 'Y/m/d';
+//        $format = 'd/m/Y';
+        $d = DateTime::createFromFormat($format, $date);
+        // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
+        return $d && $d->format($format) === $date;
     }
 
 }

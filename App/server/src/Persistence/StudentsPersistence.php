@@ -15,7 +15,7 @@ class StudentsPersistence extends Persistence{
                         s.last_name as 'last_name', 
                         s.phone as 'phone', 
                         s.facebook as 'facebook', 
-                        s.avatar as 'avatar', 
+                        CONCAT('".SERVER_URL."assets/images/', s.avatar) as 'avatar', 
                         s.date_register as 'register_date',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
@@ -157,14 +157,15 @@ class StudentsPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function insertStudent( $student ){
-        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career)
+        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career, avatar)
                   VALUES(
                       '".$student->getItsonId()."',
                       '".$student->getFirstName()."', 
                       '".$student->getLastname()."',
                       '".$student->getPhone()."', 
                       ".$student->getUser()->getId().", 
-                      ".$student->getCareer()->getId().")";
+                      ".$student->getCareer()->getId().",
+                      'avatar_default.jpg')";
         return  self::executeQuery($query);
     }
 

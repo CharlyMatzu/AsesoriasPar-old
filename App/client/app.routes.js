@@ -1,16 +1,16 @@
 app.config( function ($routeProvider) {
     $routeProvider
-        .when("/", {
-            controller: "",
-            templateUrl: "app/components/home/homeView.html"
+        .when("/signin", {
+            controller: "SigninController",
+            templateUrl: "app/components/signin/signinView.html"
         })
         .when("/signup", {
             controller: "SignupController",
             templateUrl: "app/components/signup/signupView.html"
         })
-        .when("/users", {
-            controller: "UsersController",
-            templateUrl: "app/components/users/usersView.html"
+        .when("/confirm/:token", {
+            controller: "ConfirmController",
+            templateUrl: "app/components/confirm/confirmView.html"
         })
-        .otherwise("/");
+        .otherwise("/signin");
 });

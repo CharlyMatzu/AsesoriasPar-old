@@ -72,7 +72,7 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
-                    WHERE sdh.fk_schedule = $scheduleid
+                    WHERE sdh.fk_schedule = $scheduleid AND sdh.status = ".Utils::$STATUS_ENABLE."
                     ORDER BY $orderType";
 
 
@@ -154,11 +154,12 @@ class SchedulesPersistence extends Persistence{
      * @see SchedulesPersistence::ORDER_BY_HOUR
      * @return \App\Model\DataResult
      */
-    public function getHoursAndDays( $orderType ){
+    public function getDaysAndHours($orderType ){
         $query = "SELECT 
                         dh.day_hour_id as 'id',
                         day as 'day',
-                        TIME_FORMAT(hour, '%H:%i') as 'hour'
+                        TIME_FORMAT(hour, '%H:%i') as 'hour',
+                        day_number as 'day_number'
                         FROM day_and_hour dh
                       ORDER BY $orderType";
         //Obteniendo resultados
@@ -171,7 +172,7 @@ class SchedulesPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function getDays(){
-        $query = "SELECT DISTINCT day 
+        $query = "SELECT DISTINCT day, day_number 
                   FROM day_and_hour 
                   ORDER BY day_number";
         //Obteniendo resultados

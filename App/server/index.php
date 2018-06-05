@@ -14,7 +14,7 @@ use \Slim\Http\Request;
 use \Slim\Http\Response;
 use \Slim\App;
 
-
+//TODO: quitar cuando este en produccion
 $config = [
     'settings' => [
         'displayErrorDetails' => true,
@@ -50,12 +50,27 @@ $app->get('/', function(Request $request, Response $response, $params){
     $response->write("Welcome to the API");
 });
 
+
+
+//--------------------------
+//  GENERAL routes
+//--------------------------
+
+$app->post('/mail/send', 'MailController:sendMail')
+        ->add('InputMiddelware:checkData_Mail')
+        ->add(AuthMiddelware::class);
+
 //--------------------------
 //  USER ROUTES
 //--------------------------
 
 //Obtiene todos los usuarios
 $app->get('/users', 'UserController:getUsers')
+        ->add(AuthMiddelware::class);
+
+
+//Obtiene todos los usuarios con rol: Mod/Admin
+$app->get('/users/staff', 'UserController:getStaffUsers')
         ->add(AuthMiddelware::class);
 
 //TODO: hacer mas descriptiva
@@ -66,8 +81,13 @@ $app->get('/users/status/{status}', 'UserController:getUsersByStatus')
 
 //busca usuarios por correo (coincidencias)
 $app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
-    ->add('InputMiddelware:checkParam_Email')
-    ->add(AuthMiddelware::class);
+        ->add('InputMiddelware:checkParam_Email')
+        ->add(AuthMiddelware::class);
+
+//busca usuarios por correo (coincidencias)
+$app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail')
+        ->add('InputMiddelware:checkParam_Email')
+        ->add(AuthMiddelware::class);
 
 //TODO: obtener por rol
 
@@ -195,11 +215,22 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 $app->get('/subjects', 'SubjectController:getSubjects')
         ->add(AuthMiddelware::class);
 
+$app->get('/subjects/enabled', 'SubjectController:getEnabledSubjects')
+    ->add(AuthMiddelware::class);
+
+//Obtiene materias
+$app->get('/subjects/carrera/{career}/semestre/{semester}/plan/{plan}', 'SubjectController:getSubject_Search')
+        ->add(AuthMiddelware::class);
+
 //TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
 
 //Obtiene materia por id
 $app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+        //Obtiene materias por nombre
+$app->get('/subjects/search/{name}', 'SubjectController:searchSubjects_ByName')
         ->add(AuthMiddelware::class);
 
 //crear materia
@@ -263,6 +294,10 @@ $app->get('/periods', 'PeriodController:getPeriods')
     ->add(AuthMiddelware::class);
 
 //TODO: Obtener asesorias de un periodo
+
+//TODO: periodo activo
+$app->get('/periods/current', 'PeriodController:getCurrentPeriod')
+    ->add(AuthMiddelware::class);
 
 //Obtiene periodo por id
 $app->get('/periods/{id}', 'PeriodController:getPeriod_ById')
@@ -337,15 +372,15 @@ $app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStu
 
 //crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
-        ->add('InputMiddelware:checkData_schedule_hours')
+//        ->add('InputMiddelware:checkData_schedule_hours')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
 //agrega materias a horario
-$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
-        ->add('InputMiddelware:checkData_schedule_subjects')
-        ->add('InputMiddelware:checkParam_Id')
-        ->add(AuthMiddelware::class);
+//$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
+//        ->add('InputMiddelware:checkData_schedule_subjects')
+//        ->add('InputMiddelware:checkParam_Id')
+//        ->add(AuthMiddelware::class);
 
 
 //TODO: obtener materias de horario

@@ -27,6 +27,21 @@ class PeriodController
     /**
      * @param $req Request
      * @param $res Response
+     * @return Response
+     */
+    public function getCurrentPeriod($req, $res){
+        try {
+            $periodService = new PeriodService();
+            $result = $periodService->getCurrentPeriod();
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
      * @param $params array
      * @return Response
      */

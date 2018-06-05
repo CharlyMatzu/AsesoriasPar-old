@@ -34,7 +34,7 @@ class ScheduleController
     public function getHoursAndDays($req, $res){
         try {
             $scheduleService = new ScheduleService();
-            $result = $scheduleService->getHoursAndDays();
+            $result = $scheduleService->getDaysAndHours();
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
@@ -44,24 +44,24 @@ class ScheduleController
 
 
 
-    /**
-     * @param $req Request
-     * @param $res Response
-     * @param $params array
-     * @return Response
-     */
-    public function addScheduleSubjects($req, $res, $params)
-    {
-        try {
-            $scheduleService = new ScheduleService();
-            $subjects = $req->getAttribute('schedule_subjects');
-            $scheduleService->insertScheduleSubjects( $params['id'], $subjects );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materias agregadas");
-
-        } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
-        }
-    }
+//    /**
+//     * @param $req Request
+//     * @param $res Response
+//     * @param $params array
+//     * @return Response
+//     */
+//    public function addScheduleSubjects($req, $res, $params)
+//    {
+//        try {
+//            $scheduleService = new ScheduleService();
+//            $subjects = $req->getAttribute('schedule_subjects');
+//            $scheduleService->insertScheduleSubjects( $params['id'], $subjects );
+//            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materias agregadas");
+//
+//        } catch (RequestException $e) {
+//            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+//        }
+//    }
 
 
     /**
