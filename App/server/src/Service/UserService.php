@@ -99,43 +99,6 @@ class UserService{
 
 
     /**
-     * @param $email string
-     * @param $pass string
-     * @return array
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     * TODO: solo debe funcionar si usuario esta activo
-     */
-    public function signIn($email, $pass){
-        $result = $this->userPer->getUser_BySignIn($email, $pass);
-
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."signIn","Ocurrio un error al authenticar", $result->getErrorMessage());
-        else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("email o contraseña incorrectos");
-
-        //Si se encontró, se crea token y se retorna
-        else{
-            $user = self::makeUserModel( $result->getData()[0] );
-
-            //Se envia array con datos: id y email y retorna token
-            //TODO: no usar id de BD
-//            $token = Auth::getToken([
-//                'id' => $user->getId(),
-//                'email' => $user->getEmail()
-//            ]);
-            $token = Auth::getToken( $user->getId() );
-
-            return [
-                "user_id" => $user->getId(),
-                "user_role" => $user->getRole(),
-                "token" => $token,
-            ];
-        }
-
-    }
-
-    /**
      * @param $id
      * @return \mysqli_result|null
      * @throws InternalErrorException

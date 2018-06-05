@@ -60,6 +60,12 @@ $app->post('/mail/send', 'MailController:sendMail')
         ->add('InputMiddelware:checkData_Mail')
         ->add(AuthMiddelware::class);
 
+
+//Permite autenticarse (signin)
+$app->post('/auth', 'AuthController:authenticate')
+        ->add('InputMiddelware:checkData_Auth');
+        //->add('InputMiddelware:checkHeader_Auth');
+
 //--------------------------
 //  USER ROUTES
 //--------------------------
@@ -107,10 +113,6 @@ $app->post('/users', 'UserController:createUser')
 $app->post('/users/student', 'UserController:studentSignup')
         ->add('InputMiddelware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddelware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
-
-//Permite autenticarse (signin)
-$app->post('/users/auth', 'UserController:auth')
-        ->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
 
 //Actualiza datos de usuario
 $app->put('/users/{id}', 'UserController:updateUser')

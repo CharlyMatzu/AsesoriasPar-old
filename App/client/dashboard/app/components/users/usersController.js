@@ -37,7 +37,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                     
             },
             function( error ){
-                Notification.error("Error al obtener usuarios: " + error.data.message);
+                Notification.error("Error al obtener usuarios: " + error.data);
             }
         );
     }
@@ -167,7 +167,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 $scope.getUsers();
             },
             function(error){
-                Notification.error("Error al eliminar usuarios: " + error.data.message);
+                Notification.error("Error al eliminar usuarios: " + error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
             }
@@ -190,7 +190,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 $scope.getUsers();
             },
             function(error){
-                Notification.error("Error al Habilitar usuario: " + error.data.message);
+                Notification.error("Error al Habilitar usuario: " + error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
             }
@@ -213,7 +213,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
                 $scope.getUsers();
             },
             function(error){
-                Notification.error("Error al deshabilitar usuario: " + error.data.message);
+                Notification.error("Error al deshabilitar usuario: " + error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
             }
