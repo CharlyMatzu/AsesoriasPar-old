@@ -72,6 +72,20 @@ app.service('ScheduleService', function($http){
         }, function(error){
             errorCallback(error);
         });
+
+    }
+
+
+    
+    this.getSubjects = function(successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: "http://api.asesoriaspar.com/index.php/subjects/enabled"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
     } 
 
 });

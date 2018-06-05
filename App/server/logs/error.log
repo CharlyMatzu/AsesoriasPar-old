@@ -1,3 +1,4 @@
 
 [2018-06-05 00:23:48] App\Service\ScheduleService:disableHour.ERROR: Error al deshabilitar hora de horario:  --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 3 [] []
 [2018-06-05 00:23:48] App\Service\ScheduleService:updateScheduleHours.ERROR: Error al deshabilitar hora de horario: , Consultar a un administrador para verificar -->  [] []
+[2018-06-05 01:46:53] App\Service\SubjectService:getEnabledSubjects.ERROR: Ocurrio un error al obtener materias --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE s.status = 2' at line 17 [] []

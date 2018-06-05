@@ -105,12 +105,14 @@
         color: #fff; }
 
 .subject-container {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  width: 100%; }
   .subject-container .subjects {
     padding: 20px 0;
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex; }
+    display: flex;
+    width: 100%; }
     .subject-container .subjects .item {
       padding: 7px 12px;
       margin-right: 10px;
@@ -121,9 +123,17 @@
       -webkit-transition: .3s;
       -o-transition: .3s;
       transition: .3s; }
-      .subject-container .subjects .item:hover {
-        background-color: #1B95E0;
-        color: #fff; }
+  .subject-container .selectable .item {
+    cursor: pointer; }
+    .subject-container .selectable .item:hover {
+      background-color: #1B95E0;
+      color: #fff; }
+  .subject-container .selected-items .item {
+    border-color: #FF5555;
+    color: #FF5555; }
+    .subject-container .selected-items .item:hover {
+      background-color: #FF5555;
+      color: #fff; }
 
 .schedule-container .schedule {
   width: 100%;
@@ -205,9 +215,43 @@
   to {
     background-color: #404040; } }
 
+.update-subjects-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: white; }
+  .update-subjects-container .content {
+    padding: 30px 0;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    .update-subjects-container .content .options {
+      width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center; }
+      .update-subjects-container .content .options .search {
+        margin-right: 20px; }
+
 .fadeIn {
-  -webkit-animation-duration: .4s;
-  animation-duration: .4s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn; }
 

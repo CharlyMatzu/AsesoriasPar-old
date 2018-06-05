@@ -34,6 +34,24 @@ class SubjectService{
     }
 
     /**
+     * @return array|null|string
+     * @throws NoContentException
+     * @throws InternalErrorException
+     */
+    public function getEnabledSubjects()
+    {
+        $result = $this->perSubjects->getSubjects_ByStatus( Utils::$STATUS_ENABLE );
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getEnabledSubjects",
+                "Ocurrio un error al obtener materias", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("No se encontraron materias reistrados");
+        else
+            return $result->getData();
+    }
+
+    /**
      * @param $subject_id
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -375,6 +393,8 @@ class SubjectService{
         $scheduleServ = new ScheduleService();
         return $scheduleServ->getCurrentAdvisers_BySubject( $subject_id );
     }
+
+
 
     //----------------------
     // MATERIAS RELACIONADAS

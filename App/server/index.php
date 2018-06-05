@@ -215,6 +215,9 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 $app->get('/subjects', 'SubjectController:getSubjects')
         ->add(AuthMiddelware::class);
 
+$app->get('/subjects/enabled', 'SubjectController:getEnabledSubjects')
+    ->add(AuthMiddelware::class);
+
 //TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
 
 //Obtiene materia por id

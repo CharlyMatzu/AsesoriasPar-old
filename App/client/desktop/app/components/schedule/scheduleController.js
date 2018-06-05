@@ -3,13 +3,76 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     $scope.studentID = 3;
     $scope.daysAndHours = [];
     $scope.schedule = {};
-    var backupSelectedItems = [];
     $scope.showUpdateHours = false;
+    $scope.showUpdateSubjects = false;
+    $scope.subjects = [];
     $scope.period = {};
-    var count = 0;
+    
     $scope.loading = {
         status: false,
         message: ""
+    }
+    var count = 0;
+    var backupSelectedItems = [];
+
+    
+
+    var setNoRepeatSubjects = function(data){
+        let subs = $scope.schedule.subjects;
+        $scope.subjects = [];
+
+        //Recorre materias de horario
+        for( let i=0; i < subs.length; i++ ){
+            for( let j=0; j < data.length; j++ ){
+                //Recorre materias individuales
+                if( subs[i]['subject_id'] != data[j]['id'] ){
+                    //Se agrega materia que no esta en horario para mostrar
+                    $scope.subjects.push( data[j] );
+                }
+            }
+        }
+    }
+
+
+    $scope.getSubjects = function(){
+        ScheduleService.getSubjects(
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    Notification.warning("No hay materias");
+                    $scope.showUpdateSubjects = false;
+                }
+                else{
+                    Notification("Materias cargadas");
+                    setNoRepeatSubjects(success.data);
+                }
+                    
+            }, 
+            function(b){
+                Notification.error("Ggsd");
+            }
+        );
+    }
+    
+    $scope.openSubjectsUpdate = function(){
+        $scope.showUpdateSubjects = true;
+        //Obtiene materias
+        $scope.getSubjects();
+    }
+
+
+    $scope.removeSubject = function($event){
+        
+        if( $( event.currentTarget ).parents().hasClass('selectable') ){
+            //Verifica que sea un elemento selecionado
+            if( $( event.currentTarget ).parents().hasClass('selected-items') ){
+                //Remueve elemento del array
+                let index = $( event.currentTarget ).data('index');
+                $scope.schedule.subjects.splice( index );
+                //Recarga materias
+                $scope.getSubjects();
+            }
+        }
+
     }
 
 
@@ -65,22 +128,22 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         );
     }
 
-    /**
-     * Obtiene las materias del horario
-     */
-    var getSubjects = function(schedule_id){
-        $scope.loading.message = "Creando horario";
+    // /**
+    //  * Obtiene las materias del horario
+    //  */
+    // var getSubjects = function(schedule_id){
+    //     $scope.loading.message = "Creando horario";
 
-        ScheduleService.getSubjects(schedule_id,
-            function(success){
+    //     ScheduleService.getSubjects(schedule_id,
+    //         function(success){
                 
-            },
-            function(error){
-                Notification.error("Error al obtener materias");
-                $scope.loading.status = false;
-            }
-        );
-    }
+    //         },
+    //         function(error){
+    //             Notification.error("Error al obtener materias");
+    //             $scope.loading.status = false;
+    //         }
+    //     );
+    // }
 
     /**
      * Obtiene horario de estudiante
@@ -167,6 +230,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         }
     }
 
+
     /**
      * Elemento seleccionado que permite ser "activado" si un elemento padre tiene su clase "selectable"
      * el cual agrega/quita al item la clase 'active'
@@ -180,12 +244,6 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             if( $(event.currentTarget ).hasClass('cell-hour') ){
                 //agrega/quita clase
                 $( event.currentTarget ).toggleClass('active');
-                
-                //Agrega o quita un elemento si se selecciono
-                // if( backupSelectedItems.includes(event.currentTarget) )
-                //     backupSelectedItems.splice(event.currentTarget);
-                // else
-                //     backupSelectedItems.push(event.currentTarget)
             }
         }
     }
@@ -231,7 +289,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     }
 
     $scope.updateScheduleHours = function(schedule_id){
-        $scope.loading.status = true;
+        // $scope.loading.status = true;
 
         //Obtenemos todos los elementos con la clase .active
         let selectedItems = [];
@@ -244,10 +302,11 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         ScheduleService.updateScheduleHours(schedule_id, selectedItems,
             function(success){
                 Notification.success("Horario actualizado con exito");
-                // $scope.showUpdateHours = false;
+                $scope.showUpdateHours = false;
                 // $scope.loading.status = false;
+
                 //TODO: recargar datos
-                getStudentSchedule( $scope.studentID );
+                // getStudentSchedule( $scope.studentID );
             },
             function(error){
                 Notification.error("Error al actualziar horario: "+error.data);
@@ -260,5 +319,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         //obtenemos todos los elementos activos
         
     }
+
+
 
 });

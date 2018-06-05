@@ -33,6 +33,22 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * @param $status int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getSubjects_ByStatus($status)
+    {
+        $query = $this->campos."
+                        INNER JOIN career c ON s.fk_career = c.career_id
+                        INNER JOIN plan p ON s.fk_plan = p.plan_id
+                        WHERE s.status = $status 
+                        ORDER BY s.semester, s.name";
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
+    /**
      * @param $subjectID
      * @return \App\Model\DataResult
      */
@@ -258,6 +274,8 @@ class SubjectsPersistence extends Persistence{
                   WHERE subject_id = $subjectID";
         return  self::executeQuery($query);
     }
+
+
 
 
     /**

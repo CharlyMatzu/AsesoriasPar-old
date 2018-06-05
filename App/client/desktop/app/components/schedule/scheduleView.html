@@ -1,18 +1,20 @@
 <!-- <h2>Periodo actual: {{period.start +' a '+ period.end}}</h2> -->
 <!-- schedule -->
 
+
 <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
 
 <div class="subject-container">
     <div ng-show="period.id != null && !loading.status">
+    <!-- <div ng-show="period.id != null"> -->
         <h3>Materias para asesorias</h3>
         <hr>
         <div ng-hide="schedule.subjects.length > 0">
             <p>No hay materias seleccionadas</p>
         </div>
-        <button class="btn btn-primary">Actualizar mis materias</button>
+        <button class="btn btn-primary" ng-click="openSubjectsUpdate()">Actualizar mis materias</button>
         <div class="subjects" ng-show="schedule.subjects.length > 0">
-            <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-subject-id="{{sub.subject_id}}">{{sub.subject_name}}</div>
+            <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-index="{{$index}}" data-subject-id="{{sub.subject_id}}">{{sub.subject_name}}</div>
         </div>
     </div>
 </div>
@@ -44,3 +46,44 @@
     </div>
 </div>
 <!-- end schedule container -->
+
+
+
+
+
+
+<div class="update-subjects-container fadeIn" ng-show="showUpdateSubjects">
+    <div class="container">
+        <!-- <p ng-hide="subjects.length > 0">{{loading.message}}</p> -->
+        
+        <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
+        
+        <div class="content">
+
+            <!-- subjects -->
+            <div class="subject-container">
+                <h3>Materias seleccionadas</h3>
+                <div class="subjects selectable selected-items" ng-show="subjects.length > 0">
+                    <div class="item" ng-repeat="sub in schedule.subjects" ng-click="removeSubject($event)" data-subject-id="{{sub.subject_id}}">{{sub.subject_name}}</div>
+                </div>
+                <hr>
+
+
+                <h3>Materias disponibles</h3>
+                <!-- options -->
+                <div class="options form-inline text-center">
+                    <!-- <label for="search" class="sr-only">Buscar</label> -->
+                    <input type="text" id="search" placeholder="Buscar" class="search form-control">
+                    <button ng-click="" class="btn btn-success">Guardar</button>
+                    <button ng-click="showUpdateSubjects = false" class="btn btn-danger">Cancelar</button>
+                </div>
+                
+                <div class="subjects selectable" ng-show="subjects.length > 0">
+                    <div class="item" ng-repeat="sub in subjects" data-subject-id="{{sub.id}}">{{sub.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
