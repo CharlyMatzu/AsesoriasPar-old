@@ -51,6 +51,23 @@ class SubjectService{
     }
 
     /**
+     * @param $subject_id
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     *///TODO: Regresar materias relacionadas
+    public function getSubject_Search( $subject_career,$subject_semester,$subject_plan ){
+        $result = $this->perSubjects->getSubject_Search( $subject_career,$subject_semester,$subject_plan );
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getSubject_Search","Ocurrio un error al obtener las materias", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe materia");
+        else
+            return $result->getData();
+    }
+
+    /**
      * @param $name
      * @return array|bool|string
      * @throws NoContentException

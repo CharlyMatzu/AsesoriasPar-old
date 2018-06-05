@@ -215,11 +215,19 @@ $app->delete('/plans/{id}', 'PlanController:deletePlan')
 $app->get('/subjects', 'SubjectController:getSubjects')
         ->add(AuthMiddelware::class);
 
+//Obtiene materias
+$app->get('/subjects/carrera/{career}/semestre/{semester}/plan/{plan}', 'SubjectController:getSubject_Search')
+        ->add(AuthMiddelware::class);
+
 //TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
 
 //Obtiene materia por id
 $app->get('/subjects/{id}', 'SubjectController:getSubject_ById')
         ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+        //Obtiene materias por nombre
+$app->get('/subjects/search/{name}', 'SubjectController:searchSubjects_ByName')
         ->add(AuthMiddelware::class);
 
 //crear materia

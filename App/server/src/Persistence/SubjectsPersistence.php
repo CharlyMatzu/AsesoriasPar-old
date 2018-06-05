@@ -45,6 +45,20 @@ class SubjectsPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
+/**
+     * @param $subjectID
+     * @return \App\Model\DataResult
+     */
+    public function getSubject_Search($subject_career,$subject_semester,$subject_plan){
+        $query = $this->campos."
+                     INNER JOIN career c ON s.fk_career = c.career_id
+                     INNER JOIN plan p ON s.fk_plan = p.plan_id
+                     WHERE s.fk_career = ".$subject_career." 
+                     AND s.semester = ".$subject_semester."
+                     AND s.fk_plan = ".$subject_plan;
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
     /**
      * @param $name
      * @return \App\Model\DataResult
@@ -80,7 +94,7 @@ class SubjectsPersistence extends Persistence{
         $query = $this->campos."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
-                     WHERE s.name LIKE '$name' OR s.short_name LIKE '$name'";
+                     WHERE s.name LIKE '%$name%'  OR s.short_name LIKE '%$name%'";
         //Obteniendo resultados
         return self::executeQuery($query);
     }
