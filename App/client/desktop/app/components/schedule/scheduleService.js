@@ -66,7 +66,10 @@ app.service('ScheduleService', function($http){
     this.updateScheduleSubjects = function(schedule_id, subjects, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.asesoriaspar.com/index.php/schedule/"+schedule_id+"/subjects"
+            url: "http://api.asesoriaspar.com/index.php/schedule/"+schedule_id+"/subjects",
+            data: {
+                subjects: subjects
+            }
         }).then(function(success){
             successCallback(success);
         }, function(error){

@@ -94,7 +94,30 @@ class SchedulesPersistence extends Persistence{
                   
                 FROM schedule_subjects ss
                 INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                WHERE ss.fk_schedule = $scheduleid AND s.status = ".Utils::$STATUS_ENABLE;
+                WHERE ss.fk_schedule = $scheduleid AND 
+                s.status = ".Utils::$STATUS_ENABLE;
+
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param int $scheduleid
+     * @return \App\Model\DataResult
+     * TODO: solo materias habilitadas
+     */
+    public function getScheduleSubjects_ById_Enabled($scheduleid)
+    {
+        $query = "SELECT
+                  ss.schedule_subject_id as 'id',
+                  s.subject_id as 'subject_id',
+                  s.name as 'subject_name',
+                  ss.status as 'status'
+                  
+                FROM schedule_subjects ss
+                INNER JOIN subject s ON ss.fk_subject = s.subject_id
+                WHERE ss.fk_schedule = $scheduleid AND 
+                (s.status = ".Utils::$STATUS_ENABLE." AND ss.status = ".Utils::$STATUS_ENABLE.")";
 
         //Obteniendo resultados
         return self::executeQuery($query);

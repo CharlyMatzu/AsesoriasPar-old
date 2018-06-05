@@ -119,7 +119,26 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getScheduleSubjects_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class,"Error al obtener materias de horario", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getScheduleSubjects_ById",
+                "Error al obtener materias de horario", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("");
+
+        return $result->getData();
+    }
+
+    /**
+     * @param $id
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getScheduleSubjects_ById_Enabled($id)
+    {
+        $result = $this->schedulesPer->getScheduleSubjects_ById_Enabled( $id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getScheduleSubjects_ById_Enabled",
+                "Error al obtener materias de horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
@@ -437,7 +456,6 @@ class ScheduleService{
      *
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws NoContentException
      */
     public function updateScheduleSubjects($scheduleId, $newSubjects)
     {
@@ -472,6 +490,7 @@ class ScheduleService{
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
 
         try{
+            //Ciclo para deshabilitar o habilitar dependiendo de las nuevas materias
             foreach ( $subjects as $sub ){
                 //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
                 if( !in_array($sub['subject_id'], $newSubjects) ){

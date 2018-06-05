@@ -177,7 +177,7 @@ class StudentService{
         //se obtiene materias (si hay)
         $subjects = array();
         try {
-            $subjects = $scheduleService->getScheduleSubjects_ById($schedule->getId());
+            $subjects = $scheduleService->getScheduleSubjects_ById_Enabled($schedule->getId());
         }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());
             //Si no tiene materias, no hay problema
