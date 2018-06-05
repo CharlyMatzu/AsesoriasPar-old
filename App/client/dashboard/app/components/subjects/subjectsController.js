@@ -26,21 +26,83 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
 
+        $scope.subjects = [];
+
         SubjectService.getSubjects(
             function(success){
                 if( success.status == NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
+                    $scope.subjects = [];
                 }
                 else
                     $scope.subjects = success.data;
-
+                    
                 $scope.loading.status = false;
+               
             },
             function(error){
                 Notification.error("Error al obtener materias: "+error.data);
                 $scope.loading.status = false;
                 $scope.loading.message = "Error: "+error.data;
+            }
+        );
+    }
+
+    $scope.getSubject_Search = function(subject){
+        //$scope.showUpdateForm = false;
+        $scope.loading.status = true;
+        $scope.loading.message = "Obteniendo registros";
+
+        $scope.subjects = [];
+
+        SubjectService.getSubject_Search(subject,
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    //Notification.primary("no hay registros");
+                    $scope.loading.message = "No hay registros";
+                    $scope.subjects = [];
+                }
+                else
+                    $scope.subjects = success.data;
+                    
+
+                $scope.loading.status = false;
+                console.log($scope.subjects);
+            },
+            function(error){
+                Notification.error("Error al obtener materias: "+error.data);
+                $scope.loading.status = false;
+                $scope.loading.message = "Error: "+error.data;
+            }
+        );
+    }
+
+
+
+    $scope.searchSubjects = function(data){
+        if( data == null || data == "" ) 
+            return;
+
+        $scope.subjects = [];
+        $scope.loading.status = true;
+        $scope.loading.message = "Buscando materias con "+data;
+
+        SubjectService.searchSubjects(data,
+            function(success){
+                if( success.status == NO_CONTENT )
+                    $scope.loading.message = "No se encontraron materias";
+                else
+                    $scope.subjects = success.data;
+
+                //Enabling refresh button
+                $scope.loading.status = false;
+                    
+            },
+            function( error ){
+                Notification.error("Error al obtener materias: " + error.data);
+                $scope.loading.message = "Ocurrio un error =(";
+                $scope.loading.status = false;
             }
         );
     }
