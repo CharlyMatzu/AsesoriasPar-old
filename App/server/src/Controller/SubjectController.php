@@ -54,6 +54,7 @@ class SubjectController
             $subjectService = new SubjectService();
             $result = $subjectService->getSubject_Search( $params['career'],$params['semester'],$params['plan'] );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+            
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

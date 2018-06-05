@@ -11,23 +11,19 @@
 
                                <form action="" ng-submit="getSubject_Search(subject)">
 
-                                <select class="btn btn-primary basic-right-margin" ng-model="subject.career" id="career">
-                                            <option value="">Carrera</option>
-                                            <!--<option value="1">ISW</option>
-                                            <option value="2">IE</option>-->
+                                <select class=" btn btn-primary basic-right-margin" ng-model="subject.career" id="career">
+                                           <option value="0" selected>Carrera</option>
                                             <option ng-repeat="c in careers" value="{{c.id}}">{{c.name}}</option>
                                             
                                 </select>
                                 <select class="btn btn-primary basic-right-margin" ng-model="subject.plan" id="plan">
-                                            <option value="">Plan</option>
-                                            <!--<option value="11">2009</option>
-                                            <option value="12">2016</option>-->
+                                            <option value="0" selected>Plan</option>
                                             <option ng-repeat="p in plans" value="{{p.id}}">{{p.year}}</option>
                                             
                                 </select>
                              
                                 <select class="btn btn-primary basic-right-margin" ng-model="subject.semester" id="semester">
-                                        <option value="">Semestre</option>
+                                        <option value="0" selected>Semestre</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -36,8 +32,6 @@
                                         <option value="6">6</option>
                                         <option value="7">7</option>
                                         <option value="8">8</option>
-                                       
-
                                 </select>
                                            
                                     <button type="submit" class="btn btn-primary basic-right-margin">Buscar</button>

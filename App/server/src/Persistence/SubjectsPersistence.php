@@ -50,15 +50,73 @@ class SubjectsPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function getSubject_Search($subject_career,$subject_semester,$subject_plan){
+
+        //filtro de solo carrera
+        if($subject_career != 0  && $subject_semester == 0  && $subject_plan == 0){
+            $query = $this->campos."
+            INNER JOIN career c ON s.fk_career = c.career_id
+            INNER JOIN plan p ON s.fk_plan = p.plan_id
+            WHERE s.fk_career =".$subject_career;
+
+        }
+        //filtro de solo semestre
+        else if($subject_semester != 0 && $subject_career ==0 && $subject_plan == 0){
+            $query = $this->campos."
+            INNER JOIN career c ON s.fk_career = c.career_id
+            INNER JOIN plan p ON s.fk_plan = p.plan_id
+            WHERE s.semester =".$subject_semester;
+
+        }
+        //filtro de solo plan
+        else if($subject_plan != 0 && $subject_career == 0 && $subject_semester == 0){
+            $query = $this->campos."
+            INNER JOIN career c ON s.fk_career = c.career_id
+            INNER JOIN plan p ON s.fk_plan = p.plan_id
+            WHERE s.fk_plan =".$subject_plan;
+
+        }
+        //filtro de carrera y semestre
+        else if($subject_career != 0  && $subject_semester != 0  && $subject_plan == 0 ){
+            $query = $this->campos."
+            INNER JOIN career c ON s.fk_career = c.career_id
+            INNER JOIN plan p ON s.fk_plan = p.plan_id
+            WHERE s.fk_career =".$subject_career." 
+            AND s.semester =".$subject_semester;
+
+        }
+        //filtro de carrera y plan
+        else if($subject_semester == 0 && $subject_career != 0 && $subject_plan != 0){
+            $query = $this->campos."
+            INNER JOIN career c ON s.fk_career = c.career_id
+            INNER JOIN plan p ON s.fk_plan = p.plan_id
+            WHERE s.fk_career =".$subject_career." 
+            AND s.fk_plan =".$subject_plan;
+
+        }
+        //filtro de solo semestre y plan
+        else if($subject_plan != 0 && $subject_semester != 0 && $subject_career== 0){
+            $query = $this->campos."
+            INNER JOIN career c ON s.fk_career = c.career_id
+            INNER JOIN plan p ON s.fk_plan = p.plan_id
+            WHERE s.semester =".$subject_semester."
+            AND s.fk_plan =".$subject_plan;
+
+        }
+        //todos los filtros
+        else{
+        
         $query = $this->campos."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.fk_career = ".$subject_career." 
-                     AND s.semester = ".$subject_semester."
-                     AND s.fk_plan = ".$subject_plan;
+                     AND s.semester =".$subject_semester."
+                     AND s.fk_plan =".$subject_plan;
+        }
         //Obteniendo resultados
         return self::executeQuery($query);
     }
+    
+
     /**
      * @param $name
      * @return \App\Model\DataResult
