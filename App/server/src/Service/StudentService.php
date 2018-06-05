@@ -167,7 +167,7 @@ class StudentService{
         //se obtiene horas de horario
         $hours_days = array();
         try {
-            $hours_days = $scheduleService->getScheduleHours_ById($schedule->getId());
+            $hours_days = $scheduleService->getScheduleHours_ById_Enabled($schedule->getId());
             //Si no tiene horas, no hay problema
         }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());

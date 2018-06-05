@@ -72,6 +72,29 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
+                    WHERE sdh.fk_schedule = $scheduleid
+                    ORDER BY $orderType";
+
+
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param int $scheduleid
+     * @param String $orderType
+     *
+     * @see SchedulesPersistence::ORDER_BY_DAY
+     * @see SchedulesPersistence::ORDER_BY_HOUR
+     * @return \App\Model\DataResult
+     */
+    public function getScheduleHours_ByScheduleId_Enabled( $scheduleid, $orderType ){
+        $query = "SELECT
+                        sdh.schedule_dh_id as 'id',
+                        sdh.fk_day_hour as 'day_hour_id',
+                        dh.day as 'day',
+                        TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
+                    FROM schedule_days_hours sdh
+                    INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
                     WHERE sdh.fk_schedule = $scheduleid AND sdh.status = ".Utils::$STATUS_ENABLE."
                     ORDER BY $orderType";
 

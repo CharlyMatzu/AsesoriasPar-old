@@ -102,12 +102,31 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class,"Error al obtener dias y horas de horario", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
         return $this->formatSchedule($result->getData());
     }
+
+    /**
+     * @param $id int
+     * @return \mysqli_result|array|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getScheduleHours_ById_Enabled($id)
+    {
+        $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("");
+
+        return $this->formatSchedule($result->getData());
+    }
+
+
 
     /**
      * @param $id
