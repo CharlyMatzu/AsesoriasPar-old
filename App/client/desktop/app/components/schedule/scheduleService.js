@@ -1,17 +1,6 @@
 app.service('ScheduleService', function($http){
 
     
-    this.getCurrentPeriod = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: "http://api.ronintopics.com/index.php/periods/current"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
-    } 
-    
 
     this.getDaysAndHours = function(successCallback, errorCallback){
         $http({

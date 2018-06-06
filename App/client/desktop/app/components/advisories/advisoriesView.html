@@ -1,7 +1,25 @@
 <div class="container">
     <div class="row">
-        <!-- content -->
+        <div class="col-lg-12">
+            <div class="page-title text-center">
+                <h2>Asesorias registradas</h2>
+                <p ng-show="period.data != null">Periodo: {{period.data.start}} a {{period.data.end}}</p>
+                <p ng-show="period.data == null">{{period.message}}</p>
+            </div>
+            <hr>
+            <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
+
+            <!-- content -->
+            <div class="content">
+
+            </div>
+            <!-- end-content -->
+        </div>
+
+<!--         
         <div class="section-content col-xs-12 col-lg-9">
+            <p ng-show="!loading.status">{{loading.message}}</p>
+            
             <h2>Asesorias</h2>
             <p>Periodo: dd/mm/aaaa a dd/mm/aaaa</p>
             <hr>
@@ -29,15 +47,11 @@
                         <div class="info-item subject">Programacio II</div>
                         <div class="info-item status">
                             <span class="badge badge-danger">Status</span>
-                            <!-- <span ng-show="p.status == 0" class="badge badge-danger">Cancelado</span>
-                            <span ng-show="p.status == 1" class="badge badge-success">Activo</span>
-                            <span ng-show="p.status == 2" class="badge badge-primary">Pendiente</span>
-                            <span ng-show="p.status == 3" class="badge badge-primary">Finalizado</span> -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- end content -->
     </div>
 </div>

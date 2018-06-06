@@ -476,8 +476,8 @@ class InputParamsMiddelware extends Middelware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
 
         //Formato de fecha invalido: aaaa/mm/dd
-        if( !Utils::validateDateTime($params['start']) || !Utils::validateDateTime($params['end']))
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Fechas invalidas: aaaa/mm/dd");
+//        if( !Utils::validateDateTime($params['start']) || !Utils::validateDateTime($params['end']))
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Fechas invalidas: aaaa/mm/dd");
 
 
 

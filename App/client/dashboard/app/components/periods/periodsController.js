@@ -28,8 +28,9 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
     /**
      * Obtiene periodos registrados
      */
-    $scope.getPeriods = function(){
+    var getPeriods = function(){
 
+        $scope.periods = [];
         $scope.showUpdateForm = false;
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
@@ -67,14 +68,14 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
 
         Notification("Procesando...");
         //Cambiando formato
-        period.start = cutDate(period.start);
-        period.end = cutDate(period.end);
+        // period.start = cutDate(period.start);
+        // period.end = cutDate(period.end);
         
         
         PeriodsService.addPeriod(period, 
             function(success){
                 Notification.success("Registrado con exito");
-                $scope.getPeriods();
+                getPeriods();
             },
             function(error){
                 Notification.error("Error: "+error.data);
@@ -110,7 +111,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
         PeriodsService.updatePeriod(period, 
             function(success){
                 Notification.success("Actualizado con exito");
-                $scope.getPeriods();
+                getPeriods();
             },
             function(error){
                 Notification.error("Error: "+error.data);
@@ -130,7 +131,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
         PeriodsService.deletePeriod(period_id,
             function(success){
                 Notification.success("Eliminado con exito");
-                $scope.getPeriods();
+                getPeriods();
             },
             function(error){
                 Notification.success("Error: "+error.data);
@@ -150,7 +151,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
         PeriodsService.changeStatus(period_id, DISABLED,
             function(success){
                 Notification.success("Deshabilitado con exito");
-                $scope.getPeriods();
+                getPeriods();
             },
             function(error){
                 Notification.error("Error al Deshabilitar periodo: "+error.data);
@@ -170,7 +171,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
         PeriodsService.changeStatus(period_id, ENABLED,
             function(success){
                 Notification.success("habilitado con exito");
-                $scope.getPeriods();
+                getPeriods();
             },
             function(error){
                 Notification.error("Error al habilitar periodo: "+error.data);
@@ -180,6 +181,6 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
     }
 
     //Obtiene todos por default
-    $scope.getPeriods();
+    getPeriods();
 
 });

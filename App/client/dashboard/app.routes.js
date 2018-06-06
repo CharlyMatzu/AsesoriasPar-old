@@ -57,5 +57,10 @@ app.config( function ($routeProvider) {
             templateUrl: "app/components/email/emailView.html"
         })
 
+        .when("/signout", {
+            controller: "SignoutController"
+            // templateUrl: "app/components/email/emailView.html"
+        })
+
         .otherwise("/");
 });

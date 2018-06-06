@@ -3,15 +3,10 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     // $scope.student.id
     $scope.daysAndHours = [];
     $scope.schedule = {};
+    $scope.subjects = [];
+    $scope.showSchedule = false;
     $scope.showUpdateHours = false;
     $scope.showUpdateSubjects = false;
-    $scope.subjects = [];
-    $scope.period = {};
-    
-    $scope.loading = {
-        status: false,
-        message: ""
-    }
     var count = 0;
     var backupSelectedItems = [];
 
@@ -39,7 +34,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.subjects.push( data[i] );
             }
         }
-    }
+    };
 
 
     var getSubjects = function(){
@@ -59,13 +54,13 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 Notification.error("Error al cargar materias: "+error.data);
             }
         );
-    }
+    };
     
     $scope.openSubjectsUpdate = function(){
         $scope.showUpdateSubjects = true;
         //Obtiene materias
         getSubjects();
-    }
+    };
 
 
     var updateSubjects = function(schedule_id, subjects){
@@ -81,7 +76,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 Notification.error("Error al actualizar materias: "+error.data);
             }
         );
-    }
+    };
 
     $scope.removeSubject = function(event){
         
@@ -102,7 +97,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 updateSubjects( $scope.schedule.id, subjects );
             }
         }
-    }
+    };
 
     
     $scope.addSubject = function(event){
@@ -124,42 +119,8 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 updateSubjects( $scope.schedule.id, subjects );
             }
         }
-    }
+    };
     
-
-
-    /**
-     * Obtiene periodo actual
-     */
-    var loadData = function(){
-        Notification("Cargando elementos");
-        $scope.loading.message = "Cargando periodo";
-        $scope.loading.status = true;
-
-        //Se obtiene horario actual
-        ScheduleService.getCurrentPeriod(
-            function(success){
-                if( success.status == NO_CONTENT ){
-                    $scope.period = "No hay un periodo actual";
-                    $scope.loading.message = "No hay un periodo actual";
-                    $scope.loading.status = false;
-                }
-                else{
-                    //Se asigna informacion
-                    $scope.period = success.data;
-                    //Se manda a llamar la siguiente funcion
-                    //TODO: cambiar por id de localstorage
-                    //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
-                    getStudentSchedule( $scope.student.id );
-                }
-                
-            },
-            function(error){
-                Notification.error("No se pudo obtener periodo actual");
-                $scope.loading.status = false;
-            }
-        );
-    }
 
     /**
      * Crear un horario
@@ -178,7 +139,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.loading.status = false;
             }
         );
-    }
+    };
 
   
 
@@ -210,7 +171,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.loading.status = false;
             }
         );
-    }
+    };
 
     /**
      * Obtiene dias y horas disponibles en el sistema
@@ -232,7 +193,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.loading.status = false;
             }
         );
-    }
+    };
 
 
 
@@ -267,7 +228,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 }
             }
         }
-    }
+    };
 
 
     /**
@@ -285,10 +246,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $( event.currentTarget ).toggleClass('active');
             }
         }
-    }
-
-    //Iniciar la carga de datos
-    loadData();
+    };
 
 
     $scope.initUpdateHours = function(){
@@ -299,7 +257,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         });
         //Se activa actualizador
         $scope.showUpdateHours = true; 
-    }
+    };
 
 
     $scope.cancelUpdate = function(){
@@ -325,7 +283,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             //Limpia array
             backupSelectedItems = [];
         }
-    }
+    };
 
     $scope.updateScheduleHours = function(schedule_id){
         // $scope.loading.status = true;
@@ -353,13 +311,17 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.loading.status = false;
             }
         );
-    }
+    };
 
-    $scope.updateScheduleSubjects = function(){
-        //obtenemos todos los elementos activos
-        
-    }
-
-
+    (function(){
+        // //Si hay un periodo actual
+        if( $scope.period.data != null ){
+            $scope.loading.status = true;
+            
+            //TODO: cambiar por id de localstorage
+            //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
+            getStudentSchedule( $scope.student.id );
+        }
+    })();
 
 });
