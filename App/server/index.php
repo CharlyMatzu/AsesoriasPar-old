@@ -102,6 +102,12 @@ $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//Obtener estudiante por id de usuario
+$app->get('/users/{id}/student', 'UserController:getStudent_ByUserId')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+
 //Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
         ->add('InputMiddelware:checkData_User') //Es el registro de estudiante

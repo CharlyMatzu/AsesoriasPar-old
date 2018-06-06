@@ -19,7 +19,8 @@ class StudentsPersistence extends Persistence{
                         s.date_register as 'register_date',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
-                        c.career_id as 'career_id'
+                        c.career_id as 'career_id',
+                        c.name as 'career_name'
                         FROM student s";
 
 
@@ -41,7 +42,16 @@ class StudentsPersistence extends Persistence{
      */
     public function getStudents(){
         $query =    $this->SELECT."
-                        INNER JOIN career c ON c.career_id = s.fk_career";
+                    INNER JOIN career c ON c.career_id = s.fk_career";
+        //Obteniendo resultados
+        return $this->executeQuery($query);
+    }
+
+    public function getStudent_ByUserId($id)
+    {
+        $query =    $this->SELECT."
+                    INNER JOIN career c ON c.career_id = s.fk_career
+                    WHERE s.fk_user = $id";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }
@@ -194,6 +204,8 @@ class StudentsPersistence extends Persistence{
                          WHERE s.student_id = " .$idStudent ;
         return  self::executeQuery($query);
     }
+
+
 
 
 }

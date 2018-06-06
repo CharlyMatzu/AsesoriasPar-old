@@ -118,6 +118,25 @@ class UserController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function getStudent_ByUserId($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->getStudent_ByUser( $params['id'] );
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
 
 
     /**

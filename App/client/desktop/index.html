@@ -69,11 +69,11 @@
                         <div class="data">
                             <h2 class="name">Nombre</h2>
                             <!-- FIXME: desbordamiento -->
-                            <span class="data-item"><i class="icon fa fa-envelope"></i>carlosrozuma@gmail.com</span>
-                            <span class="data-item"><i class="icon fa fa-graduation-cap"></i>Ingenieria en software</span>
-                            <span class="data-item"><i class="icon fa fa-id-card"></i>ID: 00000162156</span>
-                            <span class="data-item"><i class="icon fa fa-phone"></i>Telefono</span>
-                            <span class="data-item"><i class="icon fa fa-facebook"></i>Facebook</span>
+                            <span class="data-item"><i class="icon fa fa-envelope"></i><span ng-bind="user.email"></span></span>
+                            <span class="data-item"><i class="icon fa fa-graduation-cap"></i><span ng-bind="student.career_name"></span></span>
+                            <span class="data-item"><i class="icon fa fa-id-card"></i><span ng-bind="student.itson_id"></span></span>
+                            <span class="data-item"><i class="icon fa fa-phone"></i><span ng-bind="student.phone"></span></span>
+                            <span class="data-item"><i class="icon fa fa-facebook"></i><span ng-bind="student.facebook"></span></span>
                         </div>
                     </div>
                     <!-- end profile -->

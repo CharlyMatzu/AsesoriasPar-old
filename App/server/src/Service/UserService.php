@@ -10,6 +10,7 @@ use App\Exceptions\RequestException;
 use App\Model\DataResult;
 use App\Model\Student;
 use App\Persistence\Persistence;
+use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
 use App\Model\User;
 use App\Utils;
@@ -113,6 +114,29 @@ class UserService{
             throw new NotFoundException("No se encontro usuario");
         else
             return $result->getData();
+    }
+
+
+    /**
+     * @param $id
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getStudent_ByUser($id){
+
+        $this->getUser_ById($id);
+
+        $studentPer = new StudentsPersistence();
+        $result = $studentPer->getStudent_ByUserId( $id );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class.":getStudent_ByUser",
+                "Ocurrio un error al obtener estudiante", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NotFoundException("No se encontro estudiante");
+        else
+            return $result->getData()[0];
     }
 
     /**
