@@ -22,7 +22,7 @@ app.run(function($rootScope, $window, $http, localStorageService){
                 $rootScope.token = data.token;
                 $http({
                     method: 'GET',
-                    url: "http://api.asesoriaspar.com/index.php/users/"+$rootScope.user.id+"/student"
+                    url: "http://api.ronintopics.com/index.php/users/"+$rootScope.user.id+"/student"
                 }).then(function(success){
                     $rootScope.student = success.data;
                 }, function(error){

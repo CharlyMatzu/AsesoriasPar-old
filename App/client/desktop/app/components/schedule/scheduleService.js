@@ -4,7 +4,7 @@ app.service('ScheduleService', function($http){
     this.getCurrentPeriod = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/periods/current"
+            url: "http://api.ronintopics.com/index.php/periods/current"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -16,7 +16,7 @@ app.service('ScheduleService', function($http){
     this.getDaysAndHours = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/schedule/source"
+            url: "http://api.ronintopics.com/index.php/schedule/source"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -28,7 +28,7 @@ app.service('ScheduleService', function($http){
     this.getStudentSchedule = function(student_id, successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/students/"+student_id+"/schedule"
+            url: "http://api.ronintopics.com/index.php/students/"+student_id+"/schedule"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -39,7 +39,7 @@ app.service('ScheduleService', function($http){
     this.createSchedule = function(student_id, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.asesoriaspar.com/index.php/students/"+student_id+"/schedule"
+            url: "http://api.ronintopics.com/index.php/students/"+student_id+"/schedule"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -51,7 +51,7 @@ app.service('ScheduleService', function($http){
     this.updateScheduleHours = function(schedule_id, hours, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.asesoriaspar.com/index.php/schedule/"+schedule_id+"/hours",
+            url: "http://api.ronintopics.com/index.php/schedule/"+schedule_id+"/hours",
             data: {
                 hours: hours
             }
@@ -66,7 +66,7 @@ app.service('ScheduleService', function($http){
     this.updateScheduleSubjects = function(schedule_id, subjects, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.asesoriaspar.com/index.php/schedule/"+schedule_id+"/subjects",
+            url: "http://api.ronintopics.com/index.php/schedule/"+schedule_id+"/subjects",
             data: {
                 subjects: subjects
             }
@@ -83,7 +83,7 @@ app.service('ScheduleService', function($http){
     this.getSubjects = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/subjects/enabled"
+            url: "http://api.ronintopics.com/index.php/subjects/enabled"
         }).then(function(success){
             successCallback(success);
         }, function(error){

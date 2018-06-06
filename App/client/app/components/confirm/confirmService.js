@@ -4,7 +4,7 @@ app.service('ConfirmService', function($http){
         //TODO: agregar encabezado para auth
         $http({
             method: 'GET',
-            url: "http://api.asesoriaspar.com/index.php/users/confirm/"+token
+            url: "http://api.ronintipics.com/index.php/users/confirm/"+token
         }).then(function (success){
             successCallback(success);
         },function (error){

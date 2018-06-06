@@ -1,5 +1,5 @@
 app.factory('AuthFactory', function($http, localStorageService){
-    var hostURL = "http://api.asesoriaspar.com/";
+    var hostURL = "http://api.ronintopics.com";
 
     var saveUserToLocal = function(user){
 
