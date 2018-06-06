@@ -13,3 +13,4 @@
 [2018-06-05 02:29:31] App\Service\SubjectService:getSubject_Search.ERROR: Ocurrio un error al obtener las materias xD --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE s.fk_plan = 11' at line 18 [] []
 [2018-06-05 02:30:10] App\Service\SubjectService:getSubject_Search.ERROR: Ocurrio un error al obtener las materias --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE s.fk_plan = 11' at line 18 [] []
 [2018-06-05 03:08:07] App\Service\SubjectService:getSubject_Search.ERROR: Ocurrio un error al obtener las materias --> Unknown column 'undefined' in 'where clause' [] []
+[2018-06-06 07:19:43] App\Persistence\Database\MySQLConexion:Connect.ERROR: Ocurrio un error tratar de conectar con MYSQL --> Access denied for user 'asesoriaspar_user'@'localhost' (using password: YES) [] []

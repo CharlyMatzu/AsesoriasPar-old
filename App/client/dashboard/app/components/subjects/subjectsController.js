@@ -80,7 +80,7 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
 
 
 
-    $scope.searchSubjects = function(data){
+    $scope.searchSubjectByName = function(data){
         if( data == null || data == "" ) 
             return;
 

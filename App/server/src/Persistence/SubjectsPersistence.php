@@ -45,11 +45,14 @@ class SubjectsPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
-/**
-     * @param $subjectID
+    /**
+     * @param $subject_career
+     * @param $subject_semester
+     * @param $subject_plan
+     *
      * @return \App\Model\DataResult
      */
-    public function getSubject_Search($subject_career,$subject_semester,$subject_plan){
+    public function getSubject_SearchFilter($subject_career, $subject_semester, $subject_plan){
 
         //filtro de solo carrera
         if($subject_career != 0  && $subject_semester == 0  && $subject_plan == 0){

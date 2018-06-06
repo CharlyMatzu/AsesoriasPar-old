@@ -52,7 +52,7 @@ class SubjectController
     public function getSubject_Search($req, $res, $params){
         try {
             $subjectService = new SubjectService();
-            $result = $subjectService->getSubject_Search( $params['career'],$params['semester'],$params['plan'] );
+            $result = $subjectService->getSubject_SearchFilter( $params['career'],$params['semester'],$params['plan'] );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
             
 
