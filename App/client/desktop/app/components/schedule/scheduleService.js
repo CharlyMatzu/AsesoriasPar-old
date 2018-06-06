@@ -1,11 +1,23 @@
-app.service('ScheduleService', function($http){
+app.service('ScheduleService', function($http, RequestFactory){
 
+
+    this.getCurrentPeriod = function(successCallback, errorCallback){
+        //Obteniendo periodo actual
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/periods/current"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    }
     
 
     this.getDaysAndHours = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/schedule/source"
+            url: RequestFactory.getURL()+"/schedule/source"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -17,7 +29,7 @@ app.service('ScheduleService', function($http){
     this.getStudentSchedule = function(student_id, successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/students/"+student_id+"/schedule"
+            url: RequestFactory.getURL()+"/students/"+student_id+"/schedule"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -28,7 +40,7 @@ app.service('ScheduleService', function($http){
     this.createSchedule = function(student_id, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.ronintopics.com/index.php/students/"+student_id+"/schedule"
+            url: RequestFactory.getURL()+"/students/"+student_id+"/schedule"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -40,7 +52,7 @@ app.service('ScheduleService', function($http){
     this.updateScheduleHours = function(schedule_id, hours, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.ronintopics.com/index.php/schedule/"+schedule_id+"/hours",
+            url: RequestFactory.getURL()+"/schedule/"+schedule_id+"/hours",
             data: {
                 hours: hours
             }
@@ -55,7 +67,7 @@ app.service('ScheduleService', function($http){
     this.updateScheduleSubjects = function(schedule_id, subjects, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.ronintopics.com/index.php/schedule/"+schedule_id+"/subjects",
+            url: RequestFactory.getURL()+"/schedule/"+schedule_id+"/subjects",
             data: {
                 subjects: subjects
             }
@@ -72,7 +84,7 @@ app.service('ScheduleService', function($http){
     this.getSubjects = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/subjects/enabled"
+            url: RequestFactory.getURL()+"/subjects/enabled"
         }).then(function(success){
             successCallback(success);
         }, function(error){

@@ -1,7 +1,7 @@
 <?php namespace App\Persistence;
 
 
-use App\Model\Period;
+use App\Model\period;
 use App\Utils;
 
 class PeriodsPersistence extends Persistence{
@@ -125,7 +125,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
-     * @param $period Period
+     * @param $period period
      * @return \App\Model\DataResult
      */
     public function updatePeriod( $period ){
@@ -141,7 +141,7 @@ class PeriodsPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function changeStatusToDelete( $id ){
-        $query = "UPDATE Period
+        $query = "UPDATE period
                   SET status = ".Utils::$STATUS_DISABLE."
                   WHERE period_id = $id";
         return  self::executeQuery($query);
@@ -153,7 +153,7 @@ class PeriodsPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function changeStatusToEnable( $id ){
-        $query = "UPDATE Period
+        $query = "UPDATE period
                   SET status = ".Utils::$STATUS_ENABLE."
                   WHERE period_id = $id";
         return  self::executeQuery($query);

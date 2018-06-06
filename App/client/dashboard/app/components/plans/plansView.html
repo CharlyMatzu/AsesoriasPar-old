@@ -9,7 +9,7 @@
                     <form action="" ng-submit="addPlan(newPlan)">
                         <div class="form-group">
                             <label for="plan">Ingrese plan:</label>
-                            <input type="text" id="plan" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
+                            <input type="text" id="plan" min="4" max="4" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
                         </div>
                         <button type="submit" class="btn btn-success">Registrar</button>
                     </form>

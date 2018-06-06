@@ -66,3 +66,15 @@ app.run(function($rootScope, $window, $timeout, localStorageService){
 
     
 });
+
+
+app.factory("RequestFactory", function() {
+    // var url = "http://api.ronintopics.com/index.php";
+    var url = "http://api.asesoriaspar.com/index.php";
+
+    return {
+        getURL: function() {
+            return url;
+        }
+    };
+});

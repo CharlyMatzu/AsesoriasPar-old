@@ -1,10 +1,10 @@
-app.service('HomeService', function($http){
+app.service('HomeService', function($http, RequestFactory){
 
 
     this.changeStatus = function(user_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: "http://api.ronintopics.com/index.php/users/"+user_id+"/status/"+status
+            url: RequestFactory.getURL()+"/users/"+user_id+"/status/"+status
         }).then(function(success){
             var data = success.data;
             // console.log( success );
@@ -19,7 +19,7 @@ app.service('HomeService', function($http){
     this.getUsers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/users"
+            url: RequestFactory.getURL()+"/users"
         }).then(function(success){
             var data = success.data;
             // console.log( success );
@@ -33,7 +33,7 @@ app.service('HomeService', function($http){
     this.addUser = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.ronintopics.com/index.php/users",
+            url: RequestFactory.getURL()+"/users",
             data: {
                 email: user.email,
                 password: user.pass,
@@ -51,7 +51,7 @@ app.service('HomeService', function($http){
     this.updateUser = function(user, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.ronintopics.com/index.php/users/".user_id,
+            url: RequestFactory.getURL()+"/users/".user_id,
             data: {
                 email: user.email,
                 password: user.pass,
@@ -69,7 +69,7 @@ app.service('HomeService', function($http){
     this.deleteUser = function(user_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://api.ronintopics.com/index.php/users/"+user_id
+            url: RequestFactory.getURL()+"/users/"+user_id
         }).then(function (success){
             // console.log( response.data.message );
             successCallback(success);

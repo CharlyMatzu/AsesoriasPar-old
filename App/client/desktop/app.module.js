@@ -2,7 +2,7 @@ var app = angular.module("Desktop", ['ngRoute', 'ui-notification', 'LocalStorage
 
 
 
-app.run(function($rootScope, $window, $http, localStorageService){
+app.run(function($rootScope, $window, $http, localStorageService, RequestFactory){
 
     $rootScope.student = {};
     $rootScope.user = {};
@@ -32,34 +32,13 @@ app.run(function($rootScope, $window, $http, localStorageService){
                 $rootScope.token = data.token;
                 $http({
                     method: 'GET',
-                    url: "http://api.ronintopics.com/index.php/users/"+$rootScope.user.id+"/student"
+                    url: RequestFactory.getURL()+"/users/"+$rootScope.user.id+"/student"
                 }).then(function(success){
                     $rootScope.student = success.data;
                     console.log("Estudiante cargado");
                 }, function(error){
                     localStorageService.remove('user')
                     $window.location.href = "/";
-                });
-
-                //Obteniendo periodo actual
-                $http({
-                    method: 'GET',
-                    url: "http://api.ronintopics.com/index.php/periods/current"
-                }).then(function(success){
-                    if( success.status == NO_CONTENT ){
-                        $rootScope.loading.status = false;
-                        $rootScope.period.message = "No hay un periodo actual disponible";
-                        console.log("Periodo no encontrado");
-                    }
-                    else{
-                        $rootScope.period.data = success.data;
-                        console.log("Periodo cargado");
-                    }
-
-                    $rootScope.loading.status = false;
-                }, function(error){
-                    $rootScope.loading.status = false;
-                    
                 });
             }
         }
@@ -76,4 +55,15 @@ app.run(function($rootScope, $window, $http, localStorageService){
     //     $(event.currentEvent).
     // }
 
+});
+
+app.factory("RequestFactory", function() {
+    // var url = "http://api.ronintopics.com/index.php";
+    var url = "http://api.asesoriaspar.com/index.php";
+
+    return {
+        getURL: function() {
+            return url;
+        }
+    };
 });

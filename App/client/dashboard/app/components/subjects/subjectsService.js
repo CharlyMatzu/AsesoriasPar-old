@@ -1,10 +1,10 @@
-app.service('SubjectService', function($http){
+app.service('SubjectService', function($http, RequestFactory){
 
 
     this.getCareers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/careers"
+            url: RequestFactory.getURL()+"/careers"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -15,7 +15,7 @@ app.service('SubjectService', function($http){
     this.getPlans = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/plans"
+            url: RequestFactory.getURL()+"/plans"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -27,7 +27,7 @@ app.service('SubjectService', function($http){
     this.getSubjects = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/subjects"
+            url: RequestFactory.getURL()+"/subjects"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -38,7 +38,7 @@ app.service('SubjectService', function($http){
      
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/subjects/carrera/"+subject.career+"/semestre/"+subject.semester+"/plan/"+subject.plan
+            url: RequestFactory.getURL()+"/subjects/carrera/"+subject.career+"/semestre/"+subject.semester+"/plan/"+subject.plan
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -49,7 +49,7 @@ app.service('SubjectService', function($http){
     this.searchSubjects = function(data,successCallback, errorCallback){ 
         $http({ 
             method: 'GET', 
-            url: "http://api.ronintopics.com/index.php/subjects/search/"+data 
+            url: RequestFactory.getURL()+"/subjects/search/"+data
         }).then(function(success){ 
             var data = success.data; 
             // console.log( success ); 
@@ -64,7 +64,7 @@ app.service('SubjectService', function($http){
     this.addSubjects = function(subject, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.ronintopics.com/index.php/subjects",
+            url: RequestFactory.getURL()+"/subjects",
             data: {
                 name: subject.name,
                 short_name: subject.short_name,
@@ -83,7 +83,7 @@ app.service('SubjectService', function($http){
     this.updateSubject = function(subject, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.ronintopics.com/index.php/subjects/"+subject.id,
+            url: RequestFactory.getURL()+"/subjects/"+subject.id,
             data: {
                 name: subject.name,
                 short_name: subject.short_name,
@@ -102,7 +102,7 @@ app.service('SubjectService', function($http){
     this.changeStatus = function(subject_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: "http://api.ronintopics.com/index.php/subjects/"+subject_id+"/status/"+status
+            url: RequestFactory.getURL()+"/subjects/"+subject_id+"/status/"+status
         }).then(function (success){
             successCallback(success);
         },function (error){
@@ -113,7 +113,7 @@ app.service('SubjectService', function($http){
     this.deleteSubject = function(subject_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://api.ronintopics.com/index.php/subjects/"+subject_id
+            url: RequestFactory.getURL()+"/subjects/"+subject_id
         }).then(function (success){
             successCallback(success);
         },function (error){

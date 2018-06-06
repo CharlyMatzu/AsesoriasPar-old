@@ -3,7 +3,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     // $scope.student.id
     $scope.daysAndHours = [];
     $scope.schedule = {};
-    $scope.subjects = [];
+    $scope.noRepeatedSubjects = [];
     $scope.showSchedule = false;
     $scope.showUpdateHours = false;
     $scope.showUpdateSubjects = false;
@@ -14,7 +14,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
 
     var setNoRepeatSubjects = function(data){
         let subs = $scope.schedule.subjects;
-        $scope.subjects = [];
+        $scope.noRepeatedSubjects = [];
 
         //Recorre materias
         
@@ -31,8 +31,10 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             //Si no se encontro, entonces se agrega para seleccionar
             if( !isSelected ){
                 //Se agrega materia que no esta en horario para mostrar
-                $scope.subjects.push( data[i] );
+                $scope.noRepeatedSubjects.push( data[i] );
             }
+
+            $scope.showSchedule = true;
         }
     };
 
@@ -46,6 +48,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 }
                 else{
                     // Notification.success("Materias cargadas");
+                    $scope.subjects = success.data;
                     setNoRepeatSubjects(success.data);
                 }
                     
@@ -141,6 +144,29 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         );
     };
 
+
+    /**
+     * Obtiene dias y horas disponibles en el sistema
+     */
+    var getDaysAndHours = function(){
+        $scope.loading.message = "Cargando horas";
+
+        ScheduleService.getDaysAndHours(
+            function(success){
+                Notification.success("Horario cargado con exito");
+                $scope.daysAndHours = success.data;
+                $scope.loading.message = "";
+                $scope.loading.status = false;
+            },
+            function(error){
+                Notification.error("Error al iniciarlizar horario");
+                $scope.loading.status = false;
+                $scope.loading.message = "Ocurrio un error";
+                $scope.loading.status = false;
+            }
+        );
+    };
+
   
 
     /**
@@ -173,27 +199,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         );
     };
 
-    /**
-     * Obtiene dias y horas disponibles en el sistema
-     */
-    var getDaysAndHours = function(){
-        $scope.loading.message = "Cargando horas";
-
-        ScheduleService.getDaysAndHours(
-            function(success){
-                // Notification.success("Horario cargado con exito");
-                $scope.daysAndHours = success.data;
-                $scope.loading.message = "";
-                $scope.loading.status = false;
-            },
-            function(error){
-                Notification.error("Error al iniciarlizar horario");
-                $scope.loading.status = false;
-                $scope.loading.message = "Ocurrio un error";
-                $scope.loading.status = false;
-            }
-        );
-    };
+    
 
 
 
@@ -313,15 +319,28 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         );
     };
 
+    
+
     (function(){
-        // //Si hay un periodo actual
-        if( $scope.period.data != null ){
-            $scope.loading.status = true;
-            
-            //TODO: cambiar por id de localstorage
-            //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
-            getStudentSchedule( $scope.student.id );
-        }
+        
+        ScheduleService.getCurrentPeriod(
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    $scope.loading.status = false;
+                    $scope.period.message = "No hay un periodo actual disponible";
+                    console.log("Periodo no encontrado");
+                }
+                else{
+                    $scope.period.data = success.data;
+                    getStudentSchedule( $scope.student.id );
+                }
+            },
+            function(error){
+                $scope.loading.status = false;
+            }
+        );
+        
+        
     })();
 
 });

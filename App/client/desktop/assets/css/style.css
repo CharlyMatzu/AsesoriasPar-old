@@ -104,16 +104,16 @@
       .main .section-content .new-advisorie-container .content {
         color: #fff; }
 
-.subject-container {
+.subjects-container {
   margin-bottom: 20px;
   width: 100%; }
-  .subject-container .subjects {
+  .subjects-container .subjects {
     padding: 20px 0;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     width: 100%; }
-    .subject-container .subjects .item {
+    .subjects-container .subjects .item {
       padding: 7px 12px;
       margin-right: 10px;
       border-radius: 10px;
@@ -123,15 +123,15 @@
       -webkit-transition: .3s;
       -o-transition: .3s;
       transition: .3s; }
-  .subject-container .selectable .item {
+  .subjects-container .selectable .item {
     cursor: pointer; }
-    .subject-container .selectable .item:hover {
+    .subjects-container .selectable .item:hover {
       background-color: #1B95E0;
       color: #fff; }
-  .subject-container .selected-items .item {
+  .subjects-container .selected-items .item {
     border-color: #FF5555;
     color: #FF5555; }
-    .subject-container .selected-items .item:hover {
+    .subjects-container .selected-items .item:hover {
       background-color: #FF5555;
       color: #fff; }
 

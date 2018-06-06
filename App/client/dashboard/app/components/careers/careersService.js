@@ -1,10 +1,10 @@
-app.service('CareerService', function($http){
+app.service('CareerService', function($http, RequestFactory){
     
 
     this.getCareers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/index.php/careers"
+            url: RequestFactory.getURL()+"/careers"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -15,7 +15,7 @@ app.service('CareerService', function($http){
     this.addCareer = function(career, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.ronintopics.com/index.php/careers",
+            url: RequestFactory.getURL()+"index.php/careers",
             data: {
                 name: career.name,
                 short_name: career.short_name
@@ -30,7 +30,7 @@ app.service('CareerService', function($http){
     this.updateCareer = function(career, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.ronintopics.com/index.php/careers/"+career.id,
+            url: RequestFactory.getURL()+"index.php/careers/"+career.id,
             data: {
                 name: career.name,
                 short_name: career.short_name
@@ -45,7 +45,7 @@ app.service('CareerService', function($http){
     this.changeStatus = function(career_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: "http://api.ronintopics.com/index.php/careers/"+career_id+"/status/"+status
+            url: RequestFactory.getURL()+"index.php/careers/"+career_id+"/status/"+status
         }).then(function (success){
             successCallback(success);
         },function (error){
@@ -56,7 +56,7 @@ app.service('CareerService', function($http){
     this.deleteCareer = function(career_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://api.ronintopics.com/index.php/careers/"+career_id
+            url: RequestFactory.getURL()+"index.php/careers/"+career_id
         }).then(function (success){
             successCallback(success);
         },function (error){

@@ -1,10 +1,10 @@
-app.service('NewUserService', function($http){
+app.service('NewUserService', function($http, RequestFactory){
 
 
     // this.getRoles = function(successCallback, errorCallback){
     //     $http({
     //         method: 'POST',
-    //         url: "http://asesoriaspar.ronintopics.com/index.php/",
+    //         url: RequestFactory.getURL()+"",
     //         data: {
     //             email: user.email,
     //             password: user.pass,
@@ -21,7 +21,7 @@ app.service('NewUserService', function($http){
     this.addUser = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://asesoriaspar.ronintopics.com/index.php/users",
+            url: RequestFactory.getURL()+"/users",
             data: {
                 email: user.email,
                 password: user.pass,

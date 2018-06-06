@@ -1,10 +1,10 @@
-app.service('NewSubjectService', function($http){
+app.service('NewSubjectService', function($http, RequestFactory){
 
 
     this.getCareers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://asesoriaspar.ronintopics.com/index.php/careers"
+            url: RequestFactory.getURL()+"/careers"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -17,7 +17,7 @@ app.service('NewSubjectService', function($http){
     this.getPlans = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://asesoriaspar.ronintopics.com/index.php/plans"
+            url: RequestFactory.getURL()+"/plans"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -31,7 +31,7 @@ app.service('NewSubjectService', function($http){
     this.addSubject = function(subject, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://asesoriaspar.ronintopics.com/index.php/subjects",
+            url: RequestFactory.getURL()+"/subjects",
             data: {
                 name: subject.name,
                 short_name: subject.short_name,

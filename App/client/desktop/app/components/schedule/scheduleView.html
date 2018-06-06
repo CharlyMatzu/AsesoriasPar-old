@@ -11,99 +11,86 @@
             <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
             
             <!-- content -->
-            <div class="content" ng-show="period.data != null">
-                <!-- subjects -->
-                <div class="subjects-section">
-                <!-- <div ng-show="period.id != null"> -->
-                    <h3>Materias para asesorias</h3>
-                    <hr>
-                    <div ng-hide="schedule.subjects.length > 0">
-                        <p>No hay materias seleccionadas</p>
-                    </div>
-                    <button class="btn btn-primary" ng-click="openSubjectsUpdate()">Actualizar mis materias</button>
-                    <div class="subjects selected-items" ng-show="schedule.subjects.length > 0">
-                        <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-subject-id="{{sub.subject_id}}">{{sub.subject_name}}</div>
-                    </div>
-                </div>    
-                <!-- end subjects -->
-
-                <!-- schedule -->
-                <div ng-show="schedule-section">
-                    <h3>Horas disponibles</h3>
-                    <hr>
-                    
-                    <button class="btn btn-primary" ng-show="!showUpdateHours" ng-disabled="loading.status" ng-click="initUpdateHours()">Actualizar Horario</button>
-                    
-                    <!-- Botones de accion -->
-                    <button class="btn btn-danger" ng-disabled="loading.status" ng-show="showUpdateHours" ng-disabled="loading.status" ng-click="cancelUpdate()">Cancelar</button>
-                    <button class="btn btn-success" ng-show="showUpdateHours" ng-click="updateScheduleHours(schedule.id)">Guardar</button>
-                    <br><br>
-            
-                    <div class="schedule ng-class:{'selectable': showUpdateHours}" ng-show="daysAndHours.length > 0">
-                        
-                        <div class="column-item" ng-repeat="dh in daysAndHours">
-                            <div class="cell-item cell-header">{{dh.day}}</div>
-                            <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
-                        </div>
-                
-                    </div>
-                </div>
-                <!-- end schedule -->
-            </div>
-            <!-- end content -->
-        </div>
-        
-        <div class="subject-container col-lg-12">
-            
-        </div>
-        
-        
-        <div class="schedule-container col-lg-12">
-            
-        </div>
-        <!-- end schedule container -->
-        
-        
-        
-        
-        
-        
-        <div class="update-subjects-container fadeIn" ng-show="showUpdateSubjects">
-            <div class="container">
-                <!-- <p ng-hide="subjects.length > 0">{{loading.message}}</p> -->
-                
-                <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
-                
-                <div class="content">
-        
+            <div class="content" ng-show="period.data != null && showSchedule">
+                <div class="row">
                     <!-- subjects -->
-                    <div class="subject-container">
-                        <h3>Materias seleccionadas</h3>
-                        <div class="subjects selectable selected-items" ng-show="schedule.subjects.length > 0">
-                            <div class="item" ng-repeat="sub in schedule.subjects" ng-click="removeSubject($event)" data-subject-id="{{sub.subject_id}}" data-index="{{$index}}">{{sub.subject_name}}</div>
-                        </div>
+                    <div class="subjects-container col-xs-12 col-lg-3">
+                        <h3>Materias</h3>
                         <hr>
-        
-        
-                        <h3>Materias disponibles</h3>
-                        <!-- options -->
-                        <div class="options form-inline text-center">
-                            <!-- <label for="search" class="sr-only">Buscar</label> -->
-                            <input type="text" id="search" placeholder="Buscar" class="search form-control">
-                            <button ng-click="" class="btn btn-success">Guardar</button>
-                            <button ng-click="showUpdateSubjects = false" class="btn btn-danger">Cancelar</button>
+                        <div ng-hide="schedule.subjects.length > 0">
+                            <p>No hay materias seleccionadas</p>
                         </div>
+                        <button class="btn btn-primary" ng-click="openSubjectsUpdate()">Actualizar mis materias</button>
+                        <div class="subjects selected-items" ng-show="schedule.subjects.length > 0">
+                            <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-subject-id="{{sub.subject_id}}">{{sub.subject_name}}</div>
+                        </div>
+                    </div>    
+                    <!-- end subjects -->
+    
+
+
+                    <!-- schedule -->
+                    <div class="schedule-container col-xs-12 col-lg-9">
+                        <h3>Horas disponibles</h3>
+                        <hr>
                         
-                        <div class="subjects selectable available" ng-show="subjects.length > 0">
-                            <div class="item" ng-repeat="sub in subjects" ng-click="addSubject($event)" data-index="{{$index}}" data-subject-id="{{sub.id}}">{{sub.name}}</div>
+                        <button class="btn btn-primary" ng-show="!showUpdateHours" ng-disabled="loading.status" ng-click="initUpdateHours()">Actualizar Horario</button>
+                        
+                        <!-- Botones de accion -->
+                        <button class="btn btn-danger" ng-disabled="loading.status" ng-show="showUpdateHours" ng-disabled="loading.status" ng-click="cancelUpdate()">Cancelar</button>
+                        <button class="btn btn-success" ng-show="showUpdateHours" ng-click="updateScheduleHours(schedule.id)">Guardar</button>
+                        <br><br>
+                
+                        <div class="schedule ng-class:{'selectable': showUpdateHours}" ng-show="daysAndHours.length > 0">
+                            
+                            <div class="column-item" ng-repeat="dh in daysAndHours">
+                                <div class="cell-item cell-header">{{dh.day}}</div>
+                                <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                            </div>
+                    
                         </div>
                     </div>
+                    <!-- end schedule -->
                 </div>
-            </div>
+                <!-- end content -->
+                </div>
         </div>
-
 
     </div>
     <!-- end row -->
 </div>
 <!-- end container -->
+
+
+
+<div class="update-subjects-container fadeIn" ng-show="showUpdateSubjects">
+    <div class="container">
+        <!-- <p ng-hide="subjects.length > 0">{{loading.message}}</p> -->
+        
+        <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
+        
+        <div class="content">
+
+            <!-- subjects -->
+            <div class="subjects-container text-center">
+                <h3>Materias disponibles</h3>
+                <!-- options -->
+                <div class="options form-inline text-center">
+                    <!-- <label for="search" class="sr-only">Buscar</label> -->
+                    <input type="text" id="search" placeholder="Buscar" class="search form-control">
+                    <button ng-click="showUpdateSubjects = false" class="btn btn-danger">Cerrar ventana</button>
+                </div>
+                <!-- selected items -->
+                <div class="subjects selectable selected-items" ng-show="schedule.subjects.length > 0">
+                    <div class="item" ng-repeat="sub in schedule.subjects" ng-click="removeSubject($event)" data-subject-id="{{sub.subject_id}}" data-index="{{$index}}">{{sub.subject_name}}</div>
+                </div>
+                <hr>
+                
+                <!-- available items -->
+                <div class="subjects selectable available" ng-show="subjects.length > 0">
+                    <div class="item" ng-repeat="sub in subjects" ng-click="addSubject($event)" data-index="{{$index}}" data-subject-id="{{sub.id}}">{{sub.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
