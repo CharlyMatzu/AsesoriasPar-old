@@ -40,3 +40,4 @@
     //include_once VENDOR_PATH. DS ."autoload.php";
 
     define("SERVER_URL", "http://api.asesoriaspar.com/");
+    define("CLIENT_URL", "http://client.asesoriaspar.com/");

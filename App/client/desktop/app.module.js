@@ -26,6 +26,7 @@ app.run(function($rootScope, $window, $http, localStorageService){
                 }).then(function(success){
                     $rootScope.student = success.data;
                 }, function(error){
+                    localStorageService.remove('user')
                     $window.location.href = "/";
                 });
             }
@@ -33,5 +34,10 @@ app.run(function($rootScope, $window, $http, localStorageService){
         else
             $window.location.href = "/";
     })();
+
+    $rootScope.signOut = function(){
+        localStorageService.remove('user');
+        $window.location.href = "/";
+    }
 
 });

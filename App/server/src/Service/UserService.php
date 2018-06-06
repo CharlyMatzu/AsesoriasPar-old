@@ -7,9 +7,8 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 
-use App\Model\DataResult;
+use App\Model\MailModel;
 use App\Model\Student;
-use App\Persistence\Persistence;
 use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
 use App\Model\User;
@@ -358,7 +357,7 @@ class UserService{
         if( !$trans )
             throw new InternalErrorException(static::class.":insertUserAndStudent","Error al realizar commit de transaccion");
 
-        $this->sendConfirmEmail( $user->getEmail() );
+//        $this->sendConfirmEmail( $user->getEmail() );
     }
 
 
@@ -372,8 +371,14 @@ class UserService{
                 <a href='#'> http://client.asesoriaspar.com/#!confirmar/ </a>";
         $mailServ = new MailService();
 
+        $mail = new MailModel();
+        $mail->addAdress( $email );
+        $mail->setSubject("Confirmacion de correo");
+        $mail->setBody("<h3>Asesorias par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm' </p>");
+        $mail->setBody("asdsad");
+
         try{
-            $mailServ->sendMail( [$email], "Confirmacion de correo", $msg, $msg);
+            $mailServ->sendMail( $mail );
         }catch (InternalErrorException $e){
             throw new InternalErrorException(static::class.":insertUserAndStudent","Error al enviar correo de confirmacion");
         }

@@ -1,6 +1,6 @@
 app.controller('ScheduleController', function($scope, $http, Notification, ScheduleService){
 
-    $scope.studentID = 3;
+    // $scope.student.id
     $scope.daysAndHours = [];
     $scope.schedule = {};
     $scope.showUpdateHours = false;
@@ -75,7 +75,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             function(success){
                 // Recarga materias
                 // Notification.success("Actualizando con exito");
-                getStudentSchedule( $scope.studentID );
+                getStudentSchedule( $scope.student.id );
             },
             function(error){
                 Notification.error("Error al actualizar materias: "+error.data);
@@ -150,7 +150,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                     //Se manda a llamar la siguiente funcion
                     //TODO: cambiar por id de localstorage
                     //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
-                    getStudentSchedule( $scope.studentID );
+                    getStudentSchedule( $scope.student.id );
                 }
                 
             },
@@ -310,7 +310,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         //TODO: cambiar por id de localstorage
         //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
         //Recarga contenido
-        // getStudentSchedule( $scope.studentID );
+        // getStudentSchedule( $scope.student.id );
 
 
         //Le quita eleentos a todos
@@ -346,7 +346,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 // $scope.loading.status = false;
 
                 //TODO: recargar datos
-                // getStudentSchedule( $scope.studentID );
+                // getStudentSchedule( $scope.student.id );
             },
             function(error){
                 Notification.error("Error al actualziar horario: "+error.data);

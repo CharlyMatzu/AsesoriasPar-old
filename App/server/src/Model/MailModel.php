@@ -24,6 +24,13 @@ class MailModel
     }
 
     /**
+     * @param $address String
+     */
+    public function addAdress($address){
+        $this->address[] = $address;
+    }
+
+    /**
      * @param array $address
      */
     public function setAddress($address)
