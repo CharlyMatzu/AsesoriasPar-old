@@ -71,16 +71,16 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
                 console.log($scope.subjects);
             },
             function(error){
-                Notification.error("Error al obtener materias: "+error.data);
+                Notification.error("No se encontraron materias "+error.data);
                 $scope.loading.status = false;
-                $scope.loading.message = "Error: "+error.data;
+                $scope.loading.message = "No se encontraron Materias";
             }
         );
     }
 
 
 
-    $scope.searchSubjects = function(data){
+    $scope.searchSubjectByName = function(data){
         if( data == null || data == "" ) 
             return;
 
@@ -253,6 +253,49 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
             }
         );
     }
+
+    //Obteniendo planes
+        //Se obtien planes
+        SubjectService.getPlans(
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    Notification.warning("No hay planes registrados, redireccionando...");
+                    //Si no hay, redirecciona
+                    $timeout(function(){
+                        $window.location.href = '#!/planes';
+                    }, 2000);
+                }
+                else{
+                    Notification.success("Planes cargados");
+                    $scope.plans = success.data;
+                }
+            },
+            function(error){
+                Notification.error("Error al cargar planes: "+error.data);
+                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+            }
+        );
+        //Se obtienen Carreras
+        SubjectService.getCareers(
+
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    Notification.warning("No hay carreras registradas, redireccionando...");
+                    //Si no hay, redirecciona
+                    $timeout(function(){
+                        $window.location.href = '#!/carreras';
+                    }, 2000);
+                }
+                else{
+                    Notification.success("Carreras cargadas");
+                    $scope.careers = success.data;
+                }
+            },
+            function(error){
+                Notification.error("Error al cargar carreras: "+error.data);
+                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+            }
+        );
 
     //Obtiene todos por default
     $scope.getSubjects();
