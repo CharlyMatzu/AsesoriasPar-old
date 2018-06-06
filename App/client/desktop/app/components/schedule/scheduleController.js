@@ -1,6 +1,6 @@
 app.controller('ScheduleController', function($scope, $http, Notification, ScheduleService){
 
-    $scope.studentID = 3;
+    // $scope.student.id
     $scope.daysAndHours = [];
     $scope.schedule = {};
     $scope.showUpdateHours = false;
@@ -21,20 +21,28 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         let subs = $scope.schedule.subjects;
         $scope.subjects = [];
 
-        //Recorre materias de horario
-        for( let i=0; i < subs.length; i++ ){
-            for( let j=0; j < data.length; j++ ){
+        //Recorre materias
+        
+        for( var i=0; i < data.length; i++ ){
+            //Recorre materias
+            var isSelected = false;
+            for( var j=0; j < subs.length; j++ ){
                 //Recorre materias individuales
-                if( subs[i]['subject_id'] != data[j]['id'] ){
-                    //Se agrega materia que no esta en horario para mostrar
-                    $scope.subjects.push( data[j] );
+                if( data[i]['id'] === subs[j]['subject_id'] ){
+                    isSelected = true;
+                    break;
                 }
+            }
+            //Si no se encontro, entonces se agrega para seleccionar
+            if( !isSelected ){
+                //Se agrega materia que no esta en horario para mostrar
+                $scope.subjects.push( data[i] );
             }
         }
     }
 
 
-    $scope.getSubjects = function(){
+    var getSubjects = function(){
         ScheduleService.getSubjects(
             function(success){
                 if( success.status == NO_CONTENT ){
@@ -42,13 +50,13 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                     $scope.showUpdateSubjects = false;
                 }
                 else{
-                    Notification("Materias cargadas");
+                    // Notification.success("Materias cargadas");
                     setNoRepeatSubjects(success.data);
                 }
                     
             }, 
-            function(b){
-                Notification.error("Ggsd");
+            function(error){
+                Notification.error("Error al cargar materias: "+error.data);
             }
         );
     }
@@ -56,24 +64,68 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     $scope.openSubjectsUpdate = function(){
         $scope.showUpdateSubjects = true;
         //Obtiene materias
-        $scope.getSubjects();
+        getSubjects();
     }
 
 
-    $scope.removeSubject = function($event){
+    var updateSubjects = function(schedule_id, subjects){
+        Notification("Actualizando materias");
+
+        ScheduleService.updateScheduleSubjects(schedule_id, subjects,
+            function(success){
+                // Recarga materias
+                // Notification.success("Actualizando con exito");
+                getStudentSchedule( $scope.student.id );
+            },
+            function(error){
+                Notification.error("Error al actualizar materias: "+error.data);
+            }
+        );
+    }
+
+    $scope.removeSubject = function(event){
         
+        //TODO: pedir confirmacion
         if( $( event.currentTarget ).parents().hasClass('selectable') ){
             //Verifica que sea un elemento selecionado
             if( $( event.currentTarget ).parents().hasClass('selected-items') ){
                 //Remueve elemento del array
                 let index = $( event.currentTarget ).data('index');
-                $scope.schedule.subjects.splice( index );
-                //Recarga materias
-                $scope.getSubjects();
+                var scheduleSubs = $scope.schedule.subjects;
+                scheduleSubs.splice(index, 1);
+                
+                var subjects = [];
+                for( var i=0; i < scheduleSubs.length; i++ ){
+                    subjects.push( scheduleSubs[i]['subject_id'] );
+                }
+                //Se recarga
+                updateSubjects( $scope.schedule.id, subjects );
             }
         }
-
     }
+
+    
+    $scope.addSubject = function(event){
+        
+        if( $( event.currentTarget ).parents().hasClass('selectable') ){
+            //Verifica que sea un elemento selecionado
+            if( $( event.currentTarget ).parents().hasClass('available') ){
+
+                var subjects = [];
+                //Obtiene materia seleccionada
+                var sub = $(event.currentTarget).data('subject-id');
+                subjects.push( sub );
+                //Obtiene materias ya seleccionadas
+                for( var i=0; i < $scope.schedule.subjects.length; i++ ){
+                    subjects.push( $scope.schedule.subjects[i]['subject_id'] );
+                }
+
+                //Envia para actualizar
+                updateSubjects( $scope.schedule.id, subjects );
+            }
+        }
+    }
+    
 
 
     /**
@@ -98,7 +150,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                     //Se manda a llamar la siguiente funcion
                     //TODO: cambiar por id de localstorage
                     //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
-                    getStudentSchedule( $scope.studentID );
+                    getStudentSchedule( $scope.student.id );
                 }
                 
             },
@@ -128,22 +180,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         );
     }
 
-    // /**
-    //  * Obtiene las materias del horario
-    //  */
-    // var getSubjects = function(schedule_id){
-    //     $scope.loading.message = "Creando horario";
-
-    //     ScheduleService.getSubjects(schedule_id,
-    //         function(success){
-                
-    //         },
-    //         function(error){
-    //             Notification.error("Error al obtener materias");
-    //             $scope.loading.status = false;
-    //         }
-    //     );
-    // }
+  
 
     /**
      * Obtiene horario de estudiante
@@ -163,6 +200,8 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                     $scope.schedule = success.data;
                     //Se manda a llamar la funcion de las horas disponibles
                     getDaysAndHours();
+                    //Se recargan materias disponibles
+                    getSubjects();
                 }
                 
             },
@@ -181,7 +220,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
 
         ScheduleService.getDaysAndHours(
             function(success){
-                Notification.success("Horario cargado con exito");
+                // Notification.success("Horario cargado con exito");
                 $scope.daysAndHours = success.data;
                 $scope.loading.message = "";
                 $scope.loading.status = false;
@@ -271,7 +310,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         //TODO: cambiar por id de localstorage
         //TODO: usar servicio (factory) para obtener id y que este regrese al index si no hay
         //Recarga contenido
-        // getStudentSchedule( $scope.studentID );
+        // getStudentSchedule( $scope.student.id );
 
 
         //Le quita eleentos a todos
@@ -292,6 +331,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         // $scope.loading.status = true;
 
         //Obtenemos todos los elementos con la clase .active
+        //TODO:pedir confirmacion
         let selectedItems = [];
         $('.schedule .active').each(function(){
             let item = $(this).data('hour-day-id');
@@ -301,12 +341,12 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         //Peticiones
         ScheduleService.updateScheduleHours(schedule_id, selectedItems,
             function(success){
-                Notification.success("Horario actualizado con exito");
+                // Notification.success("Horario actualizado con exito");
                 $scope.showUpdateHours = false;
                 // $scope.loading.status = false;
 
                 //TODO: recargar datos
-                // getStudentSchedule( $scope.studentID );
+                // getStudentSchedule( $scope.student.id );
             },
             function(error){
                 Notification.error("Error al actualziar horario: "+error.data);

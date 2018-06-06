@@ -72,6 +72,29 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
+                    WHERE sdh.fk_schedule = $scheduleid
+                    ORDER BY $orderType";
+
+
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param int $scheduleid
+     * @param String $orderType
+     *
+     * @see SchedulesPersistence::ORDER_BY_DAY
+     * @see SchedulesPersistence::ORDER_BY_HOUR
+     * @return \App\Model\DataResult
+     */
+    public function getScheduleHours_ByScheduleId_Enabled( $scheduleid, $orderType ){
+        $query = "SELECT
+                        sdh.schedule_dh_id as 'id',
+                        sdh.fk_day_hour as 'day_hour_id',
+                        dh.day as 'day',
+                        TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
+                    FROM schedule_days_hours sdh
+                    INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
                     WHERE sdh.fk_schedule = $scheduleid AND sdh.status = ".Utils::$STATUS_ENABLE."
                     ORDER BY $orderType";
 
@@ -94,7 +117,30 @@ class SchedulesPersistence extends Persistence{
                   
                 FROM schedule_subjects ss
                 INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                WHERE ss.fk_schedule = $scheduleid AND s.status = ".Utils::$STATUS_ENABLE;
+                WHERE ss.fk_schedule = $scheduleid AND 
+                s.status = ".Utils::$STATUS_ENABLE;
+
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param int $scheduleid
+     * @return \App\Model\DataResult
+     * TODO: solo materias habilitadas
+     */
+    public function getScheduleSubjects_ById_Enabled($scheduleid)
+    {
+        $query = "SELECT
+                  ss.schedule_subject_id as 'id',
+                  s.subject_id as 'subject_id',
+                  s.name as 'subject_name',
+                  ss.status as 'status'
+                  
+                FROM schedule_subjects ss
+                INNER JOIN subject s ON ss.fk_subject = s.subject_id
+                WHERE ss.fk_schedule = $scheduleid AND 
+                (s.status = ".Utils::$STATUS_ENABLE." AND ss.status = ".Utils::$STATUS_ENABLE.")";
 
         //Obteniendo resultados
         return self::executeQuery($query);

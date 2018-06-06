@@ -167,7 +167,7 @@ class StudentService{
         //se obtiene horas de horario
         $hours_days = array();
         try {
-            $hours_days = $scheduleService->getScheduleHours_ById($schedule->getId());
+            $hours_days = $scheduleService->getScheduleHours_ById_Enabled($schedule->getId());
             //Si no tiene horas, no hay problema
         }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());
@@ -177,7 +177,7 @@ class StudentService{
         //se obtiene materias (si hay)
         $subjects = array();
         try {
-            $subjects = $scheduleService->getScheduleSubjects_ById($schedule->getId());
+            $subjects = $scheduleService->getScheduleSubjects_ById_Enabled($schedule->getId());
         }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());
             //Si no tiene materias, no hay problema

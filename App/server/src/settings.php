@@ -46,11 +46,19 @@ $container['InputMiddelware'] = function($c){
     return new App\Middelware\InputParamsMiddelware();
 };
 
+$container['AuthMiddelware'] = function($c){
+    return new App\Middelware\AuthMiddelware();
+};
+
 //-----------------------
 //Controllers methods
 //-----------------------
 $container['MailController'] = function($c){
     return new App\Controller\MailController();
+};
+
+$container['AuthController'] = function($c){
+    return new App\Controller\AuthController();
 };
 
 $container['UserController'] = function($c){

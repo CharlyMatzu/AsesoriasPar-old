@@ -7,9 +7,9 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 
-use App\Model\DataResult;
+use App\Model\MailModel;
 use App\Model\Student;
-use App\Persistence\Persistence;
+use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
 use App\Model\User;
 use App\Utils;
@@ -99,43 +99,6 @@ class UserService{
 
 
     /**
-     * @param $email string
-     * @param $pass string
-     * @return array
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     * TODO: solo debe funcionar si usuario esta activo
-     */
-    public function signIn($email, $pass){
-        $result = $this->userPer->getUser_BySignIn($email, $pass);
-
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."signIn","Ocurrio un error al authenticar", $result->getErrorMessage());
-        else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("email o contraseña incorrectos");
-
-        //Si se encontró, se crea token y se retorna
-        else{
-            $user = self::makeUserModel( $result->getData()[0] );
-
-            //Se envia array con datos: id y email y retorna token
-            //TODO: no usar id de BD
-//            $token = Auth::getToken([
-//                'id' => $user->getId(),
-//                'email' => $user->getEmail()
-//            ]);
-            $token = Auth::getToken( $user->getId() );
-
-            return [
-                "user_id" => $user->getId(),
-                "user_role" => $user->getRole(),
-                "token" => $token,
-            ];
-        }
-
-    }
-
-    /**
      * @param $id
      * @return \mysqli_result|null
      * @throws InternalErrorException
@@ -150,6 +113,29 @@ class UserService{
             throw new NotFoundException("No se encontro usuario");
         else
             return $result->getData();
+    }
+
+
+    /**
+     * @param $id
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getStudent_ByUser($id){
+
+        $this->getUser_ById($id);
+
+        $studentPer = new StudentsPersistence();
+        $result = $studentPer->getStudent_ByUserId( $id );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class.":getStudent_ByUser",
+                "Ocurrio un error al obtener estudiante", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NotFoundException("No se encontro estudiante");
+        else
+            return $result->getData()[0];
     }
 
     /**
@@ -371,7 +357,7 @@ class UserService{
         if( !$trans )
             throw new InternalErrorException(static::class.":insertUserAndStudent","Error al realizar commit de transaccion");
 
-        $this->sendConfirmEmail( $user->getEmail() );
+//        $this->sendConfirmEmail( $user->getEmail() );
     }
 
 
@@ -385,8 +371,14 @@ class UserService{
                 <a href='#'> http://client.asesoriaspar.com/#!confirmar/ </a>";
         $mailServ = new MailService();
 
+        $mail = new MailModel();
+        $mail->addAdress( $email );
+        $mail->setSubject("Confirmacion de correo");
+        $mail->setBody("<h3>Asesorias par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm' </p>");
+        $mail->setBody("asdsad");
+
         try{
-            $mailServ->sendMail( [$email], "Confirmacion de correo", $msg, $msg);
+            $mailServ->sendMail( $mail );
         }catch (InternalErrorException $e){
             throw new InternalErrorException(static::class.":insertUserAndStudent","Error al enviar correo de confirmacion");
         }

@@ -1,8 +1,7 @@
-app.controller('SigninController', function($scope, $window, $timeout, Notification, SigninService){
+app.controller('SigninController', function($scope, $window, $timeout, localStorageService, Notification, SigninService){
 
 
     $scope.signin = function(user){
-
         $scope.loading.status = true;
         $scope.loading.message = "Iniciando sesion";
 
@@ -11,9 +10,9 @@ app.controller('SigninController', function($scope, $window, $timeout, Notificat
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Autenticado correctamente, redireccionando";
                 // $scope.loading.status = false;
-
-                //Se guarda informacion
-                $scope.signIn(success.data.user_id, success.data.user_id, success.data.token);
+                $timeout(function(){
+                    $scope.saveSession(success.data);
+                },2000);
             },
             function(error){
                 Notification.error("Ocurrio un error");

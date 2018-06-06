@@ -118,6 +118,25 @@ class UserController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function getStudent_ByUserId($req, $res, $params)
+    {
+        try {
+            $userServ = new UserService();
+            $result = $userServ->getStudent_ByUser( $params['id'] );
+            return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
 
 
     /**
@@ -163,25 +182,6 @@ class UserController
 
             $userServ->insertUserAndStudent( $student );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
-
-        } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
-        }
-    }
-
-
-    /**
-     * @param $req Request
-     * @param $res Response
-     * @return Response
-     */
-    public function auth($req, $res)
-    {
-        try {
-            $userServ = new UserService();
-            $user = $req->getAttribute('user_auth');
-            $result = $userServ->signIn( $user->getEmail(), $user->getPassword() );
-            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

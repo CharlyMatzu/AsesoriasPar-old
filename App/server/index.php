@@ -60,6 +60,12 @@ $app->post('/mail/send', 'MailController:sendMail')
         ->add('InputMiddelware:checkData_Mail')
         ->add(AuthMiddelware::class);
 
+
+//Permite autenticarse (signin)
+$app->post('/auth', 'AuthController:authenticate')
+        ->add('InputMiddelware:checkData_Auth');
+        //->add('InputMiddelware:checkHeader_Auth');
+
 //--------------------------
 //  USER ROUTES
 //--------------------------
@@ -96,6 +102,12 @@ $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
 
+//Obtener estudiante por id de usuario
+$app->get('/users/{id}/student', 'UserController:getStudent_ByUserId')
+        ->add('InputMiddelware:checkParam_Id')
+        ->add(AuthMiddelware::class);
+
+
 //Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
         ->add('InputMiddelware:checkData_User') //Es el registro de estudiante
@@ -107,10 +119,6 @@ $app->post('/users', 'UserController:createUser')
 $app->post('/users/student', 'UserController:studentSignup')
         ->add('InputMiddelware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddelware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
-
-//Permite autenticarse (signin)
-$app->post('/users/auth', 'UserController:auth')
-        ->add('InputMiddelware:checkData_Auth'); //Es el inicio de sesion
 
 //Actualiza datos de usuario
 $app->put('/users/{id}', 'UserController:updateUser')

@@ -541,18 +541,18 @@ class InputParamsMiddelware extends Middelware
         if( !isset($params['subjects']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: subjects");
 
-        if( empty($params['subjects']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+//        if( empty($params['subjects']) )
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Subjects vacio");
 
 
         if( !is_array($params['subjects']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "No es un array");
 
         //Verificando que sean datos numericos
         $subjects = $params['subjects'];
         foreach ( $subjects as $sub ){
             if( !is_numeric($sub) )
-                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Valores no son numericos");
         }
 
         $req = $req->withAttribute('schedule_subjects', $subjects);
