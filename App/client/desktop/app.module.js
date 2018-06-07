@@ -35,7 +35,6 @@ app.run(function($rootScope, $window, $http, localStorageService, RequestFactory
                     url: RequestFactory.getURL()+"/users/"+$rootScope.user.id+"/student"
                 }).then(function(success){
                     $rootScope.student = success.data;
-                    console.log("Estudiante cargado");
                 }, function(error){
                     localStorageService.remove('user')
                     $window.location.href = "/";
