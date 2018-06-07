@@ -2,6 +2,8 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.page.title = "Asesorias";
     $scope.advisories = [];
 
+    $scope.showAssign = false;
+
     $scope.advisers = [];
     $scope.adviserSchedule = [];
     $scope.mySchedule = [];
@@ -23,13 +25,16 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         );
     };
 
-    var getSubjectAdvisers = function(subject_id, student_id){
-        AdvisoriesService.getSubjectAdvisers_Ignore(
+    var getSubjectAdvisers = function(advisory){
+        var subject_id = advisory.subject_id;
+        var student_id = advisory.alumn_id;
+
+        AdvisoriesService.getSubjectAdvisers_Ignore(subject_id, student_id,
             function(success){
                 if( success.status == NO_CONTENT )
                     Notification("No hay asesores disponibles");
                 else
-                $scope.advisers = success.data;
+                    $scope.advisers = success.data;
             },
             function(error){
                 Notification.error("Error al cargar asesores: "+error.data);
@@ -37,15 +42,27 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         );
     }
 
-    var getAdviserSchedule = function(){}
+    $scope.openAssign = function(advisory){
+        $scope.showAssign = true;
+        getSubjectAdvisers(advisory);
+    };
 
-    var getMySchedule = function(){}
+    $scope.openAdviserSchedule = function(adviser){
+        Notification("Funciona: "+adviser.id);
+    }
 
-    var checkScheduleMatch = function(){}
+
+    var getAdviserSchedule = function(){};
+
+    var getMySchedule = function(){};
+
+    var checkScheduleMatch = function(){};
 
     $scope.getSchedules = function(adviser_id){
-        
-    }
+
+    };
+
+    
 
 
 

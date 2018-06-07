@@ -224,6 +224,41 @@
     height: auto;
     width: 100%;
     max-width: 800px; }
+    .assign-container .content .advisers-container .title {
+      float: none;
+      display: block;
+      width: 100%;
+      text-align: center; }
+    .assign-container .content .advisers-container .advisers {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+      .assign-container .content .advisers-container .advisers .item {
+        max-width: 200px;
+        text-align: center;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        -webkit-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s; }
+        .assign-container .content .advisers-container .advisers .item:hover {
+          -webkit-box-shadow: 0 5px 7px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 5px 7px rgba(0, 0, 0, 0.2);
+          border-color: #1B95E0;
+          color: #1B95E0; }
+        .assign-container .content .advisers-container .advisers .item .avatar {
+          margin: 0 auto;
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-bottom: 5px; }
+          .assign-container .content .advisers-container .advisers .item .avatar img {
+            width: 100%; }
+        .assign-container .content .advisers-container .advisers .item .info {
+          font-weight: bold; }
 
 .subjects-container {
   margin-bottom: 20px;

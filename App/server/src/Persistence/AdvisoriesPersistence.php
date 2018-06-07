@@ -222,8 +222,17 @@ class AdvisoriesPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function getCurrentAdvisers_ByPeriod_BySubject_IngoreStudent($period_id, $subject_id, $student_id){
-        $query = "SELECT * FROM student st
+        $query = "SELECT 
+                      st.student_id as 'id',
+                      concat(st.first_name, ' ',st.last_name) as 'name',
+                      CONCAT('assets/images/',st.avatar) as 'avatar',
+                      st.itson_id as 'itson_id',
+                      c.career_id as 'career_id',
+                      c.name as 'career_name',
+                      s.schedule_id as 'schedule_id'
+                  FROM student st
                   INNER JOIN user u ON st.fk_user = u.user_id
+                  INNER JOIN career c ON st.fk_career = c.career_id
                   INNER JOIN schedule s ON st.student_id = s.fk_student
                   INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
                   WHERE s.fk_period = $period_id AND ss.fk_subject = $subject_id 

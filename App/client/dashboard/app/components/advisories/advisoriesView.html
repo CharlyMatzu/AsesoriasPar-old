@@ -77,7 +77,7 @@
                                     </div>
 
                                     <button class="btn-opt"><span class="fa fa-times"></span> Finalizar</button>
-                                    <button ng-show="ad.status == 1" class="btn-opt opt-success"><span class="fa fa-plus"></span> Asignar</button>
+                                    <button ng-show="ad.status == 1" class="btn-opt opt-success" ng-click="openAssign(ad)"><span class="fa fa-plus"></span> Asignar</button>
                                 </div>
 
                             </div>
@@ -94,9 +94,47 @@
 </div>
 
 
-<div class="assign-container modal-container fadeIn">
+<div class="assign-container modal-container fadeIn" ng-show="showAssign">
     <div class="card content">
-        <div class="adviser">Asesores</div>
-        <div class="schedule">Horario</div>
+        <!-- advisers -->
+        <div class="advisers-container">
+            <h2 class="title">Asesores disponibles</h2>
+            <!-- TODO: estilizar -->
+            <button ng-click="showAssign = false" class="btn btn-danger">Cancelar</button>
+            
+            <!-- advisers -->
+            <div class="advisers">
+
+                <!-- message -->
+                <p ng-hide="advisers.length > 0">No hay asesores disponibles</p>
+                <!-- items -->
+                <div class="item" ng-repeat="ad in advisers" ng-show="advisers.length > 0" ng-click="openAdviserSchedule(ad)">
+                    <div class="avatar">
+                        <img src="http://api.asesoriaspar.com/{{ad.avatar}}" alt="{{ad.avatar}}">
+                    </div>
+                    <div class="info">
+                        <span class="name">{{ad.name}}</span>
+                    </div>
+                </div>
+                <!-- end items -->
+
+                <!-- <div class="item">
+                    <div class="avatar">
+                        <img src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
+                    </div>
+                    <div class="info">
+                        <span class="name">Nombre</span>
+                    </div>
+                </div> -->
+
+            </div>
+            <!-- end advisers -->
+
+        </div>
+        <!-- end advisers -->
+        <div class="schedule-container">
+            <div class="selected-adviser"></div>
+            <div class="adviser-schedule"></div>
+        </div>
     </div>
 </div>
