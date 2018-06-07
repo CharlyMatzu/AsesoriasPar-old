@@ -37,7 +37,7 @@
 
 
     //------- CONTENT
-    .section-content{
+    .advisories-container{
         padding-bottom: 200px;
 
 
@@ -313,7 +313,9 @@
 }
 
 
-
+.tab-content{
+    padding: 20px 0;
+}
 
 
 
@@ -353,3 +355,5 @@
         opacity: 0;
     }
 }
+
+

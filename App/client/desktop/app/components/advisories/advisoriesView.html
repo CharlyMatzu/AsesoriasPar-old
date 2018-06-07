@@ -6,12 +6,82 @@
                 <p ng-show="period.data != null">Periodo: {{period.data.start}} a {{period.data.end}}</p>
                 <p ng-show="period.data == null">{{period.message}}</p>
             </div>
-            <hr>
+            <!-- <hr> -->
             <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
 
             <!-- content -->
             <div class="content">
+                <!-- tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#requested" role="tab" aria-controls="requested" aria-selected="true">Solicitadas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#students" role="tab" aria-controls="students" aria-selected="false">Asesorados</a>
+                    </li>
+                </ul>
+                <!-- tabs content -->
+                <div class="tab-content" id="myTabContent">
+                    <!-- solicitadas -->
+                    <div class="tab-pane fade show active" id="requested" role="tabpanel" aria-labelledby="asesorias-tab">
+                        <div class="advisories-container">
+                            <div class="advisories">
+                                
+                                <!-- new -->
+                                <div class="item new">
+                                    <div class="icon-container">
+                                        <span class="icon fa fa-plus"></span>
+                                    </div>
+                                </div>
+                                <!-- end new -->
 
+                                <!-- items -->
+                                <div class="item">
+                                    <div class="avatar">
+                                        <img src="https://avatars3.githubusercontent.com/u/3618925?s=460&v=4" alt="">
+                                    </div>
+                                    <div class="info">
+                                        <div class="info-item student">Carlos Zuñiga</div>
+                                        <div class="info-item subject">Programacio II</div>
+                                        <div class="info-item status">
+                                            <span class="badge badge-danger">Status</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end items -->
+                                
+                            </div>
+                        </div>
+                        <!-- end container -->
+                    </div>
+                    <!-- end solicitadas -->
+
+
+                    <!-- students -->
+                    <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="estudiantes-tab">
+                        <div class="advisories-container">
+                            <div class="advisories">
+
+                                <!-- items -->
+                                <div class="item">
+                                    <div class="avatar">
+                                        <img src="https://avatars3.githubusercontent.com/u/3618925?s=460&v=4" alt="">
+                                    </div>
+                                    <div class="info">
+                                        <div class="info-item student">Carlos Zuñiga</div>
+                                        <div class="info-item subject">Programacio II</div>
+                                        <div class="info-item status">
+                                            <span class="badge badge-danger">Status</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end items -->
+                            </div>
+                        </div>
+                        <!-- end container -->
+                    </div>
+                    <!-- end students -->
+                </div>
             </div>
             <!-- end-content -->
         </div>
@@ -58,9 +128,9 @@
 
 
 
-<div class="new-advisory-container fadeIn">
+<!-- <div class="new-advisory-container fadeIn">
     <div class="container">
         <div class="row"></div>
     </div>
-</div>
+</div> -->
 
