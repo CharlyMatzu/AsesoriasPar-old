@@ -12,6 +12,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
 
     
 
+    //TODO: las materias que no son parte del horario deben solicitar a la API
     var setNoRepeatSubjects = function(data){
         let subs = $scope.schedule.subjects;
         $scope.noRepeatedSubjects = [];
@@ -33,13 +34,13 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 //Se agrega materia que no esta en horario para mostrar
                 $scope.noRepeatedSubjects.push( data[i] );
             }
-
-            $scope.showSchedule = true;
         }
     };
 
 
     var getSubjects = function(){
+        $scope.showUpdateSubjects = false;
+        
         ScheduleService.getSubjects(
             function(success){
                 if( success.status == NO_CONTENT ){
@@ -48,6 +49,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 }
                 else{
                     // Notification.success("Materias cargadas");
+                    $scope.showUpdateSubjects = true;
                     $scope.subjects = success.data;
                     setNoRepeatSubjects(success.data);
                 }
@@ -60,7 +62,6 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     };
     
     $scope.openSubjectsUpdate = function(){
-        $scope.showUpdateSubjects = true;
         //Obtiene materias
         getSubjects();
     };
@@ -157,6 +158,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.daysAndHours = success.data;
                 $scope.loading.message = "";
                 $scope.loading.status = false;
+                $scope.showSchedule = true;
             },
             function(error){
                 Notification.error("Error al iniciarlizar horario");
@@ -322,6 +324,8 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     
 
     (function(){
+
+        $scope.loading.status = true;
         
         ScheduleService.getCurrentPeriod(
             function(success){
