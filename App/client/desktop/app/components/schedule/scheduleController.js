@@ -15,7 +15,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     //TODO: las materias que no son parte del horario deben solicitar a la API
     var setNoRepeatSubjects = function(data){
         let subs = $scope.schedule.subjects;
-        $scope.noRepeatedSubjects = [];
+        $scope.subjects = [];
 
         //Recorre materias
         
@@ -32,25 +32,22 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             //Si no se encontro, entonces se agrega para seleccionar
             if( !isSelected ){
                 //Se agrega materia que no esta en horario para mostrar
-                $scope.noRepeatedSubjects.push( data[i] );
+                $scope.subjects.push( data[i] );
             }
         }
     };
 
 
     var getSubjects = function(){
-        $scope.showUpdateSubjects = false;
         
         ScheduleService.getSubjects(
             function(success){
                 if( success.status == NO_CONTENT ){
-                    Notification.warning("No hay materias");
-                    $scope.showUpdateSubjects = false;
+                    Notification.warning("No hay materias disponibles");
                 }
                 else{
                     // Notification.success("Materias cargadas");
-                    $scope.showUpdateSubjects = true;
-                    $scope.subjects = success.data;
+                    // $scope.subjects = success.data;
                     setNoRepeatSubjects(success.data);
                 }
                     
@@ -61,7 +58,11 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         );
     };
     
+    
     $scope.openSubjectsUpdate = function(){
+        $scope.showUpdateSubjects = true;
+        // $scope.schedule.subjects = [];
+        // $scope.subjects = [];
         //Obtiene materias
         getSubjects();
     };
@@ -177,6 +178,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     var getStudentSchedule = function(studen_id){
         $scope.loading.message = "Obteniendo horario de alumno";
         $scope.showUpdateHours = false;
+        // $scope.showUpdateSubjects = false;
 
         ScheduleService.getStudentSchedule(studen_id,
             function(success){

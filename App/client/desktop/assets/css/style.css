@@ -215,39 +215,41 @@
   to {
     background-color: #404040; } }
 
-.update-subjects-container {
+.modal-container {
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
+  z-index: 999;
   background-color: white; }
-  .update-subjects-container .content {
-    padding: 30px 0;
+
+.update-subjects-container .content {
+  padding: 30px 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .update-subjects-container .content .options {
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center; }
-    .update-subjects-container .content .options {
-      width: 100%;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center; }
-      .update-subjects-container .content .options .search {
-        margin-right: 20px; }
+    justify-content: center; }
+    .update-subjects-container .content .options .search {
+      margin-right: 20px; }
 
 .tab-content {
   padding: 20px 0; }

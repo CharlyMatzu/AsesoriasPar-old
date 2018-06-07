@@ -18,9 +18,16 @@ class AdvisoriesPersistence extends Persistence{
                       ar.date_register as 'date_register',
                       ar.status as 'status',
                       ar.fk_period as 'period_id',
-                      ar.fk_student as 'alumn_id',
-                      ar.fk_adviser as 'adviser_id',
-                      ar.fk_subject as 'subject_id'
+
+                      s_alum.student_id as 'alumn_id',
+                      s_alum.first_name as 'alumn_first_name',
+                      s_alum.last_name as 'alumn_last_name',
+                      s_alum.avatar as 'alumn_avatar',
+                      
+                      s_advi.student_id as 'adviser_id',
+                      s_advi.first_name as 'adviser_first_name',
+                      s_advi.last_name as 'adviser_last_name',
+                      s_advi.avatar as 'adviser_avatar'
                   FROM advisory_request ar
                   INNER JOIN student s_alum ON s_alum.student_id = ar.fk_student
                   INNER JOIN subject s ON s.subject_id = ar.fk_subject

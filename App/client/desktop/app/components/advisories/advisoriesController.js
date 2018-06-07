@@ -1,4 +1,7 @@
 app.controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService){
+
+    $scope.requestedAds = [];
+    $scope.myAds = [];
     
 
     (function(){
