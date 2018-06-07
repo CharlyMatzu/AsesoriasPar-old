@@ -13,15 +13,26 @@ app.service('AdvisoriesService', function($http, RequestFactory){
     }
     
 
-    this.getAdvisories = function(successCallback, errorCallback){
+    this.getRequestedAdvisories = function(student_id, successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: RequestFactory.getURL()+"/careers"
+            url: RequestFactory.getURL()+"/student/"+student_id+"/advisories/requested"
         }).then(function(success){
             successCallback(success);
         }, function(error){
             errorCallback(error);
         });
-    } 
+    }
+
+    this.getAdviserAdvisories = function(student_id, successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/student/"+student_id+"/advisories/adviser"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    }
 
 });

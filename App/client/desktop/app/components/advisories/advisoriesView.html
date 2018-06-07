@@ -10,14 +10,14 @@
             <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
 
             <!-- content -->
-            <div class="content">
+            <div class="content" ng-show="period.data != null && showAdvisories">
                 <!-- tabs -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#requested" role="tab" aria-controls="requested" aria-selected="true">Solicitadas</a>
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#requested" role="tab" aria-controls="requested" aria-selected="true" ng-click="requestedAds()">Solicitadas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#students" role="tab" aria-controls="students" aria-selected="false">Asesorados</a>
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#students" role="tab" aria-controls="students" aria-selected="false" ng-click="adviserAds()">Asesorados</a>
                     </li>
                 </ul>
                 <!-- tabs content -->
@@ -27,10 +27,10 @@
                         <div class="advisories-container">
                             <div class="advisories">
 
-                                <p ng-show="requestedAds.length == 0">No hay asesorias soliciatdas</p>
+                                <p ng-show="requestedAds.length == 0">No hay asesorias solicitadas</p>
                                 
                                 <!-- new -->
-                                <div class="item new">
+                                <div class="item new" ng-click="showNewAdvisory = true">
                                     <div class="icon-container">
                                         <span class="icon fa fa-plus"></span>
                                     </div>
@@ -38,18 +38,23 @@
                                 <!-- end new -->
 
                                 <!-- items -->
-                                <!-- <div class="item" ng-repeat="ad in requestedAds">
+                                <div class="item" ng-repeat="ad in requestedAds">
                                     <div class="avatar">
-                                        <img src="https://avatars3.githubusercontent.com/u/3618925?s=460&v=4" alt="">
+                                        <img ng-show="ad.adviser_id != null" src="http://api.asesoriaspar.com/{{ad.adviser_avatar}}" alt="">
+                                        <img ng-show="ad.adviser_id == null" src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
                                     </div>
                                     <div class="info">
-                                        <div class="info-item student" ng-show="ad.adviser">{{}}</div>
-                                        <div class="info-item subject">Programacio II</div>
+                                        <div ng-show="ad.adviser_id != null" class="info-item student" >{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
+                                        <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
+                                        <div class="info-item subject">{{ad.subject_name}}</div>
                                         <div class="info-item status">
-                                            <span class="badge badge-danger">Status</span>
+                                            <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
+                                            <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
+                                            <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
+                                            <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                                 <!-- end items -->
 
                             </div>
@@ -64,16 +69,23 @@
                         <div class="advisories-container">
                             <div class="advisories">
 
+                                <p ng-show="adviserAds.length == 0">No hay asesorias</p>
+
                                 <!-- items -->
-                                <div class="item">
+                                <div class="item" ng-repeat="ad in adviserAds">
                                     <div class="avatar">
-                                        <img src="https://avatars3.githubusercontent.com/u/3618925?s=460&v=4" alt="">
+                                        <img ng-show="ad.alumn_id != null" src="http://api.asesoriaspar.com/{{ad.alumn_avatar}}" alt="">
+                                        <img ng-show="ad.alumn_id == null" src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
                                     </div>
                                     <div class="info">
-                                        <div class="info-item student">Carlos Zuñiga</div>
-                                        <div class="info-item subject">Programacio II</div>
+                                        <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
+                                        <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
+                                        <div class="info-item subject">{{ad.subject_name}}</div>
                                         <div class="info-item status">
-                                            <span class="badge badge-danger">Status</span>
+                                            <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
+                                            <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
+                                            <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
+                                            <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
                                         </div>
                                     </div>
                                 </div>
@@ -95,9 +107,13 @@
 
 
 
-<div class="new-advisory-container modal-container fadeIn">
+<div class="new-advisory-container modal-container fadeIn" ng-show="showNewAdvisory">
     <div class="container">
-        <div class="row"></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <button ng-click="showNewAdvisory = false">Cancelar</button>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -22,12 +22,15 @@ class AdvisoriesPersistence extends Persistence{
                       s_alum.student_id as 'alumn_id',
                       s_alum.first_name as 'alumn_first_name',
                       s_alum.last_name as 'alumn_last_name',
-                      s_alum.avatar as 'alumn_avatar',
+                      CONCAT('assets/images/', s_alum.avatar) as 'alumn_avatar',
                       
                       s_advi.student_id as 'adviser_id',
                       s_advi.first_name as 'adviser_first_name',
                       s_advi.last_name as 'adviser_last_name',
-                      s_advi.avatar as 'adviser_avatar'
+                      CONCAT('assets/images/', s_advi.avatar) as 'adviser_avatar',
+                      
+                      s.subject_id as 'subject_id',
+                      s.name as 'subject_name'
                   FROM advisory_request ar
                   INNER JOIN student s_alum ON s_alum.student_id = ar.fk_student
                   INNER JOIN subject s ON s.subject_id = ar.fk_subject
@@ -63,6 +66,32 @@ class AdvisoriesPersistence extends Persistence{
     public function getAdvisory_ById($id){
         $query = $this->SELECT.
             "WHERE ar.advisory_id = $id";
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param $student_id int
+     * @param $period_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getRequestedAdvisories_ByStuden_ByPeriod($student_id, $period_id)
+    {
+        $query = $this->SELECT.
+            "WHERE s_alum.student_id = $student_id AND ar.fk_period = $period_id";
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param $student_id int
+     * @param $period_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdviserAdvisories_ByStuden_ByPeriod($student_id, $period_id)
+    {
+        $query = $this->SELECT.
+            "WHERE s_advi.student_id = $student_id AND ar.fk_period = $period_id";
         return self::executeQuery($query);
     }
 
@@ -173,6 +202,8 @@ class AdvisoriesPersistence extends Persistence{
                   ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
         return self::executeQuery($query);
     }
+
+
 
 
 

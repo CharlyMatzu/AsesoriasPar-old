@@ -2,6 +2,7 @@
 
 use App\Exceptions\RequestException;
 use App\Model\Student;
+use App\Service\AdvisoryService;
 use App\Service\StudentService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -174,6 +175,47 @@ class StudentController
             $subject = $req->getAttribute('advisory_subject');
             $studentSer->createAdvisoryCurrentPeriod( $student_id,  $subject);
             return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Asesoria creada con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     *
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCurrentAdvisories_Requested($req, $res, $params)
+    {
+        try {
+            $advisoryServ = new AdvisoryService();
+            $result = $advisoryServ->getCurrentAdvisories_Requested( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     *
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCurrentAdvisories_Adviser($req, $res, $params)
+    {
+        try {
+            $advisoryServ = new AdvisoryService();
+            $result = $advisoryServ->getCurrentAdvisories_Adviser( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

@@ -15,7 +15,7 @@ class StudentsPersistence extends Persistence{
                         s.last_name as 'last_name', 
                         s.phone as 'phone', 
                         s.facebook as 'facebook', 
-                        CONCAT('".SERVER_URL."assets/images/', s.avatar) as 'avatar', 
+                        CONCAT('assets/images/', s.avatar) as 'avatar', 
                         s.date_register as 'register_date',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
@@ -204,6 +204,10 @@ class StudentsPersistence extends Persistence{
                          WHERE s.student_id = " .$idStudent ;
         return  self::executeQuery($query);
     }
+
+
+
+
 
 
 

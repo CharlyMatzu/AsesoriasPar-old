@@ -430,6 +430,16 @@ $app->get('/student/{id}/advisories', 'StudentController:getCurrentAdvisories_By
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
+//Obtiene asesorias de estudiante donde es alumno
+$app->get('/student/{id}/advisories/requested', 'StudentController:getCurrentAdvisories_Requested')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+//Obtiene asesorias de estudiante donde es alumno
+$app->get('/student/{id}/advisories/adviser', 'StudentController:getCurrentAdvisories_Adviser')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
 //Obtiene horas de asesoria asignada
 $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
     ->add('InputMiddelware:checkParam_Id')
