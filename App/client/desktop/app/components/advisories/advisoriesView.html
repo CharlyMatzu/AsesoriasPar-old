@@ -10,7 +10,7 @@
             <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
 
             <!-- content -->
-            <div class="content" ng-show="period.data != null && showAdvisories">
+            <div class="content" ng-show="!loading.status">
                 <!-- tabs -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
@@ -30,7 +30,7 @@
                                 <p ng-show="requestedAds.length == 0">No hay asesorias solicitadas</p>
                                 
                                 <!-- new -->
-                                <div class="item new" ng-click="showNewAdvisory = true">
+                                <div class="item new" ng-click="newAdvisory()">
                                     <div class="icon-container">
                                         <span class="icon fa fa-plus"></span>
                                     </div>
@@ -53,6 +53,8 @@
                                             <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
                                             <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
                                         </div>
+                                        
+                                        <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
                                     </div>
                                 </div>
                                 <!-- end items -->
@@ -87,6 +89,8 @@
                                             <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
                                             <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
                                         </div>
+
+                                        <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
                                     </div>
                                 </div>
                                 <!-- end items -->
@@ -109,11 +113,25 @@
 
 <div class="new-advisory-container modal-container fadeIn" ng-show="showNewAdvisory">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <button ng-click="showNewAdvisory = false">Cancelar</button>
+        
+        <div class="subjects-container">
+            <div class="options">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="buscar">
+                </div>
+                <button class="btn btn-danger" ng-click="closeNewAdvisory()">Cancelar</button>
+                <button class="btn btn-success" ng-click="requestAdvisory()">Solicitar</button>
+            </div>
+            <div class="subjects selected-items">
+                <div class="item" ng-show="selectedSub != null" ng-click="selectedSub = null" data-subject-id="{{selectedSub.subject_id}}">{{selectedSub.name}}</div>
+            </div>
+            <hr>
+
+            <div class="subjects selectable">
+                <div class="item" ng-repeat="sub in subjects" ng-click="selectSub(sub)" data-subject-id="{{sub.subject_id}}">{{sub.name}}</div>
             </div>
         </div>
+
     </div>
 </div>
 

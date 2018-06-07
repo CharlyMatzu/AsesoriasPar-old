@@ -53,10 +53,10 @@
                 border-radius: 7px;
                 width: 100%;
                 max-width: 200px;
-                height: 250px;
+                height: 300px;
                 overflow: hidden;
                 text-align: center;
-                cursor: pointer;
+                // cursor: pointer;
                 transition: .3s;
                 &:hover{
                     // background-color: rgba(#212121, .1);
@@ -82,14 +82,30 @@
                     }
                     .subject{
                         margin-bottom: 10px;
+                        overflow: hidden;
+                        height: 50px;
+                        max-height: 50px;
                     }
                     .status{
+                    }
+                    .btn-opt{
+                        position: absolute;
+                        color: #dc3545;
+                        cursor: pointer;
+                        bottom: -35px;
+                        left: 55px;
+                        background: none;
+                        border: none;
+                        &:hover{
+                            text-decoration: underline;
+                        }
                     }
                 }
             }
 
             .new{
                 border-color: #3A99D9;
+                cursor: pointer;
                 &:hover{
                     background-color: rgba(#3A99D9, .1);
                 }
@@ -137,6 +153,19 @@
         // end advisories
     }
     //-------END CONTENT
+}
+
+
+
+
+
+.new-advisory-container{
+    background-color: rgba(#000, .5) !important;
+
+    .subjects-container{
+        background-color: #fff;
+        padding: 20px;
+    }
 }
 
 
