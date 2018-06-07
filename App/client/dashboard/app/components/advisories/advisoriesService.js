@@ -24,7 +24,29 @@ app.service('AdvisoriesService', function($http, RequestFactory){
             errorCallback(error);
         });
     }
- 
+
+    this.getMatchHours = function(adviser_id, alumn_id, successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/schedule/adviser/"+adviser_id+"/alumn/"+alumn_id+"/match"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    }
+
+    
+    this.getDaysAndHours = function(successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/schedule/source"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    } 
     
 
 });

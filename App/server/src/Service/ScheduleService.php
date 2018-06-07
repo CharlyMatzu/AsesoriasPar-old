@@ -89,7 +89,7 @@ class ScheduleService{
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
-        return $this->formatSchedule($result->getData());
+        return $this->formatScheduleHours($result->getData());
     }
 
     /**
@@ -106,7 +106,7 @@ class ScheduleService{
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
-        return $this->formatSchedule($result->getData());
+        return $this->formatScheduleHours($result->getData());
     }
 
     /**
@@ -123,7 +123,7 @@ class ScheduleService{
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
-        return $this->formatSchedule($result->getData());
+        return $this->formatScheduleHours($result->getData());
     }
 
 
@@ -187,6 +187,66 @@ class ScheduleService{
 
         return $result->getData();
     }
+
+
+    /**
+     * @param $adviser_id int
+     * @param $alumn_id int
+     *
+     * @return array
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
+     */
+    public function getCurrentScheduleMatch_ByStudentsId($adviser_id, $alumn_id){
+
+        //Verificamos existencia de estudiantes
+        $studenServ = new StudentService();
+        $studenServ->getStudent_ById($adviser_id);
+        $studenServ->getStudent_ById($alumn_id);
+
+        //se obtiene horario de asesor
+        $adviser_schedule = $this->getCurrentSchedule_ByStudentId( $adviser_id );
+        $adviser_hours = $this->getScheduleHours_ById_Enabled( $adviser_schedule['id'] );
+        //Se obtiene horario de alumno
+        $alumn_schedule = $this->getCurrentSchedule_ByStudentId( $alumn_id );
+        $alumn_hours = $this->getScheduleHours_ById_Enabled( $alumn_schedule['id'] );
+
+        $result = $this->checkScheduleHoursMatch($adviser_hours, $alumn_hours);
+        if( empty($result) )
+            throw new NoContentException();
+
+        return $result;
+    }
+
+    /**
+     * @param $ad_hours array
+     * @param $alu_hours array
+     *
+     * @return array
+     */
+    public function checkScheduleHoursMatch($ad_hours, $alu_hours){
+        $match = [];
+
+        //Recorre horario de asesor
+        foreach( $ad_hours as $adviser ){
+            foreach ($adviser['data'] as $d) {
+
+                //Recorre horario de alumno
+                foreach ( $alu_hours as $al ){
+                    foreach ( $al['data'] as $a ){
+                        //Si hacen match, se agrega al array
+                        if( $d['day_hour_id'] == $a['day_hour_id'] )
+                            $match[] = $d;
+                    }
+                }
+            }
+        }
+
+        return $match;
+    }
+
+
 
 
     /**
@@ -619,6 +679,7 @@ class ScheduleService{
     }
 
 
+
     /**
      * @param $hour_id int
      * @param $hours array
@@ -641,7 +702,7 @@ class ScheduleService{
      * @param $schedule array|\mysqli_result
      * @return array
      */
-    public function formatSchedule( $schedule ){
+    public function formatScheduleHours($schedule ){
         $daysArray = $this->schedulesPer->getDays()->getData();
         $formatedSchedule = array();
         //Se recorre cada dia

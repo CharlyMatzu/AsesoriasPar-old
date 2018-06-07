@@ -41,7 +41,6 @@
                                     <h4 class="title">Alumno</h4>
                                     <div class="avatar">
                                         <img ng-show="ad.alumn_id != null" src="http://api.asesoriaspar.com/{{ad.alumn_avatar}}" alt="">
-                                        <img ng-show="ad.advi_id == null" src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
                                     </div>
                                     <div class="info">
                                         <div class="name">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</div>
@@ -96,19 +95,21 @@
 
 <div class="assign-container modal-container fadeIn" ng-show="showAssign">
     <div class="card content">
+        <!-- TODO: estilizar -->
+        <button ng-click="showAssign = false" class="btn-close"><span class="fa fa-times"></span> Cancelar</button>
+
         <!-- advisers -->
-        <div class="advisers-container">
+        <div class="advisers-container" ng-show="showAdvisers">
             <h2 class="title">Asesores disponibles</h2>
-            <!-- TODO: estilizar -->
-            <button ng-click="showAssign = false" class="btn btn-danger">Cancelar</button>
             
             <!-- advisers -->
             <div class="advisers">
 
                 <!-- message -->
                 <p ng-hide="advisers.length > 0">No hay asesores disponibles</p>
+                
                 <!-- items -->
-                <div class="item" ng-repeat="ad in advisers" ng-show="advisers.length > 0" ng-click="openAdviserSchedule(ad)">
+                <div class="item" ng-repeat="ad in advisers" ng-show="advisers.length > 0" ng-click="getMatchSchedule(ad)">
                     <div class="avatar">
                         <img src="http://api.asesoriaspar.com/{{ad.avatar}}" alt="{{ad.avatar}}">
                     </div>
@@ -132,9 +133,39 @@
 
         </div>
         <!-- end advisers -->
-        <div class="schedule-container">
-            <div class="selected-adviser"></div>
-            <div class="adviser-schedule"></div>
+        
+        
+        <div class="schedule-container" ng-show="showSchedule">
+            <button ng-click="backToAdvisers()" class="btn btn-primary"><span class="fa fa-arrow-left"></span> Volver</button>
+
+            <!-- adviser -->
+            <div class="selected-adviser" ng-show="selectedAdviser != null">
+                <!-- items -->
+                <div class="item">
+                    <div class="avatar">
+                        <img src="http://api.asesoriaspar.com/{{selectedAdviser.avatar}}" alt="">
+                    </div>
+                    <div class="info">
+                        <span class="name">{{selectedAdviser.name}}</span>
+                    </div>
+                </div>
+                <!-- end items -->
+            </div>
+            <!-- end adviser -->
+
+            <!-- schedule -->
+            <div class="schedule-container">
+                    <h2 class="title">Horario coincidente</h2>
+                    <div class="schedule selectable">
+                            
+                    <div class="column-item" ng-repeat="dh in daysAndHours">
+                        <div class="cell-item cell-header">{{dh.day}}</div>
+                        <div ng-repeat="data in dh.data" class="cell-item cell-hour ng-class:checkIsExist(data.id)"  ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                    </div>
+            
+                </div>
+            </div>
+            <!-- end schedule -->
         </div>
     </div>
 </div>

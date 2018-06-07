@@ -349,6 +349,10 @@ $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
+$app->get('/schedule/adviser/{adviser}/alumn/{alumn}/match', 'ScheduleController:getCurrentMatchHours_ByStudents');
+//    ->add('InputMiddelware:checkParam_Id')
+//    ->add(AuthMiddelware::class);
+
 //Obtiene todos los asesores activos del periodo actual
 //$app->get('/schedule/advisers', 'ScheduleController:getCurrentAdvisers')
 //    ->add('InputMiddelware:checkParam_id')
@@ -455,6 +459,7 @@ $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
 $app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getCurrentAdvisers_BySubject_IgnoreStudent')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
+
 
 //crear asesoria por estudiante
 $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisory')

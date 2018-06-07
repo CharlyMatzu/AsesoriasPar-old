@@ -42,6 +42,25 @@ class ScheduleController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     *
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCurrentMatchHours_ByStudents($req, $res, $params){
+        try {
+            $scheduleService = new ScheduleService();
+            $result = $scheduleService->getCurrentScheduleMatch_ByStudentsId( $params['adviser'], $params['alumn'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 
 
 //    /**
