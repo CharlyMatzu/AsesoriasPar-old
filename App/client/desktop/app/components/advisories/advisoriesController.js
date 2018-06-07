@@ -9,6 +9,8 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.subjects = {};
     $scope.selectedSub = null;
 
+    //
+
 
     $scope.getRequestedAds = function(){
         $scope.loading.status = true;
@@ -102,6 +104,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.finalice = function(advisory_id){
         Notification("Finalizar");
     };
+
 
 
     (function(){

@@ -94,6 +94,25 @@ class SubjectController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     *
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCurrentAdvisers_BySubject_IgnoreStudent($req, $res, $params){
+        try {
+            $subServ = new SubjectService();
+            $result = $subServ->getCurrentAdvisers_BySubject_IgnoreStudent( $params['id'], $params['student'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 
     /**
      * @param $req Request

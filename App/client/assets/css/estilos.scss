@@ -262,15 +262,27 @@
 //-------END CONTENT
 
 
-
-
-
 .new-advisory-container{
     background-color: rgba(#000, .5) !important;
 
     .subjects-container{
         background-color: #fff;
         padding: 20px;
+    }
+}
+
+
+.assign-container{
+    background-color: rgba(#000, .5) !important;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .content{
+        height: auto;
+        width: 100%;
+        max-width: 800px;
     }
 }
 

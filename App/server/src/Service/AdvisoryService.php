@@ -65,6 +65,28 @@ class AdvisoryService
 
 
     /**
+     * @param $period_id
+     * @param $subject_id
+     * @param $student_id
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getCurrentAdvisers_BySubject_IgnoreStudent($period_id, $subject_id, $student_id){
+
+        $result = $this->perAsesorias->getCurrentAdvisers_ByPeriod_BySubject_IngoreStudent( $period_id, $subject_id, $student_id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getCurrentAdvisers_BySubject_IgnoreStudent",
+                "Error al obtener asesores disponibles", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException();
+
+        return $result->getData();
+    }
+
+
+    /**
      * @param $student_id int
      *
      * @return \mysqli_result

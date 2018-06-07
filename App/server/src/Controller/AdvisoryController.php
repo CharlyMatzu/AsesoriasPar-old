@@ -29,7 +29,8 @@ class AdvisoryController
     }
 
 
-    
+
+
 
     /**
      * @param $req Request

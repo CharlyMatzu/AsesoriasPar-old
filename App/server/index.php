@@ -446,17 +446,24 @@ $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
     ->add(AuthMiddelware::class);
 
 
-//--------------STUDENT
+//--------------ADVISORIES
 //Obtiene asesoria por id
 $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+$app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getCurrentAdvisers_BySubject_IgnoreStudent')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 //crear asesoria por estudiante
 $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisory')
         ->add('InputMiddelware:checkData_advisory')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+
+
 
 //asigna asesoria
 //$app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviserAndHours')

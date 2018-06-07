@@ -414,6 +414,26 @@ class SubjectService{
         return $scheduleServ->getCurrentAdvisers_BySubject( $subject_id );
     }
 
+    /**
+     * @param $subject_id int
+     * @param $student_id int
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
+     */
+    public function getCurrentAdvisers_BySubject_IgnoreStudent($subject_id, $student_id)
+    {
+        $this->getSubject_ById( $subject_id );
+
+        $periodService = new PeriodService();
+        $period = $periodService->getCurrentPeriod();
+
+        $advServ = new AdvisoryService();
+        return $advServ->getCurrentAdvisers_BySubject_IgnoreStudent($period['id'], $subject_id, $student_id);
+    }
+
 
 
     //----------------------

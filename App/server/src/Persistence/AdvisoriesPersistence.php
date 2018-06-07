@@ -213,6 +213,24 @@ class AdvisoriesPersistence extends Persistence{
 //        return self::executeQuery($query);
     }
 
+    /**
+     * Obtiene los asesores disponibles de una materia en un periodo y sin ser él mismo
+     * @param $period_id int
+     * @param $subject_id int
+     * @param $student_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getCurrentAdvisers_ByPeriod_BySubject_IngoreStudent($period_id, $subject_id, $student_id){
+        $query = "SELECT * FROM student st
+                  INNER JOIN user u ON st.fk_user = u.user_id
+                  INNER JOIN schedule s ON st.student_id = s.fk_student
+                  INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
+                  WHERE s.fk_period = $period_id AND ss.fk_subject = $subject_id 
+                        AND st.student_id <> $student_id AND u.status = ".Utils::$STATUS_ENABLE;
+        return self::executeQuery($query);
+    }
+
 
     public function getActiveAdvisories_ByPeriod($period){
         $query = $this->SELECT
