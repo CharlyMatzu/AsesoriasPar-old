@@ -1,4 +1,6 @@
 app.controller('PeriodsController', function($scope, $http, Notification, PeriodsService){
+    $scope.page.title = "Periodos";
+    
     $scope.periods = [];
     $scope.period = {
         id: 0,

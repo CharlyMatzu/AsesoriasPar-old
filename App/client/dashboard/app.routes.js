@@ -1,10 +1,10 @@
 app.config( function ($routeProvider) {
     $routeProvider
         
-        .when("/", {
-            controller: "HomeController",
-            templateUrl: "app/components/home/homeView.html"
-        })
+        // .when("/", {
+        //     controller: "HomeController",
+        //     templateUrl: "app/components/home/homeView.html"
+        // })
 
         .when("/periodos", {
             controller: "PeriodsController",
@@ -51,6 +51,11 @@ app.config( function ($routeProvider) {
         //     templateUrl: "app/components/students/newStudent/newStudentView.html"
         // })
 
+        .when("/asesorias", {
+            controller: "AdvisoriesController",
+            templateUrl: "app/components/advisories/advisoriesView.html"
+        })
+
         //----------------APP
         .when("/correo", {
             // controller: "EmailController",
@@ -62,5 +67,5 @@ app.config( function ($routeProvider) {
             // templateUrl: "app/components/email/emailView.html"
         })
 
-        .otherwise("/");
+        .otherwise("/asesorias");
 });

@@ -10,7 +10,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.selectedSub = null;
 
 
-    $scope.requestedAds = function(){
+    $scope.getRequestedAds = function(){
         $scope.loading.status = true;
 
         AdvisoriesService.getRequestedAdvisories( $scope.student.id,
@@ -25,7 +25,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         );
     };
 
-    $scope.adviserAds = function(){
+    $scope.getAdviserAds = function(){
         $scope.loading.status = true;
 
         AdvisoriesService.getAdviserAdvisories( $scope.student.id,
@@ -53,6 +53,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     };
 
     $scope.newAdvisory = function(){
+        //TODO: obtener solo materias que no se han solicitado
         $scope.getSubjects();
         $scope.selectedSub = null;
         $scope.showNewAdvisory = true;
@@ -84,7 +85,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
             function(success){
                 Notification.success("Solicitado con exito");
                 $scope.closeNewAdvisory();
-                $scope.requestedAds();
+                $scope.getRequestedAds();
             },
             function(error){
                 if( error.status == CONFLICT ){
@@ -115,7 +116,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
                     $scope.period.data = success.data;
                     $scope.showAdvisories = true;
 
-                    $scope.requestedAds();
+                    $scope.getRequestedAds();
                 }
             },
             function(error){

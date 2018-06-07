@@ -26,6 +26,7 @@
     <!-- <link href="../assets/css/helper.css" rel="stylesheet"> -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/estilos.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -80,7 +81,7 @@
                     <!-- User profile and search -->
                     <ul class="navbar-nav my-lg-0">
                         <!-- Acual User -->
-                        <span>Sesion: {{user.email}}</span>
+                        <span>Sesion: <span ng-bind="user.email"></span></span>
                     </ul>
                 </div>
             </nav>
@@ -109,12 +110,12 @@
                         </li>
                         <li>
                             <a href="#!/carreras">
-                                <i class="fa fa-book"></i><span class="hide-menu">Carreras</span>
+                                <i class="fa fa-graduation-cap"></i><span class="hide-menu">Carreras</span>
                             </a>
                         </li>
                         <li> 
                             <a class="has-arrow" href="#" aria-expanded="false">
-                                <i class="fa fa-book"></i>
+                                <i class="fa fa-hashtag"></i>
                                 <span class="hide-menu">Materias</span>
                             </a>
                             <ul aria-expanded="false" class="collapse">
@@ -139,7 +140,7 @@
                         </li>
 
 
-                        <li> 
+                        <!-- <li> 
                             <a class="has-arrow" href="#" aria-expanded="false">
                                 <i class="fa fa-graduation-cap"></i>
                                 <span class="hide-menu">Estudiantes</span>
@@ -148,6 +149,12 @@
                                 <li><a href="#!/estudiantes">Registrados</a></li>
                                 <li><a href="#!/estudiantes/nuevo">Nuevo estudiante</a></li>
                             </ul>
+                        </li> -->
+
+                        <li>
+                            <a href="#!/asesorias">
+                                <i class="fa fa-handshake-o"></i><span class="hide-menu">Asesorias</span>
+                            </a>
                         </li>
 
                         <li class="nav-devider"></li>
@@ -427,6 +434,10 @@
     <!-- subject -->
     <script src="app/components/subjects/subjectsService.js"></script>
     <script src="app/components/subjects/subjectsController.js"></script>
+
+    <!-- advisories -->
+    <script src="app/components/advisories/advisoriesService.js"></script>
+    <script src="app/components/advisories/advisoriesController.js"></script>
 
         <!-- new subject -->
         <script src="app/components/subjects/newSubject/newSubjectService.js"></script>

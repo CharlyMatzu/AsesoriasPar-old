@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- content -->
+
+            <div class="card">
+                <div class="card-body">
+                    <!-- advisories -->
+                    <div class="advisories-container">
+                        <div class="advisories  double">
+
+                            <p ng-show="advisories.length == 0">No hay asesorias</p>
+
+                            <!-- items -->
+                            <!-- <div class="item item-double" ng-repeat="ad in advisories">
+                                <div class="avatar">
+                                    <img ng-show="ad.alumn_id != null" src="http://api.asesoriaspar.com/{{ad.alumn_avatar}}" alt="">
+                                    <img ng-show="ad.alumn_id == null" src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
+                                </div>
+                                <div class="info">
+                                    <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
+                                    <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
+                                    <div class="info-item subject">{{ad.subject_name}}</div>
+                                    <div class="info-item status">
+                                        <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
+                                        <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
+                                        <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
+                                        <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
+                                    </div>
+
+                                    <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
+                                </div>
+                            </div> -->
+                            <!-- end items -->
+
+                            <!-- double -->
+                            <div class="item item-double" ng-repeat="ad in advisories">
+                            
+                                <!-- alumno -->
+                                <div class="alumno student-item">
+                                    <h4 class="title">Alumno</h4>
+                                    <div class="avatar">
+                                        <img ng-show="ad.alumn_id != null" src="http://api.asesoriaspar.com/{{ad.alumn_avatar}}" alt="">
+                                        <img ng-show="ad.advi_id == null" src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
+                                    </div>
+                                    <div class="info">
+                                        <div class="name">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</div>
+                                    </div>
+                                </div>
+                                <!-- end-alumno -->
+
+                                <!-- adviser -->
+                                <div class="adviser student-item">
+                                    <h4 class="title">Asesor</h4>
+                                    <div class="avatar">
+                                        <img ng-show="ad.advi_id != null" src="http://api.asesoriaspar.com/{{ad.advi_avatar}}" alt="">
+                                        <img ng-show="ad.advi_id == null" src="http://api.asesoriaspar.com/assets/images/avatar_default.jpg" alt="">
+                                    </div>
+                                    <div class="info">
+                                        <div class="name" ng-show="ad.advi_id != null">{{ad.advi_first_name}} {{ad.advi_last_name}}</div>
+                                        <div class="name" ng-show="ad.advi_id == null">SIN ASESOR</div>
+                                    </div>
+                                </div>
+                                <!-- end-adviser -->
+
+                                <div class="info-container">
+                                    <!-- TODO: agregar enlace a materia -->
+                                    <div class="subject">
+                                        {{ad.subject_name}}
+                                    </div>
+
+                                    <div class="status">
+                                        <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
+                                        <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
+                                        <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
+                                        <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
+                                    </div>
+
+                                    <button class="btn-opt"><span class="fa fa-times"></span> Finalizar</button>
+                                    <button ng-show="ad.status == 1" class="btn-opt opt-success"><span class="fa fa-plus"></span> Asignar</button>
+                                </div>
+
+                            </div>
+                            <!-- end double -->
+                        </div>
+                    </div>
+                    <!-- end advisories -->
+                </div>
+            </div>
+
+            <!-- end content -->
+        </div>
+    </div>
+</div>
