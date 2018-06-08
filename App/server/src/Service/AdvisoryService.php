@@ -333,15 +333,39 @@ class AdvisoryService
      * @throws NotFoundException
      */
     public function finaliceAdvisory($advisory_id){
+        $this->getAdvisory_ById( $advisory_id );
+
         $result = $this->perAsesorias->finaliceAdvisory($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":finaliceAdvisory",
                 "Error al finalizar asesoria", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe asesorias");
+            throw new NotFoundException("No existe asesoria");
 
         //TODO: enviar correo a asociados
+    }
+
+    /**
+     * @param $advisory_id int
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws NoContentException
+     */
+    public function getAdvisorySchedule($advisory_id){
+        $this->getAdvisory_ById( $advisory_id );
+
+        $result = $this->perAsesorias->getAdvisoryHours($advisory_id);
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":getAdvisorySchedule",
+                "Error al obtener horario de asesoria", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException();
+
+        return $result->getData();
     }
 
 

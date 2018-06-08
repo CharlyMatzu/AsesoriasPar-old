@@ -468,7 +468,11 @@ $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisor
         ->add(AuthMiddelware::class);
 
 
-$app->put('/advisories/{id}/finalice', 'AdvisoryController:assignAdviser:finaliceAdvisory')
+$app->get('/advisories/{id}/schedule', 'AdvisoryController:getAdvisorySchedule')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+$app->put('/advisories/{id}/finalice', 'AdvisoryController:finaliceAdvisory')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 

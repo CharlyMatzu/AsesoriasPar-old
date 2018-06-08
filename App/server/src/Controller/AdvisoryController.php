@@ -124,6 +124,27 @@ class AdvisoryController
      *
      * @return Response
      */
+    public function getAdvisorySchedule($req, $res, $params)
+    {
+        try {
+            $advisoryServ = new AdvisoryService();
+            $result = $advisoryServ->getAdvisorySchedule( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     *
+     * @param $params array
+     *
+     * @return Response
+     */
     public function finaliceAdvisory($req, $res, $params)
     {
         try {

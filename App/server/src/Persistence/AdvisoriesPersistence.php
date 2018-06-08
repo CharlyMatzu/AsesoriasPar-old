@@ -215,6 +215,27 @@ class AdvisoriesPersistence extends Persistence{
 
     /**
      * @param $advisory_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdvisoryHours($advisory_id)
+    {
+        $query = "SELECT 
+                      ads.advisory_schedule_id as 'id',
+                      h.schedule_dh_id as 'schedule_id',
+                      h2.day_hour_id as 'day_hour_id',
+                      ads.fk_advisory as 'advisory_id',
+                      ads.date_register as 'date_register'
+                  FROM advisory_schedule ads
+                  INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
+                  INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
+                  WHERE ads.fk_advisory = $advisory_id";
+        return self::executeQuery($query);
+    }
+
+
+    /**
+     * @param $advisory_id int
      * @return \App\Model\DataResult
      */
     public function finaliceAdvisory($advisory_id)
