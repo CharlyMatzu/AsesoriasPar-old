@@ -267,8 +267,8 @@ class AdvisoryService
 
         //Estudiantes
         $studentServ = new StudentService();
-        $adviser = $studentServ->getStudent_ById( $advisory_id );
-        $alumn = $studentServ->getStudent_ById( $advisory['fk_student'] );
+        $adviser = $studentServ->getStudent_ById( $adviser_id );
+        $alumn = $studentServ->getStudent_ById( $advisory['alumn_id'] );
 
         //----Inicia transaccion
         $trans = PlansPeristence::initTransaction();
@@ -283,10 +283,12 @@ class AdvisoryService
 
         //Agrega horario
         //TODO verificar que horas esten activas
-        $result = $this->perAsesorias->insertAdvisoryHours( $advisory_id, $hours );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":assignAdviser",
-                "Error al registrar horario", $result->getErrorMessage());
+        foreach ( $hours as $h ){
+            $result = $this->perAsesorias->insertAdvisoryHours( $advisory_id, $h );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException(static::class.":assignAdviser",
+                    "Error al registrar horario", $result->getErrorMessage());
+        }
 
         //Se guarda registro
         $trans = PlansPeristence::commitTransaction();

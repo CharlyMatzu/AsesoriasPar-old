@@ -22,6 +22,10 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
 
 
     $scope.getAdvisories = function(){
+        $scope.showAssign = false;
+        $scope.showAdvisers = false;
+        $scope.showSchedule = false;
+
         AdvisoriesService.getAdvisories(
             function(success){
                 if( success.status == NO_CONTENT ){
@@ -100,15 +104,16 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
 
 
     var registerAdvisoryHours = function(hours, advisory_id, adviser_id){
-        Notification("OK");
-        // AdvisoriesService.assignAdviser(advisory_id, hours, adviser_id,
-        //     function(success){
-        //         Notification.success("Asignado con exito");
-        //     },
-        //     function(error){
-        //         Notification.error("Error al asignar: "+error.data);
-        //     }
-        // );
+        AdvisoriesService.assignAdviser(advisory_id, hours, adviser_id,
+            function(success){
+                Notification.success("Asignado con exito");
+                //Recarga asesorias
+                $scope.getAdvisories();
+            },
+            function(error){
+                Notification.error("Error al asignar: "+error.data);
+            }
+        );
     };
 
     $scope.checkIsExist = function(hour_id){
@@ -148,16 +153,26 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     };
 
     $scope.saveAssign = function(){
-        hours = [];
-        //Obtiene cada elemento seleccionado
+        selectedHours = [];
+        //Obtiene cada elemento seleccionado del tipo "horario"
         $('.active-selected').each(function(){
-            hours.push( $(this).data('') )
+            selectedHours.push( $(this).data('hour-day-id') );
         });
+
+        //Obtiene cada elemento del horario del asesor
+        hours = [];
+        for( var i=0; i < selectedHours.length; i++ ){
+            for( var j=0; j < $scope.matchHours.length; j++ ){
+                if( selectedHours[i] == $scope.matchHours[j]['day_hour_id'] )
+                    hours.push( $scope.matchHours[j]['id'] )
+            }    
+        }
+        
         
         if( hours.length == 0 )
             Notification.warning("No ha seleccionado ninguna hora");
         else
-            registerAdvisoryHours( hours, $scope.selectedAdviser.id, $scope.selectedAdvisory.id );
+            registerAdvisoryHours( hours, $scope.selectedAdvisory.id, $scope.selectedAdviser.id );
         
     };
 

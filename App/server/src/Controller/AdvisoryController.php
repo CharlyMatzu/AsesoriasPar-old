@@ -107,7 +107,7 @@ class AdvisoryController
             $advisory = $req->getAttribute('advisory_schedule_data');
             //Se adiciona estudiante a objeto
 //            $advisory->setStudent( $params['id'] );
-            $advisoryServ->assignAdviser( $params['id'], $advisory->getId(), $advisory->getAdviser() );
+            $advisoryServ->assignAdviser( $params['id'], $advisory->getAdviser(), $advisory->getSchedule() );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asignacion de asesor con exito");
 
         } catch (RequestException $e) {

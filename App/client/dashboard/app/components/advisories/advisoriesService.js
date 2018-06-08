@@ -51,7 +51,7 @@ app.service('AdvisoriesService', function($http, RequestFactory){
     
     this.assignAdviser = function(advisory_id, hours, adviser_id, successCallback, errorCallback){
         $http({
-            method: 'GET',
+            method: 'POST',
             url: RequestFactory.getURL()+"/advisories/"+advisory_id+"/assign",
             data: {
                 hours: hours,
