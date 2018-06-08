@@ -30,12 +30,12 @@
                                 <div class="adviser student-item">
                                     <h4 class="title">Asesor</h4>
                                     <div class="avatar">
-                                        <img ng-show="ad.advi_id != null" src="{{url+'/'+ad.advi_avatar}}" alt="">
-                                        <img ng-show="ad.advi_id == null" src="{{url}}/assets/images/avatar_default.jpg" alt="">
+                                        <img ng-show="ad.adviser_id != null" src="{{url+'/'+ad.adviser_avatar}}" alt="">
+                                        <img ng-hide="ad.adviser_id != null" src="{{url}}/assets/images/avatar_default.jpg" alt="">
                                     </div>
                                     <div class="info">
-                                        <div class="name" ng-show="ad.advi_id != null">{{ad.advi_first_name}} {{ad.advi_last_name}}</div>
-                                        <div class="name" ng-show="ad.advi_id == null">SIN ASESOR</div>
+                                        <div class="name" ng-show="ad.adviser_id != null">{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
+                                        <div class="name" ng-show="ad.adviser_id == null">SIN ASESOR</div>
                                     </div>
                                 </div>
                                 <!-- end-adviser -->

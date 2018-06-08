@@ -224,6 +224,8 @@ class AdvisoriesPersistence extends Persistence{
                       ads.advisory_schedule_id as 'id',
                       h.schedule_dh_id as 'schedule_id',
                       h2.day_hour_id as 'day_hour_id',
+                      h2.day as 'day',
+                      h2.hour as 'hour',
                       ads.fk_advisory as 'advisory_id',
                       ads.date_register as 'date_register'
                   FROM advisory_schedule ads
