@@ -171,20 +171,6 @@
           animation-iteration-count: infinite; }
           .advisories-container .double .item-double .info-container .opt-success:hover {
             background-color: #28A745; }
-
-@-webkit-keyframes assign {
-  from {
-    background-color: rgba(40, 167, 69, 0); }
-  to {
-    background-color: #28a745;
-    color: #fff; } }
-
-@keyframes assign {
-  from {
-    background-color: rgba(40, 167, 69, 0); }
-  to {
-    background-color: #28a745;
-    color: #fff; } }
   .advisories-container .new-advisorie-container {
     position: fixed;
     z-index: 100;
@@ -373,11 +359,6 @@
     background-color: #c9c7c7; }
 
 .schedule-container .selectable .column-item .active {
-  background-color: #404040; }
-  .schedule-container .selectable .column-item .active:hover {
-    background-color: #2c2c2c !important; }
-
-.schedule-container .selectable .column-item .active {
   background-color: #404040;
   -webkit-animation-name: selected;
   animation-name: selected;
@@ -387,18 +368,13 @@
   -webkit-transition: .3s;
   -o-transition: .3s;
   transition: .3s; }
+  .schedule-container .selectable .column-item .active:hover {
+    background-color: #2c2c2c; }
 
-@-webkit-keyframes selected {
-  from {
-    background-color: rgba(64, 64, 64, 0); }
-  to {
-    background-color: #404040; } }
-
-@keyframes selected {
-  from {
-    background-color: rgba(64, 64, 64, 0); }
-  to {
-    background-color: #404040; } }
+.schedule-container .selectable-actives .active-selected {
+  background-color: #1B95E0 !important; }
+  .schedule-container .selectable-actives .active-selected:hover {
+    background-color: #0781cc !important; }
 
 .modal-container {
   position: fixed;
@@ -475,3 +451,29 @@
     opacity: 1; }
   to {
     opacity: 0; } }
+
+@-webkit-keyframes selected {
+  from {
+    background-color: rgba(64, 64, 64, 0); }
+  to {
+    background-color: #404040; } }
+
+@keyframes selected {
+  from {
+    background-color: rgba(64, 64, 64, 0); }
+  to {
+    background-color: #404040; } }
+
+@-webkit-keyframes assign {
+  from {
+    background-color: rgba(40, 167, 69, 0); }
+  to {
+    background-color: #28a745;
+    color: #fff; } }
+
+@keyframes assign {
+  from {
+    background-color: rgba(40, 167, 69, 0); }
+  to {
+    background-color: #28a745;
+    color: #fff; } }

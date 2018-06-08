@@ -229,11 +229,6 @@
                         background-color: #28A745;
                     }
                 }
-
-                @keyframes assign {
-                    from {background-color: rgba(#28A745, 0);}
-                    to {background-color: rgba(#28A745, 1); color: #fff;}
-                }
             }
         }
     }
@@ -494,26 +489,22 @@
             // --------- COLUMNT ITEM ACTIVE STATE
             .active{
                 background-color: #404040;
-                &:hover{
-                    background-color: #404040 - 20 !important;
-                }
-            }
-
-            .active{
-                background-color: #404040;
                 animation-name: selected;
                 animation-duration: 1s;
                 color: #fff;
                 transition: .3s;
+                &:hover{
+                    background-color: #404040 - 20;
+                }
             }
+        }
+    }
 
-            @keyframes selected {
-                from {
-                    background-color: rgba(#404040, 0);
-                }
-                to {
-                    background-color: rgba(#404040, 1);
-                }
+    .selectable-actives{
+        .active-selected{
+            background-color: #1B95E0 !important;
+            &:hover{
+                background-color: #1B95E0 - 20 !important;
             }
         }
     }
@@ -599,4 +590,16 @@
     }
 }
 
+@keyframes selected {
+    from {
+        background-color: rgba(#404040, 0);
+    }
+    to {
+        background-color: rgba(#404040, 1);
+    }
+}
 
+@keyframes assign {
+    from {background-color: rgba(#28A745, 0);}
+    to {background-color: rgba(#28A745, 1); color: #fff;}
+}

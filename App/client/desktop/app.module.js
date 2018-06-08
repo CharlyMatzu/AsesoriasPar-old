@@ -57,11 +57,14 @@ app.run(function($rootScope, $window, $http, localStorageService, RequestFactory
 });
 
 app.factory("RequestFactory", function() {
-    // var url = "http://api.ronintopics.com/index.php";
-    var url = "http://api.asesoriaspar.com/index.php";
+    var url = "http://api.ronintopics.com";
+    // var url = "http://api.asesoriaspar.com";
 
     return {
         getURL: function() {
+            return url+'/index.php';
+        },
+        getBaseURL: function() {
             return url;
         }
     };

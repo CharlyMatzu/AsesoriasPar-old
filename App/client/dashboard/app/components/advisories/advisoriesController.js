@@ -1,4 +1,6 @@
-app.controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService){
+app.controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
+    
+    $scope.url = RequestFactory.getBaseURL();
     
     $scope.page.title = "Asesorias";
     $scope.advisories = [];
@@ -71,11 +73,14 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.toggleHour = function(event){
         
         //Verifica si el padre tiene "selectable"
-        if( $( event.currentTarget ).parents().hasClass('selectable') ){
+        if( $( event.currentTarget ).parents().hasClass('selectable-actives') ){
             //verifica si es de tipo hora
             if( $(event.currentTarget ).hasClass('cell-hour') ){
-                //agrega/quita clase
-                $( event.currentTarget ).toggleClass('active');
+                //Que sea un elemento activo
+                if( $(event.currentTarget ).hasClass('active') ){
+                    //agrega/quita clase
+                    $( event.currentTarget ).toggleClass('active-selected');
+                }
             }
         }
     };
