@@ -349,6 +349,10 @@ $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
         ->add('InputMiddelware:checkParam_id')
         ->add(AuthMiddelware::class);
 
+$app->get('/schedule/adviser/{adviser}/alumn/{alumn}/match', 'ScheduleController:getCurrentMatchHours_ByStudents');
+//    ->add('InputMiddelware:checkParam_Id')
+//    ->add(AuthMiddelware::class);
+
 //Obtiene todos los asesores activos del periodo actual
 //$app->get('/schedule/advisers', 'ScheduleController:getCurrentAdvisers')
 //    ->add('InputMiddelware:checkParam_id')
@@ -430,23 +434,41 @@ $app->get('/student/{id}/advisories', 'StudentController:getCurrentAdvisories_By
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
+//Obtiene asesorias de estudiante donde es alumno
+$app->get('/student/{id}/advisories/requested', 'StudentController:getCurrentAdvisories_Requested')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
+//Obtiene asesorias de estudiante donde es alumno
+$app->get('/student/{id}/advisories/adviser', 'StudentController:getCurrentAdvisories_Adviser')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
 //Obtiene horas de asesoria asignada
 $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
     ->add('InputMiddelware:checkParam_Id')
     ->add(AuthMiddelware::class);
 
 
-//--------------STUDENT
+//--------------ADVISORIES
 //Obtiene asesoria por id
 $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+$app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getCurrentAdvisers_BySubject_IgnoreStudent')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
+
 
 //crear asesoria por estudiante
 $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisory')
         ->add('InputMiddelware:checkData_advisory')
         ->add('InputMiddelware:checkParam_Id')
         ->add(AuthMiddelware::class);
+
+
+
 
 //asigna asesoria
 //$app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviserAndHours')

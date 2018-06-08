@@ -16,9 +16,8 @@
 	<!-- <link href="../assets/css/lib/owl.carousel.min.css" rel="stylesheet" /> -->
     <!-- <link href="../assets/css/lib/owl.theme.default.min.css" rel="stylesheet" /> -->
     <!-- Bootstrap Core CSS -->
-    <link href="../assets/css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
-
-    
+    <!-- <link href="../assets/css/lib/bootstrap/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
     <link href="../assets/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 
@@ -26,6 +25,7 @@
     <!-- <link href="../assets/css/helper.css" rel="stylesheet"> -->
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/estilos.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -80,7 +80,7 @@
                     <!-- User profile and search -->
                     <ul class="navbar-nav my-lg-0">
                         <!-- Acual User -->
-                        <span>Sesion: {{user.email}}</span>
+                        <span>Sesion: <span ng-bind="user.email"></span></span>
                     </ul>
                 </div>
             </nav>
@@ -109,12 +109,12 @@
                         </li>
                         <li>
                             <a href="#!/carreras">
-                                <i class="fa fa-book"></i><span class="hide-menu">Carreras</span>
+                                <i class="fa fa-graduation-cap"></i><span class="hide-menu">Carreras</span>
                             </a>
                         </li>
                         <li> 
                             <a class="has-arrow" href="#" aria-expanded="false">
-                                <i class="fa fa-book"></i>
+                                <i class="fa fa-hashtag"></i>
                                 <span class="hide-menu">Materias</span>
                             </a>
                             <ul aria-expanded="false" class="collapse">
@@ -139,7 +139,7 @@
                         </li>
 
 
-                        <li> 
+                        <!-- <li> 
                             <a class="has-arrow" href="#" aria-expanded="false">
                                 <i class="fa fa-graduation-cap"></i>
                                 <span class="hide-menu">Estudiantes</span>
@@ -148,6 +148,12 @@
                                 <li><a href="#!/estudiantes">Registrados</a></li>
                                 <li><a href="#!/estudiantes/nuevo">Nuevo estudiante</a></li>
                             </ul>
+                        </li> -->
+
+                        <li>
+                            <a href="#!/asesorias">
+                                <i class="fa fa-handshake-o"></i><span class="hide-menu">Asesorias</span>
+                            </a>
                         </li>
 
                         <li class="nav-devider"></li>
@@ -353,10 +359,11 @@
 
 
     <!-- All Jquery -->
-    <script src="../assets/js/lib/jquery/jquery.min.js"></script>
+    <script src="../vendor/jquery/jquery.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../assets/js/lib/bootstrap/js/popper.min.js"></script>
-    <script src="../assets/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/popper/popper.min.js"></script>
+    <!-- <script src="../assets/js/lib/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="../assets/js/jquery.slimscroll.js"></script>
     <!--Menu sidebar -->
@@ -364,21 +371,6 @@
     <!--stickey kit -->
     <script src="../assets/js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
 
-
-    <!-- <script src="../assets/js/lib/datamap/d3.min.js"></script>
-    <script src="../assets/js/lib/datamap/topojson.js"></script>
-    <script src="../assets/js/lib/datamap/datamaps.world.min.js"></script>
-    <script src="../assets/js/lib/datamap/datamap-init.js"></script> -->
-
-    <!-- <script src="../assets/js/lib/weather/jquery.simpleWeather.min.js"></script>
-    <script src="../assets/js/lib/weather/weather-init.js"></script>
-    <script src="../assets/js/lib/owl-carousel/owl.carousel.min.js"></script>
-    <script src="../assets/js/lib/owl-carousel/owl.carousel-init.js"></script> -->
-
-
-    <!-- <script src="../assets/js/lib/chartist/chartist.min.js"></script>
-    <script src="../assets/js/lib/chartist/chartist-plugin-tooltip.min.js"></script>
-    <script src="../assets/js/lib/chartist/chartist-init.js"></script> -->
     <!--Custom JavaScript -->
     <script src="../assets/js/custom.min.js"></script>
 
@@ -427,6 +419,10 @@
     <!-- subject -->
     <script src="app/components/subjects/subjectsService.js"></script>
     <script src="app/components/subjects/subjectsController.js"></script>
+
+    <!-- advisories -->
+    <script src="app/components/advisories/advisoriesService.js"></script>
+    <script src="app/components/advisories/advisoriesController.js"></script>
 
         <!-- new subject -->
         <script src="app/components/subjects/newSubject/newSubjectService.js"></script>

@@ -18,9 +18,19 @@ class AdvisoriesPersistence extends Persistence{
                       ar.date_register as 'date_register',
                       ar.status as 'status',
                       ar.fk_period as 'period_id',
-                      ar.fk_student as 'alumn_id',
-                      ar.fk_adviser as 'adviser_id',
-                      ar.fk_subject as 'subject_id'
+
+                      s_alum.student_id as 'alumn_id',
+                      s_alum.first_name as 'alumn_first_name',
+                      s_alum.last_name as 'alumn_last_name',
+                      CONCAT('assets/images/', s_alum.avatar) as 'alumn_avatar',
+                      
+                      s_advi.student_id as 'adviser_id',
+                      s_advi.first_name as 'adviser_first_name',
+                      s_advi.last_name as 'adviser_last_name',
+                      CONCAT('assets/images/', s_advi.avatar) as 'adviser_avatar',
+                      
+                      s.subject_id as 'subject_id',
+                      s.name as 'subject_name'
                   FROM advisory_request ar
                   INNER JOIN student s_alum ON s_alum.student_id = ar.fk_student
                   INNER JOIN subject s ON s.subject_id = ar.fk_subject
@@ -56,6 +66,32 @@ class AdvisoriesPersistence extends Persistence{
     public function getAdvisory_ById($id){
         $query = $this->SELECT.
             "WHERE ar.advisory_id = $id";
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param $student_id int
+     * @param $period_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getRequestedAdvisories_ByStuden_ByPeriod($student_id, $period_id)
+    {
+        $query = $this->SELECT.
+            "WHERE s_alum.student_id = $student_id AND ar.fk_period = $period_id";
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param $student_id int
+     * @param $period_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getAdviserAdvisories_ByStuden_ByPeriod($student_id, $period_id)
+    {
+        $query = $this->SELECT.
+            "WHERE s_advi.student_id = $student_id AND ar.fk_period = $period_id";
         return self::executeQuery($query);
     }
 
@@ -117,25 +153,6 @@ class AdvisoriesPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
-
-    public function getActiveAdvisories_ByPeriod($period){
-        $query = $this->SELECT
-                    ."";
-        return self::executeQuery($query);
-    }
-
-    public function getFinalizedAdvisories_ByPeriod($period){
-        $query = $this->SELECT
-                    ."";
-        return self::executeQuery($query);
-    }
-
-    public function getPendingdAdvisories_ByPeriod($period){
-        $query = $this->SELECT
-                    ."";
-        return self::executeQuery($query);
-    }
-
     /**
      * @param $student_id int
      * @param $subject_id int
@@ -162,26 +179,85 @@ class AdvisoriesPersistence extends Persistence{
     public function insertAdvisory($advisory, $period_id)
     {
         $query = "INSERT INTO advisory_request(status, description, fk_student, fk_subject, fk_period)
-                  VALUES(".Utils::$STATUS_PENDING.", ".$advisory->getDescription().", 
+                  VALUES(".Utils::$STATUS_PENDING.", '".$advisory->getDescription()."', 
                   ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
         return self::executeQuery($query);
     }
 
 
+    /**
+     * @param $advisory_id int
+     * @param $adviser int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function assignAdviser($advisory_id, $adviser)
+    {
+//        $query = "INSERT INTO advisory_request(status, description, fk_student, fk_subject, fk_period)
+//                  VALUES(".Utils::$STATUS_PENDING.", '".$advisory->getDescription()."',
+//                  ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
+//        return self::executeQuery($query);
+    }
 
-//    private $SELECT = "SELECT
-//                        ar.advisory_id as 'id',
-//                        ar.date_start as 'date_start',
-//                        ar.date_end as 'date_end',
-//                        ar.date_register as 'date_register',
-//                        ar.status as 'status',
-//                        s_alum.student_id as 'student_id',
-//                        s_advi.student_id as 'adviser_id',
-//                        s.name as 'subject'
-//                    FROM advisory_request ar
-//                    INNER JOIN student s_alum ON s_alum.student_id = ar.fk_student
-//                    INNER JOIN student s_advi ON s_advi.student_id = ar.fk_adviser
-//                    INNER JOIN schedule_subjects hm ON hm.schedule_subject_id = ar.fk_subject
-//                    INNER JOIN subject s ON s.subject_id = hm.fk_subject
-//                    INNER JOIN schedule h ON h.schedule_id = hm.fk_schedule ";
+    /**
+     * @param $advisory_id int
+     * @param $hour
+     *
+     * @return \App\Model\DataResult
+     */
+    public function insertAdvisoryHours($advisory_id, $hour)
+    {
+//        $query = "INSERT INTO advisory_request(status, description, fk_student, fk_subject, fk_period)
+//                  VALUES(".Utils::$STATUS_PENDING.", '".$advisory->getDescription()."',
+//                  ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
+//        return self::executeQuery($query);
+    }
+
+    /**
+     * Obtiene los asesores disponibles de una materia en un periodo y sin ser él mismo
+     * @param $period_id int
+     * @param $subject_id int
+     * @param $student_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getCurrentAdvisers_ByPeriod_BySubject_IngoreStudent($period_id, $subject_id, $student_id){
+        $query = "SELECT 
+                      st.student_id as 'id',
+                      concat(st.first_name, ' ',st.last_name) as 'name',
+                      CONCAT('assets/images/',st.avatar) as 'avatar',
+                      st.itson_id as 'itson_id',
+                      c.career_id as 'career_id',
+                      c.name as 'career_name',
+                      s.schedule_id as 'schedule_id'
+                  FROM student st
+                  INNER JOIN user u ON st.fk_user = u.user_id
+                  INNER JOIN career c ON st.fk_career = c.career_id
+                  INNER JOIN schedule s ON st.student_id = s.fk_student
+                  INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
+                  WHERE s.fk_period = $period_id AND ss.fk_subject = $subject_id 
+                        AND st.student_id <> $student_id AND u.status = ".Utils::$STATUS_ENABLE;
+        return self::executeQuery($query);
+    }
+
+
+    public function getActiveAdvisories_ByPeriod($period){
+        $query = $this->SELECT
+            ."";
+        return self::executeQuery($query);
+    }
+
+    public function getFinalizedAdvisories_ByPeriod($period){
+        $query = $this->SELECT
+            ."";
+        return self::executeQuery($query);
+    }
+
+    public function getPendingdAdvisories_ByPeriod($period){
+        $query = $this->SELECT
+            ."";
+        return self::executeQuery($query);
+    }
+
+
 }
