@@ -214,6 +214,18 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
+     * @param $advisory_id int
+     * @return \App\Model\DataResult
+     */
+    public function finaliceAdvisory($advisory_id)
+    {
+        $query = "UPDATE advisory_request
+                SET status =".Utils::$STATUS_FINALIZED.", date_end = NOW()
+                WHERE advisory_id = $advisory_id";
+        return self::executeQuery($query);
+    }
+
+    /**
      * Obtiene los asesores disponibles de una materia en un periodo y sin ser él mismo
      * @param $period_id int
      * @param $subject_id int

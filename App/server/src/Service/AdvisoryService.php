@@ -322,9 +322,26 @@ class AdvisoryService
             $mail->setBody("Se te ha sido asignado asesor el alumno <strong>".$adviser['first_name']." ".$adviser['last_name']."</strong> para la materia de: <strong>".$subject['name']."</strong>");
             $mail->setPlainBody("Se te ha sido asignado asesor el alumno ".$adviser['first_name']." ".$adviser['last_name']."para la materia de: ".$subject['name']);
 
-
         }catch (RequestException $e){}
 
+    }
+
+    /**
+     * @param $advisory_id
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function finaliceAdvisory($advisory_id){
+        $result = $this->perAsesorias->finaliceAdvisory($advisory_id);
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":finaliceAdvisory",
+                "Error al finalizar asesoria", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe asesorias");
+
+        //TODO: enviar correo a asociados
     }
 
 

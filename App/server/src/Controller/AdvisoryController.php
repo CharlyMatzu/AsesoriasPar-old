@@ -119,8 +119,22 @@ class AdvisoryController
     /**
      * @param $req Request
      * @param $res Response
+     *
+     * @param $params array
+     *
+     * @return Response
      */
-    public function updateAdvisory($req, $res){}
+    public function finaliceAdvisory($req, $res, $params)
+    {
+        try {
+            $advisoryServ = new AdvisoryService();
+            $advisoryServ->finaliceAdvisory( $params['id'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Finalizado con exito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 
     /**
