@@ -303,7 +303,7 @@ class AdvisoryService
 
             //Obteniendo materia
             $subServ = new SubjectService();
-            $subject = $subServ->getSubject_ById( $advisory['fk_subject'] );
+            $subject = $subServ->getSubject_ById( $advisory['subject_id'] );
             $mailServ = new MailService();
 
             //Correo para Asesor
