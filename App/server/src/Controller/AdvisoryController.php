@@ -96,6 +96,29 @@ class AdvisoryController
     /**
      * @param $req Request
      * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function assignAdviser($req, $res, $params)
+    {
+        try {
+            $advisoryServ = new AdvisoryService();
+            /* @var $advisory AdvisoryModel */
+            $advisory = $req->getAttribute('advisory_schedule_data');
+            //Se adiciona estudiante a objeto
+//            $advisory->setStudent( $params['id'] );
+            $advisoryServ->assignAdviser( $params['id'], $advisory->getId(), $advisory->getAdviser() );
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asignacion de asesor con exito");
+
+        } catch (RequestException $e) {
+        return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
      */
     public function updateAdvisory($req, $res){}
 

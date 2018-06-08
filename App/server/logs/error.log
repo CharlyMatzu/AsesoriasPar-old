@@ -1,0 +1,1 @@
+[2018-06-08 19:27:55] App\Service\StudentService:getStudent_ById.ERROR: Ocurrio un error al obtener estudiante --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '[object Object]' at line 16 [] []

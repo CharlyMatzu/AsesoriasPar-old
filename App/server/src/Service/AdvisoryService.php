@@ -7,6 +7,7 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 use App\Model\MailModel;
+use App\Persistence\PlansPeristence;
 use App\Utils;
 use Carbon\Carbon;
 
@@ -251,7 +252,78 @@ class AdvisoryService
         }
     }
 
+    /**
+     * @param $advisory_id
+     * @param $adviser_id
+     * @param $hours
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function assignAdviser($advisory_id, $adviser_id, $hours){
 
+        //Asesoria
+        $advisory = $this->getAdvisory_ById( $advisory_id );
+
+        //Estudiantes
+        $studentServ = new StudentService();
+        $adviser = $studentServ->getStudent_ById( $advisory_id );
+        $alumn = $studentServ->getStudent_ById( $advisory['fk_student'] );
+
+        //----Inicia transaccion
+        $trans = PlansPeristence::initTransaction();
+        if( !$trans )
+            throw new InternalErrorException(static::class.":assignAdviser", "Error al iniciar transaccion");
+
+        //Actualiza datos de asesoria
+        $result = $this->perAsesorias->assignAdviser( $advisory_id, $adviser_id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":assignAdviser",
+                "Error al actualizar asesoria", $result->getErrorMessage());
+
+        //Agrega horario
+        //TODO verificar que horas esten activas
+        $result = $this->perAsesorias->insertAdvisoryHours( $advisory_id, $hours );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException(static::class.":assignAdviser",
+                "Error al registrar horario", $result->getErrorMessage());
+
+        //Se guarda registro
+        $trans = PlansPeristence::commitTransaction();
+        if( !$trans )
+            throw new InternalErrorException(static::class.":assignAdviser", "Error al registrar transaccion");
+
+        //Envio de correo
+        try{
+            $userServ =  new UserService();
+            $adviserUser = $userServ->getUsers_ByStudentId( $adviser['id'] );
+            $alumnUser = $userServ->getUsers_ByStudentId( $alumn['id'] );
+
+            //Obteniendo materia
+            $subServ = new SubjectService();
+            $subject = $subServ->getSubject_ById( $advisory['fk_subject'] );
+            $mailServ = new MailService();
+
+            //Correo para Asesor
+            $mail = new MailModel();
+            $mail->addAdress( $adviserUser['email'] );
+            $mail->setSubject("Nuevo asesorado");
+            $mail->setBody("Has sido asignado como asesor al alumno <strong>".$alumn['first_name']." ".$alumn['last_name']."</strong> para la materia de: <strong>".$subject['name']."</strong>");
+            $mail->setPlainBody("Has sido asignado como asesor al alumno ".$alumn['first_name']." ".$alumn['last_name']."para la materia de: ".$subject['name']);
+
+            $mailServ->sendMail($mail);
+
+            //Correo para Alumno
+            $mail = new MailModel();
+            $mail->addAdress( $adviserUser['email'] );
+            $mail->setSubject("Asesor asignado");
+            $mail->setBody("Se te ha sido asignado asesor el alumno <strong>".$adviser['first_name']." ".$adviser['last_name']."</strong> para la materia de: <strong>".$subject['name']."</strong>");
+            $mail->setPlainBody("Se te ha sido asignado asesor el alumno ".$adviser['first_name']." ".$adviser['last_name']."para la materia de: ".$subject['name']);
+
+
+        }catch (RequestException $e){}
+
+    }
 
 
 //

@@ -468,6 +468,10 @@ $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisor
         ->add(AuthMiddelware::class);
 
 
+$app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviser')
+    ->add('InputMiddelware:checkData_advisory_schedule')
+    ->add('InputMiddelware:checkParam_Id')
+    ->add(AuthMiddelware::class);
 
 
 //asigna asesoria

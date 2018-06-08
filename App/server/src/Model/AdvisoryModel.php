@@ -11,6 +11,7 @@
         private $student;
         private $adviser;
         private $subject;
+        private $schedule;
         
         public function __construct(){}
 
@@ -79,7 +80,7 @@
         }
 
         /**
-         * @return Student
+         * @return Student|int
          */
         public function getAdviser()
         {
@@ -156,6 +157,22 @@
         public function setDescription($description)
         {
             $this->description = $description;
+        }
+
+        /**
+         * @return array
+         */
+        public function getSchedule()
+        {
+            return $this->schedule;
+        }
+
+        /**
+         * @param array $schedule
+         */
+        public function setSchedule($schedule)
+        {
+            $this->schedule = $schedule;
         }
 
 

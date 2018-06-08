@@ -40,6 +40,27 @@ class UserService{
             return $result->getData();
     }
 
+
+    /**
+     * Obtiene usuario por id de estudiante
+     *
+     * @param $student_id int
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getUsers_ByStudentId($student_id){
+        $result = $this->userPer->getUser_ByStudentId($student_id);
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException(static::class.":getUser_ByStudentid", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NotFoundException("No existe usuario asociado");
+        else
+            return $result->getData()[0];
+    }
+
     /**
      * @return mixed
      * @throws InternalErrorException

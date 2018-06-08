@@ -187,30 +187,30 @@ class AdvisoriesPersistence extends Persistence{
 
     /**
      * @param $advisory_id int
-     * @param $adviser int
+     * @param $adviser_id int
      *
      * @return \App\Model\DataResult
      */
-    public function assignAdviser($advisory_id, $adviser)
+    public function assignAdviser($advisory_id, $adviser_id)
     {
-//        $query = "INSERT INTO advisory_request(status, description, fk_student, fk_subject, fk_period)
-//                  VALUES(".Utils::$STATUS_PENDING.", '".$advisory->getDescription()."',
-//                  ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
-//        return self::executeQuery($query);
+        $query = "UPDATE advisory_request 
+                    SET fk_adviser = $adviser_id, 
+                    date_start = NOW(), status = ".Utils::$STATUS_ENABLE."
+                    WHERE advisory_id = $advisory_id";
+        return self::executeQuery($query);
     }
 
     /**
      * @param $advisory_id int
-     * @param $hour
+     * @param $hour_id int
      *
      * @return \App\Model\DataResult
      */
-    public function insertAdvisoryHours($advisory_id, $hour)
+    public function insertAdvisoryHours($advisory_id, $hour_id)
     {
-//        $query = "INSERT INTO advisory_request(status, description, fk_student, fk_subject, fk_period)
-//                  VALUES(".Utils::$STATUS_PENDING.", '".$advisory->getDescription()."',
-//                  ".$advisory->getStudent().", ".$advisory->getSubject().", $period_id)";
-//        return self::executeQuery($query);
+        $query = "INSERT INTO advisory_schedule(fk_advisory, fk_hours, status)
+                  VALUES($advisory_id, $hour_id, ".Utils::$STATUS_ENABLE.")";
+        return self::executeQuery($query);
     }
 
     /**
@@ -240,24 +240,37 @@ class AdvisoriesPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
-
-    public function getActiveAdvisories_ByPeriod($period){
-        $query = $this->SELECT
-            ."";
+    /**
+     * @param $advisory_id int
+     * @param $status int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function changeAdvisoryStatus($advisory_id, $status){
+        $query = "UPDATE advisory_request ar
+                    SET status = $status
+                   WHERE ar.advisory_id = $advisory_id";
         return self::executeQuery($query);
     }
 
-    public function getFinalizedAdvisories_ByPeriod($period){
-        $query = $this->SELECT
-            ."";
-        return self::executeQuery($query);
-    }
 
-    public function getPendingdAdvisories_ByPeriod($period){
-        $query = $this->SELECT
-            ."";
-        return self::executeQuery($query);
-    }
+//    public function getActiveAdvisories_ByPeriod($period){
+//        $query = $this->SELECT
+//            ."";
+//        return self::executeQuery($query);
+//    }
+//
+//    public function getFinalizedAdvisories_ByPeriod($period){
+//        $query = $this->SELECT
+//            ."";
+//        return self::executeQuery($query);
+//    }
+//
+//    public function getPendingdAdvisories_ByPeriod($period){
+//        $query = $this->SELECT
+//            ."";
+//        return self::executeQuery($query);
+//    }
 
 
 }

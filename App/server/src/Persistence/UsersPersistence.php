@@ -118,6 +118,18 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * @param $student_id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getUser_ByStudentId( $student_id ){
+        $query = $this->SELECT.
+                "INNER JOIN student s ON u.user_id = s.fk_user
+                WHERE s.student_id = $student_id";
+        return  self::executeQuery($query);
+    }
+
+    /**
      * @param $email
      *
      * @return \App\Model\DataResult

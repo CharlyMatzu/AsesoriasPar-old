@@ -12,7 +12,7 @@
 
                             <p ng-show="advisories.length == 0">No hay asesorias</p>
                             <!-- double -->
-                            <div class="item item-double" ng-repeat="ad in advisories">
+                            <div class="item item-double" ng-repeat="ad in advisories" data-advisory-id="ad.id">
                             
                                 <!-- alumno -->
                                 <div class="alumno student-item">
@@ -74,7 +74,7 @@
 <div class="assign-container modal-container fadeIn" ng-show="showAssign">
     <div class="card content">
         <!-- TODO: estilizar -->
-        <button ng-click="showAssign = false" class="btn-close"><span class="fa fa-times"></span> Cancelar</button>
+        <button ng-click="closeAssign()" class="btn-close"><span class="fa fa-times"></span> Cancelar</button>
 
         <!-- advisers -->
         <div class="advisers-container" ng-show="showAdvisers">
@@ -124,6 +124,7 @@
 
             <!-- schedule -->
             <div class="schedule-container">
+                    <button class="btn btn-success" ng-click="saveAssign()">Guardar</button>
                     <h2 class="title">Horario coincidente</h2>
                     <div class="schedule selectable selectable-actives">
                             

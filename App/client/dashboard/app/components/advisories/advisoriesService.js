@@ -46,7 +46,23 @@ app.service('AdvisoriesService', function($http, RequestFactory){
         }, function(error){
             errorCallback(error);
         });
-    } 
+    }
+
+    
+    this.assignAdviser = function(advisory_id, hours, adviser_id, successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/advisories/"+advisory_id+"/assign",
+            data: {
+                hours: hours,
+                adviser: adviser_id
+            }
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    }
     
 
 });

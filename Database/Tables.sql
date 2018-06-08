@@ -90,7 +90,7 @@ CREATE TABLE student(
 	first_name 			VARCHAR(100) NOT NULL,
 	last_name 			VARCHAR(100) NOT NULL,
 	phone 				VARCHAR(15) NULL,
-	avatar 				VARCHAR(255) NULL,
+	avatar 				VARCHAR(255) NULL DEFAULT 'avatar_default.jpg',
 	facebook 			VARCHAR(100) NULL,
 	date_register   	TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	status				TINYINT NOT NULL DEFAULT 2, -- '0 = Inactivo, 1 = Activo,

@@ -527,6 +527,43 @@ class InputParamsMiddelware extends Middelware
         return $res;
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     *
+     * @return Response
+     */
+    public function checkData_advisory_schedule($req, $res, $next)
+    {
+
+        $params = $req->getParsedBody();
+        if ( !isset($params['hours']) || !isset($params['adviser']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: hours, adviser");
+
+        if( empty($params['hours']) || empty($params['adviser']) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros vacios");
+
+        if (!is_array($params['hours']))
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Hours debe ser array");
+
+        //Verificando que sean datos numericos
+        $hours = $params['hours'];
+        foreach ($hours as $hour) {
+            if (!is_numeric($hour))
+                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Valores de hours deben ser numericos");
+        }
+
+        $advisory = new AdvisoryModel();
+        $advisory->setSchedule( $hours );
+        $advisory->setAdviser( $params['adviser'] );
+
+        $req = $req->withAttribute('advisory_schedule_data', $advisory);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
 
     /**
      * @param $req Request

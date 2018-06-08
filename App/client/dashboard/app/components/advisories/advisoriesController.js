@@ -13,6 +13,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
 
     $scope.selectedAdviser = {};
     $scope.selectedAlumn = {};
+    $scope.selectedAdvisory = {};
 
     // $scope.adviserSchedule = [];
     // $scope.mySchedule = [];
@@ -97,6 +98,19 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         );
     };
 
+
+    var registerAdvisoryHours = function(hours, advisory_id, adviser_id){
+        Notification("OK");
+        // AdvisoriesService.assignAdviser(advisory_id, hours, adviser_id,
+        //     function(success){
+        //         Notification.success("Asignado con exito");
+        //     },
+        //     function(error){
+        //         Notification.error("Error al asignar: "+error.data);
+        //     }
+        // );
+    };
+
     $scope.checkIsExist = function(hour_id){
         for(var i=0; i < $scope.matchHours.length; i++){
             if( hour_id == $scope.matchHours[i]['day_hour_id'] )
@@ -117,6 +131,7 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         $scope.showAdvisers = true;
         //Se obtiene alumno que solicito asesoria
         $scope.selectedAlumn = advisory.alumn_id;
+        $scope.selectedAdvisory = advisory;
         //Se obtiene asesores
         getSubjectAdvisers(advisory);
     };
@@ -126,13 +141,25 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         $scope.showSchedule = false;
     };
 
-    // $scope.openAdviserSchedule = function(adviser, alumn){
-    //     // Notification("Funciona: "+adviser.id);
-    //     $scope.selectedAdviser = adviser;
-    //     //Se obtiene horario del asesor y del alumno
+    $scope.closeAssign = function(){
+        $scope.showSchedule = false;
+        $scope.showAdvisers = false;
+        $scope.showAssign = false;
+    };
+
+    $scope.saveAssign = function(){
+        hours = [];
+        //Obtiene cada elemento seleccionado
+        $('.active-selected').each(function(){
+            hours.push( $(this).data('') )
+        });
         
-    //     //$scope.showSchedule = true;
-    // };
+        if( hours.length == 0 )
+            Notification.warning("No ha seleccionado ninguna hora");
+        else
+            registerAdvisoryHours( hours, $scope.selectedAdviser.id, $scope.selectedAdvisory.id );
+        
+    };
 
 
 
