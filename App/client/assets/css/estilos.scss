@@ -389,11 +389,13 @@
     .subjects{
         padding: 20px 0;
         display: flex;
+        flex-wrap: wrap;
         width: 100%;
+
 
         .item{
             padding: 7px 12px;
-            margin-right: 10px;
+            margin: 0 10px 10px 0;
             border-radius: 10px;
             color: #1B95E0;
             font-weight: bold;
@@ -431,6 +433,7 @@
     .schedule{
         width: 100%;
         display: flex;
+        overflow-x: scroll;
 
         .column-item{
             flex: 1; // Let all the flexible items be the same length

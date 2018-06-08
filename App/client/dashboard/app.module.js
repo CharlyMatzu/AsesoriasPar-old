@@ -94,8 +94,8 @@ app.run(function($rootScope, $window, localStorageService){
 // });
 
 app.factory("RequestFactory", function() {
-    var url = "http://api.ronintopics.com";
-    // var url = "http://api.asesoriaspar.com";
+    // var url = "http://api.ronintopics.com";
+    var url = "http://api.asesoriaspar.com";
 
     return {
         getURL: function() {

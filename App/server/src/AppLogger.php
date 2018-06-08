@@ -24,7 +24,7 @@ class AppLogger
     public static function makeActivityLog($logTitle, $message){
         $log = new Logger($logTitle);
         $log->pushHandler(new StreamHandler(ROOT_PATH . '/logs/activity.log', Logger::INFO));
-        $log->error( $message );
+        $log->addInfo( $message );
     }
 
 

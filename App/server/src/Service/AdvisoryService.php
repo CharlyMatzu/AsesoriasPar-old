@@ -5,6 +5,8 @@ use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
+use App\Model\MailModel;
 use App\Utils;
 use Carbon\Carbon;
 
@@ -210,6 +212,21 @@ class AdvisoryService
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":insertAdvisory",
                 "Error al registrar asesorias", $advisories->getErrorMessage());
+
+
+        //Envia correo de confirmacion
+        try{
+            $userServ = new UserService();
+            $stuServ = new StudentService();
+            $student = $stuServ->getStudent_ById( $advisory->getStudent() );
+            $name = $student['first_name']." ".$student['last_name'];
+
+            $subject = $subjectServ->getSubject_ById( $advisory->getSubject() );
+
+            $userServ->sendEmailToStaff("Nueva Asesoria", "Se ha registrado una nueva asesoria por: <strong>$name</strong>, para la materia de <strong>".$subject['name']."</strong>");
+        }catch (RequestException $e){
+
+        }
     }
 
 

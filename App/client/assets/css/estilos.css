@@ -283,10 +283,12 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
     width: 100%; }
     .subjects-container .subjects .item {
       padding: 7px 12px;
-      margin-right: 10px;
+      margin: 0 10px 10px 0;
       border-radius: 10px;
       color: #1B95E0;
       font-weight: bold;
@@ -310,7 +312,8 @@
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  overflow-x: scroll; }
   .schedule-container .schedule .column-item {
     -webkit-box-flex: 1;
     -ms-flex: 1;

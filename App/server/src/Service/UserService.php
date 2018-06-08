@@ -357,7 +357,33 @@ class UserService{
         if( !$trans )
             throw new InternalErrorException(static::class.":insertUserAndStudent","Error al realizar commit de transaccion");
 
-//        $this->sendConfirmEmail( $user->getEmail() );
+        //Envia correo de confirmacion
+        try{
+            $this->sendConfirmEmail( $user->getEmail() );
+            //TODO: Envia correo a admin
+            $this->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName() );
+        }catch (RequestException $e){}
+    }
+
+    /**
+     * @param $subject String
+     * @param $body String
+     *
+     */
+    public function sendEmailToStaff($subject, $body){
+        try{
+            $mailServ = new MailService();
+            $mail = new MailModel();
+            $mail->setSubject($subject);
+            $mail->setBody($body);
+            $mail->setPlainBody($body);
+
+            $users = $this->getStaffUsers();
+            foreach( $users as $u ){
+                $mail->addAdress( $u['email'] );
+            }
+            $mailServ->sendMail( $mail );
+        }catch (RequestException $e){}
     }
 
 
@@ -375,7 +401,7 @@ class UserService{
         $mail->addAdress( $email );
         $mail->setSubject("Confirmacion de correo");
         $mail->setBody("<h3>Asesorias par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm' </p>");
-        $mail->setBody("asdsad");
+        $mail->setPlainBody("asdsad");
 
         try{
             $mailServ->sendMail( $mail );
