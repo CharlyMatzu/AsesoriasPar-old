@@ -16,7 +16,7 @@ class StudentsPersistence extends Persistence{
                         s.phone as 'phone', 
                         s.facebook as 'facebook', 
                         CONCAT('assets/images/', s.avatar) as 'avatar', 
-                        s.date_register as 'register_date',
+                        s.date_register as 'date_register',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
                         c.career_id as 'career_id',

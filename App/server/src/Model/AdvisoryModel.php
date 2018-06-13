@@ -3,7 +3,7 @@
     class AdvisoryModel{
 
         private $id;
-        private $register_date;
+        private $date_register;
         private $date_start;
         private $date_end;
         private $description;
@@ -36,15 +36,15 @@
          */
         public function getRegisterDate()
         {
-            return $this->register_date;
+            return $this->date_register;
         }
 
         /**
-         * @param mixed $register_date
+         * @param mixed $date_register
          */
-        public function setRegisterDate($register_date)
+        public function setRegisterDate($date_register)
         {
-            $this->register_date = $register_date;
+            $this->date_register = $date_register;
         }
 
         /**

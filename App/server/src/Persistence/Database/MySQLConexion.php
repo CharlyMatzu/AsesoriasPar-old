@@ -13,7 +13,7 @@
         /**
          * Constructor que instancia una nueva conexión a la base de persistencia
          * @throws InternalErrorException Si no se puede conectar con la base de datos, o si no se puede
-         * utilizar la codificacion UTF-8
+         * utilizar la codificación UTF-8
          */
         public function __construct() {
 
@@ -23,7 +23,7 @@
 
 
             if( !isset($json_config->mode) || !isset($json_config->connection) )
-                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+                throw new InternalErrorException("Connection", "Faltan datos de conexion");
 
             //Obteniendo el modo y las conexiones
             $mode = $json_config->mode;
@@ -31,12 +31,12 @@
 
             //Se obtiene conexion especifica, si no existe, se lanza error
             if( !isset($connections->$mode) )
-                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+                throw new InternalErrorException("Conexion", "Faltan datos de conexion");
 
             $con = $connections->$mode;
 
             if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
-                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+                throw new InternalErrorException("Conexion", "Faltan datos de conexion");
 
             //Datos de conexion
             $this->_connection = new mysqli(
@@ -49,14 +49,12 @@
              //Manejo de error
             if( mysqli_connect_error() ) {
                 //trigger_error("Error al tratar de conectar con MySQL: " . mysqli_connect_error(), E_USER_ERROR);
-                throw new InternalErrorException(static::class.":Connect", "Ocurrio un error tratar de conectar con MYSQL", mysqli_connect_error());
+                throw new InternalErrorException("Connect", "Ocurrio un error tratar de conectar con MYSQL", mysqli_connect_error());
             }
 
             /* cambiar el conjunto de caracteres a utf8 para aceptar tildes y 'eñes' */
-            if ( !$this->_connection->set_charset('utf8') ) {
-                //printf("Error cargando el conjunto de caracteres utf8: %s\n", $this->_connection->error);
+            if ( !$this->_connection->set_charset('utf8') )
                 throw new InternalErrorException(static::class."UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
-            }
         }
 
 

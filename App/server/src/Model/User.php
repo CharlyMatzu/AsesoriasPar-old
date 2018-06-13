@@ -6,7 +6,7 @@ class User{
     private $id;
     private $email;
     private $password;
-    private $register_date;
+    private $date_register;
     private $status;
     private $role;
 
@@ -81,17 +81,17 @@ class User{
     /**
      * @return mixed
      */
-    public function getRegister_Date()
+    public function getdate_register()
     {
-        return $this->register_date;
+        return $this->date_register;
     }
 
     /**
-     * @param mixed $Register_Date
+     * @param mixed $date_register
      */
-    public function setRegister_Date($Register_Date)
+    public function setdate_register($date_register)
     {
-        $this->register_date = $Register_Date;
+        $this->date_register = $date_register;
     }
 
     /**

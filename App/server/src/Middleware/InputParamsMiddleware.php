@@ -1,4 +1,4 @@
-<?php namespace App\Middelware;
+<?php namespace App\Middleware;
 
 
 use App\Model\AdvisoryModel;
@@ -15,7 +15,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Utils;
 
-class InputParamsMiddelware extends Middelware
+class InputParamsMiddleware extends Middleware
 {
 
     //Cuando es un valor por GET, el método debe llamarse checkParam_NombreParametro[s]

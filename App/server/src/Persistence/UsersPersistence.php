@@ -12,10 +12,11 @@ class UsersPersistence extends Persistence{
     public function __construct(){}
 
     private $SELECT = "SELECT 
-                        u.user_id as 'id',
+                        u.user_id,
                         u.email,
-                        u.register_date,
+                        u.date_register,
                         u.status,
+                        -- Role
                         r.name as 'role'
                     FROM user u
                     INNER JOIN role r ON r.name = u.fk_role ";
@@ -80,19 +81,7 @@ class UsersPersistence extends Persistence{
     public function getUser_BySignIn($email, $pass){
         $ePass = $this->crypt($pass);
         $query = $this->SELECT."
-                WHERE (u.email = '".$email."') 
-                AND u.password = '".$ePass."' ";
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * @param $id int
-     * @return \App\Model\DataResult
-     */
-    public function getUserByTokenAuth($id)
-    {
-        $query = $this->SELECT."
-                WHERE u.user_id = $id";
+                WHERE u.email = '$email' AND u.password = '$ePass' ";
         return  self::executeQuery($query);
     }
 
@@ -175,7 +164,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user User objeto tipo User con la informacion de registro
+     * @param $user User objeto tipo User con la información de registro
      * @return \App\Model\DataResult
      */
     public function insertUser( $user ){

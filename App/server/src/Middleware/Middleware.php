@@ -1,9 +1,9 @@
-<?php namespace App\Middelware;
+<?php namespace App\Middleware;
 
 
 use Slim\Http\Request;
 
-abstract class Middelware
+abstract class Middleware
 {
     /**
      * @param $req Request

@@ -53,10 +53,10 @@ class Mailer
             $mail->AltBody = $plainBody;
 
             $mail->send();
-            AppLogger::makeActivityLog(static::class.":SendMail", "Se ha enviado correo con exito");
+            AppLogger::makeActivityLog("SendMail", "Se ha enviado correo con exito");
         } catch (Exception $e) {
             //echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
-            throw new InternalErrorException( static::class.":SendMail", "Error al enviar correo", $mail->ErrorInfo );
+            throw new InternalErrorException( "SendMail", "Error al enviar correo", $mail->ErrorInfo );
         }
     }
 

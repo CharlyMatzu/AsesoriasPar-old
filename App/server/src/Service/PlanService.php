@@ -26,7 +26,7 @@ class PlanService{
         $result = $this->perPlans->getPlans();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":getPlans","Ocurrio un error al obtener planes", $result->getErrorMessage());
+            throw new InternalErrorException("getPlans","Ocurrio un error al obtener planes", $result->getErrorMessage());
 
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("Sin planes registrados");
@@ -46,7 +46,7 @@ class PlanService{
         $result = $this->perPlans->getPlan_ById( $planId );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":getPlanById","Ocurrio un error al obtener plan", $result->getErrorMessage());
+            throw new InternalErrorException("getPlanById","Ocurrio un error al obtener plan", $result->getErrorMessage());
 
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe plan");
@@ -64,7 +64,7 @@ class PlanService{
 
         $result = $this->isPlanExist_ByYear( $year );
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":createPlan","Error al obtener plan por año");
+            throw new InternalErrorException("createPlan","Error al obtener plan por año");
         else if( $result->getOperation() == true )
             throw new ConflictException("Plan ya existe");
 
@@ -72,7 +72,7 @@ class PlanService{
         $this->perPlans->createPlan($year);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":createPlan","Error al registrar plan", $result->getErrorMessage());
+            throw new InternalErrorException("createPlan","Error al registrar plan", $result->getErrorMessage());
     }
 
     /**
@@ -89,7 +89,7 @@ class PlanService{
         //Comprobando que no exista año
         $result = $this->isPlanExist_ByYear( $year );
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":updatePlan","Error al obtener plan por año");
+            throw new InternalErrorException("updatePlan","Error al obtener plan por año");
         else if( $result->getOperation() == true )
             throw new ConflictException("Plan ya existe");
 
@@ -97,7 +97,7 @@ class PlanService{
         $this->perPlans->updatePlan($planId, $year);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":updatePlan","Error al actualizar plan", $result->getErrorMessage());
+            throw new InternalErrorException("updatePlan","Error al actualizar plan", $result->getErrorMessage());
     }
 
     /**
@@ -115,12 +115,12 @@ class PlanService{
         if( $status == Utils::$STATUS_DISABLE ){
             $result = $this->perPlans->changeStatusToDisable($planId);
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class.":changeStatus","Error al deshabilitar plan", $result->getErrorMessage());
+                throw new InternalErrorException("changeStatus","Error al deshabilitar plan", $result->getErrorMessage());
         }
         else if( $status == Utils::$STATUS_ENABLE ){
             $result = $this->perPlans->changeStatusToEnable($planId);
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class.":changeStatus","Error al habilitar plan", $result->getErrorMessage());
+                throw new InternalErrorException("changeStatus","Error al habilitar plan", $result->getErrorMessage());
         }
     }
 
@@ -139,7 +139,7 @@ class PlanService{
         $result = $this->perPlans->deletePlan($planId);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class.":deletePlan","Error al eliminar plan", $result->getErrorMessage());
+            throw new InternalErrorException("deletePlan","Error al eliminar plan", $result->getErrorMessage());
     }
 
 

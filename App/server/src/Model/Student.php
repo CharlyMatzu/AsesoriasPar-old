@@ -10,7 +10,7 @@
         private $phone;
         private $facebook;
         private $avatar;
-        private $register_date;
+        private $date_register;
         private $status;
         private $career;
         private $user;
@@ -135,15 +135,15 @@
          */
         public function getRegisterDate()
         {
-            return $this->register_date;
+            return $this->date_register;
         }
 
         /**
-         * @param String $register_date
+         * @param String $date_register
          */
-        public function setRegisterDate($register_date)
+        public function setRegisterDate($date_register)
         {
-            $this->register_date = $register_date;
+            $this->date_register = $date_register;
         }
 
         /**

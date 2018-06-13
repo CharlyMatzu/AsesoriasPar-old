@@ -9,11 +9,10 @@ class AppLogger
     /**
      * @param $logTitle string
      * @param $message string
-     * @param $level int
      */
-    public static function makeErrorLog($logTitle, $message, $level){
+    public static function makeErrorLog($logTitle, $message){
         $log = new Logger($logTitle);
-        $log->pushHandler(new StreamHandler(ROOT_PATH . '/logs/error.log', $level));
+        $log->pushHandler(new StreamHandler(LOG_PATH . '/error.log', Logger::CRITICAL));
         $log->error( $message );
     }
 
@@ -23,7 +22,7 @@ class AppLogger
      */
     public static function makeActivityLog($logTitle, $message){
         $log = new Logger($logTitle);
-        $log->pushHandler(new StreamHandler(ROOT_PATH . '/logs/activity.log', Logger::INFO));
+        $log->pushHandler(new StreamHandler(LOG_PATH . '/activity.log', Logger::INFO));
         $log->addInfo( $message );
     }
 

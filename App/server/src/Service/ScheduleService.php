@@ -31,7 +31,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getSchedule_Byid($id);
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getSchedyle_ById","Error al obtener horario", $result->getErrorMessage());
+            throw new InternalErrorException("getSchedyle_ById","Error al obtener horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe horario");
 
@@ -54,7 +54,7 @@ class ScheduleService{
         $result = $this->schedulesPer->getSchedule_ByStudentId_Period($studentId, $period['id']);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentSchedule_ByStuID",
+            throw new InternalErrorException("getCurrentSchedule_ByStuID",
                 "Error al obtener horario actual de alumno", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("Alumno no tiene horario en periodo actual");
@@ -102,7 +102,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
+            throw new InternalErrorException("getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
@@ -119,7 +119,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
+            throw new InternalErrorException("getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 
@@ -138,7 +138,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getScheduleSubjects_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getScheduleSubjects_ById",
+            throw new InternalErrorException("getScheduleSubjects_ById",
                 "Error al obtener materias de horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
@@ -156,7 +156,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->getScheduleSubjects_ById_Enabled( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getScheduleSubjects_ById_Enabled",
+            throw new InternalErrorException("getScheduleSubjects_ById_Enabled",
                 "Error al obtener materias de horario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
@@ -180,7 +180,7 @@ class ScheduleService{
         $result = $this->schedulesPer->getAdvisers_BySubject_ByPeriod( $subject_id, $period['id'] );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentAdvisers_BySubject",
+            throw new InternalErrorException("getCurrentAdvisers_BySubject",
                 "Error al obtener asesores por materias por periodo",  $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -299,7 +299,7 @@ class ScheduleService{
             //Se guardan los registros
 //            $trans = SchedulesPersistence::commitTransaction();
 //            if( !$trans )
-//                throw new InternalErrorException(static::class.":InsertSchedule", "Error al registrar transaccion");
+//                throw new InternalErrorException("InsertSchedule", "Error al registrar transaccion");
             //----------FIN TRANSACCION
         }
 
@@ -378,7 +378,7 @@ class ScheduleService{
                 $result = $this->schedulesPer->insertScheduleSubjects( $scheduleid, $sub );
                 if( Utils::isError( $result->getOperation() ) ) {
                     SchedulesPersistence::rollbackTransaction();
-                    throw new InternalErrorException(static::class.":insertScheduleSubjects", "Error al registrar materia de horario", $result->getErrorMessage());
+                    throw new InternalErrorException("insertScheduleSubjects", "Error al registrar materia de horario", $result->getErrorMessage());
                 }
 
             }
@@ -421,7 +421,7 @@ class ScheduleService{
         $schedule->setId( $s['id'] );
         $schedule->setPeriod( $s['period_id'] );
         $schedule->setStudent( $s['student_id'] );
-        $schedule->setRegisterDate( $s['register_date'] );
+        $schedule->setRegisterDate( $s['date_register'] );
         $schedule->setStatus( $s['status'] );
 
         return $schedule;
@@ -462,7 +462,7 @@ class ScheduleService{
 
         $trans = SchedulesPersistence::initTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":updateScheduleHours", "Error al iniciar transaccion");
+            throw new InternalErrorException("updateScheduleHours", "Error al iniciar transaccion");
 
         //Se comparan cuales ya no estan para deshabilitar
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
@@ -484,7 +484,7 @@ class ScheduleService{
             }
         }catch (RequestException $e){
             SchedulesPersistence::rollbackTransaction();
-            throw new InternalErrorException(static::class.":updateScheduleHours", $e->getMessage());
+            throw new InternalErrorException("updateScheduleHours", $e->getMessage());
         }
 
         //Se registran horas
@@ -492,14 +492,14 @@ class ScheduleService{
             $this->insertScheduleHours( $scheduleId, $newHours );
         }catch (RequestException $e){
 //            SchedulesPersistence::rollbackTransaction();
-            throw new InternalErrorException(static::class.":updateScheduleHours",
+            throw new InternalErrorException("updateScheduleHours",
                 "Se detuvo actualizacion de horas de horario", $e->getMessage());
         }
 
 
         $trans = SchedulesPersistence::commitTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":updateScheduleHours", "Error al registrar transaccion");
+            throw new InternalErrorException("updateScheduleHours", "Error al registrar transaccion");
 
     }
 
@@ -517,13 +517,13 @@ class ScheduleService{
         if( $status == Utils::$STATUS_ENABLE ){
             $result = $this->schedulesPer->enableSchedule( $scheduleId );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":chagetScheduleStatus",
+                throw new InternalErrorException("chagetScheduleStatus",
                     "Error al habilitar horario", $result->getErrorMessage() );
         }
         else if( $status == Utils::$STATUS_DISABLE ){
             $result = $this->schedulesPer->disableSchedule( $scheduleId );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":chagetScheduleStatus",
+                throw new InternalErrorException("chagetScheduleStatus",
                     "Error al deshabilitar horario", $result->getErrorMessage() );
         }
     }
@@ -542,7 +542,7 @@ class ScheduleService{
         try{
             $this->getSchedule_ById( $scheduleId );
         }catch (InternalErrorException $e){
-            throw new InternalErrorException(static::class.":updateScheduleSubjects",
+            throw new InternalErrorException("updateScheduleSubjects",
                 "se detuvo actualizacion de materias", $e->getMessage());
         }
 
@@ -555,7 +555,7 @@ class ScheduleService{
         try{
             $subjects = $this->getScheduleSubjects_ById( $scheduleId );
         }catch (InternalErrorException $e){
-            throw new InternalErrorException(static::class.":updateScheduleSubjects",
+            throw new InternalErrorException("updateScheduleSubjects",
                 "se detuvo actualizacion de materias", $e->getMessage());
 
             //No hay problema
@@ -563,7 +563,7 @@ class ScheduleService{
 
         $trans = SchedulesPersistence::initTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":updateScheduleSubjects", "Error al iniciar transaccion");
+            throw new InternalErrorException("updateScheduleSubjects", "Error al iniciar transaccion");
 
         //Se comparan cuales ya no estan para deshabilitar
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
@@ -583,7 +583,7 @@ class ScheduleService{
             }
         }catch (RequestException $e){
             SchedulesPersistence::rollbackTransaction();
-            throw new InternalErrorException(static::class.":updateScheduleSubjects", $e->getMessage());
+            throw new InternalErrorException("updateScheduleSubjects", $e->getMessage());
         }
 
 
@@ -591,13 +591,13 @@ class ScheduleService{
         try{
             $this->insertScheduleSubjects( $scheduleId, $newSubjects );
         }catch (RequestException $e){
-            throw new InternalErrorException(static::class.":updateScheduleSubjects", $e->getMessage());
+            throw new InternalErrorException("updateScheduleSubjects", $e->getMessage());
         }
 
         //Se registran al insertar
 //        $trans = SchedulesPersistence::commitTransaction();
 //        if( !$trans )
-//            throw new InternalErrorException(static::class.":updateScheduleHours", "Error al registrar transaccion");
+//            throw new InternalErrorException("updateScheduleHours", "Error al registrar transaccion");
     }
 
 
@@ -613,7 +613,7 @@ class ScheduleService{
         //TODO: notificar a usuarios asociados
         $result = $this->schedulesPer->disableScheduleHour($hourId);
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":disableHour",
+            throw new InternalErrorException( "disableHour",
                 "Error al deshabilitar hora de horario: $hourId", $result->getErrorMessage() );
 
     }
@@ -627,7 +627,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->enableScheduleHour($hourId);
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":enableHour",
+            throw new InternalErrorException( "enableHour",
                 "Error al habilitar hora de horario: $hourId", $result->getErrorMessage() );
     }
 
@@ -644,7 +644,7 @@ class ScheduleService{
         //TODO: notificar a usuarios asociados
         $result = $this->schedulesPer->disableScheduleSubject($subId);
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":disableSubject",
+            throw new InternalErrorException( "disableSubject",
                 "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
 
     }
@@ -658,7 +658,7 @@ class ScheduleService{
     {
         $result = $this->schedulesPer->enableScheduleSubject($subId);
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class.":enableSubject",
+            throw new InternalErrorException( "enableSubject",
                 "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
     }
 

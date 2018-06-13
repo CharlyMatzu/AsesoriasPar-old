@@ -36,7 +36,7 @@ class AdvisoryService
 
         $result = $this->perAsesorias->getAdvisories_ByPeriod( $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentAdvisories",
+            throw new InternalErrorException("getCurrentAdvisories",
                 "Error al obtener asesorias en periodo actual", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -58,7 +58,7 @@ class AdvisoryService
 
         $result = $this->perAsesorias->getAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentAdvisory_ByStudent",
+            throw new InternalErrorException("getCurrentAdvisory_ByStudent",
                 "Error al obtener asesorias de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -80,7 +80,7 @@ class AdvisoryService
 
         $result = $this->perAsesorias->getCurrentAdvisers_ByPeriod_BySubject_IngoreStudent( $period_id, $subject_id, $student_id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentAdvisers_BySubject_IgnoreStudent",
+            throw new InternalErrorException("getCurrentAdvisers_BySubject_IgnoreStudent",
                 "Error al obtener asesores disponibles", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -103,7 +103,7 @@ class AdvisoryService
 
         $result = $this->perAsesorias->getRequestedAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentAdvisories_Requested",
+            throw new InternalErrorException("getCurrentAdvisories_Requested",
                 "Error al obtener asesorias de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -125,7 +125,7 @@ class AdvisoryService
 
         $result = $this->perAsesorias->getAdviserAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCurrentAdvisories_Adviser",
+            throw new InternalErrorException("getCurrentAdvisories_Adviser",
                 "Error al obtener asesorias de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -146,7 +146,7 @@ class AdvisoryService
         $result = $this->perAsesorias->getAdvisory_ById($id);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getAdvisory_ById",
+            throw new InternalErrorException("getAdvisory_ById",
                 "Error al obtener asesoria", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe asesoria");
@@ -166,7 +166,7 @@ class AdvisoryService
         $result = $this->perAsesorias->getAdvisoryHours_ById($id);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getAdvisoryHours_ById",
+            throw new InternalErrorException("getAdvisoryHours_ById",
                 "Error al obtener horas de asesoria", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe asesorias");
@@ -199,7 +199,7 @@ class AdvisoryService
         //Se buscan asesorias activas en el mismo periodo que tengan la misma materia del mismo asesor
         $advisories = $this->perAsesorias->getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
         if( Utils::isError( $advisories->getOperation() ) )
-            throw new InternalErrorException(static::class.":insertAdvisory_CurrentPeriod",
+            throw new InternalErrorException("insertAdvisory_CurrentPeriod",
                 "Error al obtener asesorias", $advisories->getErrorMessage());
 
         $this->checkAdvisoryRedundancy( $advisories->getData() );
@@ -211,7 +211,7 @@ class AdvisoryService
         //Se registra asesorias
         $result = $this->perAsesorias->insertAdvisory( $advisory, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":insertAdvisory",
+            throw new InternalErrorException("insertAdvisory",
                 "Error al registrar asesorias", $advisories->getErrorMessage());
 
 
@@ -273,12 +273,12 @@ class AdvisoryService
         //----Inicia transaccion
         $trans = PlansPeristence::initTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":assignAdviser", "Error al iniciar transaccion");
+            throw new InternalErrorException("assignAdviser", "Error al iniciar transaccion");
 
         //Actualiza datos de asesoria
         $result = $this->perAsesorias->assignAdviser( $advisory_id, $adviser_id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":assignAdviser",
+            throw new InternalErrorException("assignAdviser",
                 "Error al actualizar asesoria", $result->getErrorMessage());
 
         //Agrega horario
@@ -286,14 +286,14 @@ class AdvisoryService
         foreach ( $hours as $h ){
             $result = $this->perAsesorias->insertAdvisoryHours( $advisory_id, $h );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException(static::class.":assignAdviser",
+                throw new InternalErrorException("assignAdviser",
                     "Error al registrar horario", $result->getErrorMessage());
         }
 
         //Se guarda registro
         $trans = PlansPeristence::commitTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":assignAdviser", "Error al registrar transaccion");
+            throw new InternalErrorException("assignAdviser", "Error al registrar transaccion");
 
         //Envio de correo
         try{
@@ -338,7 +338,7 @@ class AdvisoryService
         $result = $this->perAsesorias->finaliceAdvisory($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":finaliceAdvisory",
+            throw new InternalErrorException("finaliceAdvisory",
                 "Error al finalizar asesoria", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe asesoria");
@@ -360,7 +360,7 @@ class AdvisoryService
         $result = $this->perAsesorias->getAdvisoryHours($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getAdvisorySchedule",
+            throw new InternalErrorException("getAdvisorySchedule",
                 "Error al obtener horario de asesoria", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();

@@ -13,41 +13,61 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //-----------------------
 // MONOLOG
 //-----------------------
-//https://www.projek.xyz/slim-monolog/
 //https://akrabat.com/logging-errors-in-slim-3/
 //https://www.slimframework.com/docs/v3/tutorial/first-app.html
 
-
-//$container['errorHandler'] = function($c) {
+// $container['errorHandler'] = function($c) {
 //    return function ($request, $response, $exception) use ($c){
-//        return $c['response']->withStatus(500)
+
+//        return $c['response']
+//            ->withStatus(500)
 //            ->withHeader('Content-Type', 'text/html')
-//            ->write('Something went wrong!');
-//           throw new \App\Exceptions\InternalErrorException("SLIM", "Ocurrio un error", $exception);
+//            ->write('Algo salio mal, intentelo más tarde: '. $exception->getMessage() );
+//    };
+// };
+
+
+////Override the default Not Found Handler
+//$container['notFoundHandler'] = function ($c) {
+//    return function ($request, $response) use ($c) {
+//        return $c['response']
+//            ->withStatus(404)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('No se encontro la página solicitada');
+//    };
+//};
+//
+////Override the default Not Found Handler
+//$container['notAllowedHandler'] = function ($c) {
+//    return function ($request, $response, $methods) use ($c) {
+//        return $c['response']
+//            ->withStatus(405)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Métodos deben ser uno de: ' . implode(',', $methods));
+//    };
+//};
+//
+//$container['phpErrorHandler'] = function ($c) {
+//    return function ($request, $response, $error) use ($c) {
+////        \App\AppLogger::makeCriticalErrorLog("SlimFramework", $exception->getMessage());
+//
+//        return $c['response']
+//            ->withStatus(500)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Ocurrio un error, intentelo más tarde');
 //    };
 //};
 
 
-//Override the default Not Found Handler
-$container['notFoundHandler'] = function ($c) {
-    return function ($request, $response) use ($c) {
-        return $c['response']
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Page not found');
-    };
+//-----------------------
+//Middleware methods
+//-----------------------
+$container['InputMiddleware'] = function($c){
+    return new App\Middleware\InputParamsMiddleware();
 };
 
-
-//-----------------------
-//Middelware methods
-//-----------------------
-$container['InputMiddelware'] = function($c){
-    return new App\Middelware\InputParamsMiddelware();
-};
-
-$container['AuthMiddelware'] = function($c){
-    return new App\Middelware\AuthMiddelware();
+$container['AuthMiddleware'] = function($c){
+    return new App\Middleware\AuthMiddleware();
 };
 
 //-----------------------

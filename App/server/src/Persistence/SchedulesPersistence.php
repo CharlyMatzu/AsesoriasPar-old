@@ -10,7 +10,7 @@ class SchedulesPersistence extends Persistence{
     private $SELECT = "SELECT
                             s.schedule_id as 'id',
                             s.status as 'status',
-                            s.date_register 'register_date',
+                            s.date_register 'date_register',
                             s.fk_period as 'period_id',
                             s.fk_student as 'student_id'
                             FROM schedule s ";

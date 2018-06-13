@@ -13,7 +13,7 @@ class PeriodsPersistence extends Persistence{
                           period_id as 'id',
                           date_start as 'start',
 	                      date_end as 'end',
-	                      date_register as 'register_date',
+	                      date_register as 'date_register',
 	                      status  as 'status'
                         FROM period ";
 

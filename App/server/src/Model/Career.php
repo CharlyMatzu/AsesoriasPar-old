@@ -5,7 +5,7 @@
         private $id;
         private $name;
         private $short_name;
-        private $register_date;
+        private $date_register;
         private $status;
 
         /**
@@ -66,15 +66,15 @@
          */
         public function getRegisterDate()
         {
-            return $this->register_date;
+            return $this->date_register;
         }
 
         /**
-         * @param mixed $register_date
+         * @param mixed $date_register
          */
-        public function setRegisterDate($register_date)
+        public function setRegisterDate($date_register)
         {
-            $this->register_date = $register_date;
+            $this->date_register = $date_register;
         }
 
         /**

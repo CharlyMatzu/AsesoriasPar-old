@@ -10,7 +10,7 @@ class PlansPeristence extends Persistence{
     private $campos = "SELECT
                           plan_id as 'id',
                           year,
-                          register_date,
+                          date_register,
                           status
                         FROM plan ";
 
