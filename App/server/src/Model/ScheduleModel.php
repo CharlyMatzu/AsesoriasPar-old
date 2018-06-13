@@ -1,6 +1,6 @@
 <?php namespace App\Model;
 
-    class Schedule{
+    class ScheduleModel{
         
         private $id;
         private $date_register;
@@ -12,7 +12,7 @@
 
 
         /**
-         * Schedule constructor.
+         * ScheduleModel constructor.
          */
         public function __construct(){}
 
@@ -73,7 +73,7 @@
         }
 
         /**
-         * @param Student $student
+         * @param StudentModel $student
          */
         public function setStudent($student)
         {
@@ -81,7 +81,7 @@
         }
 
         /**
-         * @return Period
+         * @return PeriodModel
          */
         public function getPeriod()
         {
@@ -89,7 +89,7 @@
         }
 
         /**
-         * @param Period $period
+         * @param PeriodModel $period
          */
         public function setPeriod($period)
         {

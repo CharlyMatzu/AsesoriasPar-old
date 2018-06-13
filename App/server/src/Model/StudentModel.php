@@ -1,6 +1,6 @@
 <?php namespace App\Model;
 
-    class Student {
+    class StudentModel {
 
 
         private $id;
@@ -163,7 +163,7 @@
         }
 
         /**
-         * @return int|Career
+         * @return int|CareerModel
          */
         public function getCareer()
         {
@@ -171,7 +171,7 @@
         }
 
         /**
-         * @param int|Career $career
+         * @param int|CareerModel $career
          */
         public function setCareer($career)
         {
@@ -179,7 +179,7 @@
         }
 
         /**
-         * @return int|User
+         * @return int|UserModel
          */
         public function getUser()
         {
@@ -187,7 +187,7 @@
         }
 
         /**
-         * @param int|User $user
+         * @param int|UserModel $user
          */
         public function setUser($user)
         {

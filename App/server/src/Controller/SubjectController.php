@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Subject;
+use App\Model\SubjectModel;
 use App\Service\SubjectService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -161,7 +161,7 @@ class SubjectController
     public function updateSubject($req, $res, $params){
         try {
             $subjectService = new SubjectService();
-            /* @var $subject Subject */
+            /* @var $subject SubjectModel */
             $subject = $req->getAttribute('subject_data');
             $subject->setId( $params['id'] );
 

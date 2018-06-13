@@ -8,7 +8,7 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 use App\Persistence\SchedulesPersistence;
-use App\Model\Schedule;
+use App\Model\ScheduleModel;
 use App\Utils;
 use Monolog\Logger;
 use PHPMailer\PHPMailer\Exception;
@@ -413,11 +413,12 @@ class ScheduleService{
 
     /**
      * @param $s \mysqli_result
-     * @return Schedule
+     *
+     * @return ScheduleModel
      */
     public static function makeScheduleModel( $s ){
 
-        $schedule = new Schedule();
+        $schedule = new ScheduleModel();
         $schedule->setId( $s['id'] );
         $schedule->setPeriod( $s['period_id'] );
         $schedule->setStudent( $s['student_id'] );

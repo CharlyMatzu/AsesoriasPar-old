@@ -3,7 +3,7 @@ use App\Exceptions\InternalErrorException;
 use App\Exceptions\RequestException;
 use App\Mailer;
 use App\Model\MailModel;
-use App\Model\User;
+use App\Model\UserModel;
 
 class MailService
 {

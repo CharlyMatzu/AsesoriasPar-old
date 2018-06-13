@@ -1,6 +1,6 @@
 <?php namespace App\Model;
 
-    class Career{
+    class CareerModel{
 
         private $id;
         private $name;
@@ -9,7 +9,7 @@
         private $status;
 
         /**
-         * Career constructor.
+         * CareerModel constructor.
          */
         public function __construct(){}
 

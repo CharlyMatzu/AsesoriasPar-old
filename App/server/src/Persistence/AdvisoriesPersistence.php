@@ -149,25 +149,6 @@ class AdvisoriesPersistence extends Persistence{
     }
 
 
-    /**
-     * Obtiene horario de una asesoria
-     * @param $advisoryId int
-     * @return \App\Model\DataResult
-     */
-    public function getAdvisorySchedule_ById($advisoryId){
-        $query = "SELECT 
-                    ads.advisory_schedule_id as 'id',
-                    ads.fk_hours as 'schedule_hour',
-                    h2.day_hour_id as 'day_hour_id',
-                    h2.day as 'day',
-                    h2.hour as 'hour'
-                    FROM advisory_schedule ads
-                    INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
-                    INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
-                    WHERE ads.fk_advisory = $advisoryId ";
-        return self::executeQuery($query);
-    }
-
 
     /**
      * Obtiene todas las asesorias de un estudiante en un periodo especifico de una materia en especifico
@@ -235,26 +216,45 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * @param $advisory_id int
-     *
+     * Obtiene horario de una asesoria
+     * @param $advisoryId int
      * @return \App\Model\DataResult
      */
-    public function getAdvisoryHours($advisory_id)
-    {
+    public function getAdvisoryHours_ById($advisoryId){
         $query = "SELECT 
-                      ads.advisory_schedule_id as 'id',
-                      h.schedule_dh_id as 'schedule_id',
-                      h2.day_hour_id as 'day_hour_id',
-                      h2.day as 'day',
-                      h2.hour as 'hour',
-                      ads.fk_advisory as 'advisory_id',
-                      ads.date_register as 'date_register'
-                  FROM advisory_schedule ads
-                  INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
-                  INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
-                  WHERE ads.fk_advisory = $advisory_id";
+                    ads.advisory_schedule_id as 'id',
+                    ads.fk_hours as 'schedule_hour',
+                    h2.day_hour_id as 'day_hour_id',
+                    h2.day as 'day',
+                    h2.hour as 'hour'
+                    FROM advisory_schedule ads
+                    INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
+                    INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
+                    WHERE ads.fk_advisory = $advisoryId ";
         return self::executeQuery($query);
     }
+
+//    /**
+//     * @param $advisory_id int
+//     *
+//     * @return \App\Model\DataResult
+//     */
+//    public function getAdvisoryHours($advisory_id)
+//    {
+//        $query = "SELECT
+//                      ads.advisory_schedule_id as 'id',
+//                      h.schedule_dh_id as 'schedule_id',
+//                      h2.day_hour_id as 'day_hour_id',
+//                      h2.day as 'day',
+//                      h2.hour as 'hour',
+//                      ads.fk_advisory as 'advisory_id',
+//                      ads.date_register as 'date_register'
+//                  FROM advisory_schedule ads
+//                  INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
+//                  INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
+//                  WHERE ads.fk_advisory = $advisory_id";
+//        return self::executeQuery($query);
+//    }
 
     /**
      * Obtiene los asesores disponibles de una materia en un periodo y sin ser él mismo

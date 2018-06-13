@@ -1,6 +1,6 @@
 <?php namespace App\Persistence;
 
-use App\Model\Career;
+use App\Model\CareerModel;
 
 use App\Model\DataResult;
 use App\Utils;
@@ -100,7 +100,9 @@ class CareersPersistence extends Persistence {
 
     /**
      * Metodo para actualizar la carrera
-     * @param $career Career
+     *
+     * @param $career CareerModel
+     *
      * @return DataResult
      */
     public function updateCareer( $career ){

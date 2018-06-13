@@ -1,6 +1,6 @@
 <?php namespace App\Persistence;
 
-use App\Model\User;
+use App\Model\UserModel;
 use App\Utils;
 
 /**
@@ -164,7 +164,8 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user User objeto tipo User con la información de registro
+     * @param $user UserModel objeto tipo User con la información de registro
+     *
      * @return \App\Model\DataResult
      */
     public function insertUser( $user ){
@@ -175,7 +176,8 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user User objeto tipo User con la informacion de registro
+     * @param $user UserModel objeto tipo User con la informacion de registro
+     *
      * @return \App\Model\DataResult
      */
     public function updateUser( $user ){

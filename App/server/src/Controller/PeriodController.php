@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Period;
+use App\Model\PeriodModel;
 use App\Service\PeriodService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -64,7 +64,7 @@ class PeriodController
     public function createPeriod($req, $res){
         try {
             $periodService = new PeriodService();
-            /* @var $period Period */
+            /* @var $period PeriodModel */
             $period = $req->getAttribute('period_data');
             $periodService->createPeriod( $period->getDateStart(), $period->getDateEnd() );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Periodo registrado con exito");
@@ -83,7 +83,7 @@ class PeriodController
     public function updatePeriod($req, $res, $params){
         try {
             $periodService = new PeriodService();
-            /* @var $period Period */
+            /* @var $period PeriodModel */
             $period = $req->getAttribute('period_data');
             $period->setId( $params['id'] );
             $periodService->updatePeriod( $period );

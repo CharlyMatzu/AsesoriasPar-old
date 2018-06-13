@@ -1,8 +1,8 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Student;
-use App\Model\User;
+use App\Model\StudentModel;
+use App\Model\UserModel;
 use App\Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -149,12 +149,37 @@ class UserController
         try {
             $userServ = new UserService();
             $role = $user = $req->getAttribute('role_data');
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             $user->setRole( $role );
 
             $userServ->insertUser( $user );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @return Response
+     */
+    public function createUserAndStudent($req, $res)
+    {
+        try {
+            $userServ = new UserService();
+            /* @var $user User */
+            $user = $req->getAttribute('user_data');
+            //Se le asigna rol de estudiante (basic)
+            $user->setRole( Utils::$ROLE_BASIC );
+            /* @var $student Student */
+            $student = $req->getAttribute('student_data');
+            $student->setUser($user);
+
+            $userServ->insertUserAndStudent( $student );
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -176,7 +201,7 @@ class UserController
         try {
             $userServ = new UserService();
             $role = $user = $req->getAttribute('role_data');
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             $user->setRole( $role );
             $user->setId( $params['id'] );

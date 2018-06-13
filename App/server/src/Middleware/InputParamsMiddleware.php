@@ -2,12 +2,12 @@
 
 
 use App\Model\AdvisoryModel;
-use App\Model\Career;
+use App\Model\CareerModel;
 use App\Model\MailModel;
-use App\Model\Period;
-use App\Model\Student;
-use App\Model\Subject;
-use App\Model\User;
+use App\Model\PeriodModel;
+use App\Model\StudentModel;
+use App\Model\SubjectModel;
+use App\Model\UserModel;
 use Carbon\Carbon;
 use PHPMailer\PHPMailer\Exception;
 use Carbon\Exceptions\InvalidDateException;
@@ -250,7 +250,7 @@ class InputParamsMiddleware extends Middleware
 //            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
         //Se crea objeto
-        $user = new User();
+        $user = new UserModel();
         $user->setEmail($email);
         $user->setPassword($pass);
 
@@ -296,7 +296,7 @@ class InputParamsMiddleware extends Middleware
 
 
         //Se crea objeto estudiante
-        $student = new Student();
+        $student = new StudentModel();
         //Se agregan datos
 //        $student->setUser( $user );
         $student->setFirstName($first);
@@ -340,7 +340,7 @@ class InputParamsMiddleware extends Middleware
 //            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
         //Se crea objeto
-        $user = new User();
+        $user = new UserModel();
         $user->setEmail($email);
         $user->setPassword($pass);
 
@@ -375,7 +375,7 @@ class InputParamsMiddleware extends Middleware
 
 
         //Se crea objeto
-        $career = new Career();
+        $career = new CareerModel();
         $career->setName( $name );
         $career->setShortName( $short_name );
 
@@ -444,7 +444,7 @@ class InputParamsMiddleware extends Middleware
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Carrera no es numerico");
 
 
-        $subject = new Subject();
+        $subject = new SubjectModel();
         $subject->setName( $params['name'] );
         $subject->setShortName( $params['short_name'] );
         $subject->setDescription( $params['description'] );
@@ -484,7 +484,7 @@ class InputParamsMiddleware extends Middleware
         //TODO: verificar el formato de la fecha
         //TODO: verificar que no sea antes de NOW
 
-        $period = new Period();
+        $period = new PeriodModel();
         $period->setDateStart( $params['start'] );
         $period->setDateEnd( $params['end'] );
 

@@ -1,7 +1,7 @@
 <?php namespace App\Model;
 
 
-class Subject{
+class SubjectModel{
 
     private $id;
     private $name;
@@ -14,7 +14,7 @@ class Subject{
     private $career;
 
     /**
-     * Subject constructor.
+     * SubjectModel constructor.
      */
     public function __construct(){}
 

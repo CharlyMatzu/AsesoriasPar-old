@@ -8,7 +8,7 @@ use App\Exceptions\RequestException;
 
 use App\Model\DataResult;
 use App\Persistence\CareersPersistence;
-use App\Model\Career;
+use App\Model\CareerModel;
 use App\Utils;
 
 class CareerService{
@@ -129,7 +129,7 @@ class CareerService{
 
 
 
-        // Si sale bien, Inicia registro de Career
+        // Si sale bien, Inicia registro de CareerModel
         $result = $this->perCareers->insertCareer( $name, $short_name );
 
         if( Utils::isError( $result->getOperation() ) )
@@ -140,7 +140,8 @@ class CareerService{
     /**
      * Metodo para actualizar la carrera
      *
-     * @param $career Career
+     * @param $career CareerModel
+     *
      * @throws RequestException
      */
     public function updateCarrers( $career ){
@@ -172,7 +173,7 @@ class CareerService{
         }catch (NoContentException $e){}
 
 
-        // Si sale bien, Inicia REGISTRO de Career
+        // Si sale bien, Inicia REGISTRO de CareerModel
         $result = $this->perCareers->updateCareer( $career );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class."updateCareers",
@@ -276,7 +277,7 @@ class CareerService{
 
 
     public static function makeObject_career( $c ){
-        $career = new Career();
+        $career = new CareerModel();
         $career->setId( $c['id'] );
         $career->setName( $c['name'] );
         $career->setShortName( $c['short_name'] );

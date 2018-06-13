@@ -108,6 +108,12 @@ $app->post('/users', 'UserController:createUser')
         ->add('InputMiddleware:checkData_User') //Es el registro de estudiante
         ->add('InputMiddleware:checkData_Role'); //Es el registro de estudiante
 
+
+//Crear un usuario y un estudiante a la vez
+$app->post('/users/student', 'UserController:createUserAndStudent')
+    ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
+    ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
+
 //TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
 //Actualiza datos de usuario

@@ -1,6 +1,6 @@
 <?php namespace App\Persistence;
 
-use App\Model\Subject;
+use App\Model\SubjectModel;
 use App\Utils;
 
 class SubjectsPersistence extends Persistence{
@@ -244,7 +244,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $name string nombre de la materia
-     * @param $careerID int Career ID
+     * @param $careerID int CareerModel ID
      * @return \App\Model\DataResult
      */
     public function getSubject_ByName_Career($name, $careerID)
@@ -258,7 +258,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $name string nombre de la materia
-     * @param $careerID int Career ID
+     * @param $careerID int CareerModel ID
      * @param $planID int plan ID
      * @return \App\Model\DataResult
      */
@@ -272,7 +272,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
-     * @param $careerID int Career ID
+     * @param $careerID int CareerModel ID
      * @param $planID int plan ID
      * @return \App\Model\DataResult
      */
@@ -295,7 +295,8 @@ class SubjectsPersistence extends Persistence{
 
 
     /**
-     * @param $subject Subject
+     * @param $subject SubjectModel
+     *
      * @return \App\Model\DataResult
      */
     public function insertSubject( $subject )
@@ -306,7 +307,8 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
-     * @param $subject Subject
+     * @param $subject SubjectModel
+     *
      * @return \App\Model\DataResult
      */
     public function updateSubject($subject)

@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Student;
+use App\Model\StudentModel;
 use App\Service\AdvisoryService;
 use App\Service\StudentService;
 use Slim\Http\Request;
@@ -77,7 +77,7 @@ class StudentController
     {
         try{
             $studentService = new StudentService();
-            /* @var $student Student */
+            /* @var $student StudentModel */
             $student = $req->getAttribute('student_data');
             $student->setId( $params['id'] );
             $studentService->updateStudent( $student );

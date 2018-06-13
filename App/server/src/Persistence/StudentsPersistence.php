@@ -1,7 +1,7 @@
 <?php namespace App\Persistence;
 
-use App\Model\Career;
-use App\Model\Student;
+use App\Model\CareerModel;
+use App\Model\StudentModel;
 use App\Utils;
 
 class StudentsPersistence extends Persistence{
@@ -163,7 +163,8 @@ class StudentsPersistence extends Persistence{
 
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
+     *
      * @return \App\Model\DataResult
      */
     public function insertStudent( $student ){
@@ -180,7 +181,8 @@ class StudentsPersistence extends Persistence{
     }
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
+     *
      * @return \App\Model\DataResult
      */
     public function updateStudent( $student ){

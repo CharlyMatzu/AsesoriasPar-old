@@ -1,7 +1,7 @@
 <?php namespace App\Persistence;
 
 
-use App\Model\period;
+use App\Model\PeriodModel;
 use App\Utils;
 
 class PeriodsPersistence extends Persistence{
@@ -125,7 +125,8 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
-     * @param $period period
+     * @param $period PeriodModel
+     *
      * @return \App\Model\DataResult
      */
     public function updatePeriod( $period ){

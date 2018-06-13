@@ -64,7 +64,7 @@
         }
 
         /**
-         * @return Student|int
+         * @return StudentModel|int
          */
         public function getStudent()
         {
@@ -72,7 +72,7 @@
         }
 
         /**
-         * @param Student|int $student
+         * @param StudentModel|int $student
          */
         public function setStudent($student)
         {
@@ -80,7 +80,7 @@
         }
 
         /**
-         * @return Student|int
+         * @return StudentModel|int
          */
         public function getAdviser()
         {
@@ -88,7 +88,7 @@
         }
 
         /**
-         * @param Student $adviser
+         * @param StudentModel $adviser
          */
         public function setAdviser($adviser)
         {
@@ -96,7 +96,7 @@
         }
 
         /**
-         * @return Subject|int
+         * @return SubjectModel|int
          */
         public function getSubject()
         {
@@ -104,7 +104,7 @@
         }
 
         /**
-         * @param Subject|int $subject
+         * @param SubjectModel|int $subject
          */
         public function setSubject($subject)
         {

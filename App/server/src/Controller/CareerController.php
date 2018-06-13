@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Career;
+use App\Model\CareerModel;
 use App\Service\CareerService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -54,7 +54,7 @@ class CareerController
     public function createCareer($req, $res){
         try {
             $careerService = new CareerService();
-            /* @var $career Career*/
+            /* @var $career CareerModel*/
             $career = $req->getAttribute('career_data');
             $careerService->insertCareers( $career->getName(), $career->getShortName() );
             return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Carrera registrado con éxito");
@@ -75,7 +75,7 @@ class CareerController
     public function updateCareer($req, $res, $params){
         try {
             $careerService = new CareerService();
-            /* @var $user Career*/
+            /* @var $user CareerModel*/
             $user = $req->getAttribute('career_data');
             $user->setId( $params['id'] );
             $careerService->updateCarrers( $user );
