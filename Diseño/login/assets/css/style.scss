@@ -1,0 +1,14 @@
+html, body{
+	font-family: calibri;
+	min-height: 100%;
+	height: 100%;
+}
+
+*{
+	box-sizing: border-box;
+}
+
+
+@import 'utils/main';
+@import 'component/main';
+@import 'layout/main';

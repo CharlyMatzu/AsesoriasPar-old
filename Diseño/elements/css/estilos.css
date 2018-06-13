@@ -1,0 +1,21 @@
+table {
+  width: 100%; }
+
+.schedule-table table {
+  border-spacing: 0; }
+  .schedule-table table .row {
+    text-align: center; }
+  .schedule-table table .col {
+    padding: 10px; }
+  .schedule-table table .row-date .col {
+    background-color: #005f7e;
+    color: #fff; }
+  .schedule-table table .row-day .col {
+    background-color: #00C3E2;
+    color: #fff; }
+  .schedule-table table .row-hour .col {
+    background-color: #F2F1F1;
+    color: #212121;
+    font-weight: bold; }
+  .schedule-table table .row-hour .selected {
+    background-color: #FF4848; }

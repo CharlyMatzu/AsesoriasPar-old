@@ -1,0 +1,66 @@
+-Quitar variables globales
+-Usar factorias para auth, guardar datos y redireccionar
+
+
+-Add token header
+----LOGIN
+	-Signin
+		-redirect (app module redirects)
+	-signup
+		-Confirm (email for confirm)
+	-Forget password (email for change)
+----ADMIN
+	-HOME
+	-Send mails
+	-Update user (email for confirm)
+	-Students
+	-Advisories
+	-Usuarios sin confirmar
+		-Reenviar correo de confirmacion
+	-Period
+		-Corregir fecha al editar
+
+
+-----SERVER
+-Student
+	-avatar url
+		-Uploaded
+		-Default
+	-Send mail button direct
+-Period validations
+-Auth
+-Upload student profile avatar
+-Cron
+
+
+-Correo de asignacion
+-Correo de finalizacion
+
+-Enviar correosse
+-Estilizar CSS
+
+
+-Indexado de archivos en el servidor
+-Nombre de metodos API
+-API para admin y para estudiantes
+-Uso de token
+-Uso de config y resolve para las rutas y la autenticacion en angularjs
+-Factory para request
+	-method
+	-url
+	-data
+	-response y error
+-Juntar proyectos (modulos, etc.)
+
+
+
+-Crear factories, services y config especiales para los request usando ngresource
+-Crear método backend que se van a necesitar
+	-Persistencia
+	-Servicios
+	-Controlladores
+-Funcionalidad
+	
+
+-Dar estilo grafico
+	-Animaciones

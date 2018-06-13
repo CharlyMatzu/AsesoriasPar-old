@@ -1,0 +1,130 @@
+----------------------------
+EMAIL
+-----------------------------
+{
+	"address": [ "carlosrozuma@gmail.com", "c_01_12@hotmail.com" ],
+	"subject": "Test",
+	"body": "Probando mail",
+	"plainBody": "Probando mail"
+}
+
+
+-----------------------------
+CAREER
+-----------------------------
+
+{
+	"name": "Insgenieria en software",
+	"short_name": "ISW"
+}
+
+
+-----------------------------
+PLAN
+-----------------------------
+
+{
+	"year": 2009
+}
+
+
+
+-----------------------------
+PERIOD
+-----------------------------
+{
+	"start": "2018/05/22",
+	"end": "2018/05/23"
+}
+
+
+
+-----------------------------
+SUBJECT
+-----------------------------
+
+{
+	"name": "Programacion 2",
+	"short_name": "PRO 2",
+	"description": "Segunda materia de programacion",
+	"semester": 2,
+	"plan": 1,
+	"career": 1
+}
+
+
+
+
+-----------------------------
+USER
+-----------------------------
+SINGIN
+{
+	"email": "carlosrozuma@gmail.com",
+	"password": "123456"
+}
+
+SIGNUP/UPDATE
+{ 
+	"email": "carlosrozumaa@gmail.com",
+	"password": "123456",
+	"role": "basic"
+}
+
+
+
+-----------------------------
+STUDENT
+-----------------------------
+
+SINGUP
+{
+	//Usuario
+	"email": "carlosrozuma@gmail.com",
+	"password": "123456",
+	//Estudiante
+	"career": 1,
+	"first_name": "carlos",
+	"last_name": "Zuñiga",
+	"itson_id": "162156",
+	"phone": "4182747"
+}
+
+UPDATE
+{	
+	"career": 1,
+	"first_name": "carlos",
+	"last_name": "Zuñiga",
+	"itson_id": "162156",
+	"phone": "4182747"
+}
+
+
+-----------------------------
+SCHEDULE
+-----------------------------
+INSERT schedule / Update hours
+{
+	"hours": [1,2,3,4,5]
+}
+
+SUBJECTS
+{
+	"subjects": [1,2,3,4]
+}
+
+
+-----------------------------
+ADVISORY
+-----------------------------
+NEW REQUEST
+{
+	"subject": 1,
+	"description" "Descripcion detallada o breve"
+}
+
+ASSIGN
+{
+	"adviser": 1,
+	"schedule": [1,2,4]
+}

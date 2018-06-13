@@ -1,0 +1,87 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <!-- Nuevo -->
+        <div class="col-lg-6">
+            <div class="card" id="update">
+                <div class="card-body">
+                    <h3>Nuevo plan</h3>
+                    <form action="" ng-submit="addPlan(newPlan)">
+                        <div class="form-group">
+                            <label for="plan">Ingrese plan:</label>
+                            <input type="text" id="plan" min="4" max="4" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- end nuevo -->
+
+        <!-- Update -->
+        <div class="col-lg-6" ng-show="showUpdateForm">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Actualizar plan</h3>
+                        <form action="" ng-submit="updatePlan(plan)">
+                            <!-- hidden input id -->
+                            <input type="hidden" ng-model="plan.id">
+    
+                            <div class="form-group">
+                                <label for="year">Año:</label>
+                                <input type="text" id="year" class="form-control" ng-model="plan.year" >
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="button" ng-click="showUpdateForm = false" class="btn btn-inverse">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- end Update -->
+
+    </div>
+    <!-- end row -->
+
+    <div class="row">
+        <!-- Tabla -->
+        <div class="col-lg-12">
+            <div class="card card-outline-info">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white">Planes registrados</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Messge -->
+                    <p ng-hide="plans.length > 0">{{loading.message}}</p>
+                    
+                    <!-- Table -->
+                    <div ng-show="plans.length > 0" class="table-responsive table-">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Plan</th>
+                                <th>Fecha de registro</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="p in plans">
+                                <td>{{p.year}}</td>
+                                <td>{{p.register_date}}</td>
+                                <td>
+                                    <span ng-show="p.status == 0" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="p.status == 2" class="badge badge-success">Activo</span>
+                                </td>
+                                <td>
+                                        <button ng-click="editPlan(p)" class="opt-plan-{{p.id}} btn btn-primary">Editar</button>
+                                        <button ng-show="p.status == 0" ng-click="enablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-success">Habilitar</button>
+                                        <button ng-show="p.status == 2" ng-click="disablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-warning">Deshabilitar</button>
+                                        <button ng-click="deletePlan(p.id)" class="opt-plan-{{p.id}} btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end table -->
+    </div>
+
+</div>

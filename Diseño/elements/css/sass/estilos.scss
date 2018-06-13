@@ -1,0 +1,67 @@
+@import 'colores';
+@import 'general';
+
+//-----------------------
+// TABLA DE HORARIOS
+//-----------------------
+
+
+.schedule-table{
+	//-----------ESTILOS ESTATICOS
+	table{
+		//Para quitar espacios entre celdas
+		border-spacing: 0;
+		.row{
+			text-align: center;
+		}
+		.col{
+			padding: 10px;
+		}
+		.row-date{
+			.col{
+				background-color: $primary-color - 100;
+				color: #fff;
+			}
+		}
+		.row-day{
+			.col{
+				background-color: $primary-color;
+				color: #fff;
+			}
+		}
+		.row-hour{
+			.col{
+				background-color: #F2F1F1;
+				color: #212121;
+				font-weight: bold;
+			}
+			//---------ELEMENTOS SELECCIONADO
+			.selected{
+				background-color: #FF4848;
+			}
+		}
+	}
+
+
+	//-----------------------HOVER
+	// table.allow-select{
+	// 	.row-hour{
+	// 		.col{
+	// 			&:hover{
+	// 				background-color: #F2F1F1 - 20;
+	// 				cursor: pointer;
+	// 			}
+	// 		}
+	// 		.selected{
+	// 			background-color: $secondary-color;
+	// 			&:hover{
+	// 				background-color: $secondary-color - 20;
+	// 			}
+	// 		}
+			
+	// 		// .single-select, .multi-select{
+			
+	// 		// }
+	// 	}
+	// }
+}

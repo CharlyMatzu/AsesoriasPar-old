@@ -1,0 +1,23 @@
+.button{
+	display: inline-block;
+	border: 1px solid $light-gray-color;
+	border-radius: 100px;
+	font-size: 14px;
+	padding: 5px 28px;
+	text-decoration: none;
+	color: $gray-color;
+	text-transform: uppercase;
+	background-color: #fff;
+	transition: .3s;
+	cursor: pointer;
+
+	&:hover{
+		background-color: $base-color;
+		border-color: $base-color;
+		text-decoration: none;
+		color: #fff;
+
+		//shadow
+		box-shadow: 3px 3px 8px rgba(#212121, .3);
+	}
+}

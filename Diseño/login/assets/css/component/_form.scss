@@ -1,0 +1,49 @@
+.form{
+	width: 100%;
+
+	.group{
+		margin-bottom: 23px;
+		position: relative;
+	}
+
+	.label{
+		text-transform: uppercase;
+		font-weight: 800;
+		font-size: 14px;
+		display: inline-block;
+		margin-bottom: 5px;
+	}
+
+	.input{
+		border: 1px solid #596377;
+		display: block;
+		width: 100%;
+		border-radius: 4px;
+		padding: 15px;
+		border: 1px solid $light-gray-color;
+		outline: 0;
+		transition: .3s;
+
+		&:focus{
+			border: 1px solid #596377;
+		}
+	}
+
+	.form-help{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+
+	.send-button{
+		@extend .button;
+		// font-size: 18px;
+		padding: 10px 30px;
+		font-weight: bold;
+
+		background-color: $base-color;
+		border-color: $base-color;
+		color: #fff;
+	}
+}
