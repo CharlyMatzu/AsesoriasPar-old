@@ -15,7 +15,7 @@ class AuthController
      *
      * @return mixed|Response
      */
-    public function authenticate($req, $res)
+    public function signin($req, $res)
     {
         try {
             $authServ = new AuthService();
@@ -25,6 +25,31 @@ class AuthController
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse($res, $e->getStatusCode(), $e->getMessage());
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @return Response
+     */
+    public function signup($req, $res)
+    {
+        try {
+            $authServ = new AuthService();
+            /* @var $user User */
+            $user = $req->getAttribute('user_data');
+            //Se le asigna rol de estudiante (basic)
+            $user->setRole( Utils::$ROLE_BASIC );
+            /* @var $student Student */
+            $student = $req->getAttribute('student_data');
+            $student->setUser($user);
+
+            $authServ->signUp( $student );
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

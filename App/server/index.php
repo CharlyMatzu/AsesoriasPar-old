@@ -59,9 +59,14 @@ $app->post('/mail/send', 'MailController:sendMail')
 
 
 //Permite autenticarse (signin)
-$app->post('/auth', 'AuthController:authenticate')
+$app->post('/auth/signin', 'AuthController:authenticate')
         ->add('InputMiddleware:checkData_Auth');
         //->add('InputMiddleware:checkHeader_Auth');
+
+//Crear un usuario y un estudiante a la vez
+$app->post('/auth/signup', 'AuthController:signup')
+        ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
+        ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
 //--------------------------
 //  USER ROUTES
@@ -104,11 +109,6 @@ $app->post('/users', 'UserController:createUser')
         ->add('InputMiddleware:checkData_Role'); //Es el registro de estudiante
 
 //TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
-
-//Crear un usuario y un estudiante a la vez
-$app->post('/users/student', 'UserController:studentSignup')
-        ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
-        ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
 //Actualiza datos de usuario
 $app->put('/users/{id}', 'UserController:updateUser')

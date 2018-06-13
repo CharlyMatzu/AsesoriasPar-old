@@ -164,7 +164,7 @@ class UserService{
      * @throws NoContentException
      * @return \mysqli_result
      */
-    private function getLastUser(){
+    public function getLastUser(){
         $result = $this->userPer->getUser_Last();
 
         if( Utils::isError($result->getOperation()) )
@@ -318,119 +318,6 @@ class UserService{
 
     //------------------REGISTRAR USUARIO Y ESTUDIANTE
 
-    /**
-     * @param $student Student
-     * @throws InternalErrorException
-     * @throws RequestException
-     */
-    public function insertUserAndStudent($student){
-
-        //Inicia transaccion
-        $trans = UsersPersistence::initTransaction();
-        if( !$trans )
-            throw new InternalErrorException("insertUserAndStudent","Error al iniciar transaccion");
-
-
-        //------------Verificacion de datos de usuario (excepciones incluidas)
-        try {
-            //Registramos usuario
-            $this->insertUser( $student->getUser() );
-            //Obtenemos ultimo registrado
-            $result = $this->getLastUser();
-            $user = self::makeUserModel( $result[0] );
-            //Se agrega al Modelo de estudiante
-            $student->setUser( $user );
-
-        } catch (RequestException $e) {
-            //Se termina transaccion
-            UsersPersistence::rollbackTransaction();
-            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
-        }
-
-
-        //--------------CARRERA
-
-        try {
-            $careerService = new CareerService();
-            $result = $careerService->getCareer_ById( $student->getCareer() );
-            $career = CareerService::makeObject_career( $result[0] );
-            //Se asigna carrera (model) a student
-            $student->setCareer( $career );
-
-        } catch (RequestException $e) {
-            //Se termina transaccion
-            UsersPersistence::rollbackTransaction();
-            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
-        }
-
-        //------------Iniciamos registro de estudiante
-        try{
-            $studentService = new StudentService();
-            $studentService->insertStudent( $student );
-        }catch (RequestException $e){
-            //Se termina transaccion
-            UsersPersistence::rollbackTransaction();
-            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
-        }
-
-        //Si marcha bien, se registra commit
-        $trans = UsersPersistence::commitTransaction();
-        if( !$trans )
-            throw new InternalErrorException("insertUserAndStudent","Error al realizar commit de transaccion");
-
-        //Envia correo de confirmacion
-        try{
-            $this->sendConfirmEmail( $user->getEmail() );
-            //TODO: Envia correo a admin
-            $this->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName() );
-        }catch (RequestException $e){}
-    }
-
-    /**
-     * @param $subject String
-     * @param $body String
-     *
-     */
-    public function sendEmailToStaff($subject, $body){
-        try{
-            $mailServ = new MailService();
-            $mail = new MailModel();
-            $mail->setSubject($subject);
-            $mail->setBody($body);
-            $mail->setPlainBody($body);
-
-            $users = $this->getStaffUsers();
-            foreach( $users as $u ){
-                $mail->addAdress( $u['email'] );
-            }
-            $mailServ->sendMail( $mail );
-        }catch (RequestException $e){}
-    }
-
-
-    /**
-     * @param $email String
-     * @throws InternalErrorException
-     */
-    public function sendConfirmEmail($email){
-        //Se envia correo de confirmacion TODO: debe enviarse a una cola
-        $msg = "Se ha registrado en la plataforma de Asesoriaspar.ronintopics.com, para confirmar su correo haga clic en el siguiente enlace
-                <a href='#'> http://client.asesoriaspar.com/#!confirmar/ </a>";
-        $mailServ = new MailService();
-
-        $mail = new MailModel();
-        $mail->addAdress( $email );
-        $mail->setSubject("Confirmacion de correo");
-        //TODO: cambiar ruta de confirmacion de email
-        $mail->setBody("<h3>Asesorías par</h3> <a>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm'>Confirmar</a> </p>");
-        $mail->setPlainBody("CAMBIAR MENSAJE");
-
-        try{
-            $mailServ->sendMail( $mail );
-        }catch (InternalErrorException $e){
-            throw new InternalErrorException("insertUserAndStudent","Error al enviar correo de confirmacion");
-        }
-    }
 
 
     /**

@@ -163,31 +163,6 @@ class UserController
 
 
 
-    /**
-     * @param $req Request
-     * @param $res Response
-     * @return Response
-     */
-    public function studentSignup($req, $res)
-    {
-        try {
-            $userServ = new UserService();
-            /* @var $user User */
-            $user = $req->getAttribute('user_data');
-            //Se le asigna rol de estudiante (basic)
-            $user->setRole( Utils::$ROLE_BASIC );
-            /* @var $student Student */
-            $student = $req->getAttribute('student_data');
-            $student->setUser($user);
-
-            $userServ->insertUserAndStudent( $student );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
-
-        } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
-        }
-    }
-
 
     /**
      * @param $req Request
