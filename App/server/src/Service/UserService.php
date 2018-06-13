@@ -30,7 +30,7 @@ class UserService{
      * @throws NoContentException
      */
     public function getUsers(){
-        throw new InternalErrorException("TEST", "Este es un test");
+        throw new InternalErrorException("TEST", "PRUEBA");
 
         $result = $this->userPer->getUsers();
 

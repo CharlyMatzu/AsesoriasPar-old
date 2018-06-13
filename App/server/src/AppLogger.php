@@ -11,9 +11,9 @@ class AppLogger
      * @param $message string
      */
     public static function makeErrorLog($logTitle, $message){
-        $log = new Logger($logTitle);
-        $log->pushHandler(new StreamHandler(LOG_PATH . '/error.log', Logger::CRITICAL));
-        $log->error( $message );
+        $log = new Logger( $logTitle );
+        $log->pushHandler( new StreamHandler( LOG_PATH . DS . 'error.log', Logger::CRITICAL) );
+        $log->critical( $message );
     }
 
     /**
@@ -22,8 +22,8 @@ class AppLogger
      */
     public static function makeActivityLog($logTitle, $message){
         $log = new Logger($logTitle);
-        $log->pushHandler(new StreamHandler(LOG_PATH . '/activity.log', Logger::INFO));
-        $log->addInfo( $message );
+        $log->pushHandler(new StreamHandler(LOG_PATH . DS . 'activity.log', Logger::INFO));
+        $log->info( $message );
     }
 
 

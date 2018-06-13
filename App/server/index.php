@@ -4,7 +4,7 @@ require_once 'config.php';
 require_once 'vendor/autoload.php';
 require_once 'src/autoload.php';
 
-use App\Middleware\AuthMiddleware;
+
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 use \Slim\Http\Request;
@@ -12,11 +12,10 @@ use \Slim\Http\Response;
 use \Slim\App;
 
 
-
 //TODO: quitar cuando este en producción
 $config = [
     'settings' => [
-        'displayErrorDetails' => true,
+        'displayErrorDetails' => false,
     ],
 ];
 

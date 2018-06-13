@@ -28,7 +28,7 @@
     define("DS", DIRECTORY_SEPARATOR);
     define('ROOT_PATH', __DIR__ );
     define("VENDOR_PATH",  ROOT_PATH . DS . "vendor");
-    define("LOG_PATH",  ROOT_PATH . DS . "log");
+    define("LOG_PATH",  ROOT_PATH . DS . "logs");
 
     
     //------------------
