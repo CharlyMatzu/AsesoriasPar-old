@@ -30,8 +30,6 @@ class UserService{
      * @throws NoContentException
      */
     public function getUsers(){
-        throw new InternalErrorException("TEST", "PRUEBA");
-
         $result = $this->userPer->getUsers();
 
         if( Utils::isError($result->getOperation()) )

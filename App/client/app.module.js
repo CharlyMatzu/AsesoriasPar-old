@@ -2,8 +2,6 @@ var app = angular.module("LoginApp", ['ngRoute', 'ui-notification', 'LocalStorag
 
 app.run(function($rootScope, $window, $timeout, localStorageService){
 
-    $rootScope.url = "http://api.asesoriaspar.com";
-    
     //Verifica la sesion
     (function(){
         if( localStorageService.get('user') ){
