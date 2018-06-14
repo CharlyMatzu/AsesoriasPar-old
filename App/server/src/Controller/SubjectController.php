@@ -21,7 +21,7 @@ class SubjectController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -37,7 +37,7 @@ class SubjectController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -55,7 +55,7 @@ class SubjectController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
     /**
@@ -73,7 +73,7 @@ class SubjectController
             
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 /**
@@ -90,7 +90,7 @@ class SubjectController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -109,7 +109,7 @@ class SubjectController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -128,7 +128,7 @@ class SubjectController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -143,10 +143,10 @@ class SubjectController
             $subjectService = new SubjectService();
             $subject = $req->getAttribute('subject_data');
             $subjectService->insertSubject( $subject );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materia registrada con exito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Materia registrada con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -166,10 +166,10 @@ class SubjectController
             $subject->setId( $params['id'] );
 
             $subjectService->updateSubject( $subject );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia actualizada");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Materia actualizada");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -184,10 +184,10 @@ class SubjectController
         try {
             $subjectService = new SubjectService();
             $subjectService->deleteSubject( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Materia eliminada con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -201,10 +201,10 @@ class SubjectController
         try {
             $subjectService = new SubjectService();
             $subjectService->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Estado de materia modificado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Estado de materia modificado con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

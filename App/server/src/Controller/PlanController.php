@@ -20,7 +20,7 @@ class PlanController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -37,7 +37,7 @@ class PlanController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -53,10 +53,10 @@ class PlanController
             $planService = new PlanService();
             //$year = $req->getParam('plan_data');
             $planService->createPlan( $params['year'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Plan registrado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Plan registrado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -74,10 +74,10 @@ class PlanController
             $planService = new PlanService();
             //$year = $req->getParam('plan_data');
             $planService->updatePlan( $params['id'], $body['year'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Plan actualizado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Plan actualizado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -93,10 +93,10 @@ class PlanController
         try {
             $planService = new PlanService();
             $planService->deletePlan( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Plan eliminado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Plan eliminado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -111,10 +111,10 @@ class PlanController
         try {
             $planService = new PlanService();
             $planService->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status modificado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Status modificado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

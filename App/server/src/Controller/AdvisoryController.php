@@ -24,7 +24,7 @@ class AdvisoryController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -46,7 +46,7 @@ class AdvisoryController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -65,7 +65,7 @@ class AdvisoryController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -85,10 +85,10 @@ class AdvisoryController
             //Se adiciona estudiante a objeto
             $advisory->setStudent( $params['id'] );
             $advisoryServ->insertAdvisory_CurrentPeriod( $advisory);
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asesoria registrada con exito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Asesoria registrada con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -108,10 +108,10 @@ class AdvisoryController
             //Se adiciona estudiante a objeto
 //            $advisory->setStudent( $params['id'] );
             $advisoryServ->assignAdviser( $params['id'], $advisory->getAdviser(), $advisory->getSchedule() );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asignacion de asesor con exito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Asignacion de asesor con exito");
 
         } catch (RequestException $e) {
-        return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -132,7 +132,7 @@ class AdvisoryController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -150,10 +150,10 @@ class AdvisoryController
         try {
             $advisoryServ = new AdvisoryService();
             $advisoryServ->finaliceAdvisory( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Finalizado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Finalizado con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

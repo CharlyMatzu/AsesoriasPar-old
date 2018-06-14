@@ -26,7 +26,7 @@ class AuthController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse($res, $e->getStatusCode(), $e->getMessage());
+            return Utils::makeMessageResponse($res, $e->getStatusCode(), $e->getMessage());
         }
     }
 
@@ -48,10 +48,10 @@ class AuthController
             $student->setUser($user);
 
             $authServ->signUp( $student );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -67,10 +67,10 @@ class AuthController
         try {
             $authServ = new AuthService();
             $authServ->confirmUser( $params['token'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Usuario confirmado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Usuario confirmado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

@@ -177,7 +177,7 @@ class Utils
      * @param $message String
      * @return \Slim\Http\Response
      */
-    public static function makeMessageJSONResponse($res, $statusCode, $message)
+    public static function makeMessageResponse($res, $statusCode, $message)
     {
 //        return $res->withStatus($statusCode)->withJson( ["message" => $message] );
         return $res->withStatus($statusCode)->write( $message );

@@ -1,5 +1,7 @@
 <?php
 
+use App\Utils;
+
 $container = $app->getContainer();
 
 //----------------
@@ -7,6 +9,7 @@ $container = $app->getContainer();
 //----------------
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");
+//header("Access-Control-Allow-Methods: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 
 
@@ -27,10 +30,11 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
         \App\AppLogger::makeErrorLog( "ErrorHandler",
             "File: ".$ex->getFile()."[".$ex->getLine()."] --- ".$ex->getMessage());
 
-        return $c['response']
-            ->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Algo salio mal, intentelo más tarde' );
+        return Utils::makeMessageResponse($response, 500, "Algo salio mal, intentelo más tarde");
+//        return $c['response']
+//            ->withStatus(500)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Algo salio mal, intentelo más tarde' );
     };
  };
 
@@ -38,20 +42,22 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //Override the default Not Found Handler
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        return $c['response']
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('No se encontró la página solicitada');
+        return Utils::makeMessageResponse($response, 404, "No se encontró la página solicitada");
+//        return $c['response']
+//            ->withStatus(404)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('No se encontró la página solicitada');
     };
 };
 
 //Override the default Not Found Handler
 $container['notAllowedHandler'] = function ($c) {
     return function ($request, $response, $methods) use ($c) {
-        return $c['response']
-            ->withStatus(405)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Métodos deben ser uno de: ' . implode(',', $methods));
+        return Utils::makeMessageResponse($response, 405, "Métodos deben ser uno de: ' . implode(',', $methods)");
+//        return $c['response']
+//            ->withStatus(405)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Métodos deben ser uno de: ' . implode(',', $methods));
     };
 };
 
@@ -59,10 +65,11 @@ $container['phpErrorHandler'] = function ($c) {
     return function ($request, $response, $error) use ($c) {
         \App\AppLogger::makeErrorLog("PHPErrorHandler","Ocurrio un error: $error");
 
-        return $c['response']
-            ->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Ocurrio un error, intentelo más tarde');
+        return Utils::makeMessageResponse($response, 405, "Ocurrio un error, intentelo más tarde");
+//        return $c['response']
+//            ->withStatus(500)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Ocurrio un error, intentelo más tarde');
     };
 };
 
