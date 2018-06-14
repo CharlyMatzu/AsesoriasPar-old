@@ -55,4 +55,23 @@ class AuthController
         }
     }
 
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function confirm($req, $res, $params)
+    {
+        try {
+            $authServ = new AuthService();
+            $authServ->confirmUser( $params['token'] );
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Usuario confirmado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 }

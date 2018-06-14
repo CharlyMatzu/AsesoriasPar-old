@@ -388,7 +388,7 @@ class UserService{
         //Envia correo de confirmacion
         try{
             $mailServ = new MailService();
-            $mailServ->sendConfirmEmail( $user->getEmail() );
+            $mailServ->sendConfirmEmail(  $user );
             $staff = $this->getStaffUsers();
             //TODO: Envia correo a admin
             $mailServ->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName(), $staff );

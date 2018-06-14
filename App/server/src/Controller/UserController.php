@@ -143,6 +143,7 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * TODO: debe recibir header para poder ser usado en redireccion al confirmar correo
      */
     public function createUser($req, $res)
     {

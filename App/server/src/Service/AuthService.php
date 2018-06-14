@@ -5,6 +5,7 @@ use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
+use App\Model\MailModel;
 use App\Model\StudentModel;
 use App\Persistence\UsersPersistence;
 use App\Utils;
@@ -67,6 +68,39 @@ class AuthService
     public function signUp($student){
         $userServ = new UserService();
         $userServ->insertUserAndStudent( $student );
+    }
+
+    /**
+     * @param $token
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function confirmUser($token)
+    {
+        //Obtiene datos de token
+        try{
+            $id = Auth::getData($token);
+        } catch (\Exception $e) {
+            throw new InternalErrorException('confirmUser', "Error al obtener data de token", $e->getMessage());
+        }
+        //Verifica que exista usuario
+        $userServ = new UserService();
+        $user = $userServ->getUser_ById( $id )[0];
+        $userServ->changeStatus( $id, Utils::$STATUS_ENABLE );
+
+        //Envío de correo de
+        try{
+            $text = "Confirmado con éxito el correo: ".$user['email'];
+            $mail = new MailModel();
+            $mail->setSubject("Asesorías par: confirmado");
+            $mail->setBody($text);
+            $mail->setPlainBody($text);
+            $mail->addAdress( $user['email'] );
+
+            $mailServ = new MailService();
+            $mailServ->sendMail( $mail );
+        } catch (RequestException $e){}
     }
 
 

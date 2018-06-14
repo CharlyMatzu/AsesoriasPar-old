@@ -67,6 +67,13 @@ $app->post('/auth/signup', 'AuthController:signup')
         ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
+//Para verificar usuario y activar
+$app->get('/auth/confirm/{token}', 'AuthController:confirm')
+        ->add('InputMiddleware:checkParam_Token');
+
+//Para reenviar correo de confirmación
+//$app->get('/auth/confirm/send', 'AuthController:sendConfirmEmail');
+
 //--------------------------
 //  USER ROUTES
 //--------------------------

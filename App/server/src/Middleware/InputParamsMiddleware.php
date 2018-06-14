@@ -1,6 +1,7 @@
 <?php namespace App\Middleware;
 
 
+use App\Auth;
 use App\Model\AdvisoryModel;
 use App\Model\CareerModel;
 use App\Model\MailModel;
@@ -633,6 +634,31 @@ class InputParamsMiddleware extends Middleware
         $advisory->setDescription( $params['description'] );
 
         $req = $req->withAttribute('advisory_data', $advisory);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
+    /**
+     * Verifica que el parametro enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
+    public function checkParam_Token($req, $res, $next)
+    {
+        $token = $this->getRouteParams($req)['token'];
+        //Verifica que sea un string numerico (no int porque viene como string)
+        if( empty($token) )
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Token debe incluirse");
+
+        try{
+            Auth::CheckToken( $token );
+        }catch (\Exception $e) {
+            return Utils::makeMessageJSONResponse($res, Utils::$CONFLICT, $e->getMessage());
+        }
 
         $res = $next($req, $res);
         return $res;

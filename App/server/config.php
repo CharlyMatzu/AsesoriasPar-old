@@ -37,5 +37,5 @@
     //include_once ROOT_PATH . DS . "autoload.php";
     //include_once VENDOR_PATH. DS ."autoload.php";
 
-//    define("SERVER_URL", "http://api.asesoriaspar.com/");
-//    define("CLIENT_URL", "http://client.asesoriaspar.com/");
+    define("SERVER_URL", "http://api.asesoriaspar.com/index.php");
+    define("CLIENT_URL", "http://client.asesoriaspar.com");

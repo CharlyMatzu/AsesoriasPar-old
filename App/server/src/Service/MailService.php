@@ -1,4 +1,5 @@
 <?php namespace App\Service;
+use App\Auth;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\RequestException;
 use App\Mailer;
@@ -38,21 +39,25 @@ class MailService
 
 
     /**
-     * @param $email String
+     * @param $user UserModel
+     *
      * @throws InternalErrorException
      */
-    public function sendConfirmEmail($email){
+    public function sendConfirmEmail($user){
+        //Generando token de confirmación
+        $token = Auth::getToken( $user->getId(), 1 );
+
         $mail = new MailModel();
-        $mail->addAdress( $email );
-        $mail->setSubject("Confirmacion de correo");
-        //TODO: cambiar ruta de confirmacion de email
-        $mail->setBody("<h3>Asesorías par</h3> <a>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm'>Confirmar</a> </p>");
-        $mail->setPlainBody("CAMBIAR MENSAJE");
+        $mail->addAdress( $user->getEmail() );
+        $mail->setSubject("Asesorías par: Confirmación de correo");
+        //TODO: cambiar ruta de confirmación de email
+        $mail->setBody("<h3>Asesorías par</h3> Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".SERVER_URL."/auth/confirm/$token'>".SERVER_URL."/auth/confirm/$token</a> </p>");
+        $mail->setPlainBody("Asesorías par, Favor de verificar su correo haciendo click en el siguiente enlace: ".SERVER_URL."/auth/confirm/$token");
 
         try{
             $this->sendMail( $mail );
         }catch (InternalErrorException $e){
-            throw new InternalErrorException("insertUserAndStudent","Error al enviar correo de confirmacion");
+            throw new InternalErrorException("insertUserAndStudent","Error al enviar correo de confirmación");
         }
     }
 
