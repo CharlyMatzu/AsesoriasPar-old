@@ -5,6 +5,7 @@ use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
+use App\Exceptions\UnauthorizedException;
 use App\Model\MailModel;
 use App\Model\StudentModel;
 use App\Persistence\UsersPersistence;
@@ -28,6 +29,7 @@ class AuthService
      * @throws NotFoundException
      * @throws ConflictException
      * TODO: solo debe funcionar si usuario esta activo
+     * @throws UnauthorizedException
      */
     public function signIn($email, $pass){
         $result = $this->userPer->getUser_BySignIn($email, $pass);
@@ -35,12 +37,12 @@ class AuthService
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("signIn","Ocurrió un error al authenticar", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("email o contraseña incorrectos");
+            throw new UnauthorizedException("email o contraseña incorrectos");
 
         //Si esta sin confirmar
         $user = $result->getData()[0];
 
-        if( $user['status'] == Utils::$STATUS_ENABLE ) {
+        if( $user['status'] == Utils::$STATUS_DISABLE ) {
             throw new NotFoundException("Usuario o contraseña e incorrectos");
             //TODO reenviar correo de confirmación
         }

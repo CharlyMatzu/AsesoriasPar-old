@@ -1,4 +1,4 @@
-angular.module("LoginApp").config(['$routeProvider', function ($routeProvider) {
+angular.module("LoginApp").config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
     $routeProvider
         .when("/signin", {
             controller: "SigninController",
@@ -13,4 +13,11 @@ angular.module("LoginApp").config(['$routeProvider', function ($routeProvider) {
         //     templateUrl: "app/components/confirm/confirmView.html"
         // })
         .otherwise("/signin");
+
+        //Por aquellos del CORS
+        // $httpProvider.defaults.headers.common = {};
+        // $httpProvider.defaults.headers.post = {};
+        // $httpProvider.defaults.headers.put = {};
+        // $httpProvider.defaults.headers.get = {}
+        // $httpProvider.defaults.headers.patch = {};
 }]);
