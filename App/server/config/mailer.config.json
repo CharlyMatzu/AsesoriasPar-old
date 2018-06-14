@@ -1,0 +1,13 @@
+{
+  "mode": "production",
+  "connection": {
+    "production": {
+      "host": "mail.ronintopics.com",
+      "user": "asesoriaspar@ronintopics.com",
+      "pass": "asesorias.123.par",
+      "smtp_secure": "tls",
+      "port": 26,
+      "name": "Asesorías par - ITSON"
+    }
+  }
+}

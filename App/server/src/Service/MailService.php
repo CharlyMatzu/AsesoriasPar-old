@@ -30,7 +30,7 @@ class MailService
             $mail->setBody($body);
             $mail->setPlainBody($body);
 
-            foreach( $$staffUsers as $user ){
+            foreach( $staffUsers as $user ){
                 $mail->addAdress( $user['email'] );
             }
             $this->sendMail( $mail );

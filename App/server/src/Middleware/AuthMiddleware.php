@@ -12,6 +12,13 @@ class AuthMiddleware extends Middleware
 
     /**
      * @param $req Request
+     */
+    private function getAuthHeader($req){
+        return;
+    }
+
+    /**
+     * @param $req Request
      * @param $res Response
      * @param $next callable
      * @return Response

@@ -1,4 +1,5 @@
 <?php namespace App;
+use App\Exceptions\InternalErrorException;
 use DateTime;
 
 class Utils
@@ -240,6 +241,74 @@ class Utils
         $d = DateTime::createFromFormat($format, $date);
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
+    }
+
+    /**
+     * @throws InternalErrorException
+     * @return mixed JSON
+     */
+    public static function getMySQLConfigJSON(){
+        //Obteniendo JSON
+        $path_config = file_get_contents(CONFIG_PATH ."/connection.config.json");
+        if( !$path_config )
+            throw new InternalErrorException("MySQLConfig", "No se encontro archivo de configuracion");
+
+        $json_config = json_decode( $path_config );
+        if( $json_config == null || $json_config == false )
+            throw new InternalErrorException("MailerConfig", "Error al decodificar json");
+
+
+        if( !isset($json_config->mode) || !isset($json_config->connection) )
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+
+        //Obteniendo el modo y las conexiones
+        $mode = $json_config->mode;
+        $connections = $json_config->connection; //objetos de conexion
+
+        //Se obtiene conexion especifica, si no existe, se lanza error
+        if( !isset($connections->$mode) )
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+
+        $con = $connections->$mode;
+
+        if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+
+        return $con;
+    }
+
+
+    /**
+     * @throws InternalErrorException
+     * @return mixed JSON
+     */
+    public static function getMailerConfigJSON(){
+        //Obteniendo JSON
+        $path_config = file_get_contents(CONFIG_PATH ."/mailer.config.json");
+        if( !$path_config )
+            throw new InternalErrorException("MailerConfig", "No se encontro archivo de configuracion");
+        $json_config = json_decode( $path_config );
+        if( $json_config == null || $json_config == false )
+            throw new InternalErrorException("MailerConfig", "Error al decodificar json");
+
+
+        if( !isset($json_config->mode) || !isset($json_config->connection) )
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+
+        //Obteniendo el modo y las conexiones
+        $mode = $json_config->mode;
+        $connections = $json_config->connection; //objetos de conexion
+
+        //Se obtiene conexion especifica, si no existe, se lanza error
+        if( !isset($connections->$mode) )
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+
+        $con = $connections->$mode;
+
+        if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->smtp_secure) || !isset($con->port) || !isset($con->name) )
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+
+        return $con;
     }
 
 }
