@@ -93,7 +93,7 @@ class UserService{
             $result = $this->userPer->getEnableUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -103,7 +103,7 @@ class UserService{
             $result = $this->userPer->getDisabledUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -113,7 +113,7 @@ class UserService{
             $result = $this->userPer->getNoconfirmUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -174,7 +174,7 @@ class UserService{
         $result = $this->userPer->getUser_Last();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."getLastUser", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
+            throw new InternalErrorException("getLastUser", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay usuarios");
         else
@@ -215,7 +215,7 @@ class UserService{
         $result = $this->userPer->getUser_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."getUserByEmail","Ocurrio un error al obtener usuario por email", $result->getErrorMessage());
+            throw new InternalErrorException("getUserByEmail","Ocurrio un error al obtener usuario por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontro usuario");
         else
@@ -235,7 +235,7 @@ class UserService{
         $result = $this->userPer->searchUsers_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
+            throw new InternalErrorException("searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron usuarios");
 
@@ -305,7 +305,7 @@ class UserService{
         //Verifica que email no exista
         $result = $this->isEmailUsed( $user->getEmail() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class."insertUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "Email ya existe" );
 

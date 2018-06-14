@@ -1,9 +1,9 @@
-app.service('SigninService', function($http, RequestFactory){
+angular.module("LoginApp").service('SigninService', function($http, HostProvider){
 
     this.signin = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: RequestFactory.getURL()+"/auth",
+            url: HostProvider.getURL()+"/auth/signin",
             data: {
                 email: user.email,
                 password: user.pass

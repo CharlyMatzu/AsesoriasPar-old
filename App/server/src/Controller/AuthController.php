@@ -2,6 +2,8 @@
 
 
 use App\Exceptions\RequestException;
+use App\Model\StudentModel;
+use App\Model\UserModel;
 use App\Service\AuthService;
 use App\Utils;
 use Slim\Http\Request;
@@ -37,11 +39,11 @@ class AuthController
     {
         try {
             $authServ = new AuthService();
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             //Se le asigna rol de estudiante (basic)
             $user->setRole( Utils::$ROLE_BASIC );
-            /* @var $student Student */
+            /* @var $student StudentModel */
             $student = $req->getAttribute('student_data');
             $student->setUser($user);
 

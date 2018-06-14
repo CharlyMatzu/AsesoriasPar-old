@@ -12,8 +12,9 @@ class UsersPersistence extends Persistence{
     public function __construct(){}
 
     private $SELECT = "SELECT 
-                        u.user_id,
+                        u.user_id as 'id',
                         u.email,
+                        u.password,
                         u.date_register,
                         u.status,
                         -- Role

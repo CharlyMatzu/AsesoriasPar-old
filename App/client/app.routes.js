@@ -1,4 +1,4 @@
-app.config( function ($routeProvider) {
+angular.module("LoginApp").config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when("/signin", {
             controller: "SigninController",
@@ -8,9 +8,9 @@ app.config( function ($routeProvider) {
             controller: "SignupController",
             templateUrl: "app/components/signup/signupView.html"
         })
-        .when("/confirm/:token", {
-            controller: "ConfirmController",
-            templateUrl: "app/components/confirm/confirmView.html"
-        })
+        // .when("/confirm/:token", {
+        //     controller: "ConfirmController",
+        //     templateUrl: "app/components/confirm/confirmView.html"
+        // })
         .otherwise("/signin");
-});
+}]);

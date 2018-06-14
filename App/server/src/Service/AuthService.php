@@ -32,7 +32,7 @@ class AuthService
         $result = $this->userPer->getUser_BySignIn($email, $pass);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."signIn","Ocurrió un error al authenticar", $result->getErrorMessage());
+            throw new InternalErrorException("signIn","Ocurrió un error al authenticar", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("email o contraseña incorrectos");
 

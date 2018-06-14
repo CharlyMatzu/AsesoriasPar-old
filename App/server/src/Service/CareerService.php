@@ -176,7 +176,7 @@ class CareerService{
         // Si sale bien, Inicia REGISTRO de CareerModel
         $result = $this->perCareers->updateCareer( $career );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."updateCareers",
+            throw new InternalErrorException("updateCareers",
                 "No se pudo actualizar carrera", $result->getErrorMessage());
     }
 
@@ -193,7 +193,7 @@ class CareerService{
 
         $result = $this->perCareers->deleteCareer( $career_id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."deleteCareer", "No se pudo eliminar carrera", $result->getErrorMessage());
+            throw new InternalErrorException("deleteCareer", "No se pudo eliminar carrera", $result->getErrorMessage());
     }
 
     /**
@@ -208,7 +208,7 @@ class CareerService{
 
         $result = $this->perCareers->changeStatusToDeleted( $careerID );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."disableCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException("disableCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
     }
 
 
@@ -228,7 +228,7 @@ class CareerService{
         $result = $this->perCareers->changeStatusToEnable( $careerID );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class."enableCareers", "No se pudo habilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException("enableCareers", "No se pudo habilitar carrera", $result->getErrorMessage());
     }
 
 

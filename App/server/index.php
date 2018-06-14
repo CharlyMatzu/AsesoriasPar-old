@@ -40,7 +40,7 @@ require_once 'src/settings.php';
 //  en un controller se recibe un "array" como parametro
 
 
-//TODO: agregar un status por defacul directamente en Persistencia para evitar problemas en DB
+//TODO: agregar un status por default directamente en Persistencia para evitar problemas en DB
 
 
 $app->get('/', function(Request $request, Response $response, $params){
@@ -59,9 +59,8 @@ $app->post('/mail/send', 'MailController:sendMail')
 
 
 //Permite autenticarse (signin)
-$app->post('/auth/signin', 'AuthController:authenticate')
+$app->post('/auth/signin', 'AuthController:signin')
         ->add('InputMiddleware:checkData_Auth');
-        //->add('InputMiddleware:checkHeader_Auth');
 
 //Crear un usuario y un estudiante a la vez
 $app->post('/auth/signup', 'AuthController:signup')

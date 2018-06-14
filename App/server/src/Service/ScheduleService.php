@@ -281,7 +281,7 @@ class ScheduleService{
             //----------COMIENZA TRANSACCION
 //            $trans = SchedulesPersistence::initTransaction();
 //            if( !$trans )
-//                throw new InternalErrorException(static::class."InsertSchedule", "Error al iniciar transaccion");
+//                throw new InternalErrorException("InsertSchedule", "Error al iniciar transaccion");
 
             //Si no tiene horario, se registra
             $result = $this->schedulesPer->insertSchedule( $studentId, $period['id'] );
@@ -347,14 +347,14 @@ class ScheduleService{
         //TODO: si horario esa deshabilitado o ya paso el periodo, no debe poder modificarse
 
         if( !SchedulesPersistence::initTransaction() )
-            throw new InternalErrorException(static::class."InsertScheduleSubjects", "Error al iniciar tranasaccion");
+            throw new InternalErrorException("InsertScheduleSubjects", "Error al iniciar tranasaccion");
 
         $subjects = array();
         try{
             $subjects = $this->getScheduleSubjects_ById($scheduleid);
         }catch (InternalErrorException $e){
             SchedulesPersistence::rollbackTransaction();
-            throw new InternalErrorException(static::class."InsertScheduleSubjects", "Se detuvo insercion de materias");
+            throw new InternalErrorException("InsertScheduleSubjects", "Se detuvo insercion de materias");
         }catch (NoContentException $e){}
 
 
@@ -385,7 +385,7 @@ class ScheduleService{
         }
 
         if( !SchedulesPersistence::commitTransaction() )
-            throw new InternalErrorException(static::class."InsertScheduleSubjects","Error al registrar tranasaccion");
+            throw new InternalErrorException("InsertScheduleSubjects","Error al registrar tranasaccion");
     }
 
 

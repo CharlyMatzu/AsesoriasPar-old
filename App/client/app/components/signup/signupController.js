@@ -1,4 +1,4 @@
-app.controller('SignupController', function($scope, $window, $timeout, Notification, SignupService){
+angular.module("LoginApp").controller('SignupController', function($scope, $window, $timeout, Notification, SignupService){
     
     $scope.careers = [];
     // $scope.student = {

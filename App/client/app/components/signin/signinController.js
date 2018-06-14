@@ -1,4 +1,4 @@
-app.controller('SigninController', function($scope, $window, $timeout, localStorageService, Notification, SigninService){
+angular.module("LoginApp").controller('SigninController', function($scope, $window, $timeout, localStorageService, Notification, SigninService){
 
 
     $scope.signin = function(user){

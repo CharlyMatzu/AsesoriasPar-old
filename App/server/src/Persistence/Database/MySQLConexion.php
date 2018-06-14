@@ -54,7 +54,7 @@
 
             /* cambiar el conjunto de caracteres a utf8 para aceptar tildes y 'eñes' */
             if ( !$this->_connection->set_charset('utf8') )
-                throw new InternalErrorException(static::class."UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
+                throw new InternalErrorException("UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
         }
 
 

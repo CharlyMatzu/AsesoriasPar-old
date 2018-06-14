@@ -17,13 +17,20 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //https://www.slimframework.com/docs/v3/tutorial/first-app.html
 
  $container['errorHandler'] = function($c) {
-    return function ($request, $response, $exception) use ($c){
-        \App\AppLogger::makeErrorLog("ErroHandler", "File: $exception->getFile()[$exception->getLine()] -- Message: $exception->getMessage()");
+     /**
+      * @param $request \Slim\Http\Request
+      * @param $response \Slim\Http\Response
+      * @param $ex RuntimeException
+      * @return mixed
+      */
+    return function ($request, $response, $ex) use ($c){
+        \App\AppLogger::makeErrorLog( "ErrorHandler",
+            "File: ".$ex->getFile()."[".$ex->getLine()."] --- ".$ex->getMessage());
 
         return $c['response']
             ->withStatus(500)
             ->withHeader('Content-Type', 'text/html')
-            ->write('Algo salio mal, intentelo más tarde: ' );
+            ->write('Algo salio mal, intentelo más tarde' );
     };
  };
 
@@ -34,7 +41,7 @@ $container['notFoundHandler'] = function ($c) {
         return $c['response']
             ->withStatus(404)
             ->withHeader('Content-Type', 'text/html')
-            ->write('No se encontro la página solicitada');
+            ->write('No se encontró la página solicitada');
     };
 };
 
@@ -59,6 +66,7 @@ $container['phpErrorHandler'] = function ($c) {
     };
 };
 
+//------------------------------------------- DEPENDENCY INJECTION (DI)
 
 //-----------------------
 //Middleware methods

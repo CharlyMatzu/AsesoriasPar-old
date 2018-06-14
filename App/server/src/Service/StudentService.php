@@ -107,7 +107,7 @@ class StudentService{
         //Se registra usuario
         $result = $this->perStudents->insertStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class."insertStudents","Ocurrio un error al registrar usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertStudents","Ocurrio un error al registrar usuario", $result->getErrorMessage());
     }
 
 
@@ -262,7 +262,7 @@ class StudentService{
         $student->setLastName( $data['last_name'] );
         $student->setPhone( $data['phone'] );
         $student->setFacebook( $data['facebook'] );
-        $student->setAvatar( $data['avatar'] );
+//        $student->setAvatar( $data['avatar'] );
         $student->setRegisterDate( $data['date_register'] );
 
 //        $student->setStatus( $data['status'] );

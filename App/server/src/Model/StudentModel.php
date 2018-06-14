@@ -9,7 +9,6 @@
         private $last_name;
         private $phone;
         private $facebook;
-        private $avatar;
         private $date_register;
         private $status;
         private $career;
@@ -117,22 +116,6 @@
         /**
          * @return String
          */
-        public function getAvatar()
-        {
-            return $this->avatar;
-        }
-
-        /**
-         * @param String $avatar
-         */
-        public function setAvatar($avatar)
-        {
-            $this->avatar = $avatar;
-        }
-
-        /**
-         * @return String
-         */
         public function getRegisterDate()
         {
             return $this->date_register;
@@ -194,6 +177,3 @@
             $this->user = $user;
         }
     }
-
-
-?>
