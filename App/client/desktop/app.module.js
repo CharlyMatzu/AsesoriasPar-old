@@ -1,4 +1,4 @@
-var app = angular.module("Desktop", ['ngRoute', 'ui-notification', 'LocalStorageModule']);
+var app = angular.module("Desktop", ['ngRoute', 'ui-notification', 'LocalStorageModule', 'HostModule']);
 
 
 
@@ -54,19 +54,4 @@ app.run(function($rootScope, $window, $http, localStorageService, RequestFactory
     //     $(event.currentEvent).
     // }
 
-});
-
-app.factory("RequestFactory", function() {
-    // var url = "http://api.ronintopics.com";
-    // var url = "http://api.asesoriaspar.com";
-    var url = "http://10.202.103.252/AsesoriasPar/App/server";
-
-    return {
-        getURL: function() {
-            return url+'/index.php';
-        },
-        getBaseURL: function() {
-            return url;
-        }
-    };
 });

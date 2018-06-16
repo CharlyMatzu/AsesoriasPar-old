@@ -1,4 +1,4 @@
-angular.module("LoginApp").controller('SigninController', function($scope, $window, $timeout, localStorageService, Notification, SigninService){
+angular.module("LoginApp").controller('SigninController', function($scope, $window, $timeout, Notification, SigninService, AuthFactory){
 
 
     $scope.signin = function(user){
@@ -10,9 +10,11 @@ angular.module("LoginApp").controller('SigninController', function($scope, $wind
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Autenticado correctamente, redireccionando";
                 // $scope.loading.status = false;
-                $timeout(function(){
-                    $scope.saveSession(success.data);
-                },2000);
+                // $timeout(function(){
+                //     $scope.saveSession(success.data);
+                // },2000);
+
+                AuthFactory.setUser( success.data );
             },
             function(error){
                 Notification.error("Ocurrio un error");

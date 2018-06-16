@@ -40,8 +40,8 @@
                                 <!-- items -->
                                 <div class="item" ng-repeat="ad in requestedAds">
                                     <div class="avatar">
-                                        <img ng-show="ad.adviser_id != null" src="{{ad.adviser_avatar}}" alt="">
-                                        <img ng-show="ad.adviser_id == null" src="{{url}}/assets/images/avatar_default.jpg" alt="">
+                                        <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_assign.jpg" alt="">
+                                        <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_empty.jpg" alt="">
                                     </div>
                                     <div class="info">
                                         <div ng-show="ad.adviser_id != null" class="info-item student" >{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
@@ -76,8 +76,8 @@
                                 <!-- items -->
                                 <div class="item" ng-repeat="ad in adviserAds">
                                     <div class="avatar">
-                                        <img ng-show="ad.alumn_id != null" src="{{url}}/{{ad.alumn_avatar}}" alt="">
-                                        <img ng-show="ad.alumn_id == null" src="{{url}}/assets/images/avatar_default.jpg" alt="">
+                                        <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_assign.jpg" alt="">
+                                        <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_empty.jpg" alt="">
                                     </div>
                                     <div class="info">
                                         <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>

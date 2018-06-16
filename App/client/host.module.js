@@ -1,8 +1,18 @@
 angular.module("HostModule", [])
-    .factory('RequestFactory', function(){
 
-        // var DEVELOPMENT = "http://api.asesoriaspar.com";
-        var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
+    // .constant('AUTH_EVENTS', {
+    //     loginSuccess: 'auth-login-success',
+    //     loginFailed: 'auth-login-failed',
+    //     logoutSuccess: 'auth-logout-success',
+    //     sessionTimeout: 'auth-session-timeout',
+    //     notAuthenticated: 'auth-not-authenticated',
+    //     notAuthorized: 'auth-not-authorized'
+    // })
+
+    .factory('RequestFactory', function($http){
+
+        var DEVELOPMENT = "http://api.asesoriaspar.com";
+        // var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
         var PRODUCTION = "http://asesoriaspar.ronintopics.com";
         var DEVELOP_MODE = true;
             
@@ -17,10 +27,28 @@ angular.module("HostModule", [])
         return {
             getURL: function() {
                 return getServerURL()+'/index.php';
+            },
+
+            makeRequest: function(method, url, data, use_token, successCallback, errorCallback){
+                //TODO: SEND TOKEN
+                $http({
+                    method: method,
+                    url: getURL()+url,
+                    data: data
+                }).then(function(success){
+                    successCallback(success);
+                }, function(error){
+                    //TODO: CHECK access
+                    errorCallback(error);
+                });
             }
         };
             
-    });
+    })
+
+    
+
+
 
 // angular.module("HostModule", [])
 //     //CONSTANTES

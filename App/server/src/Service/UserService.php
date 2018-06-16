@@ -390,7 +390,7 @@ class UserService{
             $mailServ = new MailService();
             $mailServ->sendConfirmEmail(  $user );
             $staff = $this->getStaffUsers();
-            //TODO: Envia correo a admin
+            //Se envia a staff
             $mailServ->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName(), $staff );
         }catch (RequestException $e){}
     }
