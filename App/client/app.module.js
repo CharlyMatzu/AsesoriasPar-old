@@ -3,21 +3,6 @@ angular.module("LoginApp", ['ngRoute', 'ui-notification', 'HostModule', 'AuthMod
 
     .run(function($rootScope, $window, $timeout, AuthFactory){
 
-        //metodo para verificar si esta logeado, se ejecuta primero
-        (function(){
-
-            if( AuthFactory.isAuthenticated() ){
-                if( AuthFactory.isStudent() )
-                    $window.location = "desktop";
-                else if( AuthFactory.isStaff() )
-                    $window.location = "dashboard";
-                // else
-                //     $window.location = "errorPage";
-            }
-            else
-                console.log( "No Autenticado" );
-
-        })();
 
         //-----------VARIABLES GLOBALES
         $rootScope.page = {
@@ -54,5 +39,27 @@ angular.module("LoginApp", ['ngRoute', 'ui-notification', 'HostModule', 'AuthMod
         $rootScope.showCreateForm = false;
         $rootScope.showModalForm = false;
 
+
+        $rootScope.redirect = function(){
+            checkAuth();
+        };
+
+        //metodo para verificar si esta logeado, se ejecuta primero
+        var checkAuth = function(){
+            if( AuthFactory.isAuthenticated() ){
+                if( AuthFactory.isStudent() )
+                    $window.location = "desktop";
+                else if( AuthFactory.isStaff() )
+                    $window.location = "dashboard";
+                // else
+                //     $window.location = "errorPage";
+            }
+            else
+                console.log( "No Autenticado" );
+        };
+
+        checkAuth();
+        
+        
         
     });

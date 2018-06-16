@@ -29,11 +29,15 @@ angular.module("HostModule", [])
                 return getServerURL()+'/index.php';
             },
 
+            getBaseURL: function() {
+                return getServerURL();
+            },
+
             makeRequest: function(method, url, data, use_token, successCallback, errorCallback){
                 //TODO: SEND TOKEN
                 $http({
                     method: method,
-                    url: getURL()+url,
+                    url: getBaseURL()+url,
                     data: data
                 }).then(function(success){
                     successCallback(success);

@@ -3,7 +3,12 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.url = RequestFactory.getBaseURL();
 
     $scope.requestedAds = [];
+    $scope.showRequestedAds = false;
+
     $scope.adviserAds = [];
+    $scope.showAdviserdAds = false;
+    
+
     $scope.showAdvisories = false;
     $scope.showNewAdvisory = false;
 
@@ -11,11 +16,13 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
     $scope.subjects = {};
     $scope.selectedSub = null;
 
-    //
 
 
     $scope.getRequestedAds = function(){
         $scope.loading.status = true;
+        
+        $scope.showRequestedAds = true;
+        $scope.showAdviserdAds = false;
 
         AdvisoriesService.getRequestedAdvisories( $scope.student.id,
             function(success){
@@ -31,6 +38,8 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
 
     $scope.getAdviserAds = function(){
         $scope.loading.status = true;
+        $scope.showRequestedAds = false;
+        $scope.showAdviserdAds = true;
 
         AdvisoriesService.getAdviserAdvisories( $scope.student.id,
             function(success){
@@ -110,6 +119,9 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
 
 
     (function(){
+
+        $scope.loading.status = true;
+        $scope.period.message = "";
         
         AdvisoriesService.getCurrentPeriod(
             function(success){
