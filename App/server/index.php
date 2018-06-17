@@ -44,7 +44,7 @@ require_once 'src/settings.php';
 
 
 $app->get('/', function(Request $request, Response $response, $params){
-    //TODO: retorn API routes in JSON
+    //TODO: mostrar api
     $response->write("Welcome to the API");
 });
 
@@ -344,16 +344,11 @@ $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeSchedule
 $app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStudentId')
     ->add('InputMiddleware:checkParam_Id');
 
+
 //crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
 //        ->add('InputMiddleware:checkData_schedule_hours')
         ->add('InputMiddleware:checkParam_Id');
-
-//agrega materias a horario
-//$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
-//        ->add('InputMiddleware:checkData_schedule_subjects')
-//        ->add('InputMiddleware:checkParam_Id')
-//      ;
 
 
 //TODO: obtener materias de horario
@@ -363,6 +358,13 @@ $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
 $app->put('/schedule/{id}/hours', 'ScheduleController:updateScheduleHours')
         ->add('InputMiddleware:checkData_schedule_hours')
         ->add('InputMiddleware:checkParam_Id');
+
+
+//agrega materias a horario
+//$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
+//        ->add('InputMiddleware:checkData_schedule_subjects')
+//        ->add('InputMiddleware:checkParam_Id')
+//      ;
 
 //actualiza materias de horario
 $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects')

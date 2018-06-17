@@ -40,10 +40,6 @@ angular.module("LoginApp", ['ngRoute', 'ui-notification', 'HostModule', 'AuthMod
         $rootScope.showModalForm = false;
 
 
-        $rootScope.redirect = function(){
-            checkAuth();
-        };
-
         //metodo para verificar si esta logeado, se ejecuta primero
         var checkAuth = function(){
             if( AuthFactory.isAuthenticated() ){
@@ -56,6 +52,10 @@ angular.module("LoginApp", ['ngRoute', 'ui-notification', 'HostModule', 'AuthMod
             }
             else
                 console.log( "No Autenticado" );
+        };
+
+        $rootScope.redirect = function(){
+            checkAuth();
         };
 
         checkAuth();

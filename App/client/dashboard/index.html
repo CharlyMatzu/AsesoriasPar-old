@@ -80,7 +80,7 @@
                     <!-- User profile and search -->
                     <ul class="navbar-nav my-lg-0">
                         <!-- Acual User -->
-                        <span>Sesion: <span ng-bind="user.email"></span></span>
+                        <div><strong>Sesion:</strong> <span ng-bind="session.email"></span></div>
                     </ul>
                 </div>
             </nav>
@@ -391,6 +391,8 @@
 
     <!--Custom angularJS-->
     <script src="app.module.js"></script>
+    <script src="../host.module.js"></script>
+    <script src="../auth.module.js"></script>
     <script src="app.routes.js"></script>
 
     <!-- home -->
