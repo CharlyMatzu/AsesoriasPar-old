@@ -1,8 +1,8 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Student;
-use App\Model\User;
+use App\Model\StudentModel;
+use App\Model\UserModel;
 use App\Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -24,7 +24,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -41,7 +41,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -59,7 +59,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -77,7 +77,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -95,7 +95,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -114,7 +114,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -132,7 +132,7 @@ class UserController
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -143,32 +143,31 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * TODO: debe recibir header para poder ser usado en redireccion al confirmar correo
      */
     public function createUser($req, $res)
     {
         try {
             $userServ = new UserService();
             $role = $user = $req->getAttribute('role_data');
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             $user->setRole( $role );
 
             $userServ->insertUser( $user );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
-
-
 
     /**
      * @param $req Request
      * @param $res Response
      * @return Response
      */
-    public function studentSignup($req, $res)
+    public function createUserAndStudent($req, $res)
     {
         try {
             $userServ = new UserService();
@@ -181,12 +180,14 @@ class UserController
             $student->setUser($user);
 
             $userServ->insertUserAndStudent( $student );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Estudiante registrado con éxito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
+
+
 
 
     /**
@@ -201,16 +202,16 @@ class UserController
         try {
             $userServ = new UserService();
             $role = $user = $req->getAttribute('role_data');
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             $user->setRole( $role );
             $user->setId( $params['id'] );
 
             $userServ->updateUser( $user );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Actualizado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Actualizado con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -226,10 +227,10 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status modificado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Status modificado con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -244,10 +245,10 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->deleteUser( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Eliminado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Eliminado con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

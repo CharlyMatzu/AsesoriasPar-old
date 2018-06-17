@@ -328,6 +328,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     (function(){
 
         $scope.loading.status = true;
+        $scope.period.message = "";
         
         ScheduleService.getCurrentPeriod(
             function(success){

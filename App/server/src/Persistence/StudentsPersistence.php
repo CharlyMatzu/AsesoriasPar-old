@@ -1,7 +1,7 @@
 <?php namespace App\Persistence;
 
-use App\Model\Career;
-use App\Model\Student;
+use App\Model\CareerModel;
+use App\Model\StudentModel;
 use App\Utils;
 
 class StudentsPersistence extends Persistence{
@@ -15,7 +15,6 @@ class StudentsPersistence extends Persistence{
                         s.last_name as 'last_name', 
                         s.phone as 'phone', 
                         s.facebook as 'facebook', 
-                        CONCAT('assets/images/', s.avatar) as 'avatar', 
                         s.date_register as 'date_register',
                         s.status as 'status',
                         s.fk_user as 'user_id', 
@@ -163,24 +162,25 @@ class StudentsPersistence extends Persistence{
 
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
+     *
      * @return \App\Model\DataResult
      */
     public function insertStudent( $student ){
-        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career, avatar)
+        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career)
                   VALUES(
                       '".$student->getItsonId()."',
                       '".$student->getFirstName()."', 
                       '".$student->getLastname()."',
                       '".$student->getPhone()."', 
                       ".$student->getUser()->getId().", 
-                      ".$student->getCareer()->getId().",
-                      'avatar_default.jpg')";
+                      ".$student->getCareer()->getId().")";
         return  self::executeQuery($query);
     }
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
+     *
      * @return \App\Model\DataResult
      */
     public function updateStudent( $student ){

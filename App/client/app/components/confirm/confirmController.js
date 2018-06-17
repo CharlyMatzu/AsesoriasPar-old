@@ -1,4 +1,4 @@
-app.controller('ConfirmController', function($scope, $window, $timeout, Notification, ConfirmService){
+angular.module("LoginApp").controller('ConfirmController', function($scope, $window, $timeout, Notification, ConfirmService){
 
     $scope.status = "Procesando...";
 

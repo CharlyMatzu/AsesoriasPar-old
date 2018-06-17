@@ -9,7 +9,6 @@ use App\Exceptions\RequestException;
 use App\Model\MailModel;
 use App\Persistence\PlansPeristence;
 use App\Utils;
-use Carbon\Carbon;
 
 use App\Persistence\AdvisoriesPersistence;
 use App\Model\AdvisoryModel;
@@ -56,7 +55,7 @@ class AdvisoryService
         $periodService = new PeriodService();
         $period = $periodService->getCurrentPeriod();
 
-        $result = $this->perAsesorias->getAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
+        $result = $this->perAsesorias->getStudentAdvisories_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCurrentAdvisory_ByStudent",
                 "Error al obtener asesorias de estudiante", $result->getErrorMessage());
@@ -78,7 +77,7 @@ class AdvisoryService
      */
     public function getCurrentAdvisers_BySubject_IgnoreStudent($period_id, $subject_id, $student_id){
 
-        $result = $this->perAsesorias->getCurrentAdvisers_ByPeriod_BySubject_IngoreStudent( $period_id, $subject_id, $student_id );
+        $result = $this->perAsesorias->getAdvisers_ByPeriod_BySubject_IngoreStudent( $period_id, $subject_id, $student_id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCurrentAdvisers_BySubject_IgnoreStudent",
                 "Error al obtener asesores disponibles", $result->getErrorMessage());
@@ -162,11 +161,11 @@ class AdvisoryService
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function getAdvisoryHours_ById($id){
+    public function getAdvisorySchedule_ById($id){
         $result = $this->perAsesorias->getAdvisoryHours_ById($id);
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getAdvisoryHours_ById",
+            throw new InternalErrorException("getAdvisorySchedule_ById",
                 "Error al obtener horas de asesoria", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe asesorias");
@@ -197,11 +196,12 @@ class AdvisoryService
 
 
         //Se buscan asesorias activas en el mismo periodo que tengan la misma materia del mismo asesor
-        $advisories = $this->perAsesorias->getAdvisories_ByStudent_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
+        $advisories = $this->perAsesorias->getStudentAdvisories_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
         if( Utils::isError( $advisories->getOperation() ) )
             throw new InternalErrorException("insertAdvisory_CurrentPeriod",
                 "Error al obtener asesorias", $advisories->getErrorMessage());
 
+        //Verifica que no exista una asesoria similar activa
         $this->checkAdvisoryRedundancy( $advisories->getData() );
 
         //Se verifica que materia exista
@@ -217,6 +217,7 @@ class AdvisoryService
 
         //Envia correo de confirmacion
         try{
+
             $userServ = new UserService();
             $stuServ = new StudentService();
             $student = $stuServ->getStudent_ById( $advisory->getStudent() );
@@ -224,10 +225,13 @@ class AdvisoryService
 
             $subject = $subjectServ->getSubject_ById( $advisory->getSubject() );
 
-            $userServ->sendEmailToStaff("Nueva Asesoria", "Se ha registrado una nueva asesoria por: <strong>$name</strong>, para la materia de <strong>".$subject['name']."</strong>");
-        }catch (RequestException $e){
+            $mailServ = new MailService();
+            $mailServ->sendEmailToStaff(
+                "Nueva Asesoria",
+                "Se ha registrado una nueva asesoria por: <strong>$name</strong>, para la materia de <strong>".$subject['name']."</strong>",
+                $userServ->getStaffUsers());
 
-        }
+        }catch (RequestException $e){}
     }
 
 
@@ -295,7 +299,7 @@ class AdvisoryService
         if( !$trans )
             throw new InternalErrorException("assignAdviser", "Error al registrar transaccion");
 
-        //Envio de correo
+        //Envío de correo
         try{
             $userServ =  new UserService();
             $adviserUser = $userServ->getUsers_ByStudentId( $adviser['id'] );
@@ -335,7 +339,7 @@ class AdvisoryService
     public function finaliceAdvisory($advisory_id){
         $this->getAdvisory_ById( $advisory_id );
 
-        $result = $this->perAsesorias->finaliceAdvisory($advisory_id);
+        $result = $this->perAsesorias->finalizeAdvisory($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("finaliceAdvisory",
@@ -357,7 +361,7 @@ class AdvisoryService
     public function getAdvisorySchedule($advisory_id){
         $this->getAdvisory_ById( $advisory_id );
 
-        $result = $this->perAsesorias->getAdvisoryHours($advisory_id);
+        $result = $this->perAsesorias->getAdvisoryHours_ById($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisorySchedule",

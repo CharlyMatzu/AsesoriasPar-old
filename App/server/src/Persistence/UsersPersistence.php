@@ -1,6 +1,6 @@
 <?php namespace App\Persistence;
 
-use App\Model\User;
+use App\Model\UserModel;
 use App\Utils;
 
 /**
@@ -12,8 +12,9 @@ class UsersPersistence extends Persistence{
     public function __construct(){}
 
     private $SELECT = "SELECT 
-                        u.user_id,
+                        u.user_id as 'id',
                         u.email,
+                        u.password,
                         u.date_register,
                         u.status,
                         -- Role
@@ -164,18 +165,20 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user User objeto tipo User con la información de registro
+     * @param $user UserModel objeto tipo User con la información de registro
+     *
      * @return \App\Model\DataResult
      */
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
         $query = "INSERT INTO user (email, password, fk_role, status)
-                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', ".Utils::$STATUS_ENABLE.")";
+                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', ".Utils::$STATUS_NO_CONFIRM.")";
         return  self::executeQuery($query);
     }
 
     /**
-     * @param $user User objeto tipo User con la informacion de registro
+     * @param $user UserModel objeto tipo User con la informacion de registro
+     *
      * @return \App\Model\DataResult
      */
     public function updateUser( $user ){

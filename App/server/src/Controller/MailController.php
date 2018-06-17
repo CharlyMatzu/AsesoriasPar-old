@@ -21,9 +21,9 @@ class MailController
             $mailServ = new MailService();
             $mail = $req->getAttribute("mail_data");
             $mailServ->sendMail($mail);
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Correo enviado");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Correo enviado");
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

@@ -1,6 +1,6 @@
 <?php namespace App\Model;
 
-    class Student {
+    class StudentModel {
 
 
         private $id;
@@ -9,7 +9,6 @@
         private $last_name;
         private $phone;
         private $facebook;
-        private $avatar;
         private $date_register;
         private $status;
         private $career;
@@ -117,22 +116,6 @@
         /**
          * @return String
          */
-        public function getAvatar()
-        {
-            return $this->avatar;
-        }
-
-        /**
-         * @param String $avatar
-         */
-        public function setAvatar($avatar)
-        {
-            $this->avatar = $avatar;
-        }
-
-        /**
-         * @return String
-         */
         public function getRegisterDate()
         {
             return $this->date_register;
@@ -163,7 +146,7 @@
         }
 
         /**
-         * @return int|Career
+         * @return int|CareerModel
          */
         public function getCareer()
         {
@@ -171,7 +154,7 @@
         }
 
         /**
-         * @param int|Career $career
+         * @param int|CareerModel $career
          */
         public function setCareer($career)
         {
@@ -179,7 +162,7 @@
         }
 
         /**
-         * @return int|User
+         * @return int|UserModel
          */
         public function getUser()
         {
@@ -187,13 +170,10 @@
         }
 
         /**
-         * @param int|User $user
+         * @param int|UserModel $user
          */
         public function setUser($user)
         {
             $this->user = $user;
         }
     }
-
-
-?>

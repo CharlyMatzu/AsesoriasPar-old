@@ -5,101 +5,97 @@
                 <h2>Asesorias registradas</h2>
                 <p ng-show="period.data != null">Periodo: {{period.data.start}} a {{period.data.end}}</p>
                 <p ng-show="period.data == null">{{period.message}}</p>
+                <hr>
             </div>
             <!-- <hr> -->
             <div class="loader" ng-show="loading.status"><span class="fa fa-spinner fa-spin fa-3x"></span></div>
 
             <!-- content -->
             <div class="content" ng-show="!loading.status">
-                <!-- tabs -->
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#requested" role="tab" aria-controls="requested" aria-selected="true" ng-click="getRequestedAds()">Solicitadas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#students" role="tab" aria-controls="students" aria-selected="false" ng-click="getAdviserAds()">Asesorados</a>
-                    </li>
-                </ul>
+                
                 <!-- tabs content -->
-                <div class="tab-content" id="myTabContent">
-                    <!-- solicitadas -->
-                    <div class="tab-pane fade show active" id="requested" role="tabpanel" aria-labelledby="asesorias-tab">
-                        <div class="advisories-container">
-                            <div class="advisories">
-
-                                <p ng-show="requestedAds.length == 0">No hay asesorias solicitadas</p>
-                                
-                                <!-- new -->
-                                <div class="item new" ng-click="newAdvisory()">
-                                    <div class="icon-container">
-                                        <span class="icon fa fa-plus"></span>
-                                    </div>
-                                </div>
-                                <!-- end new -->
-
-                                <!-- items -->
-                                <div class="item" ng-repeat="ad in requestedAds">
-                                    <div class="avatar">
-                                        <img ng-show="ad.adviser_id != null" src="{{ad.adviser_avatar}}" alt="">
-                                        <img ng-show="ad.adviser_id == null" src="{{url}}/assets/images/avatar_default.jpg" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <div ng-show="ad.adviser_id != null" class="info-item student" >{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
-                                        <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
-                                        <div class="info-item subject">{{ad.subject_name}}</div>
-                                        <div class="info-item status">
-                                            <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
-                                            <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
-                                            <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
-                                            <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
-                                        </div>
-                                        
-                                        <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
-                                    </div>
-                                </div>
-                                <!-- end items -->
-
-                            </div>
-                        </div>
-                        <!-- end container -->
+                <div class="advisories-container" ng-show="showAdvisories">
+                    <!-- tabs -->
+                    <div class="tabs">
+                        <button class="btn btn-primary" ng-click="getRequestedAds()">Solicitadas</button>
+                        <button class="btn btn-primary" ng-click="getAdviserAds()">Mis alumnos</button>
                     </div>
-                    <!-- end solicitadas -->
+
+                    <!-- solicitadas -->
+                    <div class="advisories-container requested" ng-show="showRequestedAds">
+                        <div class="advisories">
+
+                            <p ng-show="requestedAds.length == 0">No hay asesorias solicitadas</p>
+                            
+                            <!-- new -->
+                            <div class="item new" ng-click="newAdvisory()" ng-show="period.data != null">
+                                <div class="icon-container">
+                                    <span class="icon fa fa-plus"></span>
+                                </div>
+                            </div>
+                            <!-- end new -->
+
+                            <!-- items -->
+                            <div class="item" ng-repeat="ad in requestedAds">
+                                <div class="avatar">
+                                    <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_assign.jpg" alt="">
+                                    <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_empty.jpg" alt="">
+                                </div>
+                                <div class="info">
+                                    <div ng-show="ad.adviser_id != null" class="info-item student" >{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
+                                    <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
+                                    <div class="info-item subject">{{ad.subject_name}}</div>
+                                    <div class="info-item status">
+                                        <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
+                                        <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
+                                        <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
+                                        <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
+                                    </div>
+                                    
+                                    <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
+                                </div>
+                            </div>
+                            <!-- end items -->
+
+                        </div>
+                    </div>
+                    <!-- end mis asesorias -->
 
 
                     <!-- students -->
-                    <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="estudiantes-tab">
-                        <div class="advisories-container">
-                            <div class="advisories">
+                    <div class="advisories-container" ng-show="showAdviserdAds">
+                        <div class="advisories">
 
-                                <p ng-show="adviserAds.length == 0">No hay asesorias</p>
+                            <p ng-show="adviserAds.length == 0">No hay asesorias</p>
 
-                                <!-- items -->
-                                <div class="item" ng-repeat="ad in adviserAds">
-                                    <div class="avatar">
-                                        <img ng-show="ad.alumn_id != null" src="{{url}}/{{ad.alumn_avatar}}" alt="">
-                                        <img ng-show="ad.alumn_id == null" src="{{url}}/assets/images/avatar_default.jpg" alt="">
-                                    </div>
-                                    <div class="info">
-                                        <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
-                                        <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
-                                        <div class="info-item subject">{{ad.subject_name}}</div>
-                                        <div class="info-item status">
-                                            <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
-                                            <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
-                                            <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
-                                            <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
-                                        </div>
-
-                                        <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
-                                    </div>
+                            <!-- items -->
+                            <div class="item" ng-repeat="ad in adviserAds">
+                                <div class="avatar">
+                                    <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_assign.jpg" alt="">
+                                    <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_empty.jpg" alt="">
                                 </div>
-                                <!-- end items -->
+                                <div class="info">
+                                    <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
+                                    <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
+                                    <div class="info-item subject">{{ad.subject_name}}</div>
+                                    <div class="info-item status">
+                                        <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
+                                        <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
+                                        <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
+                                        <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
+                                    </div>
+
+                                    <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
+                                </div>
                             </div>
+                            <!-- end items -->
                         </div>
-                        <!-- end container -->
                     </div>
                     <!-- end students -->
+
                 </div>
+                <!-- end-advisories-container -->
+
             </div>
             <!-- end-content -->
         </div>

@@ -1,5 +1,7 @@
 <?php namespace App\Persistence\Database;
 
+    use App\Exceptions\RequestException;
+    use App\Utils;
     use Exception;
     use App\Exceptions\InternalErrorException;
     use mysqli;
@@ -17,28 +19,14 @@
          */
         public function __construct() {
 
-            //Obteniendo JSON
-            $path_config = file_get_contents(ROOT_PATH."/connection.config.json");
-            $json_config = json_decode( $path_config );
+            $con = null;
+            try{
+                $con = Utils::getMySQLConfigJSON();
+            }catch (RequestException $e){
+                throw new InternalErrorException("MySQL", "Error con archivo de configuración");
+            }
 
-
-            if( !isset($json_config->mode) || !isset($json_config->connection) )
-                throw new InternalErrorException("Connection", "Faltan datos de conexion");
-
-            //Obteniendo el modo y las conexiones
-            $mode = $json_config->mode;
-            $connections = $json_config->connection; //objetos de conexion
-
-            //Se obtiene conexion especifica, si no existe, se lanza error
-            if( !isset($connections->$mode) )
-                throw new InternalErrorException("Conexion", "Faltan datos de conexion");
-
-            $con = $connections->$mode;
-
-            if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
-                throw new InternalErrorException("Conexion", "Faltan datos de conexion");
-
-            //Datos de conexion
+            //Datos de conexión
             $this->_connection = new mysqli(
                 $con->host,
                 $con->user,
@@ -54,7 +42,7 @@
 
             /* cambiar el conjunto de caracteres a utf8 para aceptar tildes y 'eñes' */
             if ( !$this->_connection->set_charset('utf8') )
-                throw new InternalErrorException(static::class."UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
+                throw new InternalErrorException("UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
         }
 
 

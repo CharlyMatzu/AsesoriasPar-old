@@ -1,4 +1,4 @@
-app.service('SignupService', function($http, RequestFactory){
+angular.module("LoginApp").service('SignupService', function($http, RequestFactory){
     
     this.getCareers = function(successCallback, errorCallback){
         $http({

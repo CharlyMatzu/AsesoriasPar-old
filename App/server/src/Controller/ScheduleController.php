@@ -21,7 +21,7 @@ class ScheduleController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -38,7 +38,7 @@ class ScheduleController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -57,7 +57,7 @@ class ScheduleController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -95,10 +95,10 @@ class ScheduleController
             $scheduleService = new ScheduleService();
             $hours = $req->getAttribute('schedule_hours');
             $scheduleService->updateScheduleHours( $params['id'], $hours );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Horas actualizadas");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Horas actualizadas");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -114,10 +114,10 @@ class ScheduleController
             $scheduleService = new ScheduleService();
             $subjects = $req->getAttribute('schedule_subjects');
             $scheduleService->updateScheduleSubjects( $params['id'], $subjects );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materias actualizadas");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Materias actualizadas");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -134,10 +134,10 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $scheduleService->changeSchedyleStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Modificaco estado de horario");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Modificaco estado de horario");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 

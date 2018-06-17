@@ -1,5 +1,5 @@
 {
-  "mode": "local",
+  "mode": "develop",
   "nota": "para cambiar la conexion, debes cambiar el MODE por el nombre del objeto de conexion de alguno de abajo",
   "connection": {
     "production": {
@@ -8,7 +8,7 @@
       "pass": "asesoriaspar_pass",
       "db": "ronintop_asesoriaspar"
     },
-    "local": {
+    "develop": {
       "host": "localhost",
       "user": "asesoriaspar_user",
       "pass": "asesoriaspar_pass",

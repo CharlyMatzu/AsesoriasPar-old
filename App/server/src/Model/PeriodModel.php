@@ -1,7 +1,7 @@
 <?php namespace App\Model;
 
 
-class Period
+class PeriodModel
 {
     private $id;
     private $date_start;

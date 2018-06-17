@@ -1,4 +1,4 @@
-app.service('ConfirmService', function($http, RequestFactory){
+angular.module("LoginApp").service('ConfirmService', function($http, RequestFactory){
 
     this.confirm = function(token, successCallback, errorCallback){
         //TODO: agregar encabezado para auth

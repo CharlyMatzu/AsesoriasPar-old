@@ -6,9 +6,9 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 
 use App\Exceptions\RequestException;
-use App\Model\Schedule;
+use App\Model\ScheduleModel;
 use App\Persistence\StudentsPersistence;
-use App\Model\Student;
+use App\Model\StudentModel;
 use App\Utils;
 
 class StudentService{
@@ -90,7 +90,7 @@ class StudentService{
     //----------REGISTRAR ESTUDIANTE
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
      *
      * @throws ConflictException
      * @throws InternalErrorException
@@ -107,12 +107,12 @@ class StudentService{
         //Se registra usuario
         $result = $this->perStudents->insertStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class."insertStudents","Ocurrio un error al registrar usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertStudents","Ocurrio un error al registrar usuario", $result->getErrorMessage());
     }
 
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
      *
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -159,7 +159,7 @@ class StudentService{
         $this->getStudent_ById($studentId);
 
         //Se obtiene horario de estudiante
-        /* @var $schedule Schedule */
+        /* @var $schedule ScheduleModel */
         $scheduleService = new ScheduleService();
         $schedule = $scheduleService->getCurrentSchedule_ByStudentId($studentId);
         $schedule = ScheduleService::makeScheduleModel($schedule);
@@ -254,7 +254,7 @@ class StudentService{
 
 
     public static function makeStudentModel( $data ){
-        $student = new Student();
+        $student = new StudentModel();
         //setting data
         $student->setId( $data['id'] );
         $student->setItsonId( $data['itson_id'] );
@@ -262,7 +262,7 @@ class StudentService{
         $student->setLastName( $data['last_name'] );
         $student->setPhone( $data['phone'] );
         $student->setFacebook( $data['facebook'] );
-        $student->setAvatar( $data['avatar'] );
+//        $student->setAvatar( $data['avatar'] );
         $student->setRegisterDate( $data['date_register'] );
 
 //        $student->setStatus( $data['status'] );

@@ -1,4 +1,4 @@
-app.controller('SignupController', function($scope, $window, $timeout, Notification, SignupService){
+angular.module("LoginApp").controller('SignupController', function($scope, $window, $timeout, Notification, SignupService){
     
     $scope.careers = [];
     // $scope.student = {
@@ -51,7 +51,7 @@ app.controller('SignupController', function($scope, $window, $timeout, Notificat
 
         SignupService.signup(student,
             function(success){
-                Notification.success("Bien!");
+                // Notification.success("Registrado con exito!");
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Registrado con exito,redireccionando";
                 $scope.loading.status = false;

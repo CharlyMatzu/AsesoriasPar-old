@@ -1,34 +1,9 @@
-var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification', 'LocalStorageModule']);
+var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification', 'LocalStorageModule', 'HostModule', 'AuthModule']);
 
-app.run(function($rootScope, $window, localStorageService){
+app.run(function($rootScope, $window, AuthFactory){
     
-    $rootScope.user = {};
+    $rootScope.session = {};
     $rootScope.token = {};
-    
-    //Verifica la sesion
-    (function(){
-        if( localStorageService.get('user') ){
-            var data = localStorageService.get('user');
-            data = JSON.parse( data );
-            //Se verifica rol y se redirecciona
-            if( data.user.role === 'basic' )
-                $window.location.href = "/desktop";
-            else{
-                //Obtiene datos de estudiante
-                $rootScope.user = data.user;
-                $rootScope.token = data.token;
-            }
-        }
-        else
-            $window.location.href = "/";
-    })();
-
-    $rootScope.signOut = function(){
-        localStorageService.remove('user');
-        $window.location.href = "/";
-    }
-
-
 
     //-----------VARIABLES GLOBALES
     $rootScope.page = {
@@ -36,7 +11,7 @@ app.run(function($rootScope, $window, localStorageService){
     };
 
     //User
-    $rootScope.user = {},
+    $rootScope.session = {},
 
     //-STATUS VARIABLES
     $rootScope.alert = {
@@ -65,7 +40,27 @@ app.run(function($rootScope, $window, localStorageService){
             //console.log("Elemento: "+$(this).text() );
             $(this).prop('disabled', disabled);
         });
-    }
+    };
+
+    $rootScope.signOut = function(){
+        AuthFactory.removeUser();
+        $window.location.href = "/";
+    };
+
+
+    //Verifica la sesion
+    (function(){
+        if( AuthFactory.isAuthenticated() ){
+            if( !AuthFactory.isStaff() )
+                $window.location.href = "/";
+            // Se obtiene informacion del usuario
+            else
+                $rootScope.session = AuthFactory.getData();
+        }
+        else{
+            $window.location.href = "/";
+        }
+    })();
 
 
     
@@ -73,6 +68,8 @@ app.run(function($rootScope, $window, localStorageService){
 });
 
 
+
+    
 
 
 
@@ -92,18 +89,3 @@ app.run(function($rootScope, $window, localStorageService){
 //         positionY: 'bottom'
 //     });
 // });
-
-app.factory("RequestFactory", function() {
-    // var url = "http://api.ronintopics.com";
-    // var url = "http://api.asesoriaspar.com";
-    var url = "http://10.202.103.252/AsesoriasPar/App/server";
-
-    return {
-        getURL: function() {
-            return url+'/index.php';
-        },
-        getBaseURL: function() {
-            return url;
-        }
-    };
-});

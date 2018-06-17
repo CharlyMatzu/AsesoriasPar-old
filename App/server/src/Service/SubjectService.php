@@ -6,7 +6,7 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 use App\Persistence\SubjectsPersistence;
-use App\Model\Subject;
+use App\Model\SubjectModel;
 use App\Utils;
 
 class SubjectService{
@@ -238,7 +238,8 @@ class SubjectService{
     }
 
     /**
-     * @param $subject Subject objeto de materia
+     * @param $subject SubjectModel objeto de materia
+     *
      * @throws InternalErrorException
      * @throws RequestException
      */
@@ -269,7 +270,8 @@ class SubjectService{
     //--------------------UPDATE SUBJECT--------------------
 
     /**
-     * @param $subject Subject
+     * @param $subject SubjectModel
+     *
      * @throws RequestException
      */
     public function updateSubject( $subject ){
@@ -357,9 +359,9 @@ class SubjectService{
 
 
     /**
-     * @param $name String Career name/short_name
+     * @param $name String CareerModel name/short_name
      * @param $plan int Plan Id
-     * @param $career int Career id
+     * @param $career int CareerModel id
      * @param null $subject_id
      *
      * @return \mysqli_result|null

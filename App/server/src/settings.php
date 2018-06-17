@@ -1,5 +1,7 @@
 <?php
 
+use App\Utils;
+
 $container = $app->getContainer();
 
 //----------------
@@ -16,49 +18,62 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //https://akrabat.com/logging-errors-in-slim-3/
 //https://www.slimframework.com/docs/v3/tutorial/first-app.html
 
- $container['errorHandler'] = function($c) {
-    return function ($request, $response, $exception) use ($c){
-        \App\AppLogger::makeErrorLog("ErroHandler", "File: $exception->getFile()[$exception->getLine()] -- Message: $exception->getMessage()");
-
-        return $c['response']
-            ->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Algo salio mal, intentelo más tarde: ' );
-    };
- };
+//FIXME: se debe tener cuidado para no causar estragos con CORS (que se envie OPTIONS en lugar de POST, etc)
+// $container['errorHandler'] = function($c) {
+//     /**
+//      * @param $request \Slim\Http\Request
+//      * @param $response \Slim\Http\Response
+//      * @param $ex RuntimeException
+//      * @return mixed
+//      */
+//    return function ($request, $response, $ex) use ($c){
+//        \App\AppLogger::makeErrorLog( "ErrorHandler",
+//            "File: ".$ex->getFile()."[".$ex->getLine()."] --- ".$ex->getMessage());
+//
+//        return Utils::makeMessageResponse($response, 500, "Algo salio mal, intentelo más tarde");
+////        return $c['response']
+////            ->withStatus(500)
+////            ->withHeader('Content-Type', 'text/html')
+////            ->write('Algo salio mal, intentelo más tarde' );
+//    };
+// };
 
 
 //Override the default Not Found Handler
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        return $c['response']
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('No se encontro la página solicitada');
+        return Utils::makeMessageResponse($response, 404, "No se encontró la página solicitada");
+//        return $c['response']
+//            ->withStatus(404)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('No se encontró la página solicitada');
     };
 };
 
-//Override the default Not Found Handler
-$container['notAllowedHandler'] = function ($c) {
-    return function ($request, $response, $methods) use ($c) {
-        return $c['response']
-            ->withStatus(405)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Métodos deben ser uno de: ' . implode(',', $methods));
-    };
-};
+////Override the default Not Found Handler
+//$container['notAllowedHandler'] = function ($c) {
+//    return function ($request, $response, $methods) use ($c) {
+//        return Utils::makeMessageResponse($response, 405, "Métodos deben ser uno de: ' . implode(',', $methods)");
+////        return $c['response']
+////            ->withStatus(405)
+////            ->withHeader('Content-Type', 'text/html')
+////            ->write('Métodos deben ser uno de: ' . implode(',', $methods));
+//    };
+//};
 
 $container['phpErrorHandler'] = function ($c) {
     return function ($request, $response, $error) use ($c) {
         \App\AppLogger::makeErrorLog("PHPErrorHandler","Ocurrio un error: $error");
 
-        return $c['response']
-            ->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Ocurrio un error, intentelo más tarde');
+        return Utils::makeMessageResponse($response, 405, "Ocurrio un error, intentelo más tarde");
+//        return $c['response']
+//            ->withStatus(500)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Ocurrio un error, intentelo más tarde');
     };
 };
 
+//------------------------------------------- DEPENDENCY INJECTION (DI)
 
 //-----------------------
 //Middleware methods

@@ -40,11 +40,11 @@ require_once 'src/settings.php';
 //  en un controller se recibe un "array" como parametro
 
 
-//TODO: agregar un status por defacul directamente en Persistencia para evitar problemas en DB
+//TODO: agregar un status por default directamente en Persistencia para evitar problemas en DB
 
 
 $app->get('/', function(Request $request, Response $response, $params){
-    //TODO: retorn API routes in JSON
+    //TODO: mostrar api
     $response->write("Welcome to the API");
 });
 
@@ -59,9 +59,20 @@ $app->post('/mail/send', 'MailController:sendMail')
 
 
 //Permite autenticarse (signin)
-$app->post('/auth', 'AuthController:authenticate')
+$app->post('/auth/signin', 'AuthController:signin')
         ->add('InputMiddleware:checkData_Auth');
-        //->add('InputMiddleware:checkHeader_Auth');
+
+//Crear un usuario y un estudiante a la vez
+$app->post('/auth/signup', 'AuthController:signup')
+        ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
+        ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
+
+//Para verificar usuario y activar
+$app->get('/auth/confirm/{token}', 'AuthController:confirm')
+        ->add('InputMiddleware:checkParam_Token');
+
+//Para reenviar correo de confirmación
+//$app->get('/auth/confirm/send', 'AuthController:sendConfirmEmail');
 
 //--------------------------
 //  USER ROUTES
@@ -103,12 +114,13 @@ $app->post('/users', 'UserController:createUser')
         ->add('InputMiddleware:checkData_User') //Es el registro de estudiante
         ->add('InputMiddleware:checkData_Role'); //Es el registro de estudiante
 
-//TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
 //Crear un usuario y un estudiante a la vez
-$app->post('/users/student', 'UserController:studentSignup')
-        ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
-        ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
+$app->post('/users/student', 'UserController:createUserAndStudent')
+    ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
+    ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
+
+//TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
 //Actualiza datos de usuario
 $app->put('/users/{id}', 'UserController:updateUser')
@@ -332,16 +344,11 @@ $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeSchedule
 $app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStudentId')
     ->add('InputMiddleware:checkParam_Id');
 
+
 //crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
 //        ->add('InputMiddleware:checkData_schedule_hours')
         ->add('InputMiddleware:checkParam_Id');
-
-//agrega materias a horario
-//$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
-//        ->add('InputMiddleware:checkData_schedule_subjects')
-//        ->add('InputMiddleware:checkParam_Id')
-//      ;
 
 
 //TODO: obtener materias de horario
@@ -351,6 +358,13 @@ $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
 $app->put('/schedule/{id}/hours', 'ScheduleController:updateScheduleHours')
         ->add('InputMiddleware:checkData_schedule_hours')
         ->add('InputMiddleware:checkParam_Id');
+
+
+//agrega materias a horario
+//$app->post('/schedule/{id}/subjects', 'ScheduleController:addScheduleSubjects')
+//        ->add('InputMiddleware:checkData_schedule_subjects')
+//        ->add('InputMiddleware:checkParam_Id')
+//      ;
 
 //actualiza materias de horario
 $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects')

@@ -2,19 +2,14 @@
 
 use App\Auth;
 use App\Exceptions\ConflictException;
-use App\Exceptions\ForbiddenException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NotFoundException;
+use App\Exceptions\RequestException;
 use App\Exceptions\UnauthorizedException;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\JWT;
-use Firebase\JWT\SignatureInvalidException;
+use App\Model\MailModel;
+use App\Model\StudentModel;
 use App\Persistence\UsersPersistence;
-use PHPMailer\PHPMailer\Exception;
-use Slim\Http\Request;
-use Carbon\Carbon;
 use App\Utils;
-use UnexpectedValueException;
 
 class AuthService
 {
@@ -34,19 +29,20 @@ class AuthService
      * @throws NotFoundException
      * @throws ConflictException
      * TODO: solo debe funcionar si usuario esta activo
+     * @throws UnauthorizedException
      */
     public function signIn($email, $pass){
         $result = $this->userPer->getUser_BySignIn($email, $pass);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."signIn","Ocurrió un error al authenticar", $result->getErrorMessage());
+            throw new InternalErrorException("signIn","Ocurrió un error al authenticar", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("email o contraseña incorrectos");
+            throw new UnauthorizedException("email o contraseña incorrectos");
 
         //Si esta sin confirmar
         $user = $result->getData()[0];
 
-        if( $user['status'] == Utils::$STATUS_ENABLE ) {
+        if( $user['status'] == Utils::$STATUS_DISABLE ) {
             throw new NotFoundException("Usuario o contraseña e incorrectos");
             //TODO reenviar correo de confirmación
         }
@@ -63,6 +59,50 @@ class AuthService
             "token" => $token,
         ];
 
+    }
+
+    /**
+     * @param $student StudentModel
+     *
+     * @throws InternalErrorException
+     * @throws RequestException
+     */
+    public function signUp($student){
+        $userServ = new UserService();
+        $userServ->insertUserAndStudent( $student );
+    }
+
+    /**
+     * @param $token
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function confirmUser($token)
+    {
+        //Obtiene datos de token
+        try{
+            $id = Auth::getData($token);
+        } catch (\Exception $e) {
+            throw new InternalErrorException('confirmUser', "Error al obtener data de token", $e->getMessage());
+        }
+        //Verifica que exista usuario
+        $userServ = new UserService();
+        $user = $userServ->getUser_ById( $id )[0];
+        $userServ->changeStatus( $id, Utils::$STATUS_ENABLE );
+
+        //Envío de correo de
+        try{
+            $text = "Confirmado con éxito el correo: ".$user['email'];
+            $mail = new MailModel();
+            $mail->setSubject("Asesorías par: confirmado");
+            $mail->setBody($text);
+            $mail->setPlainBody($text);
+            $mail->addAdress( $user['email'] );
+
+            $mailServ = new MailService();
+            $mailServ->sendMail( $mail );
+        } catch (RequestException $e){}
     }
 
 

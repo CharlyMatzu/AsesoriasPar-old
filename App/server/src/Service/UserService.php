@@ -8,10 +8,10 @@ use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 
 use App\Model\MailModel;
-use App\Model\Student;
+use App\Model\StudentModel;
 use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
-use App\Model\User;
+use App\Model\UserModel;
 use App\Utils;
 
 class UserService{
@@ -30,8 +30,6 @@ class UserService{
      * @throws NoContentException
      */
     public function getUsers(){
-        throw new InternalErrorException("TEST", "PRUEBA");
-
         $result = $this->userPer->getUsers();
 
         if( Utils::isError($result->getOperation()) )
@@ -82,14 +80,20 @@ class UserService{
     }
 
 
-
+    /**
+     * @param $status
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
     public function getUsersByStatus($status)
     {
         if( $status == Utils::$STATUS_ENABLE ){
             $result = $this->userPer->getEnableUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -99,7 +103,7 @@ class UserService{
             $result = $this->userPer->getDisabledUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -109,7 +113,7 @@ class UserService{
             $result = $this->userPer->getNoconfirmUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException(static::class."getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -166,11 +170,11 @@ class UserService{
      * @throws NoContentException
      * @return \mysqli_result
      */
-    private function getLastUser(){
+    public function getLastUser(){
         $result = $this->userPer->getUser_Last();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."getLastUser", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
+            throw new InternalErrorException("getLastUser", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay usuarios");
         else
@@ -211,7 +215,7 @@ class UserService{
         $result = $this->userPer->getUser_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."getUserByEmail","Ocurrio un error al obtener usuario por email", $result->getErrorMessage());
+            throw new InternalErrorException("getUserByEmail","Ocurrio un error al obtener usuario por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontro usuario");
         else
@@ -231,7 +235,7 @@ class UserService{
         $result = $this->userPer->searchUsers_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException(static::class."searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
+            throw new InternalErrorException("searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron usuarios");
 
@@ -286,7 +290,8 @@ class UserService{
 
 
     /**
-     * @param $user User
+     * @param $user UserModel
+     *
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -300,7 +305,7 @@ class UserService{
         //Verifica que email no exista
         $result = $this->isEmailUsed( $user->getEmail() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( static::class."insertUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "Email ya existe" );
 
@@ -321,12 +326,12 @@ class UserService{
     //------------------REGISTRAR USUARIO Y ESTUDIANTE
 
     /**
-     * @param $student Student
+     * @param $student StudentModel
+     *
      * @throws InternalErrorException
      * @throws RequestException
      */
     public function insertUserAndStudent($student){
-
         //Inicia transaccion
         $trans = UsersPersistence::initTransaction();
         if( !$trans )
@@ -382,61 +387,19 @@ class UserService{
 
         //Envia correo de confirmacion
         try{
-            $this->sendConfirmEmail( $user->getEmail() );
-            //TODO: Envia correo a admin
-            $this->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName() );
-        }catch (RequestException $e){}
-    }
-
-    /**
-     * @param $subject String
-     * @param $body String
-     *
-     */
-    public function sendEmailToStaff($subject, $body){
-        try{
             $mailServ = new MailService();
-            $mail = new MailModel();
-            $mail->setSubject($subject);
-            $mail->setBody($body);
-            $mail->setPlainBody($body);
-
-            $users = $this->getStaffUsers();
-            foreach( $users as $u ){
-                $mail->addAdress( $u['email'] );
-            }
-            $mailServ->sendMail( $mail );
+            $mailServ->sendConfirmEmail(  $user );
+            $staff = $this->getStaffUsers();
+            //Se envia a staff
+            $mailServ->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName(), $staff );
         }catch (RequestException $e){}
     }
 
 
-    /**
-     * @param $email String
-     * @throws InternalErrorException
-     */
-    public function sendConfirmEmail($email){
-        //Se envia correo de confirmacion TODO: debe enviarse a una cola
-        $msg = "Se ha registrado en la plataforma de Asesoriaspar.ronintopics.com, para confirmar su correo haga clic en el siguiente enlace
-                <a href='#'> http://client.asesoriaspar.com/#!confirmar/ </a>";
-        $mailServ = new MailService();
-
-        $mail = new MailModel();
-        $mail->addAdress( $email );
-        $mail->setSubject("Confirmacion de correo");
-        //TODO: cambiar ruta de confirmacion de email
-        $mail->setBody("<h3>Asesorías par</h3> <a>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm'>Confirmar</a> </p>");
-        $mail->setPlainBody("CAMBIAR MENSAJE");
-
-        try{
-            $mailServ->sendMail( $mail );
-        }catch (InternalErrorException $e){
-            throw new InternalErrorException("insertUserAndStudent","Error al enviar correo de confirmacion");
-        }
-    }
-
 
     /**
-     * @param $user User
+     * @param $user UserModel
+     *
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -542,10 +505,11 @@ class UserService{
      * array['field']
      *
      * @param $data \mysqli_result
-     * @return User
+     *
+     * @return UserModel
      */
     public static function makeUserModel($data ){
-        $user = new User();
+        $user = new UserModel();
         //setting data
         $user->setId( $data['id'] );
         $user->setEmail( $data['email'] );

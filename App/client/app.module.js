@@ -1,86 +1,65 @@
-var app = angular.module("LoginApp", ['ngRoute', 'ui-notification', 'LocalStorageModule']);
+angular.module("LoginApp", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModule'])
 
-app.run(function($rootScope, $window, $timeout, localStorageService){
 
-    $rootScope.url = "http://api.asesoriaspar.com";
-    
-    //Verifica la sesion
-    (function(){
-        if( localStorageService.get('user') ){
-            var data = localStorageService.get('user');
-            data = JSON.parse( data );
-            //Se verifica rol y se redirecciona
-            if( data.user.role === 'basic' )
-                $window.location.href = "desktop";
+    .run(function($rootScope, $window, $timeout, AuthFactory){
+
+
+        //-----------VARIABLES GLOBALES
+        $rootScope.page = {
+            title: "PAGE TITLE"
+        };
+
+        //User
+        $rootScope.user = {},
+
+        //-STATUS VARIABLES
+        $rootScope.alert = {
+            type: "",
+            status: false,
+            message: "",
+        };
+        $rootScope.loading = {
+            status: false,
+            message: "",
+        };
+        // $rootScope.success = {
+        //     status: false,
+        //     message: "",
+        // };
+        // $rootScope.error = {
+        //     status: false,
+        //     message: "",
+        // };
+        // $rootScope.warning = {
+        //     status: false,
+        //     message: "",
+        // };
+        
+        $rootScope.showUpdateForm = false;
+        $rootScope.showCreateForm = false;
+        $rootScope.showModalForm = false;
+
+
+        //metodo para verificar si esta logeado, se ejecuta primero
+        var checkAuth = function(){
+            if( AuthFactory.isAuthenticated() ){
+                if( AuthFactory.isStudent() )
+                    $window.location = "desktop";
+                else if( AuthFactory.isStaff() )
+                    $window.location = "dashboard";
+                // else
+                //     $window.location = "errorPage";
+            }
             else
-                $window.location.href = "dashboard";    
-        }
-    })();
-    
-    //Guarda la session
-    $rootScope.saveSession = function(data){
-        //Se guarda session
-        localStorageService.set('user', JSON.stringify(data));
-        //Se verifica rol y se redirecciona
-        if( data.user.role === 'basic' )
-            $window.location.href = "desktop";
-        else
-            $window.location.href = "dashboard";
-    }
+                console.log( "No Autenticado" );
+        };
 
+        $rootScope.redirect = function(){
+            checkAuth();
+        };
 
-    //TODO: metodo para verificar si esta logeado
-
-    //-----------VARIABLES GLOBALES
-    $rootScope.page = {
-        title: "PAGE TITLE"
-    };
-
-    //User
-    $rootScope.user = {},
-
-    //-STATUS VARIABLES
-    $rootScope.alert = {
-        type: "",
-        status: false,
-        message: "",
-    };
-    $rootScope.loading = {
-        status: false,
-        message: "",
-    };
-    // $rootScope.success = {
-    //     status: false,
-    //     message: "",
-    // };
-    // $rootScope.error = {
-    //     status: false,
-    //     message: "",
-    // };
-    // $rootScope.warning = {
-    //     status: false,
-    //     message: "",
-    // };
-    
-    $rootScope.showUpdateForm = false;
-    $rootScope.showCreateForm = false;
-    $rootScope.showModalForm = false;
-
-    
-});
-
-
-app.factory("RequestFactory", function() {
-    // var url = "http://api.ronintopics.com";
-    //var url = "http://api.asesoriaspar.com";
-     var url = "http://10.202.103.252/AsesoriasPar/App/server";
-
-    return {
-        getURL: function() {
-            return url+'/index.php';
-        },
-        getBaseURL: function() {
-            return url;
-        }
-    };
-});
+        checkAuth();
+        
+        
+        
+    });

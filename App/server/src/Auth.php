@@ -18,12 +18,16 @@ abstract class Auth
     private static $aud = null;
 
     //https://jwt.io/
+
     /**
      * Regresa el token correspondiente
+     *
      * @param $data @mixed Información correspondiente
+     * @param int $hours
+     *
      * @return string token
      */
-    public static function getToken($data)
+    public static function getToken($data, $hours = 24)
     {
         $time_now = Carbon::now(Utils::TIMEZONE);
 
@@ -31,7 +35,7 @@ abstract class Auth
         //TODO: improve expired time
         $payload = array(
             'iat' => $time_now->timestamp, //Cuando se creo
-            'exp' => $time_now->addHour(1)->timestamp, //cuando expira (una hora extra)
+            'exp' => $time_now->addHour($hours)->timestamp, //cuando expira (horas extra)
             'aud' => self::Aud(), //extra validation (audience)
             //Adicional
             'data' => $data
@@ -66,8 +70,8 @@ abstract class Auth
 
 
         //Validación del sistema de seguridad extra
-        if($payload->aud !== self::Aud())
-            throw new Exception("Sesión de Usuario invalida");
+//        if($payload->aud !== self::Aud())
+//            throw new Exception("Sesión de Usuario invalida");
 
         //return $payload;
     }
@@ -78,7 +82,7 @@ abstract class Auth
      * @return mixed
      * @throws Exception
      */
-    public static function GetData($token)
+    public static function getData($token)
     {
         try{
             return JWT::decode(

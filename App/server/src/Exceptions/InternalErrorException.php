@@ -18,7 +18,6 @@ class InternalErrorException extends RequestException
         parent::__construct("Algo salio mal, intentelo más tarde", Utils::$INTERNAL_SERVER_ERROR);
 
         //---Log de errores
-        //TODO: cada vez que ocurra un error, se debe enviar correo al admin (nosotros)
         AppLogger::makeErrorLog($title, $this->getFile()."[".$this->getLine()."] --- $message: $details");
     }
 

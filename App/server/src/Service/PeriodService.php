@@ -7,7 +7,7 @@ use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 use App\Persistence\PeriodsPersistence;
-use App\Model\Period;
+use App\Model\PeriodModel;
 use DateTime;
 use App\Utils;
 
@@ -145,7 +145,7 @@ class PeriodService{
 //   ------------------------------------- UPDATE CYCLES
 
     /**
-     * @param $period Period
+     * @param $period PeriodModel
      *
      * @throws InternalErrorException
      * @throws RequestException

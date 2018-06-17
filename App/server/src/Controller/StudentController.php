@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Model\Student;
+use App\Model\StudentModel;
 use App\Service\AdvisoryService;
 use App\Service\StudentService;
 use Slim\Http\Request;
@@ -23,7 +23,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -41,7 +41,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -60,7 +60,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -77,14 +77,14 @@ class StudentController
     {
         try{
             $studentService = new StudentService();
-            /* @var $student Student */
+            /* @var $student StudentModel */
             $student = $req->getAttribute('student_data');
             $student->setId( $params['id'] );
             $studentService->updateStudent( $student );
-            return Utils::makeMessageJSONResponse($res, Utils::$OK, "Estudiante actualizado con exito");
+            return Utils::makeMessageResponse($res, Utils::$OK, "Estudiante actualizado con exito");
 
         }catch (RequestException $e){
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -114,7 +114,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -130,10 +130,10 @@ class StudentController
             $studentSer = new StudentService();
 //            $hours = $req->getAttribute('schedule_hours');
             $studentSer->createSchedule( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Horario de alumno creado");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Horario de alumno creado");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -157,7 +157,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -174,10 +174,10 @@ class StudentController
             $student_id = $params['id'];
             $subject = $req->getAttribute('advisory_subject');
             $studentSer->createAdvisoryCurrentPeriod( $student_id,  $subject);
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Asesoria creada con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Asesoria creada con exito");
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -198,7 +198,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
@@ -218,7 +218,7 @@ class StudentController
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
-            return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
 
