@@ -16,7 +16,7 @@ class AdvisoryController
      *
      * @return Response
      */
-    public function getCurrentAdvisories($req, $res)
+    public function getAdvisories($req, $res)
     {
         try {
             $advisoryServ = new AdvisoryService();
@@ -85,7 +85,7 @@ class AdvisoryController
             //Se adiciona estudiante a objeto
             $advisory->setStudent( $params['id'] );
             $advisoryServ->insertAdvisory_CurrentPeriod( $advisory);
-            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Asesoria registrada con exito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "asesoria registrada con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -145,11 +145,11 @@ class AdvisoryController
      *
      * @return Response
      */
-    public function finaliceAdvisory($req, $res, $params)
+    public function finalizeAdvisory($req, $res, $params)
     {
         try {
             $advisoryServ = new AdvisoryService();
-            $advisoryServ->finaliceAdvisory( $params['id'] );
+            $advisoryServ->finalizeAdvisory( $params['id'] );
             return Utils::makeMessageResponse( $res, Utils::$OK, "Finalizado con exito");
 
         } catch (RequestException $e) {

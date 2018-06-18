@@ -50,7 +50,7 @@ class ScheduleController
      *
      * @return Response
      */
-    public function getCurrentMatchHours_ByStudents($req, $res, $params){
+    public function getScheduleMatchHours_ByStudents($req, $res, $params){
         try {
             $scheduleService = new ScheduleService();
             $result = $scheduleService->getCurrentScheduleMatch_ByStudentsId( $params['adviser'], $params['alumn'] );

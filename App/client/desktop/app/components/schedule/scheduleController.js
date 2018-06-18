@@ -7,7 +7,6 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     $scope.showSchedule = false;
     $scope.showUpdateHours = false;
     $scope.showUpdateSubjects = false;
-    var count = 0;
     var backupSelectedItems = [];
 
     
@@ -48,6 +47,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 else{
                     // Notification.success("Materias cargadas");
                     // $scope.subjects = success.data;
+                    //TODO: hacer que la API regresa dichas materias y no que se haga desde el cliente
                     setNoRepeatSubjects(success.data);
                 }
                     
@@ -216,11 +216,6 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         //Obtiene solo horario
         let dh = $scope.schedule['days_hours'];
         //Si hay horas
-        
-        // if( count >= 55* )
-        //     return;
-        // else
-        //     count++;
 
         //FIXME: solo debe llegar al limite una vez y terminar
         if( dh.length > 0 ){

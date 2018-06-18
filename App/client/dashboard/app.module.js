@@ -1,4 +1,4 @@
-var app = angular.module("AsesoriasPar", ['ngRoute', 'ui-notification', 'LocalStorageModule', 'HostModule', 'AuthModule']);
+var app = angular.module("Dashboard", ['ngRoute', 'ui-notification', 'LocalStorageModule', 'HostModule', 'AuthModule']);
 
 app.run(function($rootScope, $window, AuthFactory){
     
@@ -66,26 +66,3 @@ app.run(function($rootScope, $window, AuthFactory){
     
     
 });
-
-
-
-    
-
-
-
-// .controller('MainController', function($scope, $http){
-//     $scope.page.title = "MAIN";
-// });
-
-//-------------Angular Notifications
-// app .config(function(NotificationProvider) {
-//     NotificationProvider.setOptions({
-//         delay: 2000,
-//         startTop: 20,
-//         startRight: 10,
-//         verticalSpacing: 20,
-//         horizontalSpacing: 20,
-//         positionX: 'left',
-//         positionY: 'bottom'
-//     });
-// });

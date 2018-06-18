@@ -39,20 +39,19 @@
                             <div class="item" ng-repeat="ad in requestedAds">
                                 <div class="avatar">
                                     <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_assign.jpg" alt="">
-                                    <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_empty.jpg" alt="">
+                                    <img ng-show="ad.adviser_id == null" src="../../../../assets/img/teacher_empty.jpg" alt="">
                                 </div>
                                 <div class="info">
                                     <div ng-show="ad.adviser_id != null" class="info-item student" >{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
                                     <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
                                     <div class="info-item subject">{{ad.subject_name}}</div>
                                     <div class="info-item status">
-                                        <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
                                         <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
                                         <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
-                                        <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
+                                        <span ng-show="ad.status == 3" class="badge badge-danger">Finalizado</span>
                                     </div>
                                     
-                                    <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
+                                    <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
                                 </div>
                             </div>
                             <!-- end items -->
@@ -72,17 +71,16 @@
                             <div class="item" ng-repeat="ad in adviserAds">
                                 <div class="avatar">
                                     <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_assign.jpg" alt="">
-                                    <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_empty.jpg" alt="">
+                                    <img ng-show="ad.adviser_id == null" src="../../../../assets/img/student_empty.jpg" alt="">
                                 </div>
                                 <div class="info">
                                     <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
                                     <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
                                     <div class="info-item subject">{{ad.subject_name}}</div>
                                     <div class="info-item status">
-                                        <span ng-show="ad.status == 0" class="badge badge-danger">Cancelado</span>
                                         <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
                                         <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
-                                        <span ng-show="ad.status == 3" class="badge badge-primary">Finalizado</span>
+                                        <span ng-show="ad.status == 3" class="badge badge-danger">Finalizado</span>
                                     </div>
 
                                     <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>

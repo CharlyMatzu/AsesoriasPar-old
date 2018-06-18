@@ -11,8 +11,8 @@ angular.module("HostModule", [])
 
     .factory('RequestFactory', function($http){
 
-        var DEVELOPMENT = "http://api.asesoriaspar.com";
-        // var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
+        // var DEVELOPMENT = "http://api.asesoriaspar.com";
+        var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
         var PRODUCTION = "http://asesoriaspar.ronintopics.com";
         var DEVELOP_MODE = true;
             

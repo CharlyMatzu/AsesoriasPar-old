@@ -19,24 +19,24 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS");
 //https://www.slimframework.com/docs/v3/tutorial/first-app.html
 
 //FIXME: se debe tener cuidado para no causar estragos con CORS (que se envie OPTIONS en lugar de POST, etc)
-// $container['errorHandler'] = function($c) {
-//     /**
-//      * @param $request \Slim\Http\Request
-//      * @param $response \Slim\Http\Response
-//      * @param $ex RuntimeException
-//      * @return mixed
-//      */
-//    return function ($request, $response, $ex) use ($c){
-//        \App\AppLogger::makeErrorLog( "ErrorHandler",
-//            "File: ".$ex->getFile()."[".$ex->getLine()."] --- ".$ex->getMessage());
-//
-//        return Utils::makeMessageResponse($response, 500, "Algo salio mal, intentelo más tarde");
-////        return $c['response']
-////            ->withStatus(500)
-////            ->withHeader('Content-Type', 'text/html')
-////            ->write('Algo salio mal, intentelo más tarde' );
-//    };
-// };
+ $container['errorHandler'] = function($c) {
+     /**
+      * @param $request \Slim\Http\Request
+      * @param $response \Slim\Http\Response
+      * @param $ex RuntimeException
+      * @return mixed
+      */
+    return function ($request, $response, $ex) use ($c){
+        \App\AppLogger::makeErrorLog( "ErrorHandler",
+            "File: ".$ex->getFile()."[".$ex->getLine()."] --- ".$ex->getMessage());
+
+        return Utils::makeMessageResponse($response, 500, "Algo salio mal, intentelo más tarde");
+//        return $c['response']
+//            ->withStatus(500)
+//            ->withHeader('Content-Type', 'text/html')
+//            ->write('Algo salio mal, intentelo más tarde' );
+    };
+ };
 
 
 //Override the default Not Found Handler

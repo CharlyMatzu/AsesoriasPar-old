@@ -1,14 +1,9 @@
 -Quitar variables globales
 -Usar factorias para auth, guardar datos y redireccionar
-
-
 -Add token header
-----LOGIN
-	-Signin
-		-redirect (app module redirects)
-	-signup
-		-Confirm (email for confirm)
-	-Forget password (email for change)
+
+
+-Forget password (email for change)
 ----ADMIN
 	-HOME
 	-Send mails
@@ -23,44 +18,59 @@
 
 -----SERVER
 -Student
-	-avatar url
-		-Uploaded
-		-Default
 	-Send mail button direct
 -Period validations
 -Auth
 -Upload student profile avatar
--Cron
-
-
--Correo de asignacion
 -Correo de finalizacion
 
--Enviar correosse
+-Enviar correos
 -Estilizar CSS
-
-
--Indexado de archivos en el servidor
 -Nombre de metodos API
 -API para admin y para estudiantes
--Uso de token
--Uso de config y resolve para las rutas y la autenticacion en angularjs
--Factory para request
-	-method
-	-url
-	-data
-	-response y error
--Juntar proyectos (modulos, etc.)
-
-
-
--Crear factories, services y config especiales para los request usando ngresource
--Crear método backend que se van a necesitar
-	-Persistencia
-	-Servicios
-	-Controlladores
 -Funcionalidad
 	
 
 -Dar estilo grafico
 	-Animaciones
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------
+ESTUDIANTES
+---------------
+-Horario
+	-Registrar varias materias a la vez
+		-Confirmacion
+	-Confirmar al quitar horas
+-No debe obtener periodo actual si esta deshabilitado
+	-Si hay un periodo habilitado actual y se registra algo, debe verificarse antes de registrarse si aun sigue habilitado
+
+
+---------------
+STAFF
+---------------
+-El actualizar periodo no debe restarle -1 al dia
+-Debe tener un perfil para el usuario actual (no modificarse desde staff)
+-Boton de eliminar solo para admin
+-Staff solo para admin
+-Confirmaciones en botones
+
+---------------
+CRON
+---------------
+-Deshabilitar periodos que ya pasaron
+	-Finalizar asesorias de periodo finalizado
+-API especifica para maquina (agregar un requireMachine)
