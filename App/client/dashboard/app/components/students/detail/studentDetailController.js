@@ -20,6 +20,52 @@ app.controller('StudentDetailController', function($scope, $http, $window, Notif
         );
     }
 
+    /**
+     * Elemento seleccionado que permite ser "activado" si un elemento padre tiene su clase "selectable"
+     * el cual agrega/quita al item la clase 'active'
+     * @param {EventTarget} event 
+     */
+    $scope.toggleHour = function(event){
+        
+        //Verifica si el padre tiene "selectable"
+        if( $( event.currentTarget ).parents().hasClass('selectable') ){
+            //verifica si es de tipo hora
+            if( $(event.currentTarget ).hasClass('cell-hour') ){
+                //agrega/quita clase
+                $( event.currentTarget ).toggleClass('active');
+            }
+        }
+    };
+
+
+    /**
+     * Compara el id con el del horario para saber si es parte de su horario
+     * @param {int} dh_id 
+     * @returns String className
+     */
+    $scope.checkIsExist = function(dh_id){
+        //Obtiene solo horario
+        let dh = $scope.schedule['days_hours'];
+        //Si hay horas
+
+        //FIXME: solo debe llegar al limite una vez y terminar
+        if( dh.length > 0 ){
+            //Recorre el data
+            for(let i=0; i < dh.length; i++){
+                let data = dh[i]['data'];
+                //Recorreo cada dia
+                for(let j=0; j < data.length; j++){
+                    let day_hour = data[j]['day_hour_id'];
+                    // console.log(" -- ID: "+dh_id+ " -- Schedule:"+ day_hour );
+                    if( day_hour === dh_id ){
+                        // console.log( "Coincide" );
+                        return 'active';
+                    }   
+                }
+            }
+        }
+    };
+
 
     $scope.getStudentSchedule = function(student_id){
 
@@ -69,6 +115,7 @@ app.controller('StudentDetailController', function($scope, $http, $window, Notif
                         $scope.student = success.data;
 
                         //Se obtiene horario
+                        $scope.getStudentSchedule( id );
 
                     }
                     //Enabling refresh button

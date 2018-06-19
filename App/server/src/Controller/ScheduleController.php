@@ -133,7 +133,7 @@ class ScheduleController
     public function changeScheduleStatus($req, $res, $params){
         try {
             $scheduleService = new ScheduleService();
-            $scheduleService->changeSchedyleStatus( $params['id'], $params['status'] );
+            $scheduleService->changeScheduleStatus( $params['id'], $params['status'] );
             return Utils::makeMessageResponse( $res, Utils::$OK, "Modificaco estado de horario");
 
         } catch (RequestException $e) {

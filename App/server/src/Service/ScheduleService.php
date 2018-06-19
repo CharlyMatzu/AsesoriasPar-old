@@ -511,7 +511,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function changeSchedyleStatus($scheduleId, $status)
+    public function changeScheduleStatus($scheduleId, $status)
     {
         $this->getSchedule_ById( $scheduleId );
 

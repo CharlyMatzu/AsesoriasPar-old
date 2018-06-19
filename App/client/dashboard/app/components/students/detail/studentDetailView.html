@@ -67,13 +67,13 @@
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="itson_id">Teléfono</label>
-                                    <input type="text" id="itson_id" class="form-control" ng-model="student.phone">
+                                    <label for="phone">Teléfono</label>
+                                    <input type="text" id="phone" class="form-control" ng-model="student.phone">
                                 </div>
                                 
                                 
                                 <div class="form-group">
-                                    <label for="itson_id">Facebook</label>
+                                    <label for="facebook">Facebook</label>
                                     <input type="text" id="facebook" class="form-control" ng-model="student.facebook">
                                 </div>
                                 
@@ -142,18 +142,35 @@
                     <h2>Materias como asesor:</h2>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <span ng-hide="schedule.subjects.length > 0">Alumno no tiene materias registradas</span>
+
+                    <div class="table-responsive" ng-show="schedule.subjects.length > 0">
                         <table class="table">
-                            <td>
+                            <tr>
                                 <th>Materia</th>
                                 <th>Plan</th>
                                 <th>Carrera</th>
                                 <th>Estado</th>
+                                <th>Validacion</th>
                                 <th>Opciones</th>
-                            </td>
-                            <td>
-    
-                            </td>
+                            </tr>
+                            <tr ng-repeat="sub in schedule.subjects">
+                                <td>{{sub.subject_name}}</td>
+                                <td>{{sub.plan}}</td>
+                                <td>{{sub.career_name}}</td>
+                                <td>
+                                    <span ng-show="sub.subject_status == 0" class="label label-danger">Deshabilitado</span>
+                                    <span ng-show="sub.subject_status == 2" class="label label-success">Activo</span>
+                                </td>
+                                <td>
+                                    <span ng-show="sub.status == 1" class="label label-warning">Pendiente</span>
+                                    <span ng-show="sub.status == 2" class="label label-success">Validada</span>
+                                </td>
+                                <td>
+                                    <button ng-show="sub.status == 1" class="btn btn-success">Validar</button>
+                                    <button ng-show="sub.status == 2" class="btn btn-warning">Bloquear</button>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -172,7 +189,18 @@
                     <h2>Horario</h2>
                 </div>
                 <div class="card-body">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem at assumenda consectetur, natus quae eos repellat. Voluptatum distinctio vel nam qui earum incidunt, fugiat nemo obcaecati, et error facere ipsa.
+                    <div class="schedule-container">
+                        <span ng-hide="daysAndHours.length > 0">No hay un horas</span>
+
+                        <div class="schedule" ng-show="daysAndHours.length > 0">
+                        
+                            <div class="column-item" ng-repeat="dh in daysAndHours">
+                                <div class="cell-item cell-header">{{dh.day}}</div>
+                                <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                            </div>
+                    
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

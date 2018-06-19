@@ -13,7 +13,9 @@
 	-Usuarios sin confirmar
 		-Reenviar correo de confirmacion
 	-Period
-		-Corregir fecha al editar
+		-Corregir fecha al actualizar
+
+Al obtener periodo
 
 
 -----SERVER
