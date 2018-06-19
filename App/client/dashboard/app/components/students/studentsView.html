@@ -51,7 +51,7 @@
                     <div class="table-responsive">
                         <table ng-show="students.length > 0" class="table table-bordered">
                             <tr>
-                                <th>Id</th>
+                                <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
                                 <th>Carrera</th>
@@ -60,7 +60,8 @@
                                 <th>Opciones</th>
                             </tr>
                             <tr ng-repeat="s in students">
-                                <td>{{s.id}}</td>
+                                <!-- <td>{{s.id}}</td> -->
+                                <td>{{s.itson_id}}</td>
                                 <td>{{s.first_name}} {{s.last_name}}</td>
                                 <td>{{s.user_email}}</td>
                                 <td>{{s.career_name}}</td>

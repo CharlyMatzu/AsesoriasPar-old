@@ -1,16 +1,11 @@
 angular.module("LoginApp").controller('SignupController', function($scope, $window, $timeout, Notification, SignupService){
     
     $scope.careers = [];
-    // $scope.student = {
-    //     email: "carlosrozuma@gmail.com",
-    //     pass: "123",
-    //     pass2: "123",
-    //     first_name: "Carlos",
-    //     last_name: "Zuñiga",
-    //     career: 1,
-    //     itson_id: "00000162156",
-    //     phone: "6448980949"
-    // }
+
+    $scope.alert.type = '';
+    $scope.loading.status = false;
+    $scope.loading.message = "";
+    
 
     $scope.loadCareers = function(){
         Notification.primary("Obteniendo carreras");

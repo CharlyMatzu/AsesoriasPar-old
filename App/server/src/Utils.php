@@ -297,6 +297,7 @@ class Utils
         $path_config = file_get_contents(CONFIG_PATH ."/mailer.config.json");
         if( !$path_config )
             throw new InternalErrorException("MailerConfig", "No se encontro archivo de configuracion");
+
         $json_config = json_decode( $path_config );
         if( $json_config == null || $json_config == false )
             throw new InternalErrorException("MailerConfig", "Error al decodificar json");

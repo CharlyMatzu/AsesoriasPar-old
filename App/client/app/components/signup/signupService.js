@@ -15,7 +15,7 @@ angular.module("LoginApp").service('SignupService', function($http, RequestFacto
     this.signup = function(student, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: RequestFactory.getURL()+"/users/student",
+            url: RequestFactory.getURL()+"/auth/signup",
             data: {
                 email: student.email,
                 password: student.pass,
