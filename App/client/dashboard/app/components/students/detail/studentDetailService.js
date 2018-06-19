@@ -13,7 +13,28 @@ app.service('StudentDetailService', function($http, RequestFactory){
     }
 
 
+    this.getDaysAndHours = function(successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/schedule/source"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    } 
 
+
+    this.getStudentSchedule = function(student_id, successCallback, errorCallback){
+        $http({
+            method: 'GET',
+            url: RequestFactory.getURL()+"/students/"+student_id+"/schedule"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
+    }
 
 
     this.changeStatus = function(user_id, status, successCallback, errorCallback){

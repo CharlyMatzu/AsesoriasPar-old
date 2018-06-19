@@ -2,6 +2,48 @@ app.controller('StudentDetailController', function($scope, $http, $window, Notif
     $scope.page.title = "Estudiante";
     
     $scope.student = [];
+    $scope.schedule = {};
+    $scope.daysAndHours = [];
+
+
+    var getDaysAndHours = function(){
+        $scope.loading.message = "Cargando horas";
+
+        StudentDetailService.getDaysAndHours(
+            function(success){
+                Notification.success("Horario cargado con exito");
+                $scope.daysAndHours = success.data;
+            },
+            function(error){
+                Notification.error("Error al iniciarlizar horario");
+            }
+        );
+    }
+
+
+    $scope.getStudentSchedule = function(student_id){
+
+        StudentDetailService.getStudentSchedule(student_id,
+            function(success){
+                if( success.status == NO_CONTENT ){
+                    //Si no tiene un horario, se crea
+                    // createSchedule(studen_id);
+                    // TODO: mostrar mensaje de horario no creado
+                }
+                else{
+                    //Se asigna informacion
+                    $scope.schedule = success.data;
+                    //Se manda a llamar la funcion de las horas disponibles
+                    getDaysAndHours();
+                }
+                
+            },
+            function(error){
+                Notification.error("Error al obtener horario de alumno");
+                $scope.loading.status = false;
+            }
+        );
+    }
 
     
     $scope.getStudent = function(){
@@ -23,7 +65,11 @@ app.controller('StudentDetailController', function($scope, $http, $window, Notif
                         $window.location.href = "#!/estudiantes";
                     }
                     else{
+                        //Se asignar informacion
                         $scope.student = success.data;
+
+                        //Se obtiene horario
+
                     }
                     //Enabling refresh button
                     $scope.loading.status = false;
@@ -34,11 +80,6 @@ app.controller('StudentDetailController', function($scope, $http, $window, Notif
                 }
             );
         }
-    }
-
-
-    $scope.openStudent = function(student_id){
-        //TODO: mostrar informacion detallada   
     }
 
 
