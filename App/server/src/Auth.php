@@ -3,6 +3,9 @@
 namespace App;
 
 
+use App\Exceptions\TokenException;
+use App\Exceptions\UnauthorizedException;
+use App\Model\UserModel;
 use Carbon\Carbon;
 use Exception;
 use Firebase\JWT\ExpiredException;
@@ -17,11 +20,13 @@ abstract class Auth
     private static $encrypt = ['HS256'];
     private static $aud = null;
 
-    //https://jwt.io/
+
+    //--------------------------------
+    // JWT -> https://jwt.io/
+    //-------------------------------
 
     /**
-     * Regresa el token correspondiente
-     *
+     * Genera un token y lo retorna
      * @param $data @mixed Información correspondiente
      * @param int $hours
      *
@@ -45,14 +50,15 @@ abstract class Auth
     }
 
     /**
+     * Regresa el token decodificado
      * @param $token
-     * @return void
-     * @throws Exception
+     * @return object
+     * @throws TokenException
      */
     public static function CheckToken($token)
     {
         if(empty($token))
-            throw new Exception("Token invalido");
+            throw new TokenException("Token invalido");
 
         $payload = null;
         try{
@@ -62,10 +68,10 @@ abstract class Auth
                 self::$encrypt
             );
         }catch (ExpiredException $ex){
-            throw new Exception("Token ha expirado");
+            throw new TokenException("Token ha expirado");
         }
         catch (SignatureInvalidException $ex){
-            throw new Exception("Firma de token invalida");
+            throw new TokenException("Firma de token invalida");
         }
 
 
@@ -73,14 +79,16 @@ abstract class Auth
 //        if($payload->aud !== self::Aud())
 //            throw new Exception("Sesión de Usuario invalida");
 
-        //return $payload;
+        return $payload;
     }
 
     /**
      * Se obtiene información de token
+     *
      * @param $token
+     *
      * @return mixed
-     * @throws Exception
+     * @throws TokenException
      */
     public static function getData($token)
     {
@@ -91,7 +99,7 @@ abstract class Auth
                 self::$encrypt
             )->data;
         }catch (UnexpectedValueException $ex){
-            throw new Exception($ex->getMessage());
+            throw new TokenException( $ex->getMessage() );
         }
     }
 
@@ -112,5 +120,96 @@ abstract class Auth
 
         return sha1($aud);
     }
+
+
+    //--------------------------------
+    // ROLES
+    //-------------------------------
+
+    /**
+     * @param $user_role int
+     *
+     * @return bool
+     */
+    public static function isRoleAdmin($user_role){
+        if( $user_role === Utils::$ROLE_ADMIN )
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @param $user_role int
+     *
+     * @return bool
+     */
+    public static function isRoleStaff($user_role){
+        if( $user_role === Utils::$ROLE_ADMIN || $user_role === Utils::$ROLE_MOD )
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @param $user_role int
+     *
+     * @return bool
+     */
+    public static function isRoleBasic($user_role){
+        if( $user_role === Utils::$ROLE_BASIC )
+            return true;
+        else
+            return false;
+    }
+
+
+    //--------------------------------
+    // AUTENTICACION
+    //-------------------------------
+
+
+    /**
+     * @param $user UserModel
+     * @param $token String
+     */
+    public static function setAuthenticated($user, $token){
+        session_start();
+        $_SESSION['user'] = $user;
+        $_SESSION['token'] = $token;
+    }
+
+    /**
+     * @return UserModel
+     * @throws UnauthorizedException
+     */
+    public static function getAuthenticated(){
+        session_start();
+
+        if( !self::isAuthenticated() )
+            throw new UnauthorizedException("No autenticado");
+
+        return $_SESSION['user'];
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isAuthenticated()
+    {
+        if( !isset($_SESSION['user']) || !isset($_SESSION['token']) )
+            return false;
+
+        if( empty($_SESSION['user']) || empty($_SESSION['token']) )
+            return false;
+
+        //Se verifica que token funcione
+        try{
+            self::CheckToken( $_SESSION['token'] );
+            return true;
+        }catch (TokenException $e){
+            return false;
+        }
+    }
+
 
 }

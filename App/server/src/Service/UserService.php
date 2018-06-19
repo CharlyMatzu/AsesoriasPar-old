@@ -135,11 +135,11 @@ class UserService{
         $result = $this->userPer->getUser_ById( $id );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getUserById","Ocurrio un error al obtener usuario", $result->getErrorMessage());
+            throw new InternalErrorException("getUserById","Ocurrió un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("No se encontro usuario");
+            throw new NotFoundException("No se encontró usuario");
         else
-            return $result->getData();
+            return $result->getData()[0];
     }
 
 

@@ -80,11 +80,13 @@ $app->get('/auth/confirm/{token}', 'AuthController:confirm')
 //--------------------------
 
 //Obtiene todos los usuarios
-$app->get('/users', 'UserController:getUsers');
+$app->get('/users', 'UserController:getUsers')
+    ->add('AuthMiddleware:requireStaff');
 
 
 //Obtiene todos los usuarios con rol: Mod/Admin
-$app->get('/users/staff', 'UserController:getStaffUsers');
+$app->get('/users/staff', 'UserController:getStaffUsers')
+    ->add('AuthMiddleware:requireStaff');
 
 //TODO: hacer mas descriptiva
 //Obtiene usuarios con un status especifico
