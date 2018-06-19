@@ -1,4 +1,0 @@
-[2018-06-17 10:08:31] ErrorHandler.CRITICAL: File: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Middleware\AuthMiddleware.php[25] --- No esta autenticado [] []
-[2018-06-17 10:45:09] MailerConfig.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Utils.php[302] --- Error al decodificar json:  [] []
-[2018-06-17 10:45:09] Mailer.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Mailer.php[23] --- Ocurrió un error con archivo de configuración:  [] []
-[2018-06-17 10:45:19] ErrorHandler.CRITICAL: File: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\vendor\slim\slim\Slim\CallableResolver.php[104] --- [{},"getCurrentAdvisers_BySubject_IgnoreStudent"] is not resolvable [] []

@@ -20,7 +20,7 @@ class StudentsPersistence extends Persistence{
                         
                         s.fk_user as 'user_id',
                         u.email as 'user_email',
-                        u.status as 'user_status',                      
+                        u.status as 'user_status',
                         
                         c.career_id as 'career_id',
                         c.name as 'career_name',

@@ -46,9 +46,9 @@
                                     <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
                                     <div class="info-item subject">{{ad.subject_name}}</div>
                                     <div class="info-item status">
-                                        <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
-                                        <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
-                                        <span ng-show="ad.status == 3" class="badge badge-danger">Finalizado</span>
+                                        <span ng-show="ad.status == 1" class="label label-warning">Pendiente</span>
+                                        <span ng-show="ad.status == 2" class="label label-success">Activo</span>
+                                        <span ng-show="ad.status == 3" class="label label-danger">Finalizado</span>
                                     </div>
                                     
                                     <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>
@@ -78,9 +78,9 @@
                                     <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
                                     <div class="info-item subject">{{ad.subject_name}}</div>
                                     <div class="info-item status">
-                                        <span ng-show="ad.status == 1" class="badge badge-warning">Pendiente</span>
-                                        <span ng-show="ad.status == 2" class="badge badge-success">Activo</span>
-                                        <span ng-show="ad.status == 3" class="badge badge-danger">Finalizado</span>
+                                        <span ng-show="ad.status == 1" class="label label-warning">Pendiente</span>
+                                        <span ng-show="ad.status == 2" class="label label-success">Activo</span>
+                                        <span ng-show="ad.status == 3" class="label label-danger">Finalizado</span>
                                     </div>
 
                                     <button class="btn-opt" ng-click="finalice(ad.id)" ng-show="ad.status == 2 || ad.status == 1">Finalizar</button>

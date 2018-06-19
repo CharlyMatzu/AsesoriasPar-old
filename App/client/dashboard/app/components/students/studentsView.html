@@ -23,6 +23,15 @@
                             </span>
                             <input type="text" placeholder="Buscar" class="form-control" ng-model="studentDataSearch" ng-change="searchStudent(studentDataSearch)">
                         </div>
+                        <!-- Filtros -->
+                        <div class="form-group">
+                            <label for="career">Filtrar por carrera:</label>
+                            <select ng-model="filterCareer" id="career" class="btn btn-primary">
+                                <option value="0" selected="selected">0</option>
+                                <option value="1" selected="selected">1</option>
+                                <option value="2" selected="selected">2</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,9 +66,9 @@
                                 <td>{{s.career_name}}</td>
                                 <td>{{s.date_register}}</td>
                                 <td>
-                                    <span ng-show="s.user_status == 0" class="badge badge-danger">Deshabilitado</span>
-                                    <span ng-show="s.user_status == 1" class="badge badge-warning">Sin confirmar</span>
-                                    <span ng-show="s.user_status == 2" class="badge badge-success">Activo</span>
+                                    <span ng-show="s.user_status == 0" class="label label-danger">Deshabilitado</span>
+                                    <span ng-show="s.user_status == 1" class="label label-warning">Sin confirmar</span>
+                                    <span ng-show="s.user_status == 2" class="label label-success">Activo</span>
                                 </td>
                                 <td>
                                     <button ng-click="openStudent(s.id)" class="opt-student-{{s.user_id}} btn btn-primary">Detalles</button>

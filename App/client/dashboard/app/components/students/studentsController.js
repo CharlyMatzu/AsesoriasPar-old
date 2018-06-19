@@ -53,6 +53,7 @@ app.controller('StudentsController', function($scope, $http, $window, Notificati
             function(success){
                 if( success.status == NO_CONTENT ){
                     $scope.students = [];
+                    $scope.loading.message = "No se encontraron estudiantes";
                 }
                 else{
                     $scope.students = success.data;
@@ -69,7 +70,7 @@ app.controller('StudentsController', function($scope, $http, $window, Notificati
 
 
     $scope.openStudent = function(student_id){
-        //TODO: mostrar informacion detallada   
+        $window.location = "#!/estudiantes/"+student_id;
     }
 
 

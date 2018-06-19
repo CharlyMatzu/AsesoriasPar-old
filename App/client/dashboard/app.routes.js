@@ -46,6 +46,10 @@ app.config( function ($routeProvider) {
             controller: "StudentsController",
             templateUrl: "app/components/students/studentsView.html"
         })
+        .when("/estudiantes/:id", {
+            controller: "StudentDetailController",
+            templateUrl: "app/components/students/detail/studentDetailView.html"
+        })
         // .when("/estudiantes/nuevo", {
         //     controller: "NewStudentController",
         //     templateUrl: "app/components/students/newStudent/newStudentView.html"

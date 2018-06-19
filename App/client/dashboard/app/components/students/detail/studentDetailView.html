@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- profile -->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-two">
+                        <header>
+                            <div class="avatar">
+                                <img src="../../../../../assets/img/student_assign.jpg" alt="Allison Walker" />
+                            </div>
+                        </header>
+
+                        <h3>{{student.first_name}} {{student.last_name}}</h3>
+                        <div class="desc">
+                            {{student.career_name}}
+                        </div>
+                        <div class="contacts">
+                            <a href=""><i class="fa fa-plus"></i></a>
+                            <a href=""><i class="fa fa-whatsapp"></i></a>
+                            <a href=""><i class="fa fa-envelope"></i></a>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="options">
+                            <button ng-show="student.status == 0" class="btn btn-success">Habilitar</button>
+                            <button ng-show="student.status == 2" class="btn btn-warning">Deshabilitar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- profile -->
+    </div>
+</div>
