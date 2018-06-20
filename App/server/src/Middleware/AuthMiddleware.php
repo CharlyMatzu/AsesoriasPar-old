@@ -1,9 +1,12 @@
 <?php namespace App\Middleware;
 
 use App\Auth;
+use App\Exceptions\InternalErrorException;
+use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
 use App\Exceptions\TokenException;
 use App\Exceptions\UnauthorizedException;
+use App\Persistence\UsersPersistence;
 use App\Service\UserService;
 use App\Utils;
 use Monolog\Handler\Curl\Util;
@@ -84,11 +87,21 @@ class AuthMiddleware extends Middleware
 
             //Se obtiene información de usuario
             $data = Auth::getData( $token );
+
             //Se verifica que exista usuario
-            $userServ = new UserService();
-            $user = $userServ->getUser_ById( $data );
+            //NOTA: no se usa método de service ya que tiene un método que verifica el rol
+            $user = null;
+            $userPer = new UsersPersistence();
+            $result = $userPer->getUser_ById( $data );
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("getUserById","Ocurrió un error al obtener usuario", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NotFoundException("No se encontró usuario");
+            else
+                $user = $result->getData()[0];
+
             //Se almacena
-            Auth::setAuthenticated( UserService::makeUserModel($user), $token );
+            Auth::setSession( UserService::makeUserModel($user), $token );
 
         }catch (UnauthorizedException $e){
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
@@ -110,9 +123,8 @@ class AuthMiddleware extends Middleware
             //Verifica auth general
             self::requireAuth($req);
 
-            $user = Auth::getAuthenticated();
             //Verifica que pertenezca al rol
-            if( !Auth::isRoleAdmin( $user->getRole() ) )
+            if( !Auth::isAdminUser() )
                 return Utils::makeMessageResponse( $res, Utils::$FORBIDDEN, "No tiene permitido dicha acción" );
 
         }catch (UnauthorizedException $e){
@@ -122,6 +134,7 @@ class AuthMiddleware extends Middleware
         }
 
         $res = $next($req, $res);
+        Auth::sessionDestroy();
         return $res;
     }
 
@@ -135,18 +148,12 @@ class AuthMiddleware extends Middleware
      */
     public function requireStaff($req, $res, $next)
     {
-        //Se verifica autenticación
-//        if( !Auth::isAuthenticated() )
-//            return Utils::makeMessageResponse( $res, Utils::$UNAUTHORIZED, "Se requiere autenticación" );
-
-        //Se verifica el rol del usuario
         try{
             //Verifica auth general
             self::requireAuth($req);
 
-            $user = Auth::getAuthenticated();
             //Verifica que pertenezca al rol
-            if( !Auth::isRoleStaff( $user->getRole() ) )
+            if( !Auth::isStaffUser() )
                 return Utils::makeMessageResponse( $res, Utils::$FORBIDDEN, "No tiene permitido dicha acción" );
 
         }catch (UnauthorizedException $e){
@@ -156,6 +163,7 @@ class AuthMiddleware extends Middleware
         }
 
         $res = $next($req, $res);
+        Auth::sessionDestroy();
         return $res;
     }
 
@@ -165,17 +173,16 @@ class AuthMiddleware extends Middleware
      * @param $next callable
      * @return Response
      */
-    //TODO: verifica que al que se intenta acceder, sea el mismo
+    //TODO: verificar que un usuario (que no sea admin) no pueda modificar otro que no sea él mismo
     public function requireBasic($req, $res, $next)
     {
         try{
             //Verifica auth general
             self::requireAuth($req);
 
-            $user = Auth::getAuthenticated();
             //Verifica que pertenezca al rol
             //si es basic, significa que todos pueden siempre y cuando esten autenticados
-            if( !Auth::isRoleBasic( $user->getRole() ) && !Auth::isRoleStaff( $user->getRole() ) )
+            if( !Auth::isBasicUser() && !Auth::isStaffUser() )
                 return Utils::makeMessageResponse( $res, Utils::$FORBIDDEN, "No tiene permitido dicha acción" );
 
         }catch (UnauthorizedException $e){
@@ -185,6 +192,7 @@ class AuthMiddleware extends Middleware
         }
 
         $res = $next($req, $res);
+        Auth::sessionDestroy();
         return $res;
     }
 

@@ -1,13 +1,12 @@
 <?php namespace App\Service;
 
 
+use App\Auth;
 use App\Exceptions\ConflictException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\RequestException;
-
-use App\Model\MailModel;
 use App\Model\StudentModel;
 use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
@@ -41,25 +40,7 @@ class UserService{
     }
 
 
-    /**
-     * Obtiene usuario por id de estudiante
-     *
-     * @param $student_id int
-     *
-     * @return \mysqli_result
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     */
-    public function getUsers_ByStudentId($student_id){
-        $result = $this->userPer->getUser_ByStudentId($student_id);
 
-        if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getUser_ByStudentid", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
-        else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("No existe usuario asociado");
-        else
-            return $result->getData()[0];
-    }
 
     /**
      * @return mixed
@@ -80,59 +61,24 @@ class UserService{
     }
 
 
-    /**
-     * @param $status
-     *
-     * @return \mysqli_result|null
-     * @throws InternalErrorException
-     * @throws NoContentException
-     */
-    public function getUsersByStatus($status)
-    {
-        if( $status == Utils::$STATUS_ENABLE ){
-            $result = $this->userPer->getEnableUsers();
-
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
-            else if( Utils::isEmpty($result->getOperation()) )
-                throw new NoContentException("No hay usuarios");
-
-            return $result->getData();
-        }
-        else if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->userPer->getDisabledUsers();
-
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
-            else if( Utils::isEmpty($result->getOperation()) )
-                throw new NoContentException("No hay usuarios");
-
-            return $result->getData();
-        }
-        else{
-            $result = $this->userPer->getNoconfirmUsers();
-
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
-            else if( Utils::isEmpty($result->getOperation()) )
-                throw new NoContentException("No hay usuarios");
-
-            return $result->getData();
-        }
-
-
-    }
-
-
 
     /**
      * @param $id
+     *
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws \App\Exceptions\UnauthorizedException
      */
     public function getUser_ById($id){
-        $result = $this->userPer->getUser_ById( $id );
+        //Dependiendo de Rol, se obtiene cierta info
+        $result = null;
+        if( Auth::isStaffUser() )
+            $result = $this->userPer->getUser_ById( $id );
+        else
+            $result = $this->userPer->getEnabledBasicUser_ById( $id );
+
+
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("getUserById","Ocurrió un error al obtener usuario", $result->getErrorMessage());
@@ -142,19 +88,49 @@ class UserService{
             return $result->getData()[0];
     }
 
-
     /**
-     * @param $id
-     * @return \mysqli_result|null
+     * Obtiene usuario por id de estudiante
+     *
+     * @param $student_id int
+     *
+     * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function getStudent_ByUser($id){
+    public function getUser_ByStudentId($student_id){
+        $result = $this->userPer->getUser_ByStudentId($student_id);
 
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("getUser_ByStudentid", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NotFoundException("No existe usuario asociado");
+        else
+            return $result->getData()[0];
+    }
+
+
+    /**
+     * @param $id
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws \App\Exceptions\UnauthorizedException
+     */
+    public function getStudent_ByUserId($id){
+
+        //Comprueba que exista usuario
         $this->getUser_ById($id);
 
+        //Obtiene estudiante
         $studentPer = new StudentsPersistence();
-        $result = $studentPer->getStudent_ByUserId( $id );
+        //Dependiendo de Rol, se obtiene cierta info
+        $result = null;
+        if( Auth::isStaffUser() )
+            $result = $studentPer->getStudent_ByUserId( $id );
+        else
+            $result = $studentPer->getStudent_ByEnabledBasicUserId( $id );
+
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("getStudent_ByUser",
@@ -284,6 +260,49 @@ class UserService{
             $result->setOperation(false);
 
         return $result;
+    }
+
+    /**
+     * @param $status
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getUsersByStatus($status)
+    {
+        if( $status == Utils::$STATUS_ENABLE ){
+            $result = $this->userPer->getEnableUsers();
+
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NoContentException("No hay usuarios");
+
+            return $result->getData();
+        }
+        else if( $status == Utils::$STATUS_DISABLE ){
+            $result = $this->userPer->getDisabledUsers();
+
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NoContentException("No hay usuarios");
+
+            return $result->getData();
+        }
+        else{
+            $result = $this->userPer->getNoConfirmUsers();
+
+            if( Utils::isError($result->getOperation()) )
+                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
+            else if( Utils::isEmpty($result->getOperation()) )
+                throw new NoContentException("No hay usuarios");
+
+            return $result->getData();
+        }
+
+
     }
 
     //------------------REGISTRAR USUARIO

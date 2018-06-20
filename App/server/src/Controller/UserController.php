@@ -128,7 +128,7 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            $result = $userServ->getStudent_ByUser( $params['id'] );
+            $result = $userServ->getStudent_ByUserId( $params['id'] );
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {

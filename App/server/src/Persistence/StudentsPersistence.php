@@ -51,10 +51,28 @@ class StudentsPersistence extends Persistence{
         return $this->executeQuery($query);
     }
 
+    /**
+     * @param $id int
+     *
+     * @return \App\Model\DataResult
+     */
     public function getStudent_ByUserId($id)
     {
         $query =    $this->SELECT."
                     WHERE s.fk_user = $id";
+        //Obteniendo resultados
+        return $this->executeQuery($query);
+    }
+
+    /**
+     * @param $id int
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getStudent_ByEnabledBasicUserId($id)
+    {
+        $query =    $this->SELECT."
+                    WHERE s.fk_user = $id AND (u.status = ".Utils::$STATUS_ENABLE." AND u.fk_role = ".Utils::$ROLE_BASIC.")";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }

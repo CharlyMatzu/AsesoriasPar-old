@@ -64,7 +64,7 @@ class UsersPersistence extends Persistence{
     /**
      * @return \App\Model\DataResult
      */
-    public function getNoconfirmUsers()
+    public function getNoConfirmUsers()
     {
         $query = $this->SELECT.
             "WHERE u.status = ".Utils::$STATUS_NO_CONFIRM;
@@ -94,6 +94,17 @@ class UsersPersistence extends Persistence{
     public function getUser_ById($id){
         $query = $this->SELECT."
                 WHERE u.user_id = ".$id;
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \App\Model\DataResult
+     */
+    public function getEnabledBasicUser_ById($id){
+        $query = $this->SELECT."
+                WHERE u.user_id = $id AND (u.status = ".Utils::$STATUS_ENABLE." AND u.fk_role = '".Utils::$ROLE_BASIC."')";
         return  self::executeQuery($query);
     }
 

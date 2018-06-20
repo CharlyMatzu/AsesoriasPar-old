@@ -20,6 +20,9 @@ abstract class Auth
     private static $encrypt = ['HS256'];
     private static $aud = null;
 
+    private static $AUTH_SESSION = null;
+    private static $TOKEN_SESSION = null;
+
 
     //--------------------------------
     // JWT -> https://jwt.io/
@@ -162,6 +165,34 @@ abstract class Auth
             return false;
     }
 
+    /**
+     * @return bool
+     * @throws UnauthorizedException
+     */
+    public static function isStaffUser(){
+        $user = self::getSession();
+        return self::isRoleStaff($user->getRole());
+    }
+
+    /**
+     * @return bool
+     * @throws UnauthorizedException
+     */
+    public static function isAdminUser(){
+        $user = self::getSession();
+        return self::isRoleAdmin($user->getRole());
+    }
+
+
+    /**
+     * @return bool
+     * @throws UnauthorizedException
+     */
+    public static function isBasicUser(){
+        $user = self::getSession();
+        return self::isRoleBasic( $user->getRole() );
+    }
+
 
     //--------------------------------
     // AUTENTICACION
@@ -172,23 +203,25 @@ abstract class Auth
      * @param $user UserModel
      * @param $token String
      */
-    public static function setAuthenticated($user, $token){
-        session_start();
-        $_SESSION['user'] = $user;
-        $_SESSION['token'] = $token;
+    public static function setSession($user, $token){
+//        session_start();
+//        $_SESSION['user'] = $user;
+//        $_SESSION['token'] = $token;
+        self::$AUTH_SESSION = $user;
+        self::$TOKEN_SESSION = $token;
     }
 
     /**
      * @return UserModel
      * @throws UnauthorizedException
      */
-    public static function getAuthenticated(){
-        session_start();
+    public static function getSession(){
+//        session_start();
 
         if( !self::isAuthenticated() )
             throw new UnauthorizedException("No autenticado");
 
-        return $_SESSION['user'];
+        return self::$AUTH_SESSION;
     }
 
     /**
@@ -196,19 +229,24 @@ abstract class Auth
      */
     public static function isAuthenticated()
     {
-        if( !isset($_SESSION['user']) || !isset($_SESSION['token']) )
-            return false;
 
-        if( empty($_SESSION['user']) || empty($_SESSION['token']) )
+        if( empty(self::$AUTH_SESSION) || empty(self::$TOKEN_SESSION) )
             return false;
 
         //Se verifica que token funcione
         try{
-            self::CheckToken( $_SESSION['token'] );
+            self::CheckToken( self::$TOKEN_SESSION );
             return true;
         }catch (TokenException $e){
             return false;
         }
+    }
+
+    public static function sessionDestroy()
+    {
+//        session_destroy();
+        self::$AUTH_SESSION = null;
+        self::$TOKEN_SESSION = null;
     }
 
 

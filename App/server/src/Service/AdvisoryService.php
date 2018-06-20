@@ -303,8 +303,8 @@ class AdvisoryService
         //Envío de correo
         try{
             $userServ =  new UserService();
-            $adviserUser = $userServ->getUsers_ByStudentId( $adviser['id'] );
-            $alumnUser = $userServ->getUsers_ByStudentId( $alumn['id'] );
+            $adviserUser = $userServ->getUser_ByStudentId( $adviser['id'] );
+            $alumnUser = $userServ->getUser_ByStudentId( $alumn['id'] );
 
             //Obteniendo materia
             $subServ = new SubjectService();

@@ -81,35 +81,40 @@ $app->get('/auth/confirm/{token}', 'AuthController:confirm')
 
 //Obtiene todos los usuarios
 $app->get('/users', 'UserController:getUsers')
-    ->add('AuthMiddleware:requireStaff');
+        ->add('AuthMiddleware:requireStaff');
 
 
 //Obtiene todos los usuarios con rol: Mod/Admin
 $app->get('/users/staff', 'UserController:getStaffUsers')
-    ->add('AuthMiddleware:requireStaff');
+        ->add('AuthMiddleware:requireStaff');
 
 //TODO: hacer mas descriptiva
 //Obtiene usuarios con un status especifico
-$app->get('/users/status/{status}', 'UserController:getUsersByStatus')
-        ->add('InputMiddleware:checkParam_Status');
+//$app->get('/users/status/{status}', 'UserController:getUsersByStatus')
+//        ->add('InputMiddleware:checkParam_Status');
 
 //busca usuarios por correo (coincidencias)
-$app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
-        ->add('InputMiddleware:checkParam_Email');
+//$app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
+//        ->add('InputMiddleware:checkParam_Email')
+//        ->add('AuthMiddleware:requireStaff');
 
 //busca usuarios por correo (coincidencias)
 $app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail')
-        ->add('InputMiddleware:checkParam_Email');
+        ->add('InputMiddleware:checkParam_Email')
+        ->add('AuthMiddleware:requireStaff');
+
 
 //TODO: obtener por rol
 
 //Obtiene usuario por ID
 $app->get('/users/{id}', 'UserController:getUser_ById')
-        ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
 //Obtener estudiante por id de usuario
 $app->get('/users/{id}/student', 'UserController:getStudent_ByUserId')
-        ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
 
 //Crear un usuario simple
