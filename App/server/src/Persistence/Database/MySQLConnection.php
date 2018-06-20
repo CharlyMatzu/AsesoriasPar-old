@@ -1,12 +1,11 @@
 <?php namespace App\Persistence\Database;
 
-    use App\Exceptions\RequestException;
+    use App\Exceptions\Request\InternalErrorException;
+    use App\Exceptions\Request\RequestException;
     use App\Utils;
-    use Exception;
-    use App\Exceptions\InternalErrorException;
     use mysqli;
 
-    class MySQLConexion {
+    class MySQLConnection {
 
 
 
@@ -37,12 +36,12 @@
              //Manejo de error
             if( mysqli_connect_error() ) {
                 //trigger_error("Error al tratar de conectar con MySQL: " . mysqli_connect_error(), E_USER_ERROR);
-                throw new InternalErrorException("Connect", "Ocurrio un error tratar de conectar con MYSQL", mysqli_connect_error());
+                throw new InternalErrorException("Connect", "Ocurrió un error tratar de conectar con MYSQL", mysqli_connect_error());
             }
 
             /* cambiar el conjunto de caracteres a utf8 para aceptar tildes y 'eñes' */
             if ( !$this->_connection->set_charset('utf8') )
-                throw new InternalErrorException("UTF-8","Ocurrio un error al codificar caracteres UTF8", $this->getError());
+                throw new InternalErrorException("UTF-8","Ocurrió un error al codificar caracteres UTF8", $this->getError());
         }
 
 
@@ -72,9 +71,9 @@
         }
 
 
-        //----------TRANSACCIONES
+        //----------transacciónES
         /**
-         * Inicio de transaccion (evita el registro automatico de datos)
+         * Inicio de transacción (evita el registro automatico de datos)
          * @return bool FALSE en caso de error o fallo, TRUE exitoso
          */
         public function iniTransaction(){
@@ -82,7 +81,7 @@
         }
 
         /**
-         * Commit de transaccion (Registro de datos)
+         * Commit de transacción (Registro de datos)
          * @return bool FALSE en caso de error o fallo, TRUE exitoso
          */
         public function doCommit(){

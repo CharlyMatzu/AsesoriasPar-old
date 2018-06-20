@@ -1,4 +1,4 @@
-<?php namespace App\Exceptions;
+<?php namespace App\Exceptions\Auth;
 
 
 class TokenException extends \Exception

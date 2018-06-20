@@ -79,7 +79,7 @@ class CareerController
             $user = $req->getAttribute('career_data');
             $user->setId( $params['id'] );
             $careerService->updateCarrers( $user );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Se actualizo carrera con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Se actualizo carrera con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -98,11 +98,11 @@ class CareerController
             $careerService = new CareerService();
             if( $params['status'] == Utils::$STATUS_DISABLE ){
                 $careerService->disableCareer( $params['id'] );
-                return Utils::makeMessageResponse( $res, Utils::$OK, "Desactivado con exito");
+                return Utils::makeMessageResponse( $res, Utils::$OK, "Desactivado con éxito");
             }
             else if( $params['status'] == Utils::$STATUS_ENABLE ){
                 $careerService->enableCareer( $params['id'] );
-                return Utils::makeMessageResponse( $res, Utils::$OK, "Activado con exito");
+                return Utils::makeMessageResponse( $res, Utils::$OK, "Activado con éxito");
             }
 
 

@@ -3,12 +3,11 @@
 namespace App;
 
 
-use App\Exceptions\ForbiddenException;
-use App\Exceptions\TokenException;
-use App\Exceptions\UnauthorizedException;
+use App\Exceptions\Request\ForbiddenException;
+use App\Exceptions\Auth\TokenException;
+use App\Exceptions\Request\UnauthorizedException;
 use App\Model\UserModel;
 use Carbon\Carbon;
-use Exception;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
@@ -21,8 +20,10 @@ abstract class Auth
     private static $encrypt = ['HS256'];
     private static $aud = null;
 
+    /**@var $USER_SESSION UserModel*/
     private static $USER_SESSION = null;
     private static $TOKEN_SESSION = null;
+    public static $isAuthRequired = false;
 
 
     //--------------------------------
@@ -36,7 +37,7 @@ abstract class Auth
      *
      * @return string token
      */
-    public static function getToken($data, $hours = 24)
+    public static function getToken($data, $hours = 200)
     {
         $time_now = Carbon::now(Utils::TIMEZONE);
 
@@ -217,6 +218,7 @@ abstract class Auth
 
 
     /**
+     * Utilizado para saber si el usuario actual puede hacer modificaciones a cierto registro
      * @param $user UserModel
      * @throws ForbiddenException
      * @throws UnauthorizedException
@@ -242,29 +244,27 @@ abstract class Auth
 
 
     //--------------------------------
-    // AUTENTICACION
+    // AUTENTICACIÓN
     //-------------------------------
 
 
     /**
+     * Establece al usuario actual
      * @param $user UserModel
      * @param $token String
      */
     public static function setSession($user, $token){
-//        session_start();
-//        $_SESSION['user'] = $user;
-//        $_SESSION['token'] = $token;
         self::$USER_SESSION = $user;
         self::$TOKEN_SESSION = $token;
+        self::$isAuthRequired = true;
     }
 
     /**
+     * Obtiene al usuario actual
      * @return UserModel
      * @throws UnauthorizedException
      */
     public static function getSessionUser(){
-//        session_start();
-
         if( !self::isAuthenticated() )
             throw new UnauthorizedException("No autenticado");
 
@@ -272,6 +272,7 @@ abstract class Auth
     }
 
     /**
+     * Verifica si el usuario esta autenticado
      * @return bool
      */
     public static function isAuthenticated()
@@ -289,11 +290,14 @@ abstract class Auth
         }
     }
 
+    /**
+     * Limpia los registros del usuario actual
+     */
     public static function sessionDestroy()
     {
-//        session_destroy();
         self::$USER_SESSION = null;
         self::$TOKEN_SESSION = null;
+        self::$isAuthRequired = false;
     }
 
 

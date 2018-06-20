@@ -200,9 +200,9 @@ class InputParamsMiddleware extends Middleware
 
 
         foreach ( $params['address'] as $address ){
-            //Si esta vacio
+            //Si esta vacío
             if( empty($address) )
-                return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Address no valido: vacio");
+                return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Address no valido: vacío");
             if( !is_string($address) )
                 return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Address no valido: No es Email");
             //TODO: validar
@@ -238,7 +238,7 @@ class InputParamsMiddleware extends Middleware
         if( !isset($params['email']) || !isset($params['password']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password");
 
-        //FIXME: debe poder aceptar password vacio para el caso del update
+        //FIXME: debe poder aceptar password vacío para el caso del update
         if( empty($params['email']) || empty($params['password']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
@@ -368,7 +368,7 @@ class InputParamsMiddleware extends Middleware
         if( !isset($params['name']) || !isset($params['short_name']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: name, short_name");
 
-        //TODO: podria dejarse abreviacion vacio
+        //TODO: podria dejarse abreviacion vacío
         if( empty($params['name']) || empty($params['short_name']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros vacios");
 
@@ -403,7 +403,7 @@ class InputParamsMiddleware extends Middleware
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: year");
 
         if( empty($params['year']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: no debe estar vacio");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: no debe estar vacío");
 
         if( ( !is_numeric($params['year']) ) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan, debe ser numerico");
@@ -581,7 +581,7 @@ class InputParamsMiddleware extends Middleware
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: subjects");
 
 //        if( empty($params['subjects']) )
-//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Subjects vacio");
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Subjects vacío");
 
 
         if( !is_array($params['subjects']) )

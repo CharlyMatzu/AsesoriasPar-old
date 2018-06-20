@@ -1,5 +1,6 @@
 <?php namespace App;
-use App\Exceptions\InternalErrorException;
+
+use App\Exceptions\Request\InternalErrorException;
 use DateTime;
 
 class Utils
@@ -37,13 +38,13 @@ class Utils
     // OPERATIONS
     //++++++++++++++++++++++++
     /**
-     * Esta variable indica que ocurrio un error en la operacion
+     * Esta variable indica que Ocurrió un error en la operacion
      * @var int 1
      */
     public static $OPERATION_ERROR = 1;
     /**
      * Esta variable indica que no se encontraron resultados, es decir, es null
-     * pero no ocurrio un error
+     * pero no Ocurrió un error
      * @var int 2
      */
     public static $OPERATION_EMPTY = 2;
@@ -60,7 +61,7 @@ class Utils
 
 
     /**
-     * Cuando ocurrio un error
+     * Cuando Ocurrió un error
      * @param $result int
      * @return bool
      */
@@ -87,7 +88,7 @@ class Utils
     }
 
     /**
-     * Cuando el valor es nulo o vacio
+     * Cuando el valor es nulo o vacío
      * @param $result int
      * @return bool
      */
@@ -271,20 +272,20 @@ class Utils
 
 
         if( !isset($json_config->mode) || !isset($json_config->connection) )
-            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexión");
 
         //Obteniendo el modo y las conexiones
         $mode = $json_config->mode;
-        $connections = $json_config->connection; //objetos de conexion
+        $connections = $json_config->connection; //objetos de conexión
 
-        //Se obtiene conexion especifica, si no existe, se lanza error
+        //Se obtiene conexión especifica, si no existe, se lanza error
         if( !isset($connections->$mode) )
-            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexión");
 
         $con = $connections->$mode;
 
         if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
-            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexión");
 
         return $con;
     }
@@ -306,20 +307,20 @@ class Utils
 
 
         if( !isset($json_config->mode) || !isset($json_config->connection) )
-            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexión");
 
         //Obteniendo el modo y las conexiones
         $mode = $json_config->mode;
-        $connections = $json_config->connection; //objetos de conexion
+        $connections = $json_config->connection; //objetos de conexión
 
-        //Se obtiene conexion especifica, si no existe, se lanza error
+        //Se obtiene conexión especifica, si no existe, se lanza error
         if( !isset($connections->$mode) )
-            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexión");
 
         $con = $connections->$mode;
 
         if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->smtp_secure) || !isset($con->port) || !isset($con->name) )
-            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexión");
 
         return $con;
     }

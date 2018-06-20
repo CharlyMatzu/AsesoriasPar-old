@@ -2,12 +2,12 @@
 
 
 use App\Auth;
-use App\Exceptions\ConflictException;
-use App\Exceptions\ForbiddenException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NoContentException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
+use App\Exceptions\Persistence\TransactionException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NoContentException;
+use App\Exceptions\Request\NotFoundException;
+use App\Exceptions\Request\RequestException;
 use App\Model\StudentModel;
 use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
@@ -33,7 +33,7 @@ class UserService{
         $result = $this->userPer->getUsers();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getUsers", "Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+            throw new InternalErrorException("getUsers", "Ocurrió un error al obtener usuarios", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay usuarios");
         else
@@ -54,7 +54,7 @@ class UserService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("getStaffUsers",
-                "Ocurrio un error al obtener usuarios mod/admin", $result->getErrorMessage());
+                "Ocurrió un error al obtener usuarios mod/admin", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay usuarios");
         else
@@ -62,14 +62,13 @@ class UserService{
     }
 
 
-
     /**
      * @param $id
      *
      * @return \mysqli_result|null
      * @throws InternalErrorException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      * @throws NotFoundException
-     * @throws \App\Exceptions\UnauthorizedException
      */
     public function getUser_ById($id){
         //Dependiendo de Rol, se obtiene cierta info
@@ -102,7 +101,7 @@ class UserService{
         $result = $this->userPer->getUser_ByStudentId($student_id);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getUser_ByStudentid", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
+            throw new InternalErrorException("getUser_ByStudentid", "Ocurrió un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe usuario asociado");
         else
@@ -116,7 +115,7 @@ class UserService{
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\UnauthorizedException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      */
     public function getStudent_ByUserId($id){
 
@@ -135,7 +134,7 @@ class UserService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("getStudent_ByUser",
-                "Ocurrio un error al obtener estudiante", $result->getErrorMessage());
+                "Ocurrió un error al obtener estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No se encontro estudiante");
         else
@@ -151,7 +150,7 @@ class UserService{
         $result = $this->userPer->getUser_Last();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getLastUser", "Ocurrio un error al obtener usuario", $result->getErrorMessage());
+            throw new InternalErrorException("getLastUser", "Ocurrió un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay usuarios");
         else
@@ -174,7 +173,7 @@ class UserService{
         $result = $this->userPer->getRoleUser( $id );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getRoleUser", "Ocurrio un error al obtener rol de usuario", $result->getErrorMessage());
+            throw new InternalErrorException("getRoleUser", "Ocurrió un error al obtener rol de usuario", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se obtuvo rol");
         else
@@ -192,7 +191,7 @@ class UserService{
         $result = $this->userPer->getUser_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getUserByEmail","Ocurrio un error al obtener usuario por email", $result->getErrorMessage());
+            throw new InternalErrorException("getUserByEmail","Ocurrió un error al obtener usuario por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontro usuario");
         else
@@ -212,7 +211,7 @@ class UserService{
         $result = $this->userPer->searchUsers_ByEmail( $email );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("searchUsersByEmail","Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
+            throw new InternalErrorException("searchUsersByEmail","Ocurrió un error al obtener usuarios por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron usuarios");
 
@@ -232,7 +231,7 @@ class UserService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("searchStaffUserByEmail",
-                "Ocurrio un error al obtener usuarios por email", $result->getErrorMessage());
+                "Ocurrió un error al obtener usuarios por email", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron usuarios");
 
@@ -276,7 +275,7 @@ class UserService{
             $result = $this->userPer->getEnableUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios habilitados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrió un error al obtener usuarios habilitados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -286,7 +285,7 @@ class UserService{
             $result = $this->userPer->getDisabledUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios deshabilitados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrió un error al obtener usuarios deshabilitados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -296,7 +295,7 @@ class UserService{
             $result = $this->userPer->getNoConfirmUsers();
 
             if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("getUsersByStatus","Ocurrio un error al obtener usuarios no confirmados", $result->getErrorMessage());
+                throw new InternalErrorException("getUsersByStatus","Ocurrió un error al obtener usuarios no confirmados", $result->getErrorMessage());
             else if( Utils::isEmpty($result->getOperation()) )
                 throw new NoContentException("No hay usuarios");
 
@@ -325,21 +324,21 @@ class UserService{
         //Verifica que email no exista
         $result = $this->isEmailUsed( $user->getEmail() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "insertUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertUser","Ocurrió un error al verificar email de usuario", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "Email ya existe" );
 
         //Se verifica rol
         $result = $this->isRoleExists( $user->getRole() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "insertUser","Ocurrio un error al verificar rol", $result->getErrorMessage());
+            throw new InternalErrorException( "insertUser","Ocurrió un error al verificar rol", $result->getErrorMessage());
         else if( $result->getOperation() == false )
             throw new NotFoundException( "No existe rol asignado" );
 
         //Se registra usuario
         $result = $this->userPer->insertUser( $user );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "insertUser","Ocurrio un error al registrar usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertUser","Ocurrió un error al registrar usuario", $result->getErrorMessage());
     }
 
 
@@ -352,13 +351,16 @@ class UserService{
      * @throws RequestException
      */
     public function insertUserAndStudent($student){
-        //Inicia transaccion
-        $trans = UsersPersistence::initTransaction();
-        if( !$trans )
-            throw new InternalErrorException("insertUserAndStudent","Error al iniciar transaccion");
+
+        //Inicia transacción
+        try{
+            UsersPersistence::initTransaction();
+        }catch (TransactionException $e){
+            throw new InternalErrorException('insertUserAndStudent', $e->getMessage());
+        }
 
 
-        //------------Verificacion de datos de usuario (excepciones incluidas)
+        //------------Verificación de datos de usuario (excepciones incluidas)
         try {
             //Registramos usuario
             $this->insertUser( $student->getUser() );
@@ -369,8 +371,12 @@ class UserService{
             $student->setUser( $user );
 
         } catch (RequestException $e) {
-            //Se termina transaccion
-            UsersPersistence::rollbackTransaction();
+            //Se termina transacción
+            try {
+                UsersPersistence::rollbackTransaction();
+            } catch (TransactionException $e) {
+                throw new InternalErrorException('insertUserAndStudent', $e->getMessage());
+            }
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
@@ -385,8 +391,12 @@ class UserService{
             $student->setCareer( $career );
 
         } catch (RequestException $e) {
-            //Se termina transaccion
-            UsersPersistence::rollbackTransaction();
+            //Se termina transacción
+            try {
+                UsersPersistence::rollbackTransaction();
+            } catch (TransactionException $e) {
+                throw new InternalErrorException('insertUserAndStudent', $e->getMessage());
+            }
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
@@ -395,22 +405,28 @@ class UserService{
             $studentService = new StudentService();
             $studentService->insertStudent( $student );
         }catch (RequestException $e){
-            //Se termina transaccion
-            UsersPersistence::rollbackTransaction();
+            //Se termina transacción
+            try {
+                UsersPersistence::rollbackTransaction();
+            } catch (TransactionException $e) {
+                throw new InternalErrorException('insertUserAndStudent', $e->getMessage());
+            }
             throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
         //Si marcha bien, se registra commit
-        $trans = UsersPersistence::commitTransaction();
-        if( !$trans )
-            throw new InternalErrorException("insertUserAndStudent","Error al realizar commit de transaccion");
+        try {
+            UsersPersistence::commitTransaction();
+        } catch (TransactionException $e) {
+            throw new InternalErrorException('insertUserAndStudent', $e->getMessage());
+        }
 
-        //Envia correo de confirmacion
+        //Envía correo de confirmación
         try{
             $mailServ = new MailService();
             $mailServ->sendConfirmEmail(  $user );
             $staff = $this->getStaffUsers();
-            //Se envia a staff
+            //Se envía a staff
             $mailServ->sendEmailToStaff( "Nuevo estudiante", "Se ha registrado un nuevo estudiante: ".$student->getFirstName()." ".$student->getLastName(), $staff );
         }catch (RequestException $e){}
     }
@@ -422,8 +438,8 @@ class UserService{
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\UnauthorizedException
-     * @throws ForbiddenException
+     * @throws \App\Exceptions\Request\UnauthorizedException
+     * @throws \App\Exceptions\Request\ForbiddenException
      */
     public function updateUser($user){
 
@@ -444,7 +460,7 @@ class UserService{
             $result = $this->isEmailUsed( $user->getEmail() );
             //Operación
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "updateUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
+                throw new InternalErrorException( "updateUser","Ocurrió un error al verificar email de usuario", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException( "Email ya existe" );
         }
@@ -459,7 +475,7 @@ class UserService{
             //Se verifica rol
             $result = $this->isRoleExists( $user->getRole() );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "updateUser","Ocurrio un error al verificar rol", $result->getErrorMessage());
+                throw new InternalErrorException( "updateUser","Ocurrió un error al verificar rol", $result->getErrorMessage());
             else if( $result->getOperation() == false )
                 throw new NotFoundException( "No existe rol asignado" );
         }
@@ -468,7 +484,7 @@ class UserService{
         //Se actualiza usuario
         $result = $this->userPer->updateUser( $user );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "updateUser","Ocurrio un error al actualizar usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "updateUser","Ocurrió un error al actualizar usuario", $result->getErrorMessage());
 
     }
 
@@ -478,7 +494,7 @@ class UserService{
      *
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\UnauthorizedException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      */
     public function changeStatus($user_id, $status ){
 
@@ -489,12 +505,12 @@ class UserService{
         if( $status == Utils::$STATUS_DISABLE ){
             $result = $this->userPer->changeStatusToDisable( $user_id );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "changeStatus","Ocurrio un error al deshabilitar usuario", $result->getErrorMessage());
+                throw new InternalErrorException( "changeStatus","Ocurrió un error al deshabilitar usuario", $result->getErrorMessage());
         }
         else if( $status == Utils::$STATUS_ENABLE ){
             $result = $this->userPer->changeStatusToEnable( $user_id );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "changeStatus","Ocurrio un error al habilitar usuario", $result->getErrorMessage());
+                throw new InternalErrorException( "changeStatus","Ocurrió un error al habilitar usuario", $result->getErrorMessage());
         }
 
     }
@@ -509,14 +525,14 @@ class UserService{
         //Verificando si existe usuario
         $result = $this->userPer->getUser_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "deleteUser","Ocurrio un error al obtener usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "deleteUser","Ocurrió un error al obtener usuario", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe usuario");
 
         //Eliminando usuario (cambiando status)
         $result = $this->userPer->deleteUser_ById( $id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "deleteUser","Ocurrio un error al eliminar usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "deleteUser","Ocurrió un error al eliminar usuario", $result->getErrorMessage());
     }
 
 

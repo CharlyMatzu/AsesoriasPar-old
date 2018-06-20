@@ -1,6 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
+use App\Model\AdvisoryModel;
 use App\Model\StudentModel;
 use App\Service\AdvisoryService;
 use App\Service\StudentService;
@@ -81,7 +82,7 @@ class StudentController
             $student = $req->getAttribute('student_data');
             $student->setId( $params['id'] );
             $studentService->updateStudent( $student );
-            return Utils::makeMessageResponse($res, Utils::$OK, "Estudiante actualizado con exito");
+            return Utils::makeMessageResponse($res, Utils::$OK, "Estudiante actualizado con éxito");
 
         }catch (RequestException $e){
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -161,25 +162,27 @@ class StudentController
         }
     }
 
-    /**
-     * @param $req Request
-     * @param $res Response
-     * @param $params array
-     * @return Response
-     */
-    public function createStudentAdvisory_CurrentPeriod($req, $res, $params)
-    {
-        try {
-            $studentSer = new StudentService();
-            $student_id = $params['id'];
-            $subject = $req->getAttribute('advisory_subject');
-            $studentSer->createAdvisoryCurrentPeriod( $student_id,  $subject);
-            return Utils::makeMessageResponse( $res, Utils::$OK, "asesoria creada con exito");
-
-        } catch (RequestException $e) {
-            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
-        }
-    }
+//    /**
+//     * @param $req Request
+//     * @param $res Response
+//     * @param $params array
+//     * @return Response
+//     */
+//    public function createStudentAdvisory_CurrentPeriod($req, $res, $params)
+//    {
+//        try {
+//            $studentSer = new StudentService();
+//            $student_id = $params['id'];
+//            /**@var $subject AdvisoryModel*/
+//            $subject = $req->getAttribute('advisory_subject');
+//            $subject->setStudent( $student_id );
+//            $studentSer->createAdvisoryCurrentPeriod( $subject );
+//            return Utils::makeMessageResponse( $res, Utils::$OK, "asesoria creada con éxito");
+//
+//        } catch (RequestException $e) {
+//            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+//        }
+//    }
 
 
     /**

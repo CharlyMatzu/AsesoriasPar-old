@@ -1,11 +1,10 @@
 <?php namespace App\Service;
 
 use App\Auth;
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
-use App\Exceptions\UnauthorizedException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NotFoundException;
+use App\Exceptions\Request\RequestException;
 use App\Model\MailModel;
 use App\Model\StudentModel;
 use App\Persistence\UsersPersistence;
@@ -25,11 +24,9 @@ class AuthService
      * @param $pass string
      *
      * @return array
+     * @throws ConflictException TODO: solo debe funcionar si usuario esta activo
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws ConflictException
-     * TODO: solo debe funcionar si usuario esta activo
-     * @throws UnauthorizedException
      */
     public function signIn($email, $pass){
         $result = $this->userPer->getUser_BySignIn($email, $pass);
@@ -66,7 +63,7 @@ class AuthService
      * @param $student StudentModel
      *
      * @throws InternalErrorException
-     * @throws RequestException
+     * @throws \App\Exceptions\Request\RequestException
      */
     public function signUp($student){
         $userServ = new UserService();
@@ -78,6 +75,7 @@ class AuthService
      *
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      */
     public function confirmUser($token)
     {

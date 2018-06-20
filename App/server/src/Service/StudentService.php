@@ -1,11 +1,12 @@
 <?php namespace App\Service;
 
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NoContentException;
-use App\Exceptions\NotFoundException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NoContentException;
+use App\Exceptions\Request\NotFoundException;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
+use App\Model\AdvisoryModel;
 use App\Model\ScheduleModel;
 use App\Persistence\StudentsPersistence;
 use App\Model\StudentModel;
@@ -29,7 +30,7 @@ class StudentService{
         $result = $this->perStudents->getStudent_ById( $id );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException( "getStudent_ById","Ocurrio un error al obtener estudiante", $result->getErrorMessage());
+            throw new InternalErrorException( "getStudent_ById","Ocurrió un error al obtener estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe estudiante");
         else
@@ -45,7 +46,7 @@ class StudentService{
         $result = $this->perStudents->getStudents();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getStudents","Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+            throw new InternalErrorException("getStudents","Ocurrió un error al obtener usuarios", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay estudiantes");
         else
@@ -64,7 +65,7 @@ class StudentService{
         $result = $this->perStudents->searchStudents( $student_data );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("searchStudents_ByData","Ocurrio un error al obtener usuarios", $result->getErrorMessage());
+            throw new InternalErrorException("searchStudents_ByData","Ocurrió un error al obtener usuarios", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No hay estudiantes");
 
@@ -100,14 +101,14 @@ class StudentService{
         //Verifica que id de itson no exista
         $result = $this->isItsonIdExist( $student->getItsonId() );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "insertStudents","Ocurrio un error al verificar id ITSON", $result->getErrorMessage());
+            throw new InternalErrorException( "insertStudents","Ocurrió un error al verificar id ITSON", $result->getErrorMessage());
         else if( $result->getOperation() == true )
             throw new ConflictException( "ITSON id ya existe" );
 
         //Se registra usuario
         $result = $this->perStudents->insertStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "insertStudents","Ocurrio un error al registrar usuario", $result->getErrorMessage());
+            throw new InternalErrorException( "insertStudents","Ocurrió un error al registrar usuario", $result->getErrorMessage());
     }
 
 
@@ -127,7 +128,7 @@ class StudentService{
         if( $student_aux['itson_id'] != $student->getItsonId() ){
             $result = $this->isItsonIdExist( $student->getItsonId() );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "updateStudent","Ocurrio un error al verificar id ITSON", $result->getErrorMessage());
+                throw new InternalErrorException( "updateStudent","Ocurrió un error al verificar id ITSON", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException( "ITSON id ya existe" );
         }
@@ -141,14 +142,18 @@ class StudentService{
         //Se actualizan datos de alumno
         $result = $this->perStudents->updateStudent( $student );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "updateStudent","Ocurrio un error al actualizar estudiante", $result->getErrorMessage());
+            throw new InternalErrorException( "updateStudent","Ocurrió un error al actualizar estudiante", $result->getErrorMessage());
     }
 
 
     /**
      * Obtiene todas las horas y dias de un horario asi como las materias
+     *
      * @param $studentId int
+     *
      * @return array
+     * @throws InternalErrorException
+     * @throws NotFoundException
      * @throws RequestException
      */
     public function getCurrentStudentSchedule_ById($studentId)
@@ -206,7 +211,7 @@ class StudentService{
         //Se comprueba existencia de alumno
         $this->getStudent_ById( $studentId );
 
-        //se envia a registrar horario
+        //se envía a registrar horario
         $scheduleService = new ScheduleService();
         $scheduleService->insertSchedule( $studentId );
     }
@@ -215,22 +220,21 @@ class StudentService{
     //----------------------- ADVISORIES
 
     /**
-     * @param $student_id int
-     * @param $subject int
+     * @param $advisory AdvisoryModel
      *
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NoContentException
      * @throws NotFoundException
      */
-    public function createAdvisoryCurrentPeriod($student_id, $subject)
+    public function createAdvisoryCurrentPeriod($advisory)
     {
         //Se comprueba existencia de alumno
-        $this->getStudent_ById( $student_id );
+        $this->getStudent_ById( $advisory->getStudent() );
 
         //Se obtiene periodo actual
         $advisoryService = new AdvisoryService();
-        $advisoryService->insertAdvisory_CurrentPeriod( $student_id, $subject );
+        $advisoryService->insertAdvisory_CurrentPeriod( $advisory );
     }
 
     /**
