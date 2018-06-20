@@ -3,6 +3,7 @@
 
 use App\Auth;
 use App\Exceptions\ConflictException;
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\InternalErrorException;
 use App\Exceptions\NoContentException;
 use App\Exceptions\NotFoundException;
@@ -415,34 +416,33 @@ class UserService{
     }
 
 
-
     /**
      * @param $user UserModel
      *
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws \App\Exceptions\UnauthorizedException
+     * @throws ForbiddenException
      */
     public function updateUser($user){
-        $result = $this->userPer->getUser_ById( $user->getId() );
 
         //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
         //TODO: no debe eliminarse usuario con cron
-//
-//        //Verificacion de usuario
-//        if( Utils::isError( $result->getOperation() ) )
-//            throw new InternalErrorException( "updateUser","Ocurrio un error al obtener usuario");
-//        else if( Utils::isEmpty( $result->getOperation() ) )
-//            throw new NotFoundException("No existe usuario");
+
+        $result = $this->getUser_ById( $user->getId() );
 
         //Verifica que email
-        $user_db = self::makeUserModel( $result->getData()[0] );
+        $user_db = self::makeUserModel( $result );
+
+        //verifica el permiso de hacer cambios
+        Auth::isAuthorized( $user_db );
 
         //Si cambio el email
         if( $user_db !== $user->getEmail() ){
             //Se obtiene
             $result = $this->isEmailUsed( $user->getEmail() );
-            //Operacion
+            //Operación
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException( "updateUser","Ocurrio un error al verificar email de usuario", $result->getErrorMessage());
             else if( $result->getOperation() == true )
@@ -452,6 +452,10 @@ class UserService{
 
         //Si cambio el rol
         if( $user_db !== $user->getRole() ){
+            //Si es estudiante, no debe poder cambiarse rol
+            if( $user_db->getRole() !== $user->getRole() )
+                throw new ConflictException("No puede cambiarse rol de estudiante");
+
             //Se verifica rol
             $result = $this->isRoleExists( $user->getRole() );
             if( Utils::isError( $result->getOperation() ) )
@@ -474,6 +478,7 @@ class UserService{
      *
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws \App\Exceptions\UnauthorizedException
      */
     public function changeStatus($user_id, $status ){
 

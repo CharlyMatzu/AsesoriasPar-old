@@ -162,14 +162,14 @@ class InputParamsMiddleware extends Middleware
         if( !isset($params['role']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: role");
 
-        if( empty($params['role']) || empty($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
+        if( empty($params['role']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos: Campos vacios");
 
         //El tipo basic es solo con estudiante
         if( //$params['role'] != Utils::$ROLE_BASIC &&
             $params['role'] != Utils::$ROLE_MOD &&
             $params['role'] != Utils::$ROLE_ADMIN)
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos: moderator o administrator");
 
 
         $req = $req->withAttribute('role_data', $params['role']);

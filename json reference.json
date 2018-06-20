@@ -65,10 +65,11 @@ SINGIN
 }
 
 SIGNUP/UPDATE
-{ 
+{
 	"email": "carlosrozumaa@gmail.com",
 	"password": "123456",
-	"role": "basic"
+	// "role": "moderator"
+	"role": "administrator"
 }
 
 

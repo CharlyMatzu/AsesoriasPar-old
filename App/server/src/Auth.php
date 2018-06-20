@@ -3,6 +3,7 @@
 namespace App;
 
 
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\TokenException;
 use App\Exceptions\UnauthorizedException;
 use App\Model\UserModel;
@@ -20,7 +21,7 @@ abstract class Auth
     private static $encrypt = ['HS256'];
     private static $aud = null;
 
-    private static $AUTH_SESSION = null;
+    private static $USER_SESSION = null;
     private static $TOKEN_SESSION = null;
 
 
@@ -146,6 +147,18 @@ abstract class Auth
      *
      * @return bool
      */
+    public static function isRoleMod($user_role){
+        if( $user_role === Utils::$ROLE_MOD )
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @param $user_role int
+     *
+     * @return bool
+     */
     public static function isRoleStaff($user_role){
         if( $user_role === Utils::$ROLE_ADMIN || $user_role === Utils::$ROLE_MOD )
             return true;
@@ -170,7 +183,7 @@ abstract class Auth
      * @throws UnauthorizedException
      */
     public static function isStaffUser(){
-        $user = self::getSession();
+        $user = self::getSessionUser();
         return self::isRoleStaff($user->getRole());
     }
 
@@ -178,8 +191,17 @@ abstract class Auth
      * @return bool
      * @throws UnauthorizedException
      */
+    public static function isModUser(){
+        $user = self::getSessionUser();
+        return self::isRoleMod($user->getRole());
+    }
+
+    /**
+     * @return bool
+     * @throws UnauthorizedException
+     */
     public static function isAdminUser(){
-        $user = self::getSession();
+        $user = self::getSessionUser();
         return self::isRoleAdmin($user->getRole());
     }
 
@@ -189,8 +211,33 @@ abstract class Auth
      * @throws UnauthorizedException
      */
     public static function isBasicUser(){
-        $user = self::getSession();
+        $user = self::getSessionUser();
         return self::isRoleBasic( $user->getRole() );
+    }
+
+
+    /**
+     * @param $user UserModel
+     * @throws ForbiddenException
+     * @throws UnauthorizedException
+     */
+    public static function isAuthorized($user)
+    {
+        //Si es otro usuario
+        if( Auth::getSessionUser()->getId() !== $user->getId() )
+            throw new ForbiddenException("No tiene permitido modificar usuario");
+        //Si es un usuario básico
+        else if( Auth::isBasicUser() ){
+            //si el usuario a modificar tiene mayor rango
+            if( Auth::isRoleStaff($user->getRole()) )
+                throw new ForbiddenException("No tiene permitido modificar usuario");
+        }
+        //Si es moderador
+        else if( Auth::isModUser() ){
+            //si el usuario a modificar tiene mayor rango
+            if( Auth::isRoleAdmin($user->getRole()) )
+                throw new ForbiddenException("No tiene permitido modificar usuario");
+        }
     }
 
 
@@ -207,7 +254,7 @@ abstract class Auth
 //        session_start();
 //        $_SESSION['user'] = $user;
 //        $_SESSION['token'] = $token;
-        self::$AUTH_SESSION = $user;
+        self::$USER_SESSION = $user;
         self::$TOKEN_SESSION = $token;
     }
 
@@ -215,13 +262,13 @@ abstract class Auth
      * @return UserModel
      * @throws UnauthorizedException
      */
-    public static function getSession(){
+    public static function getSessionUser(){
 //        session_start();
 
         if( !self::isAuthenticated() )
             throw new UnauthorizedException("No autenticado");
 
-        return self::$AUTH_SESSION;
+        return self::$USER_SESSION;
     }
 
     /**
@@ -230,7 +277,7 @@ abstract class Auth
     public static function isAuthenticated()
     {
 
-        if( empty(self::$AUTH_SESSION) || empty(self::$TOKEN_SESSION) )
+        if( empty(self::$USER_SESSION) || empty(self::$TOKEN_SESSION) )
             return false;
 
         //Se verifica que token funcione
@@ -245,9 +292,11 @@ abstract class Auth
     public static function sessionDestroy()
     {
 //        session_destroy();
-        self::$AUTH_SESSION = null;
+        self::$USER_SESSION = null;
         self::$TOKEN_SESSION = null;
     }
+
+
 
 
 }

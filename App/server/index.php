@@ -120,13 +120,14 @@ $app->get('/users/{id}/student', 'UserController:getStudent_ByUserId')
 //Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
         ->add('InputMiddleware:checkData_User') //Es el registro de estudiante
-        ->add('InputMiddleware:checkData_Role'); //Es el registro de estudiante
+        ->add('InputMiddleware:checkData_Role') //Es el registro de estudiante
+        ->add('AuthMiddleware:requireAdmin');
 
 
-//Crear un usuario y un estudiante a la vez
-$app->post('/users/student', 'UserController:createUserAndStudent')
-    ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
-    ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
+//Crear un usuario y un estudiante a la vez (el mismo de signup)
+//$app->post('/users/student', 'UserController:createUserAndStudent')
+//    ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
+//    ->add('InputMiddleware:checkData_User')//Es el registro de usuario (se ejecuta primero)
 
 //TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
@@ -134,7 +135,8 @@ $app->post('/users/student', 'UserController:createUserAndStudent')
 $app->put('/users/{id}', 'UserController:updateUser')
         ->add('InputMiddleware:checkData_User')
         ->add('InputMiddleware:checkData_Role')
-        ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
 //Cambia estado de usuario
 $app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
