@@ -1,4 +1,4 @@
-app.service('PlansService', function($http, RequestFactory){
+angular.module("Dashboard").service('PlansService', function($http, RequestFactory){
 
   
     this.getPlans = function(successCallback, errorCallback){

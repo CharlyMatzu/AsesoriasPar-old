@@ -1,27 +1,28 @@
 angular.module("AuthModule", ['LocalStorageModule'])
 
     .constant('USER_ROLES', {
-        admin: 'administrator',
-        mod: 'moderator',
-        basic: 'basic'
+        admin:  'administrator',
+        mod:    'moderator',
+        basic:  'basic'
     })
 
     .constant('STORAGE', {
-        user: 'PAR_USER',
+        user:    'PAR_USER',
         student: 'PAR_STUDENT',
     })
 
+    //Para cambiar tipo de session, es decir, por defecto usa LocalStorage, se puede cambiar a sessionStorage
     .config(function(localStorageServiceProvider){
         // localStorageServiceProvider.setStorageType('sessionStorage');
     })
 
     .factory('AuthFactory', function($http, USER_ROLES, STORAGE, localStorageService){
 
-        var isSupported = function(){
-            // if(localStorageService.isSupported) {
-            //     //...
-            // }
-        };
+        // var isSupported = function(){
+        //     if(localStorageService.isSupported) {
+        //         //...
+        //     }
+        // };
 
         return{
             setUser: function(user){
@@ -30,6 +31,7 @@ angular.module("AuthModule", ['LocalStorageModule'])
 
             removeUser: function(){
                 localStorageService.remove(STORAGE.user);
+                // localStorageService.remove(STORAGE.student);
             },
 
             isAuthenticated: function () {
@@ -44,14 +46,6 @@ angular.module("AuthModule", ['LocalStorageModule'])
                 else
                     return false;
             },
-
-            // isAuthorized: function ( authorizedRoles ) {
-            //     if (!angular.isArray(authorizedRoles)) {
-            //         authorizedRoles = [authorizedRoles];
-            //     }
-            //     return (authService.isAuthenticated() &&
-            //         a
-            // },
 
             isStudent: function(){
                 var data = this.getData();

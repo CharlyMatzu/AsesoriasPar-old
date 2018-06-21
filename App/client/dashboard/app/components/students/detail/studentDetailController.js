@@ -1,4 +1,4 @@
-app.controller('StudentDetailController', function($scope, $http, $window, Notification, StudentDetailService, $routeParams){
+angular.module("Dashboard").controller('StudentDetailController', function($scope, $http, $window, Notification, StudentDetailService, $routeParams){
     $scope.page.title = "Estudiante";
     
     $scope.student = [];

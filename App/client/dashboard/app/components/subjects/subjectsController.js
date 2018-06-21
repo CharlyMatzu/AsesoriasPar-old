@@ -1,4 +1,4 @@
-app.controller('SubjectsController', function($scope, $http, $timeout, $window, Notification, SubjectService){
+angular.module("Dashboard").controller('SubjectsController', function($scope, $http, $timeout, $window, Notification, SubjectService){
     $scope.page.title = "Materias > Registros";
     
     $scope.subjects = [];

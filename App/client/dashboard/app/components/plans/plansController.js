@@ -1,4 +1,4 @@
-app.controller('PlansController', function($scope, $http,Notification, PlansService){
+angular.module("Dashboard").controller('PlansController', function($scope, $http,Notification, PlansService){
     $scope.page.title = "Planes academicos"
     $scope.plans = [];
 

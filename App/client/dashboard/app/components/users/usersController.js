@@ -1,4 +1,4 @@
-app.controller('UsersController', function($scope, $http, $window, Notification, UsersService){
+angular.module("Dashboard").controller('UsersController', function($scope, $http, $window, Notification, UsersService){
     $scope.page.title = "Staff > Registrados";
     
     $scope.users = [];

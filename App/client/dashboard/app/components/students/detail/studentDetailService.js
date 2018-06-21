@@ -1,4 +1,4 @@
-app.service('StudentDetailService', function($http, RequestFactory){
+angular.module("Dashboard").service('StudentDetailService', function($http, RequestFactory){
 
     
     this.getStudent = function(student_id, successCallback, errorCallback){

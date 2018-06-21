@@ -52,23 +52,19 @@ class AuthMiddleware extends Middleware
                 $token =  $matches[1];
             }
             else
-                throw new TokenException("Bearer token invalido");
-        }
-        //Si no esta vacío, se continua
-        if( !empty($token) ){
-            //Se verifica que token sea valido
+                throw new TokenException("Authorization header invalido");
+
+
             try{
                 //Se verifica token
                 Auth::CheckToken( $token );
                 //Se retorna
                 return $token;
             }catch (TokenException $e){
-                throw new UnauthorizedException($e->getMessage());
+                throw new UnauthorizedException( $e->getMessage() );
             }
         }
-        else
-            throw new UnauthorizedException("falta Authorization header");
-
+            throw new TokenException("Authorization header invalido");
 
     }
 

@@ -234,9 +234,9 @@ class InputParamsMiddleware extends Middleware
         if( !isset($params['email']) || !isset($params['password']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password");
 
-        //FIXME: debe poder aceptar password vacío para el caso del update
-        if( empty($params['email']) || empty($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+
+        if( empty($params['email']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: email vacio");
 
         $email = $params['email'];
         $pass = $params['password'];

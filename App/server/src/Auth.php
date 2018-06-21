@@ -62,8 +62,10 @@ abstract class Auth
      */
     public static function CheckToken($token)
     {
-        if(empty($token))
+        //Se verifica que token sea valido
+        if( empty($token) || $token == null || $token == "null" || !is_string($token) )
             throw new TokenException("Token invalido");
+
 
         $payload = null;
         try{

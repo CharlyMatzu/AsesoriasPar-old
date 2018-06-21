@@ -1,4 +1,4 @@
-app.controller('PeriodsController', function($scope, $http, Notification, PeriodsService){
+angular.module("Dashboard").controller('PeriodsController', function($scope, $http, Notification, PeriodsService){
     $scope.page.title = "Periodos";
     
     $scope.periods = [];

@@ -1,4 +1,4 @@
-app.controller('HomeController', function($scope, $http, Notification, HomeService){
+angular.module("Dashboard").controller('HomeController', function($scope, $http, Notification, HomeService){
     
     $scope.page.title = "INICIO";
 

@@ -1,4 +1,4 @@
-app.controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
+angular.module("Dashboard").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
     
     $scope.url = RequestFactory.getBaseURL();
     

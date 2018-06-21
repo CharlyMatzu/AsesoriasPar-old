@@ -1,4 +1,4 @@
-app.service('PeriodsService', function($http, RequestFactory){
+angular.module("Dashboard").service('PeriodsService', function($http, RequestFactory){
 
     this.getPeriods = function(successCallback, errorCallback){
         $http({

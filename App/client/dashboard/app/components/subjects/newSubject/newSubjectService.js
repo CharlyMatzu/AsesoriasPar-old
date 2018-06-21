@@ -1,4 +1,4 @@
-app.service('NewSubjectService', function($http, RequestFactory){
+angular.module("Dashboard").service('NewSubjectService', function($http, RequestFactory){
 
 
     this.getCareers = function(successCallback, errorCallback){

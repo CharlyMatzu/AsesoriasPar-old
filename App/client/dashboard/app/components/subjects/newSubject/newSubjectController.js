@@ -1,4 +1,4 @@
-app.controller('NewSubjectController', function($scope, $window, $timeout, $http, NewSubjectService, Notification){
+angular.module("Dashboard").controller('NewSubjectController', function($scope, $window, $timeout, $http, NewSubjectService, Notification){
     $scope.page.title = "Materias > Nuevo";
 
     $scope.plans = [];

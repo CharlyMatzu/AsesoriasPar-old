@@ -1,56 +1,25 @@
-app.service('UsersService', function($http, RequestFactory){
-
-
-    this.changeStatus = function(user_id, status, successCallback, errorCallback){
-        $http({
-            method: 'PATCH',
-            url: RequestFactory.getURL()+"/users/"+user_id+"/status/"+status
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
-    }
-
+angular.module("Dashboard").service('UsersService', function($http, RequestFactory, AuthFactory){
     
     this.getUsers = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/users/staff"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            '/users/staff',
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.searchUsers = function(data,successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/users/search/"+data+"/staff"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
-    }
-
-    
-
-    this.addUser = function(user, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/users",
-            data: {
-                email: user.email,
-                password: user.pass,
-                role: user.role
-            }
-        }).then(function(success){
-            successCallback(success) 
-        }, function(error){
-            errorCallback(error)
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            '/users/search/'+data+'/staff',
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.updateUser = function(user, successCallback, errorCallback){
@@ -66,6 +35,17 @@ app.service('UsersService', function($http, RequestFactory){
             successCallback(success) 
         }, function(error){
             errorCallback(error)
+        });
+    }
+
+    this.changeStatus = function(user_id, status, successCallback, errorCallback){
+        $http({
+            method: 'PATCH',
+            url: RequestFactory.getURL()+"/users/"+user_id+"/status/"+status
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
         });
     }
     

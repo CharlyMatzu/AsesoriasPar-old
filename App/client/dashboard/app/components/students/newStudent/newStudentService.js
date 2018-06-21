@@ -1,4 +1,4 @@
-app.service('NewUserService', function($http, RequestFactory){
+angular.module("Dashboard").service('NewUserService', function($http, RequestFactory){
 
 
     // this.getRoles = function(successCallback, errorCallback){

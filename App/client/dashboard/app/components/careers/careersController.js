@@ -1,4 +1,4 @@
-app.controller('CareersController', function($scope, $http, Notification, CareerService){
+angular.module("Dashboard").controller('CareersController', function($scope, $http, Notification, CareerService){
     $scope.page.title = "Carreras";
     
     $scope.careers = [];

@@ -61,7 +61,7 @@ class StudentsPersistence extends Persistence{
     public function getStudent_ByUserId($id)
     {
         $query =    $this->SELECT."
-                    WHERE s.fk_user = $id";
+                    WHERE s.fk_user = $id AND u.fk_role = '".Utils::$ROLE_BASIC."'";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }
@@ -72,7 +72,7 @@ class StudentsPersistence extends Persistence{
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getStudent_ByEnabledBasicUserId($id)
+    public function getStudent_ByEnabledUserId($id)
     {
         $query =    $this->SELECT."
                     WHERE s.fk_user = $id AND (u.status = ".Utils::$STATUS_ENABLE." AND u.fk_role = '".Utils::$ROLE_BASIC."')";

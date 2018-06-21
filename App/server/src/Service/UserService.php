@@ -121,12 +121,14 @@ class UserService{
         //Obtiene estudiante
         $studentPer = new StudentsPersistence();
 
+        //------------AUTH CONDITION
         //Dependiendo de Rol, se obtiene cierta info
         $result = null;
         if( Auth::isStaffUser() )
             $result = $studentPer->getStudent_ByUserId( $id );
         else
-            $result = $studentPer->getStudent_ByEnabledBasicUserId( $id );
+            $result = $studentPer->getStudent_ByEnabledUserId( $id );
+        //------------AUTH CONDITION
 
 
         if( Utils::isError($result->getOperation()) )
@@ -490,6 +492,7 @@ class UserService{
         }
 
 
+        //TODO: SEPARAR PASSWORD Y EMAIL
         //Se actualiza usuario
         $result = $this->userPer->updateUser( $user );
         if( Utils::isError( $result->getOperation() ) )

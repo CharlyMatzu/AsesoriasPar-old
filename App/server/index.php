@@ -68,10 +68,10 @@ $app->post('/auth/signup', 'AuthController:signup')
         ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
         ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
 
-//Para verificar usuario y activar
-$app->get('/auth/confirm/{token}', 'AuthController:confirm')
-        ->add('InputMiddleware:checkParam_Token');
+//TODO: ruta para actualizar password
 
+//Para verificar usuario y activar
+$app->get('/auth/confirm/{token}', 'AuthController:confirm');
 
 //Para reenviar correo de confirmación
 //$app->get('/auth/confirm/send', 'AuthController:sendConfirmEmail');
@@ -85,12 +85,41 @@ $app->get('/users', 'UserController:getUsers')
         ->add('AuthMiddleware:requireStaff');
 
 
-//TODO: VALIDAR AUTH
+
+
 //Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
         ->add('InputMiddleware:checkData_User')
         ->add('InputMiddleware:checkData_Role') //Rol para que sea solo staff
         ->add('AuthMiddleware:requireStaff');
+
+
+//TODO: VALIDAR AUTH
+//TODO: cambiar por solo cambio de password y de email separados
+//Actualiza datos de usuario
+//$app->put('/users/{id}', 'UserController:updateUser')
+//        ->add('InputMiddleware:checkData_User')
+//        ->add('InputMiddleware:checkData_Role')
+//        ->add('InputMiddleware:checkParam_Id');
+//        ->add('AuthMiddleware:requireStaff');
+
+//TODO: actualizar solo password
+
+//TODO: actualizar solo email
+
+
+//Cambia estado de usuario
+$app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
+        ->add('InputMiddleware:checkParam_Status')
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireAdmin');
+
+
+//Elimina a un usuario
+$app->delete('/users/{id}', 'UserController:deleteUser')
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireAdmin');
+
 
 
 //Obtiene todos los usuarios con rol: Mod/Admin
@@ -111,45 +140,25 @@ $app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail
 
 
 
-//TODO: VALIDAR AUTH
 //Obtiene usuario por ID
 $app->get('/users/{id}', 'UserController:getUser_ById')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireStaff');
 
 
-//TODO: VALIDAR AUTH
 //Obtener estudiante por id de usuario
 $app->get('/users/{id}/student', 'UserController:getStudent_ByUserId')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireBasic');
 
 
-//TODO: VALIDAR AUTH
+
 //Crear un usuario y un estudiante a la vez (el mismo de signup)
 //$app->post('/users/student', 'UserController:createUserAndStudent')
 //    ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
 //    ->add('InputMiddleware:checkData_User')//Es el registro de usuario (se ejecuta primero)
 
-//TODO: ruta para confirmar usuario---> GET: user/confirm/{token}
 
-//TODO: VALIDAR AUTH
-//Actualiza datos de usuario
-$app->put('/users/{id}', 'UserController:updateUser')
-        ->add('InputMiddleware:checkData_User')
-        ->add('InputMiddleware:checkData_Role')
-        ->add('InputMiddleware:checkParam_Id')
-        ->add('AuthMiddleware:requireBasic');
-
-//TODO: VALIDAR AUTH
-//Cambia estado de usuario
-$app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
-        ->add('InputMiddleware:checkParam_Status')
-        ->add('InputMiddleware:checkParam_Id');
-
-//Elimina a un usuario
-$app->delete('/users/{id}', 'UserController:deleteUser')
-        ->add('InputMiddleware:checkParam_Id');
 
 //--------------------------
 //  CAREER ROUTES
