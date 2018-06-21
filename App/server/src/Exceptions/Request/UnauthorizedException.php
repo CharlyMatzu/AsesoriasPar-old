@@ -13,7 +13,7 @@ class UnauthorizedException extends RequestException
      */
     public function __construct($message = "")
     {
-        parent::__construct("Se requiere autenticación: $message", Utils::$UNAUTHORIZED);
+        parent::__construct($message, Utils::$UNAUTHORIZED);
     }
 
 }

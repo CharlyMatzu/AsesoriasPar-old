@@ -1,15 +1,14 @@
 <?php namespace App\Middleware;
 
 use App\Auth;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
-use App\Exceptions\TokenException;
-use App\Exceptions\UnauthorizedException;
+use App\Exceptions\Auth\TokenException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NotFoundException;
+use App\Exceptions\Request\RequestException;
+use App\Exceptions\Request\UnauthorizedException;
 use App\Persistence\UsersPersistence;
 use App\Service\UserService;
 use App\Utils;
-use Monolog\Handler\Curl\Util;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

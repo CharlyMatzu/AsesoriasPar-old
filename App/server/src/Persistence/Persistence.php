@@ -1,10 +1,10 @@
 <?php namespace App\Persistence;
 
 use App\Exceptions\Persistence\TransactionException;
+use App\Exceptions\Request\InternalErrorException;
 use App\Model\DataResult;
 use App\Persistence\Database\MySQLConnection;
 use App\Utils;
-use Slim\Exception\ContainerException;
 
 
 abstract class Persistence{
@@ -26,12 +26,15 @@ abstract class Persistence{
 
     /**
      * Método que permite la ejecución de un Query de MySQL
+     *
      * @param String $query
+     *
      * @return DataResult objeto de resultado
      * TRUE al realizarse una operación correcta de consultas como INSERT, UPDATE o DELETE
      * FALSE al ocurrir algún error
      * Array cuando se hace una consulta de tipo SELECT y se encuentran valores
      * NULL al no encontrarse valores en una consulta SELECT (array vacío)
+     * @throws InternalErrorException
      */
     protected static function executeQuery($query){
 
@@ -93,16 +96,19 @@ abstract class Persistence{
         self::$connectionState = true;
     }
 
+    /**
+     * Cierra conexión, true en caso de ser exitoso
+     * @throws InternalErrorException
+     */
     public static function closeConnection(){
         if( !self::$mysql->closeConnection() )
+            throw new InternalErrorException("closeConnection", "Ocurrió un error al cerrar conexión");
+
         self::$connectionState = false;
     }
 
     public static function isConnectionON(){
-        if( self::$connectionState == true )
-            return true;
-        else
-            return false;
+        return self::$connectionState;
     }
 
     //----------------
@@ -134,6 +140,7 @@ abstract class Persistence{
     /**
      * Permite registrar los cambios
      * @throws TransactionException
+     * @throws InternalErrorException
      */
     public static function commitTransaction(){
         if( self::isTransactionON() ){
@@ -152,6 +159,7 @@ abstract class Persistence{
 
     /**
      * Limpiar transacción
+     * @throws InternalErrorException
      * @throws TransactionException
      */
     public static function rollbackTransaction(){

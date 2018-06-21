@@ -49,7 +49,7 @@ class Utils
      */
     public static $OPERATION_EMPTY = 2;
     /**
-     * Esta variable indica una operacion exitosa sin retornar valores
+     * Esta variable indica una operación exitosa sin retornar valores
      * @var int 3
      */
     public static $OPERATION_SUCCESS = 3;

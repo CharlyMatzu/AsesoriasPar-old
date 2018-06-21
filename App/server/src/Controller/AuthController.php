@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\StudentModel;
 use App\Model\UserModel;
 use App\Service\AuthService;

@@ -171,11 +171,11 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             //Se le asigna rol de estudiante (basic)
             $user->setRole( Utils::$ROLE_BASIC );
-            /* @var $student Student */
+            /* @var $student StudentModel */
             $student = $req->getAttribute('student_data');
             $student->setUser($user);
 

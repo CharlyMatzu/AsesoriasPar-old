@@ -67,18 +67,11 @@ class UserService{
      *
      * @return \mysqli_result|null
      * @throws InternalErrorException
-     * @throws \App\Exceptions\Request\UnauthorizedException
      * @throws NotFoundException
      */
     public function getUser_ById($id){
-        //Dependiendo de Rol, se obtiene cierta info
-        $result = null;
-        if( Auth::isStaffUser() )
-            $result = $this->userPer->getUser_ById( $id );
-        else
-            $result = $this->userPer->getEnabledBasicUser_ById( $id );
 
-
+        $result = $this->userPer->getUser_ById( $id );
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("getUserById","Ocurrió un error al obtener usuario", $result->getErrorMessage());
@@ -120,10 +113,14 @@ class UserService{
     public function getStudent_ByUserId($id){
 
         //Comprueba que exista usuario
-        $this->getUser_ById($id);
+        $user = $this->getUser_ById($id);
+        //Verifica si es estudiante
+        if( !Auth::isRoleBasic($user['role']) )
+            throw new NotFoundException("No se encontró estudiante asociado");
 
         //Obtiene estudiante
         $studentPer = new StudentsPersistence();
+
         //Dependiendo de Rol, se obtiene cierta info
         $result = null;
         if( Auth::isStaffUser() )
@@ -136,7 +133,7 @@ class UserService{
             throw new InternalErrorException("getStudent_ByUser",
                 "Ocurrió un error al obtener estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("No se encontro estudiante");
+            throw new NotFoundException("No se encontró estudiante");
         else
             return $result->getData()[0];
     }
@@ -239,6 +236,12 @@ class UserService{
     }
 
 
+    /**
+     * @param $email
+     *
+     * @return \App\Model\DataResult
+     * @throws InternalErrorException
+     */
     private function isEmailUsed($email){
         $result = $this->userPer->getUser_ByEmail( $email );
 
@@ -251,6 +254,12 @@ class UserService{
     }
 
 
+    /**
+     * @param $role
+     *
+     * @return \App\Model\DataResult
+     * @throws InternalErrorException
+     */
     public function isRoleExists($role){
         $result = $this->userPer->getRole_ByName( $role );
 

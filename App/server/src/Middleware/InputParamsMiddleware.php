@@ -2,7 +2,6 @@
 
 
 use App\Auth;
-use App\Exceptions\TokenException;
 use App\Model\AdvisoryModel;
 use App\Model\CareerModel;
 use App\Model\MailModel;
@@ -10,9 +9,6 @@ use App\Model\PeriodModel;
 use App\Model\StudentModel;
 use App\Model\SubjectModel;
 use App\Model\UserModel;
-use Carbon\Carbon;
-use PHPMailer\PHPMailer\Exception;
-use Carbon\Exceptions\InvalidDateException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Utils;

@@ -14,7 +14,6 @@ class UsersPersistence extends Persistence{
     private $SELECT = "SELECT 
                         u.user_id as 'id',
                         u.email,
-                        u.password,
                         u.date_register,
                         u.status,
                         -- Role
@@ -25,6 +24,7 @@ class UsersPersistence extends Persistence{
     /**
      * Método que regresa todos los usuarios
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUsers(){
         $query = $this->SELECT;
@@ -33,6 +33,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getStaffUsers()
     {
@@ -43,6 +44,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getEnableUsers()
     {
@@ -53,6 +55,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getDisabledUsers()
     {
@@ -63,6 +66,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getNoConfirmUsers()
     {
@@ -75,9 +79,12 @@ class UsersPersistence extends Persistence{
     /**
      * Método que regresa un usuario en la coincidencia con un nombre de
      * usuario y la contraseña
+     *
      * @param String $email Correo del usuario
      * @param String $pass Contraseña
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_BySignIn($email, $pass){
         $ePass = $this->crypt($pass);
@@ -88,8 +95,11 @@ class UsersPersistence extends Persistence{
 
     /**
      * Método que regresa un usuario en la coincidencia con el ID
+     *
      * @param int $id ID del usuario
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ById($id){
         $query = $this->SELECT."
@@ -101,6 +111,7 @@ class UsersPersistence extends Persistence{
      * @param $id
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getEnabledBasicUser_ById($id){
         $query = $this->SELECT."
@@ -110,7 +121,9 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
@@ -122,6 +135,7 @@ class UsersPersistence extends Persistence{
      * @param $student_id int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ByStudentId( $student_id ){
         $query = $this->SELECT.
@@ -134,6 +148,7 @@ class UsersPersistence extends Persistence{
      * @param $email
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchUsers_ByEmail($email)
     {
@@ -146,6 +161,7 @@ class UsersPersistence extends Persistence{
      * @param $email
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchStaffUsers_ByEmail($email)
     {
@@ -158,6 +174,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_Last(){
         $query = $this->SELECT." 
@@ -167,7 +184,9 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $email String
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ByEmail($email){
         $query = $this->SELECT."
@@ -179,6 +198,7 @@ class UsersPersistence extends Persistence{
      * @param $user UserModel objeto tipo User con la información de registro
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
@@ -188,9 +208,10 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user UserModel objeto tipo User con la informacion de registro
+     * @param $user UserModel objeto tipo User con la información de registro
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function updateUser( $user ){
         $query = "UPDATE user u
@@ -212,7 +233,9 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function changeStatusToDisable($id ){
         $query = "UPDATE user u
@@ -223,7 +246,9 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function changeStatusToEnable($id ){
         $query = "UPDATE user u
@@ -234,7 +259,9 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $roleName String
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getRole_ByName($roleName)
     {
@@ -243,10 +270,11 @@ class UsersPersistence extends Persistence{
     }
 
 
-
     /**
      * @param $id int
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function deleteUser_ById($id)
     {
