@@ -73,11 +73,11 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
      */
     $scope.addSubject = function(subject){
         Notification("Procesando...");
-        if( subject.career == null || subject.career == "" ){
+        if( subject.career_id == null || subject.career_id == "" ){
             Notification.warning("Debe seleccionar una carrera");
             return;
         }
-        if( subject.plan == null || subject.plan == "" ){
+        if( subject.plan_id == null || subject.plan_id == "" ){
             Notification.warning("Debe seleccionar una Plan");
             return;
         }

@@ -23,41 +23,40 @@ angular.module("Dashboard").service('UsersService', function($http, RequestFacto
     }
 
     this.updateUser = function(user, successCallback, errorCallback){
-        $http({
-            method: 'PUT',
-            url: RequestFactory.getURL()+"/users/"+user.id,
-            data: {
+        RequestFactory.makeTokenRequest(
+            'POST',
+            "/users/"+user.id,
+            data = {
                 email: user.email,
                 password: user.pass,
                 role: user.role
-            }
-        }).then(function(success){
-            successCallback(success) 
-        }, function(error){
-            errorCallback(error)
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.changeStatus = function(user_id, status, successCallback, errorCallback){
-        $http({
-            method: 'PATCH',
-            url: RequestFactory.getURL()+"/users/"+user_id+"/status/"+status
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'PATCH',
+            "/users/"+user_id+"/status/"+status,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     this.deleteUser = function(user_id, successCallback, errorCallback){
-        $http({
-            method: 'DELETE',
-            url: RequestFactory.getURL()+"/users/"+user_id
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'DELETE',
+            "/users/"+user_id,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     

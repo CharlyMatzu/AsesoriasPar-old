@@ -37,7 +37,7 @@ require_once 'src/settings.php';
 // --se puede agregar un Middleware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
 // --El orden de ejecucion de lod MID es LIFO (pila)
 // --Se debe obtener los parametros directamente del $request cuando este es un Middleware,
-//  en un controller se recibe un "array" como parametro
+//  en un controller se recibe un "array" como parámetros
 
 
 //TODO: agregar un status por default directamente en Persistencia para evitar problemas en DB
@@ -108,6 +108,7 @@ $app->post('/users', 'UserController:createUser')
 //TODO: actualizar solo email
 
 
+//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 //Cambia estado de usuario
 $app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
         ->add('InputMiddleware:checkParam_Status')
@@ -180,7 +181,9 @@ $app->get('/careers/{id}', 'CareerController:getCareer_ById')
 $app->post('/careers', 'CareerController:createCareer')
         ->add('InputMiddleware:checkData_Career');
 
+
 //TODO: VALIDAR AUTH
+//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 //Cambia estado de carrera
 $app->patch('/careers/{id}/status/{status}', 'CareerController:changeStatus')
         ->add('InputMiddleware:checkParam_Status')
@@ -220,6 +223,7 @@ $app->post('/plans', 'PlanController:createPlan')
 
 //TODO: VALIDAR AUTH
 //TODO: hacer mas descriptivo
+//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 //cambia status de un plan
 $app->patch('/plans/{id}/status/{status}', 'PlanController:changeStatus')
         ->add('InputMiddleware:checkParam_Status')
@@ -271,6 +275,7 @@ $app->post('/subjects', 'SubjectController:createSubject')
 
 //TODO: VALIDAR AUTH
 //cambia estado de materia
+//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 $app->patch('/subjects/{id}/status/{status}', 'SubjectController:changeStatus')
         ->add('InputMiddleware:checkParam_Status')
         ->add('InputMiddleware:checkParam_id');
@@ -350,6 +355,7 @@ $app->put('/periods/{id}', 'PeriodController:updatePeriod')
 
 //TODO: VALIDAR AUTH
 //cambia status de periodo
+//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 $app->patch('/periods/{id}/status/{status}', 'PeriodController:changeStatus')
         ->add('InputMiddleware:checkParam_Status')
         ->add('InputMiddleware:checkParam_id');
@@ -395,6 +401,7 @@ $app->get('/subject/{id}/advisers', 'SubjectController:getAdvisers_BySubject_Ign
 
 //TODO: VALIDAR AUTH
 //Cambia estado de horario
+//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeScheduleStatus')
         ->add('InputMiddleware:checkParam_Status')
         ->add('InputMiddleware:checkParam_Id');
@@ -515,12 +522,9 @@ $app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviser')
     ->add('InputMiddleware:checkData_advisory_schedule')
     ->add('InputMiddleware:checkParam_Id');
 
-
 //TODO: VALIDAR AUTH
 //$app->put('/advisories/{id}/hours', 'AdvisoryController:updateAdvisoryHours');
 
-//TODO: VALIDAR AUTH
-//$app->patch('/advisories/{id}/status/{status}', 'AdvisoryController:changeStatus');
 
 
 

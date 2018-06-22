@@ -1,124 +1,101 @@
-angular.module("Dashboard").service('SubjectService', function($http, RequestFactory){
+angular.module("Dashboard").service('SubjectService', function($http, RequestFactory, AuthFactory){
 
 
     this.getCareers = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/careers"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/careers",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.getPlans = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/plans"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/plans",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
 
     this.getSubjects = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/subjects"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/subjects",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
+    
     this.getSubject_Search = function(subject,successCallback, errorCallback){
-     
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/subjects/carrera/"+subject.career+"/semestre/"+subject.semester+"/plan/"+subject.plan
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/subjects/carrera/"+subject.career+"/semestre/"+subject.semester+"/plan/"+subject.plan,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     this.searchSubjects = function(data,successCallback, errorCallback){ 
-        $http({ 
-            method: 'GET', 
-            url: RequestFactory.getURL()+"/subjects/search/"+data
-        }).then(function(success){ 
-            var data = success.data; 
-            // console.log( success ); 
-            successCallback(success); 
-        }, function(error){ 
-            // console.log( error ); 
-            errorCallback(error); 
-        }); 
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/subjects/search/"+data,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     } 
 
 
-    this.addSubjects = function(subject, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/subjects",
-            data: {
+    this.updateSubject = function(subject, successCallback, errorCallback){
+        RequestFactory.makeTokenRequest(
+            'PUT',
+            "/subjects",
+            data = {
                 name: subject.name,
                 short_name: subject.short_name,
                 description: subject.description,
                 career: subject.career_id,
                 semester: subject.semester,
                 plan: subject.plan
-            }
-        }).then(function(success){
-            successCallback(success) 
-        }, function(error){
-            errorCallback(error)
-        });
-    }
-
-    this.updateSubject = function(subject, successCallback, errorCallback){
-        $http({
-            method: 'PUT',
-            url: RequestFactory.getURL()+"/subjects/"+subject.id,
-            data: {
-                name: subject.name,
-                short_name: subject.short_name,
-                description: subject.description,
-                career: subject.career,
-                semester: subject.semester,
-                plan: subject.plan
-            }
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     this.changeStatus = function(subject_id, status, successCallback, errorCallback){
-        $http({
-            method: 'PATCH',
-            url: RequestFactory.getURL()+"/subjects/"+subject_id+"/status/"+status
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'PATCH',
+            "/subjects/"+subject_id+"/status/"+status,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.deleteSubject = function(subject_id, successCallback, errorCallback){
-        $http({
-            method: 'DELETE',
-            url: RequestFactory.getURL()+"/subjects/"+subject_id
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'PATCH',
+            "/subjects/"+subject_id,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     

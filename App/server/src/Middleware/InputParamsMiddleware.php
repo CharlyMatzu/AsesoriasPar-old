@@ -22,7 +22,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -31,9 +31,9 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Id($req, $res, $next)
     {
         $id = $this->getRouteParams($req)['id'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($id) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -41,7 +41,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -59,7 +59,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -68,16 +68,16 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Advisory($req, $res, $next)
     {
         $advisory = $this->getRouteParams($req)['advisory'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($advisory) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
     }
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -86,9 +86,9 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Schedule($req, $res, $next)
     {
         $id = $this->getRouteParams($req)['schedule'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($id) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -96,7 +96,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -105,15 +105,15 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Status($req, $res, $next)
     {
         $status = $this->getRouteParams($req)['status'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($status) || $status === "" || $status == null )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         if( ($status != Utils::$STATUS_ENABLE)
             && ($status != Utils::$STATUS_DISABLE)
             //&& ($status != Utils::$STATUS_NO_CONFIRM)
         )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -121,7 +121,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -130,15 +130,15 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Email($req, $res, $next)
     {
         $email = $this->getRouteParams($req)['email'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( empty($email) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         //TODO: no debe contener caracteres extraños
 
         //Si no es un correo valido
 //        if( !preg_match(Utils::EXPREG_EMAIL, $email) )
-//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -146,7 +146,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -176,7 +176,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -222,7 +222,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -236,7 +236,7 @@ class InputParamsMiddleware extends Middleware
 
 
         if( empty($params['email']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: email vacio");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: email vacío");
 
         $email = $params['email'];
         $pass = $params['password'];
@@ -314,7 +314,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -352,7 +352,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -386,7 +386,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -402,7 +402,7 @@ class InputParamsMiddleware extends Middleware
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: no debe estar vacío");
 
         if( ( !is_numeric($params['year']) ) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan, debe ser numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan, debe ser numérico");
 
         if( ( strlen( $params['year'] ) != 4 ) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: deben ser 4 digitos");
@@ -413,7 +413,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -424,22 +424,22 @@ class InputParamsMiddleware extends Middleware
         $params = $req->getParsedBody();
         if( !isset($params['name']) || !isset($params['short_name']) || !isset($params['description']) ||
             !isset($params['semester']) || !isset($params['plan']) || !isset($params['career']))
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, 
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros, 
             Se requiere: name, short_name, description, semester, plan, career");
 
         //Solo campos que se ocupan
         if( empty($params['name']) || empty($params['semester']) || empty($params['plan']) || empty($params['career']))
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Campos vacíos");
 
         //TODO: validar formato, tipo, etc..
         if( !is_numeric($params['semester']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Semestre no es numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Semestre no es numérico");
 
         if( !is_numeric($params['plan']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Plan no es numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Plan no es numérico");
 
         if( !is_numeric($params['career']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Carrera no es numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Carrera no es numérico");
 
 
         $subject = new SubjectModel();
@@ -458,7 +458,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -624,7 +624,7 @@ class InputParamsMiddleware extends Middleware
         $subject = $params['subject'];
         if( !is_numeric($subject) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: subject no es numerico");
+                "Parametros invalidos: subject no es numérico");
 
         $advisory = new AdvisoryModel();
         $advisory->setSubject( $subject );
