@@ -325,7 +325,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function changeStatusToDeleted($subjectID ){
         $query = "UPDATE subject
-                    SET status = ".Utils::$STATUS_DISABLE." 
+                    SET status = '".Utils::$STATUS_DISABLE."' 
                     WHERE subject_id = $subjectID";
         return  self::executeQuery($query);
     }
@@ -336,7 +336,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function changeStatusToEnable($subjectID ){
         $query = "UPDATE subject
-                    SET status = ".Utils::$STATUS_ENABLE." 
+                    SET status = '".Utils::$STATUS_ENABLE."' 
                     WHERE subject_id = $subjectID";
         return  self::executeQuery($query);
     }
@@ -361,7 +361,7 @@ class SubjectsPersistence extends Persistence{
      */
 //    public function changeStatusToEnable( $subjectID ){
 //        $query = "UPDATE subject
-//                    SET status = ".Utils::$STATUS_ENABLE."
+//                    SET status = '".Utils::$STATUS_ENABLE."'
 //                    WHERE subject_id = $subjectID";
 //        return self::executeQuery($query);
 //    }

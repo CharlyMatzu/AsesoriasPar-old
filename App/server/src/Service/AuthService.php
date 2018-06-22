@@ -42,7 +42,7 @@ class AuthService
         if( $user['status'] == Utils::$STATUS_DISABLE ) {
             throw new UnauthorizedException("email o contraseña e incorrectos");
         }
-        else if( $user['status'] == Utils::$STATUS_NO_CONFIRM ) {
+        else if( $user['status'] == Utils::$STATUS_NO_CONFIRMED ) {
 
             try{
                 $mailServ = new MailService();

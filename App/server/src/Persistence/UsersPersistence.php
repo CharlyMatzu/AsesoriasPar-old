@@ -49,7 +49,7 @@ class UsersPersistence extends Persistence{
     public function getEnableUsers()
     {
         $query = $this->SELECT.
-                "WHERE u.status = ".Utils::$STATUS_ENABLE;
+                "WHERE u.status = '".Utils::$STATUS_ENABLE."'";
         return  self::executeQuery($query);
     }
 
@@ -60,7 +60,7 @@ class UsersPersistence extends Persistence{
     public function getDisabledUsers()
     {
         $query = $this->SELECT.
-            "WHERE u.status = ".Utils::$STATUS_DISABLE;
+            "WHERE u.status = '".Utils::$STATUS_DISABLE."'";
         return  self::executeQuery($query);
     }
 
@@ -71,7 +71,7 @@ class UsersPersistence extends Persistence{
     public function getNoConfirmUsers()
     {
         $query = $this->SELECT.
-            "WHERE u.status = ".Utils::$STATUS_NO_CONFIRM;
+            "WHERE u.status = '".Utils::$STATUS_NO_CONFIRMED."'";
         return  self::executeQuery($query);
     }
 
@@ -115,7 +115,7 @@ class UsersPersistence extends Persistence{
      */
     public function getEnabledBasicUser_ById($id){
         $query = $this->SELECT."
-                WHERE u.user_id = $id AND (u.status = ".Utils::$STATUS_ENABLE." AND u.fk_role = '".Utils::$ROLE_BASIC."')";
+                WHERE u.user_id = $id AND (u.status = '".Utils::$STATUS_ENABLE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
         return  self::executeQuery($query);
     }
 
@@ -127,7 +127,7 @@ class UsersPersistence extends Persistence{
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
-                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ENABLE;
+                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = '".Utils::$STATUS_ENABLE."'";
         return  self::executeQuery($query);
     }
 
@@ -203,7 +203,7 @@ class UsersPersistence extends Persistence{
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
         $query = "INSERT INTO user (email, password, fk_role, status)
-                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', ".Utils::$STATUS_NO_CONFIRM.")";
+                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', '".Utils::$STATUS_NO_CONFIRMED."')";
         return  self::executeQuery($query);
     }
 
@@ -239,7 +239,7 @@ class UsersPersistence extends Persistence{
      */
     public function changeStatusToDisable($id ){
         $query = "UPDATE user u
-                         SET u.status = ".Utils::$STATUS_DISABLE."    
+                         SET u.status = '".Utils::$STATUS_DISABLE."'    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }
@@ -252,7 +252,7 @@ class UsersPersistence extends Persistence{
      */
     public function changeStatusToEnable($id ){
         $query = "UPDATE user u
-                         SET u.status = ".Utils::$STATUS_ENABLE."    
+                         SET u.status = '".Utils::$STATUS_ENABLE."'    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }

@@ -19,8 +19,11 @@ class CareersPersistence extends Persistence {
 
     /**
      * Se obtiene la carrera por ID
+     *
      * @param $id
+     *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getCareer_ById( $id ){
         $query = $this->campos."
@@ -32,6 +35,7 @@ class CareersPersistence extends Persistence {
     /**
      * Se obtiene todas las carreras registradas
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getCareers(){
         $query = $this->campos;
@@ -43,8 +47,11 @@ class CareersPersistence extends Persistence {
 
     /**
      * Se obtiene la carrera por nombre
+     *
      * @param $name
+     *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getCareer_ByName( $name ){
         $query = $this->campos."
@@ -55,8 +62,11 @@ class CareersPersistence extends Persistence {
 
     /**
      * Se obtiene la carrera por nombre corto (Abreviacion) de la carrera
+     *
      * @param $short_name string
+     *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getCareer_ByShortName($short_name ){
         $query = $this->campos."
@@ -72,6 +82,7 @@ class CareersPersistence extends Persistence {
      * @param null $career_id
      *
      * @return DataResult|bool
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getCareer_ByName_ShortName( $name, $career_id = null ){
         $query = $this->campos."
@@ -86,10 +97,13 @@ class CareersPersistence extends Persistence {
     }
 
     /**
-     * Metodo para insertar la carrera
+     * Método para insertar la carrera
+     *
      * @param $name
      * @param $shortname
+     *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertCareer( $name, $shortname ){
         $query = "INSERT INTO career (name, short_name)
@@ -99,11 +113,12 @@ class CareersPersistence extends Persistence {
 
 
     /**
-     * Metodo para actualizar la carrera
+     * Método para actualizar la carrera
      *
      * @param $career CareerModel
      *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function updateCareer( $career ){
         $query = "UPDATE career 
@@ -113,9 +128,12 @@ class CareersPersistence extends Persistence {
     }
 
     /**
-     * Metodo para eliminar la carrera
+     * Método para eliminar la carrera
+     *
      * @param $careerID
+     *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function changeStatusToDeleted($careerID ){
         $query = "UPDATE career 
@@ -126,11 +144,12 @@ class CareersPersistence extends Persistence {
 
 
     /**
-     * Metodo para eliminar la carrera
+     * Método para eliminar la carrera
      *
      * @param $careerID
      *
      * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function changeStatusToEnable( $careerID ){
         $query = "UPDATE career 
@@ -139,6 +158,12 @@ class CareersPersistence extends Persistence {
         return  self::executeQuery($query);
     }
 
+    /**
+     * @param $id
+     *
+     * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
     public function deleteCareer($id)
     {
         $query = "DELETE FROM career 

@@ -154,7 +154,8 @@ abstract class Persistence{
             else
                 throw new TransactionException("No se pudo registrar transacción");
         }
-        throw new TransactionException("Debe iniciarse transacción antes de registrar");
+        else
+            throw new TransactionException("Debe iniciarse transacción antes de registrar");
     }
 
     /**

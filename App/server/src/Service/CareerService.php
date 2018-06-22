@@ -138,7 +138,7 @@ class CareerService{
     }
 
     /**
-     * Metodo para actualizar la carrera
+     * Método para actualizar la carrera
      *
      * @param $career CareerModel
      *
@@ -235,7 +235,7 @@ class CareerService{
 
 
 //    /**
-//     * Metodo para verificar que la carrera existe o no mediante el ID de la carrera
+//     * Método para verificar que la carrera existe o no mediante el ID de la carrera
 //     * @param $id
 //     * @return bool|DataResult
 //     */
@@ -253,7 +253,7 @@ class CareerService{
 //    }
 
     /**
-     * Metodo para verificar si existe la carrera mediante el nombre de la carrera
+     * Método para verificar si existe la carrera mediante el nombre de la carrera
      *
      * @param $name string
      *

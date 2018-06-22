@@ -6,11 +6,11 @@ INSERT INTO career(name, short_name) VALUES
 ('Ingeniería en Mecatrónica', 'IMT');
 
 
-INSERT INTO user(email, password, fk_role, status) VALUES
-('unacosa@gmail.com', md5('freedom'), 'basic', 2),
-('loquesea@gmail.com', md5('freedom'), 'basic', 2),
-('algunos@gmail.com', md5('freedom'), 'basic', 2),
-('otracosa@gmail.com', md5('freedom'), 'basic', 2);
+INSERT INTO user(email, password, fk_role) VALUES
+('unacosa@gmail.com', md5('freedom'), 'basic'),
+('loquesea@gmail.com', md5('freedom'), 'basic'),
+('algunos@gmail.com', md5('freedom'), 'basic'),
+('otracosa@gmail.com', md5('freedom'), 'basic');
 
 INSERT INTO student(itson_id, first_name, last_name, phone, fk_user, fk_career) VALUES
 ('0001', 'first_name_1', 'last_name_1', '4444', 2, 1),
@@ -36,8 +36,8 @@ INSERT INTO plan(year) VALUES
 INSERT INTO subject(name, short_name, semester, description, fk_plan, fk_career) VALUES
 ('MAT-1', 'M1', 1, 'PRUEBA', 1,1),
 ('MAT-2', 'M2', 1, 'PRUEBA', 1,1),
-('MAT-3', 'M3', 2, 'PRUEBA', 1,1),
-('MAT-4', 'M4', 2, 'PRUEBA', 2,1),
-('MAT-5', 'M5', 4, 'PRUEBA', 2,1),
-('MAT-6', 'M6', 4, 'PRUEBA', 2,1),
+('MAT-3', 'M3', 2, 'PRUEBA', 1,2),
+('MAT-4', 'M4', 2, 'PRUEBA', 2,3),
+('MAT-5', 'M5', 4, 'PRUEBA', 2,2),
+('MAT-6', 'M6', 4, 'PRUEBA', 2,4),
 ('MAT-7', 'M7', 4, 'PRUEBA', 2,1);

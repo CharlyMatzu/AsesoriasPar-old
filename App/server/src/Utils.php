@@ -11,16 +11,20 @@ class Utils
     const TIMEZONE = 'America/Phoenix';
 
     //-------General
-    public static $STATUS_DISABLE = 0;
-    public static $STATUS_NO_CONFIRM = 1;
-    public static $STATUS_ENABLE = 2;
+    public static $STATUS_DISABLE = 'DISABLED';
+    public static $STATUS_NO_CONFIRMED = 'NO_CONFIRMED';
+    public static $STATUS_ENABLE = 'ENABLED';
 
     //-------Advisories
-    public static $STATUS_CANCELED = 0;
-    public static $STATUS_PENDING = 1;
-    public static $STATUS_ACTIVE = 2;
+    //also for subject
+    public static $STATUS_PENDING = 'PENDING';
+    public static $STATUS_ACTIVE = 'ACTIVE';
     //also for period
-    public static $STATUS_FINALIZED = 3;
+    public static $STATUS_FINALIZED = 'FINALIZED';
+
+    //-------Subjects
+    public static $STATUS_VALIDATED = 'VALIDATED';
+    public static $STATUS_LOCKED = 'LOCKED';
 
     //--------ROLES
     public static $ROLE_ADMIN = "administrator";
@@ -29,8 +33,12 @@ class Utils
 
 
     //------------OTROS
-    const EXPREG_EMAIL = "/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/";
-    const EXPREG_PASS = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$";
+    const EXPREG_EMAIL = "/[a-zA-Z._+-]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}/";
+    const EXPREG_PASS = "/[a-zA-Z0-9_!@#$&*.]/";
+    const EXPREG_NAME = "/[a-zA-Z\sñÑáéíóúÁÉÍÓÚ]/";
+    const EXPREG_SEARCH = "/[a-zA-Z0-9_!@ñÑáéíóúÁÉÍÓÚ\s]/";
+    const EXPREG_ITSON_ID = "/\d/";
+//    const EXPREG_PHONE = "//";
 
 
 

@@ -148,11 +148,14 @@ class UserController
     public function createUser($req, $res)
     {
         try {
+
             $userServ = new UserService();
-            $role = $user = $req->getAttribute('role_data');
+
             /* @var $user UserModel */
-            $user = $req->getAttribute('user_data');
-            $user->setRole( $role );
+            $user = new UserModel();
+            $user->setEmail( $req->getAttribute('email_data') );
+            $user->setPassword( $req->getAttribute('password_data') );
+            $user->setRole( $req->getAttribute('role_data') );
 
             $userServ->insertUser( $user );
             return Utils::makeMessageResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");

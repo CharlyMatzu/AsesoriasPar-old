@@ -1,7 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
-use App\Model\AdvisoryModel;
+use App\Exceptions\Request\RequestException;
 use App\Model\StudentModel;
 use App\Service\AdvisoryService;
 use App\Service\StudentService;
@@ -51,13 +50,14 @@ class StudentController
      * @param $req Request
      * @param $res Response
      * @param $params array
+     *
      * @return Response
      */
     public function searchStudents($req, $res, $params)
     {
         try {
             $studentSer = new StudentService();
-            $result = $studentSer->searchStudents_ByData( $params['search_student'] );
+            $result = $studentSer->searchStudents_ByData( $params['search_param'] );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {

@@ -30,13 +30,13 @@ require_once 'src/settings.php';
 // --Los Middleware y controllers siempre deben retornar el response
 // --Los Middleware reciben un callable referente al siguiente Middleware o controller el cual deben llamar ($next)
 // el cual retorna un response para ser manejado desde el midd
-// --Para pasar parametros entre Middlewares,se usa:
+// --Para pasar Parámetros entre Middlewares,se usa:
 //      Para enviar: $request = $request->withAttribute('foo', 'bar');
 //      Para obtener: $foo = $request->getAttribute('foo');
 //--------NOTA:
 // --se puede agregar un Middleware global aregandolo directamente a $app y no a un verbo GET, POST, etc.
 // --El orden de ejecucion de lod MID es LIFO (pila)
-// --Se debe obtener los parametros directamente del $request cuando este es un Middleware,
+// --Se debe obtener los Parámetros directamente del $request cuando este es un Middleware,
 //  en un controller se recibe un "array" como parámetros
 
 
@@ -61,12 +61,15 @@ $app->post('/mail/send', 'MailController:sendMail')
 
 //Permite autenticarse (signin)
 $app->post('/auth/signin', 'AuthController:signin')
-        ->add('InputMiddleware:checkData_Auth');
+        ->add('InputMiddleware:checkData_Password')
+        ->add('InputMiddleware:checkData_Email');
+
 
 //Crear un usuario y un estudiante a la vez
 $app->post('/auth/signup', 'AuthController:signup')
         ->add('InputMiddleware:checkData_Student') //Es el registro de estudiante
-        ->add('InputMiddleware:checkData_User'); //Es el registro de usuario (se ejecuta primero)
+        ->add('InputMiddleware:checkData_Password')
+        ->add('InputMiddleware:checkData_Email');
 
 //TODO: ruta para actualizar password
 
@@ -76,36 +79,40 @@ $app->get('/auth/confirm/{token}', 'AuthController:confirm');
 //Para reenviar correo de confirmación
 //$app->get('/auth/confirm/send', 'AuthController:sendConfirmEmail');
 
+
 //--------------------------
 //  USER ROUTES
 //--------------------------
+
 
 //Obtiene todos los usuarios
 $app->get('/users', 'UserController:getUsers')
         ->add('AuthMiddleware:requireStaff');
 
 
-
-
 //Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
-        ->add('InputMiddleware:checkData_User')
-        ->add('InputMiddleware:checkData_Role') //Rol para que sea solo staff
-        ->add('AuthMiddleware:requireStaff');
+        ->add('InputMiddleware:checkData_Email')
+        ->add('InputMiddleware:checkData_Password')
+        ->add('InputMiddleware:checkData_Role'); //Rol para que sea solo staff
+//        ->add('AuthMiddleware:requireStaff');
+
 
 
 //TODO: VALIDAR AUTH
 //TODO: cambiar por solo cambio de password y de email separados
 //Actualiza datos de usuario
-//$app->put('/users/{id}', 'UserController:updateUser')
-//        ->add('InputMiddleware:checkData_User')
-//        ->add('InputMiddleware:checkData_Role')
-//        ->add('InputMiddleware:checkParam_Id');
-//        ->add('AuthMiddleware:requireStaff');
+$app->put('/users/{id}/email', 'UserController:updateEmailUser')
+        ->add('InputMiddleware:checkData_Email')
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
-//TODO: actualizar solo password
 
-//TODO: actualizar solo email
+//$app->put('/users/{id}/password', 'UserController:updateUserPassword')
+//        ->add('InputMiddleware:checkData_Password')
+//        ->add('InputMiddleware:checkParam_Id')
+//        ->add('AuthMiddleware:requireBasic');
+
 
 
 //TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
@@ -129,8 +136,8 @@ $app->get('/users/staff', 'UserController:getStaffUsers')
 
 
 //busca usuarios por correo (coincidencias)
-$app->get('/users/search/{email}', 'UserController:searchUsersByEmail')
-        ->add('InputMiddleware:checkParam_Email')
+$app->get('/users/search/{search}', 'UserController:searchUsersByEmail')
+        ->add('InputMiddleware:checkParam_Search')
         ->add('AuthMiddleware:requireStaff');
 
 
@@ -307,8 +314,8 @@ $app->get('/students/{id}', 'StudentController:getStudent_ById')
 
 //TODO: VALIDAR AUTH
 //Busca estudiante por coincidencias (todos los campos de string: nombre, apellido, correo, telefono)
-$app->get('/students/search/{search_student}', 'StudentController:searchStudents')
-    ->add('InputMiddleware:checkParam_search_student');
+$app->get('/students/search/{search}', 'StudentController:searchStudents')
+    ->add('InputMiddleware:checkParam_Search');
 
 //TODO: VALIDAR AUTH
 //TODO: Obtener correos tipo gmail para agregar y enviarles correos
