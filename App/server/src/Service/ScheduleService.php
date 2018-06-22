@@ -537,7 +537,7 @@ class ScheduleService{
     {
         $this->getSchedule_ById( $scheduleId );
 
-        if( $status == Utils::$STATUS_ENABLE ){
+        if( $status == Utils::$STATUS_ACTIVE ){
             $result = $this->schedulesPer->enableSchedule( $scheduleId );
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException("changeScheduleStatus",

@@ -192,7 +192,7 @@ class PeriodService{
             if( Utils::isError($result->getOperation()) )
                 throw new InternalErrorException("changeStatus","No se pudo deshabilitar periodo", $result->getErrorMessage());
         }
-        else if( $status == Utils::$STATUS_ENABLE ){
+        else if( $status == Utils::$STATUS_ACTIVE ){
             $result = $this->perPeriods->changeStatusToEnable( $periodId );
             if( Utils::isError($result->getOperation()) )
                 throw new InternalErrorException("changeStatus","No se pudo habilitar periodo", $result->getErrorMessage());

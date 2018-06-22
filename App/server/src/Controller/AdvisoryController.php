@@ -1,8 +1,7 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\AdvisoryModel;
-use App\Model\SubjectModel;
 use App\Service\AdvisoryService;
 use App\Utils;
 use Slim\Http\Request;

@@ -12,13 +12,11 @@ class Utils
 
     //-------General
     public static $STATUS_DISABLE = 'DISABLED';
-    public static $STATUS_NO_CONFIRMED = 'NO_CONFIRMED';
-    public static $STATUS_ENABLE = 'ENABLED';
+    public static $STATUS_ACTIVE = 'ACTIVE';
 
     //-------Advisories
     //also for subject
     public static $STATUS_PENDING = 'PENDING';
-    public static $STATUS_ACTIVE = 'ACTIVE';
     //also for period
     public static $STATUS_FINALIZED = 'FINALIZED';
 

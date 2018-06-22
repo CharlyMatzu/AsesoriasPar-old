@@ -92,25 +92,32 @@ $app->get('/users', 'UserController:getUsers')
 
 //Crear un usuario simple
 $app->post('/users', 'UserController:createUser')
+//        ->add('AuthMiddleware:isAuthorized')
         ->add('InputMiddleware:checkData_Email')
         ->add('InputMiddleware:checkData_Password')
-        ->add('InputMiddleware:checkData_Role'); //Rol para que sea solo staff
-//        ->add('AuthMiddleware:requireStaff');
+        ->add('InputMiddleware:checkData_Role') //Rol para que sea solo staff
+        ->add('AuthMiddleware:requireAdmin');
 
 
 
 //TODO: VALIDAR AUTH
 //TODO: cambiar por solo cambio de password y de email separados
 //Actualiza datos de usuario
-$app->put('/users/{id}/email', 'UserController:updateEmailUser')
+$app->put('/users/{id}/email', 'UserController:updateUserEmail')
         ->add('InputMiddleware:checkData_Email')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireBasic');
 
 
-//$app->put('/users/{id}/password', 'UserController:updateUserPassword')
-//        ->add('InputMiddleware:checkData_Password')
-//        ->add('InputMiddleware:checkParam_Id')
+$app->put('/users/{id}/password', 'UserController:updateUserPassword')
+        ->add('InputMiddleware:checkData_Password')
+        ->add('InputMiddleware:checkParam_Id');
+//        ->add('AuthMiddleware:requireBasic');
+
+
+$app->put('/users/{id}/role', 'UserController:updateUserRole')
+        ->add('InputMiddleware:checkData_Role')
+        ->add('InputMiddleware:checkParam_Id');
 //        ->add('AuthMiddleware:requireBasic');
 
 

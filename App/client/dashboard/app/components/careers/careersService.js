@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('CareerService', function($http, RequestFactory){
+angular.module("Dashboard").service('CareerService', function($http, RequestFactory, AuthFactory){
     
 
     this.getCareers = function(successCallback, errorCallback){

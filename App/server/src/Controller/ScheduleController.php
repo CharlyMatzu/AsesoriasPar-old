@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Service\ScheduleService;
 use Slim\Http\Request;
 use Slim\Http\Response;

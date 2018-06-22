@@ -1,6 +1,7 @@
 <?php namespace App\Middleware;
 
 
+
 use App\Model\AdvisoryModel;
 use App\Model\CareerModel;
 use App\Model\PeriodModel;
@@ -27,7 +28,7 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Id($req, $res, $next)
     {
-        $id = $this->getRouteParams($req)['id'];
+        $id = self::getRouteParams($req)['id'];
         //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($id) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
@@ -47,7 +48,7 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Search($req, $res, $next)
     {
 
-        $search = $this->getRouteParams($req)['search'];
+        $search = self::getRouteParams($req)['search'];
 
         if( !preg_match(Utils::EXPREG_SEARCH, $search) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: no es un email valido");
@@ -66,7 +67,7 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Advisory($req, $res, $next)
     {
-        $advisory = $this->getRouteParams($req)['advisory'];
+        $advisory = self::getRouteParams($req)['advisory'];
         //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($advisory) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
@@ -84,7 +85,7 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Schedule($req, $res, $next)
     {
-        $id = $this->getRouteParams($req)['schedule'];
+        $id = self::getRouteParams($req)['schedule'];
         //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($id) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
@@ -103,12 +104,12 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Status($req, $res, $next)
     {
-        $status = $this->getRouteParams($req)['status'];
+        $status = self::getRouteParams($req)['status'];
         //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($status) || $status === "" || $status == null )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
-        if( ($status != Utils::$STATUS_ENABLE)
+        if( ($status != Utils::$STATUS_ACTIVE)
             && ($status != Utils::$STATUS_DISABLE)
             //&& ($status != Utils::$STATUS_NO_CONFIRM)
         )
@@ -199,6 +200,7 @@ class InputParamsMiddleware extends Middleware
 
         $pass = $params['password'];
 
+        //FIXME: deja pasar
         if( !preg_match(Utils::EXPREG_PASS, $pass) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: no es un password valido");
 

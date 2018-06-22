@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\PeriodModel;
 use App\Service\PeriodService;
 use Slim\Http\Request;

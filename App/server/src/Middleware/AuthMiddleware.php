@@ -2,6 +2,7 @@
 
 use App\Auth;
 use App\Exceptions\Auth\TokenException;
+use App\Exceptions\Request\ForbiddenException;
 use App\Exceptions\Request\InternalErrorException;
 use App\Exceptions\Request\NotFoundException;
 use App\Exceptions\Request\RequestException;
@@ -190,5 +191,58 @@ class AuthMiddleware extends Middleware
         Auth::sessionDestroy();
         return $res;
     }
+
+
+    //--------------------------
+    // Chequeo de autorización para modificación de registros
+    //---------------------------
+
+
+    /**
+     * Utilizado para saber si el usuario actual puede hacer modificaciones a cierto registro
+     *
+     * @param $req Request
+     * @param $res Response
+     *
+     * @param $next
+     *
+     * @return Response
+     */
+    public static function isAuthorized($req, $res, $next)
+    {
+        try {
+
+            //Obteniendo usuario que se intenta modificar
+            $id = self::getRouteParams($req)['id'];
+
+            $userServ = new UserService();
+            $user = $userServ->getUser_ById( $id );
+            $user = UserService::makeUserModel( $user );
+
+
+            //Si es otro usuario
+            //TODO: si esta desactivado, no tomar en cuenta
+            if (Auth::getSessionUser()->getId() !== $user->getId())
+                throw new ForbiddenException("No tiene permitido modificar usuario");
+            //Si es un usuario básico
+            else if (Auth::isBasicUser()) {
+                //si el usuario a modificar tiene mayor rango
+                if (Auth::isRoleStaff($user->getRole()))
+                    throw new ForbiddenException("No tiene permitido modificar usuario");
+            } //Si es moderador
+            else if (Auth::isModUser()) {
+                //si el usuario a modificar tiene mayor rango
+                if (Auth::isRoleAdmin($user->getRole()))
+                    throw new ForbiddenException("No tiene permitido modificar usuario");
+            }
+
+        }catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
 
 }

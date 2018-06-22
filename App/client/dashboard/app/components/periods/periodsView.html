@@ -85,14 +85,14 @@
                                     <td>{{p.end}}</td>
                                     <td>{{p.date_register}}</td>
                                     <td>
-                                        <span ng-show="p.status == 0" class="label label-danger">Deshabilitado</span>
-                                        <span ng-show="p.status == 2" class="label label-success">Activo</span>
+                                        <span ng-show="p.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
+                                        <span ng-show="p.status === 'ACTIVE'" class="label label-success">Activo</span>
                                         <span ng-show="p.status == 3" class="label label-primary">Finalizado</span>
                                     </td>
                                     <td>
                                         <button ng-click="editPeriod(p)" class="opt-period-{{p.id}} btn btn-primary">Editar</button>
-                                        <button ng-show="p.status == 0" ng-click="enablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-success">Habilitar</button>
-                                        <button ng-show="p.status == 2" ng-click="disablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-warning">Deshabilitar</button>
+                                        <button ng-show="p.status === 'DISABLED'" ng-click="enablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-success">Habilitar</button>
+                                        <button ng-show="p.status === 'ACTIVE'" ng-click="disablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-warning">Deshabilitar</button>
                                         <button ng-click="deletePeriod(p.id)" class="opt-period-{{p.id}} btn btn-danger">Eliminar</button>
                                     </td>
                                 </tr>

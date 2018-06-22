@@ -282,7 +282,7 @@ class UserService{
      */
     public function getUsersByStatus($status)
     {
-        if( $status == Utils::$STATUS_ENABLE ){
+        if( $status == Utils::$STATUS_ACTIVE ){
             $result = $this->userPer->getEnableUsers();
 
             if( Utils::isError($result->getOperation()) )
@@ -449,22 +449,18 @@ class UserService{
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\Request\UnauthorizedException
      * @throws \App\Exceptions\Request\ForbiddenException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      */
-    public function updateUser($user){
-
-        //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
-        //TODO: no debe eliminarse usuario con cron
+    public function updateUserEmail($user){
 
         $result = $this->getUser_ById( $user->getId() );
 
         //Verifica que email
         $user_db = self::makeUserModel( $result );
 
-        //verifica el permiso de hacer cambios
-        Auth::isAuthorized( $user_db );
-
+        //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
+        //TODO: no debe eliminarse usuario con cron
         //Si cambio el email
         if( $user_db !== $user->getEmail() ){
             //Se obtiene
@@ -476,29 +472,64 @@ class UserService{
                 throw new ConflictException( "Email ya existe" );
         }
 
+        //Se actualiza usuario
+        $result = $this->userPer->updateUserEmail( $user );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "updateUser","Ocurrió un error al actualizar email", $result->getErrorMessage());
+
+    }
+
+    /**
+     * @param $user UserModel
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function updateUserPassword($user){
+
+        $this->getUser_ById( $user->getId() );
+
+        //Se actualiza usuario
+        $result = $this->userPer->updateUserPassword( $user );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "updateUserPassword","Ocurrió un error al actualizar password", $result->getErrorMessage());
+    }
+
+
+    /**
+     * @param $user UserModel
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws ConflictException
+     */
+    public function updateUserRole($user){
+
+        $result = $this->getUser_ById( $user->getId() );
+        $user_db = self::makeUserModel( $result );
 
         //Si cambio el rol
         if( $user_db !== $user->getRole() ){
-            //Si es estudiante, no debe poder cambiarse rol
-            if( $user_db->getRole() !== $user->getRole() )
+
+            //Si es estudiante
+            if( Auth::isRoleBasic( $user_db->getRole() ) )
                 throw new ConflictException("No puede cambiarse rol de estudiante");
 
             //Se verifica rol
             $result = $this->isRoleExists( $user->getRole() );
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "updateUser","Ocurrió un error al verificar rol", $result->getErrorMessage());
+                throw new InternalErrorException( "updateUserRole","Ocurrió un error al verificar rol", $result->getErrorMessage());
             else if( $result->getOperation() == false )
                 throw new NotFoundException( "No existe rol asignado" );
         }
 
-
-        //TODO: SEPARAR PASSWORD Y EMAIL
         //Se actualiza usuario
-        $result = $this->userPer->updateUser( $user );
+        $result = $this->userPer->updateUserRole( $user );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "updateUser","Ocurrió un error al actualizar usuario", $result->getErrorMessage());
-
+            throw new InternalErrorException( "updateUserRole","Ocurrió un error al actualizar rol", $result->getErrorMessage());
     }
+
+
 
     /**
      * @param $user_id int
@@ -519,7 +550,7 @@ class UserService{
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException( "changeStatus","Ocurrió un error al deshabilitar usuario", $result->getErrorMessage());
         }
-        else if( $status == Utils::$STATUS_ENABLE ){
+        else if( $status == Utils::$STATUS_ACTIVE ){
             $result = $this->userPer->changeStatusToEnable( $user_id );
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException( "changeStatus","Ocurrió un error al habilitar usuario", $result->getErrorMessage());

@@ -26,8 +26,8 @@
                         </div>
 
                         <div class="options">
-                            <button ng-show="student.status == 0" class="btn btn-success">Habilitar</button>
-                            <button ng-show="student.status == 2" class="btn btn-warning">Deshabilitar</button>
+                            <button ng-show="student.status === 'DISABLED'" class="btn btn-success">Habilitar</button>
+                            <button ng-show="student.status === 'ACTIVE'" class="btn btn-warning">Deshabilitar</button>
                             <button class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>

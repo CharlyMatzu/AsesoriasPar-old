@@ -240,7 +240,7 @@ class AdvisoriesPersistence extends Persistence{
     public function insertAdvisoryHours($advisory_id, $hour_id)
     {
         $query = "INSERT INTO advisory_schedule(fk_advisory, fk_hours, status)
-                  VALUES($advisory_id, $hour_id, '".Utils::$STATUS_ENABLE."')";
+                  VALUES($advisory_id, $hour_id, '".Utils::$STATUS_ACTIVE."')";
         return self::executeQuery($query);
     }
 
@@ -313,7 +313,7 @@ class AdvisoriesPersistence extends Persistence{
                   INNER JOIN schedule s ON st.student_id = s.fk_student
                   INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
                   WHERE s.fk_period = $period_id AND ss.fk_subject = $subject_id 
-                        AND st.student_id <> $student_id AND u.status = '".Utils::$STATUS_ENABLE."'";
+                        AND st.student_id <> $student_id AND u.status = '".Utils::$STATUS_ACTIVE."'";
         return self::executeQuery($query);
     }
 
@@ -342,7 +342,7 @@ class AdvisoriesPersistence extends Persistence{
                   INNER JOIN schedule s ON st.student_id = s.fk_student
                   INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
                   WHERE s.fk_period = $period_id AND ss.fk_subject = $subject_id 
-                        AND st.student_id <> $student_id AND u.status = '".Utils::$STATUS_ENABLE."'";
+                        AND st.student_id <> $student_id AND u.status = '".Utils::$STATUS_ACTIVE."'";
         return self::executeQuery($query);
     }
 

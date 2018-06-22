@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\CareerModel;
 use App\Service\CareerService;
 use Slim\Http\Request;
@@ -100,7 +100,7 @@ class CareerController
                 $careerService->disableCareer( $params['id'] );
                 return Utils::makeMessageResponse( $res, Utils::$OK, "Desactivado con éxito");
             }
-            else if( $params['status'] == Utils::$STATUS_ENABLE ){
+            else if( $params['status'] == Utils::$STATUS_ACTIVE ){
                 $careerService->enableCareer( $params['id'] );
                 return Utils::makeMessageResponse( $res, Utils::$OK, "Activado con éxito");
             }

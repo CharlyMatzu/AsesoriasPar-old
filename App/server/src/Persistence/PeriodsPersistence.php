@@ -177,7 +177,7 @@ class PeriodsPersistence extends Persistence{
      */
     public function changeStatusToEnable( $id ){
         $query = "UPDATE period
-                  SET status = '".Utils::$STATUS_ENABLE."'
+                  SET status = '".Utils::$STATUS_ACTIVE."'
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }

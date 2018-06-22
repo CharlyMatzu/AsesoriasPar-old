@@ -75,7 +75,7 @@ class StudentsPersistence extends Persistence{
     public function getStudent_ByEnabledUserId($id)
     {
         $query =    $this->SELECT."
-                    WHERE s.fk_user = $id AND (u.status = '".Utils::$STATUS_ENABLE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
+                    WHERE s.fk_user = $id AND (u.status = '".Utils::$STATUS_ACTIVE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }

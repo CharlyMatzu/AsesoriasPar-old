@@ -49,7 +49,7 @@ class UsersPersistence extends Persistence{
     public function getEnableUsers()
     {
         $query = $this->SELECT.
-                "WHERE u.status = '".Utils::$STATUS_ENABLE."'";
+                "WHERE u.status = '".Utils::$STATUS_ACTIVE."'";
         return  self::executeQuery($query);
     }
 
@@ -71,7 +71,7 @@ class UsersPersistence extends Persistence{
     public function getNoConfirmUsers()
     {
         $query = $this->SELECT.
-            "WHERE u.status = '".Utils::$STATUS_NO_CONFIRMED."'";
+            "WHERE u.status = '".Utils::$STATUS_PENDING."'";
         return  self::executeQuery($query);
     }
 
@@ -115,7 +115,7 @@ class UsersPersistence extends Persistence{
      */
     public function getEnabledBasicUser_ById($id){
         $query = $this->SELECT."
-                WHERE u.user_id = $id AND (u.status = '".Utils::$STATUS_ENABLE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
+                WHERE u.user_id = $id AND (u.status = '".Utils::$STATUS_ACTIVE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
         return  self::executeQuery($query);
     }
 
@@ -127,7 +127,7 @@ class UsersPersistence extends Persistence{
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
-                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = '".Utils::$STATUS_ENABLE."'";
+                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = '".Utils::$STATUS_ACTIVE."'";
         return  self::executeQuery($query);
     }
 
@@ -203,7 +203,7 @@ class UsersPersistence extends Persistence{
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
         $query = "INSERT INTO user (email, password, fk_role, status)
-                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', '".Utils::$STATUS_NO_CONFIRMED."')";
+                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', '".Utils::$STATUS_PENDING."')";
         return  self::executeQuery($query);
     }
 
@@ -213,21 +213,37 @@ class UsersPersistence extends Persistence{
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function updateUser( $user ){
+    public function updateUserEmail( $user ){
         $query = "UPDATE user u
-                         SET    u.email = '".$user->getEmail()."',
-                                u.fk_role = '".$user->getRole()."'   
-                         WHERE u.user_id = ".$user->getId();
+                         SET    u.email = '".$user->getEmail()."'   
+                         WHERE  u.user_id = ".$user->getId();
+        return  self::executeQuery($query);
+    }
 
-        //Si hay password, se agrega
-        if( !empty($user->getPassword()) ){
-            $passC = self::crypt( $user->getPassword() );
-            $query = "UPDATE user u
-                         SET    u.email = '".$user->getEmail()."',
-                                u.password = '".$passC."', 
-                                u.fk_role = '".$user->getRole()."'   
-                         WHERE u.user_id = ".$user->getId();
-        }
+    /**
+     * @param $user UserModel objeto tipo User con la información de registro
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function updateUserPassword( $user ){
+        $pass = self::crypt( $user->getPassword() );
+        $query = "UPDATE user u
+                         SET    u.password = '$pass'   
+                         WHERE  u.user_id = ".$user->getId();
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $user UserModel objeto tipo User con la información de registro
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function updateUserRole( $user ){
+        $query = "UPDATE user u
+                         SET    u.fk_role = '".$user->getRole()."'   
+                         WHERE  u.user_id = ".$user->getId();
         return  self::executeQuery($query);
     }
 
@@ -252,7 +268,7 @@ class UsersPersistence extends Persistence{
      */
     public function changeStatusToEnable($id ){
         $query = "UPDATE user u
-                         SET u.status = '".Utils::$STATUS_ENABLE."'    
+                         SET u.status = '".Utils::$STATUS_ACTIVE."'    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }

@@ -219,31 +219,6 @@ abstract class Auth
     }
 
 
-    /**
-     * Utilizado para saber si el usuario actual puede hacer modificaciones a cierto registro
-     * @param $user UserModel
-     * @throws ForbiddenException
-     * @throws UnauthorizedException
-     */
-    public static function isAuthorized($user)
-    {
-        //Si es otro usuario
-        if( Auth::getSessionUser()->getId() !== $user->getId() )
-            throw new ForbiddenException("No tiene permitido modificar usuario");
-        //Si es un usuario básico
-        else if( Auth::isBasicUser() ){
-            //si el usuario a modificar tiene mayor rango
-            if( Auth::isRoleStaff($user->getRole()) )
-                throw new ForbiddenException("No tiene permitido modificar usuario");
-        }
-        //Si es moderador
-        else if( Auth::isModUser() ){
-            //si el usuario a modificar tiene mayor rango
-            if( Auth::isRoleAdmin($user->getRole()) )
-                throw new ForbiddenException("No tiene permitido modificar usuario");
-        }
-    }
-
 
     //--------------------------------
     // AUTENTICACIÓN

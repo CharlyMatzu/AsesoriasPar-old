@@ -100,7 +100,7 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
-                    WHERE sdh.fk_schedule = $schedule_id AND sdh.status = '".Utils::$STATUS_ENABLE."'
+                    WHERE sdh.fk_schedule = $schedule_id AND sdh.status = '".Utils::$STATUS_ACTIVE."'
                     ORDER BY $orderType";
 
 
@@ -131,7 +131,7 @@ class SchedulesPersistence extends Persistence{
                 INNER JOIN plan p ON s.fk_plan = p.plan_id
                 INNER JOIN career c ON s.fk_career = c.career_id
                 WHERE ss.fk_schedule = $schedule_id AND 
-                s.status = '".Utils::$STATUS_ENABLE."'";
+                s.status = '".Utils::$STATUS_ACTIVE."'";
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -161,7 +161,7 @@ class SchedulesPersistence extends Persistence{
                 INNER JOIN plan p ON s.fk_plan = p.plan_id
                 INNER JOIN career c ON s.fk_career = c.career_id
                 WHERE ss.fk_schedule = $schedule_id AND 
-                (s.status = '".Utils::$STATUS_ENABLE."' AND ss.status = '".Utils::$STATUS_ENABLE."')";
+                (s.status = '".Utils::$STATUS_ACTIVE."' AND ss.status = '".Utils::$STATUS_ACTIVE."')";
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -276,7 +276,7 @@ class SchedulesPersistence extends Persistence{
     public function enableSchedule($scheduleId)
     {
         $query = "UPDATE schedule
-                  SET status = '".Utils::$STATUS_ENABLE."'
+                  SET status = '".Utils::$STATUS_ACTIVE."'
                   WHERE schedule_id = $scheduleId";
         return  self::executeQuery($query);
     }
@@ -305,7 +305,7 @@ class SchedulesPersistence extends Persistence{
     public function enableScheduleHour($hdId)
     {
         $query = "UPDATE schedule_days_hours
-                  SET status = '".Utils::$STATUS_ENABLE."'
+                  SET status = '".Utils::$STATUS_ACTIVE."'
                   WHERE schedule_dh_id = $hdId";
         return  self::executeQuery($query);
     }
@@ -334,7 +334,7 @@ class SchedulesPersistence extends Persistence{
     public function enableScheduleSubject($subjectId)
     {
         $query = "UPDATE schedule_subjects
-                  SET status = '".Utils::$STATUS_ENABLE."'
+                  SET status = '".Utils::$STATUS_ACTIVE."'
                   WHERE schedule_subject_id = $subjectId";
         return  self::executeQuery($query);
     }
@@ -362,7 +362,7 @@ class SchedulesPersistence extends Persistence{
                   INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
                   WHERE ss.fk_subject = $subject_id AND
                         ss.status = '".Utils::$STATUS_ACTIVE."' AND
-                        u.status = '".Utils::$STATUS_ENABLE."' AND
+                        u.status = '".Utils::$STATUS_ACTIVE."' AND
                         s.fk_period = $period_id";
         return  self::executeQuery($query);
     }

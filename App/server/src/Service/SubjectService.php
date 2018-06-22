@@ -40,7 +40,7 @@ class SubjectService{
      */
     public function getEnabledSubjects()
     {
-        $result = $this->perSubjects->getSubjects_ByStatus( Utils::$STATUS_ENABLE );
+        $result = $this->perSubjects->getSubjects_ByStatus( Utils::$STATUS_ACTIVE );
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getEnabledSubjects",
@@ -334,7 +334,7 @@ class SubjectService{
                 throw new InternalErrorException("changeStatus",
                     "Error al deshabilitar materia", $result->getErrorMessage());
         }
-        else if( $new_status == Utils::$STATUS_ENABLE ){
+        else if( $new_status == Utils::$STATUS_ACTIVE ){
             $result = $this->perSubjects->changeStatusToEnable( $subjectID );
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException("changeStatus",

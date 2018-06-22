@@ -14,8 +14,8 @@ INSERT INTO role(name, description) VALUES
 -- ----------------------------
 
 INSERT INTO user(email, password, fk_role) VALUES
-('admin@mail.com', 	md5('123'), 'administrator'),
-('mod@mail.com', 		md5('123'), 'moderator');
+('admin@mail.com', 	md5('123'), 'administrator', 'ACTIVE'),
+('mod@mail.com', 		md5('123'), 'moderator', 'ACTIVE');
 
 
 

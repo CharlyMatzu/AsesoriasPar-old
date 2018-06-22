@@ -66,13 +66,13 @@
                                 <td>{{p.year}}</td>
                                 <td>{{p.date_register}}</td>
                                 <td>
-                                    <span ng-show="p.status == 0" class="label label-danger">Deshabilitado</span>
-                                    <span ng-show="p.status == 2" class="label label-success">Activo</span>
+                                    <span ng-show="p.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
+                                    <span ng-show="p.status === 'ACTIVE'" class="label label-success">Activo</span>
                                 </td>
                                 <td>
                                         <button ng-click="editPlan(p)" class="opt-plan-{{p.id}} btn btn-primary">Editar</button>
-                                        <button ng-show="p.status == 0" ng-click="enablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-success">Habilitar</button>
-                                        <button ng-show="p.status == 2" ng-click="disablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-warning">Deshabilitar</button>
+                                        <button ng-show="p.status === 'DISABLED'" ng-click="enablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-success">Habilitar</button>
+                                        <button ng-show="p.status === 'ACTIVE'" ng-click="disablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-warning">Deshabilitar</button>
                                         <button ng-click="deletePlan(p.id)" class="opt-plan-{{p.id}} btn btn-danger">Eliminar</button>
                                 </td>
                             </tr>

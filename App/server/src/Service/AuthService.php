@@ -42,7 +42,7 @@ class AuthService
         if( $user['status'] == Utils::$STATUS_DISABLE ) {
             throw new UnauthorizedException("email o contraseña e incorrectos");
         }
-        else if( $user['status'] == Utils::$STATUS_NO_CONFIRMED ) {
+        else if( $user['status'] == Utils::$STATUS_PENDING ) {
 
             try{
                 $mailServ = new MailService();
@@ -94,14 +94,14 @@ class AuthService
         $user = $userServ->getUser_ById( $id );
 
         //Se comprueba estado actual
-        if( $user['status'] == Utils::$STATUS_ENABLE )
+        if( $user['status'] == Utils::$STATUS_ACTIVE )
             throw new ConflictException("Ya se ha confirmado correo");
 
         if( $user['status'] == Utils::$STATUS_DISABLE )
             throw new NotFoundException("No existe usuario");
 
         //Se cambia status
-        $userServ->changeStatus( $id, Utils::$STATUS_ENABLE );
+        $userServ->changeStatus( $id, Utils::$STATUS_ACTIVE );
 
         //Envío de correo de
         try{
