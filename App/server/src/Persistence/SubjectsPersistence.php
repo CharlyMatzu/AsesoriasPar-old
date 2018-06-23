@@ -1,7 +1,6 @@
 <?php namespace App\Persistence;
 
 use App\Model\SubjectModel;
-use App\Utils;
 
 class SubjectsPersistence extends Persistence{
     public function __construct(){}
@@ -22,6 +21,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubjects(){
         $query = $this->campos."
@@ -36,6 +36,7 @@ class SubjectsPersistence extends Persistence{
      * @param $status int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubjects_ByStatus($status)
     {
@@ -50,7 +51,9 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subjectID
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ById($subjectID){
         $query = $this->campos."
@@ -67,6 +70,7 @@ class SubjectsPersistence extends Persistence{
      * @param $subject_plan
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_SearchFilter($subject_career, $subject_semester, $subject_plan){
 
@@ -134,11 +138,13 @@ class SubjectsPersistence extends Persistence{
         //Obteniendo resultados
         return self::executeQuery($query);
     }
-    
+
 
     /**
      * @param $name
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByName($name){
         $query = $this->campos."
@@ -151,7 +157,9 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $shortName
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByShortName($shortName)
     {
@@ -165,7 +173,9 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $name
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchSubjects_ByName($name){
         $query = $this->campos."
@@ -182,6 +192,7 @@ class SubjectsPersistence extends Persistence{
      * @param $career int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByName_ShortName($name, $plan, $career, $subject_id = null){
 
@@ -202,7 +213,9 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $semester int
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubjects_BySemester( $semester )
     {
@@ -215,7 +228,9 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $planID int
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubjects_ByPlan( $planID )
     {
@@ -228,7 +243,9 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $careerID
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubjects_ByCareer($careerID )
     {
@@ -241,11 +258,12 @@ class SubjectsPersistence extends Persistence{
     }
 
 
-
     /**
      * @param $name string nombre de la materia
      * @param $careerID int CareerModel ID
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByName_Career($name, $careerID)
     {
@@ -260,7 +278,9 @@ class SubjectsPersistence extends Persistence{
      * @param $name string nombre de la materia
      * @param $careerID int CareerModel ID
      * @param $planID int plan ID
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByName_Career_Plan($name, $careerID, $planID)
     {
@@ -274,7 +294,9 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $careerID int CareerModel ID
      * @param $planID int plan ID
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByCareer_Plan($careerID, $planID)
     {
@@ -289,15 +311,11 @@ class SubjectsPersistence extends Persistence{
     /** ----------------------------- Nuevo --------------------------------------- */
 
 
-
-
-
-
-
     /**
      * @param $subject SubjectModel
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertSubject( $subject )
     {
@@ -310,6 +328,7 @@ class SubjectsPersistence extends Persistence{
      * @param $subject SubjectModel
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function updateSubject($subject)
     {
@@ -321,30 +340,25 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $subjectID
+     *
+     * @param $status
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToDeleted($subjectID ){
+    public function changeStatus($subjectID, $status ){
         $query = "UPDATE subject
-                    SET status = '".Utils::$STATUS_DISABLE."' 
+                    SET status = '$status' 
                     WHERE subject_id = $subjectID";
         return  self::executeQuery($query);
     }
 
-    /**
-     * @param $subjectID
-     * @return \App\Model\DataResult
-     */
-    public function changeStatusToEnable($subjectID ){
-        $query = "UPDATE subject
-                    SET status = '".Utils::$STATUS_ACTIVE."' 
-                    WHERE subject_id = $subjectID";
-        return  self::executeQuery($query);
-    }
 
     /**
      * @param $subjectID int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function deleteSubject($subjectID ){
         $query = "DELETE FROM subject

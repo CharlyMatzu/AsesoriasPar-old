@@ -83,7 +83,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
-        StudentsService.changeStatus(user_id, ENABLED, 
+        StudentsService.changeStatus(user_id, ACTIVE,
             function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla

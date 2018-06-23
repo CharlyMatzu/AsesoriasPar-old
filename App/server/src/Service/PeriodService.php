@@ -171,32 +171,19 @@ class PeriodService{
 
 
     /**
-     * @param $periodId
+     * @param $period_Id
      * @param $status
      *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function changeStatus($periodId, $status ){
+    public function changeStatus($period_Id, $status ){
 
-        $result = $this->isPeriodExist_ById($periodId);
+        $this->getPeriod_ById($period_Id);
 
+        $result = $this->perPeriods->changeStatus( $period_Id, $status );
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("changeStatus","Error al comprobar existencia de periodo", $result->getErrorMessage());
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("Periodo no existe");
-
-        if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->perPeriods->changeStatusToDelete( $periodId );
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","No se pudo deshabilitar periodo", $result->getErrorMessage());
-        }
-        else if( $status == Utils::$STATUS_ACTIVE ){
-            $result = $this->perPeriods->changeStatusToEnable( $periodId );
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","No se pudo habilitar periodo", $result->getErrorMessage());
-        }
+            throw new InternalErrorException("changeStatus","Error al cambiar estado de periodo", $result->getErrorMessage());
     }
 
     /**

@@ -242,7 +242,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         $scope.disableButtons(true, '.opt-subject-'+subject_id);
         Notification("Procesando...");
 
-        SubjectService.changeStatus(subject_id, ENABLED,
+        SubjectService.changeStatus(subject_id, ACTIVE,
             function(success){
                 Notification.success("habilitado con exito");
                 $scope.getSubjects();

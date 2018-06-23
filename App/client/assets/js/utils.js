@@ -1,8 +1,11 @@
 //--------------------- STATUS
 
-const DISABLED = 0;
-const NO_CONFIRM = 1;
-const ENABLED = 2;
+const DISABLED = 'DISABLED';
+const PENDING = 'PENDING';
+const ACTIVE = 'ACTIVE';
+const FINALIZED = 'FINALIZED';
+const LOCKED = 'LOCKED';
+const VALIDATED = 'VALIDATED';
 
 
 //---------------------HTTP RESPONSES

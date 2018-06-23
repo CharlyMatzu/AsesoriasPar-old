@@ -270,13 +270,15 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $scheduleId int
      *
+     * @param $status
+     *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function enableSchedule($scheduleId)
+    public function changeStatus($scheduleId, $status)
     {
         $query = "UPDATE schedule
-                  SET status = '".Utils::$STATUS_ACTIVE."'
+                  SET status = '$status'
                   WHERE schedule_id = $scheduleId";
         return  self::executeQuery($query);
     }

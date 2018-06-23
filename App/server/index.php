@@ -122,7 +122,6 @@ $app->put('/users/{id}/role', 'UserController:updateUserRole')
 
 
 
-//TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
 //Cambia estado de usuario
 $app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
         ->add('InputMiddleware:checkParam_Status')
@@ -202,6 +201,7 @@ $app->post('/careers', 'CareerController:createCareer')
 $app->patch('/careers/{id}/status/{status}', 'CareerController:changeStatus')
         ->add('InputMiddleware:checkParam_Status')
         ->add('InputMiddleware:checkParam_Id');
+
 
 //TODO: VALIDAR AUTH
 //Actualiza carrera
@@ -416,7 +416,7 @@ $app->get('/subject/{id}/advisers', 'SubjectController:getAdvisers_BySubject_Ign
 //TODO: VALIDAR AUTH
 //Cambia estado de horario
 //TODO: SEPARAR MÉTODOS: habilitar y deshabilitar
-$app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeScheduleStatus')
+$app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeStatus')
         ->add('InputMiddleware:checkParam_Status')
         ->add('InputMiddleware:checkParam_Id');
 

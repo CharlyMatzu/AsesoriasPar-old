@@ -449,8 +449,6 @@ class UserService{
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\Request\ForbiddenException
-     * @throws \App\Exceptions\Request\UnauthorizedException
      */
     public function updateUserEmail($user){
 
@@ -467,7 +465,7 @@ class UserService{
             $result = $this->isEmailUsed( $user->getEmail() );
             //Operación
             if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "updateUser","Ocurrió un error al verificar email de usuario", $result->getErrorMessage());
+                throw new InternalErrorException( "updateUserEmail","Ocurrió un error al verificar email de usuario", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException( "Email ya existe" );
         }
@@ -530,33 +528,24 @@ class UserService{
     }
 
 
-
     /**
      * @param $user_id int
      * @param $status int
      *
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\Request\UnauthorizedException
      */
-    public function changeStatus($user_id, $status ){
+    public function changeStatus($user_id, $status){
 
         //Verificando si existe usuario
         $this->getUser_ById( $user_id );
 
-        //Eliminando usuario (cambiando status)
-        if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->userPer->changeStatusToDisable( $user_id );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "changeStatus","Ocurrió un error al deshabilitar usuario", $result->getErrorMessage());
-        }
-        else if( $status == Utils::$STATUS_ACTIVE ){
-            $result = $this->userPer->changeStatusToEnable( $user_id );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "changeStatus","Ocurrió un error al habilitar usuario", $result->getErrorMessage());
-        }
+        $result = $this->userPer->changeStatus( $user_id, $status );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "changeStatus","Ocurrió un error cambiar status de Usuario", $result->getErrorMessage());
 
     }
+
 
     /**
      * @param $id
@@ -566,11 +555,7 @@ class UserService{
     public function deleteUser($id)
     {
         //Verificando si existe usuario
-        $result = $this->userPer->getUser_ById( $id );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "deleteUser","Ocurrió un error al obtener usuario", $result->getErrorMessage());
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe usuario");
+        $this->getUser_ById( $id );
 
         //Eliminando usuario (cambiando status)
         $result = $this->userPer->deleteUser_ById( $id );

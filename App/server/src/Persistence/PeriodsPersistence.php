@@ -157,27 +157,14 @@ class PeriodsPersistence extends Persistence{
      *
      * @param $id int
      *
-     * @return \App\Model\DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function changeStatusToDelete( $id ){
-        $query = "UPDATE period
-                  SET status = '".Utils::$STATUS_DISABLE."'
-                  WHERE period_id = $id";
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * cambia el estado a 2 indicando que esta habilitado
-     *
-     * @param $id int
+     * @param $status
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToEnable( $id ){
+    public function changeStatus($id, $status ){
         $query = "UPDATE period
-                  SET status = '".Utils::$STATUS_ACTIVE."'
+                  SET status = '$status'
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }

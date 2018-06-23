@@ -139,7 +139,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     //     $scope.disableButtons(true, '.opt-student-'+user_id);
 
     //     Notification('Procesando...');
-    //     StudentDetailService.changeStatus(user_id, ENABLED, 
+    //     StudentDetailService.changeStatus(user_id, ACTIVE,
     //         function(success){
     //             Notification.success("Habilitado con exito");
     //             //TODO: debe actualizarse solo dicha fila de la tabla

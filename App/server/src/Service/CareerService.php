@@ -199,58 +199,23 @@ class CareerService{
     }
 
     /**
-     * Meotodo para eliminar una carrera mediante el ID
+     * Método para eliminar una carrera mediante el ID
      * @param $careerID
+     * @param $status
+     *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function disableCareer($careerID ){
+    public function changeStatus($careerID, $status ){
         //Verificamos si la carrera existe
         $this->getCareer_ById( $careerID );
 
-        $result = $this->perCareers->changeStatusToDeleted( $careerID );
+        $result = $this->perCareers->changeStatus( $careerID, $status );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("disableCareer", "No se pudo deshabilitar carrera", $result->getErrorMessage());
+            throw new InternalErrorException("disableCareer", "Erro al cambiar estado de carrera", $result->getErrorMessage());
     }
 
 
-    /**
-     * Meotodo para eliminar una carrera mediante el ID
-     *
-     * @param $careerID
-     *
-     * @return void
-     * @throws InternalErrorException
-     * @throws NotFoundException
-     */
-    public function enableCareer($careerID ){
-        //Verificamos si la carrera existe
-        //REGRESA TRUE O FALSE
-        $this->getCareer_ById($careerID);
-        $result = $this->perCareers->changeStatusToEnable( $careerID );
-
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("enableCareers", "No se pudo habilitar carrera", $result->getErrorMessage());
-    }
-
-
-//    /**
-//     * Método para verificar que la carrera existe o no mediante el ID de la carrera
-//     * @param $id
-//     * @return bool|DataResult
-//     */
-//    public function isCareerExist_ById($id ){
-//
-//        $result = $this->perCareers->getCareer_ById( $id );
-//
-//        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-//            $result->setOperation(true);
-//
-//        else if( Utils::isEmpty( $result->getOperation() ) )
-//            $result->setOperation(false);
-//
-//        return $result;
-//    }
 
     /**
      * Método para verificar si existe la carrera mediante el nombre de la carrera

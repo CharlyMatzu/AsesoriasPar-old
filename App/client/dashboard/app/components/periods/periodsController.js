@@ -170,7 +170,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         $scope.disableButtons(true, '.opt-period-'+period_id);
         Notification("Procesando...");
 
-        PeriodsService.changeStatus(period_id, ENABLED,
+        PeriodsService.changeStatus(period_id, ACTIVE,
             function(success){
                 Notification.success("habilitado con exito");
                 getPeriods();

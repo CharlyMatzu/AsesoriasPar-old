@@ -132,31 +132,18 @@ class CareersPersistence extends Persistence {
      *
      * @param $careerID
      *
-     * @return DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function changeStatusToDeleted($careerID ){
-        $query = "UPDATE career 
-                      SET status = ". Utils::$STATUS_DISABLE ."
-                      WHERE career_id = $careerID";
-        return  self::executeQuery($query);
-    }
-
-
-    /**
-     * Método para eliminar la carrera
-     *
-     * @param $careerID
+     * @param $status
      *
      * @return DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToEnable( $careerID ){
+    public function changeStatus($careerID, $status ){
         $query = "UPDATE career 
-                      SET status = ". Utils::$STATUS_ACTIVE ."
+                      SET status = '$status'
                       WHERE career_id = $careerID";
         return  self::executeQuery($query);
     }
+
 
     /**
      * @param $id

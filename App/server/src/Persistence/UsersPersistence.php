@@ -250,25 +250,14 @@ class UsersPersistence extends Persistence{
     /**
      * @param $id
      *
-     * @return \App\Model\DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function changeStatusToDisable($id ){
-        $query = "UPDATE user u
-                         SET u.status = '".Utils::$STATUS_DISABLE."'    
-                         WHERE user_id = ".$id;
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * @param $id
+     * @param $status
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToEnable($id ){
+    public function changeStatus($id, $status ){
         $query = "UPDATE user u
-                         SET u.status = '".Utils::$STATUS_ACTIVE."'    
+                         SET u.status = '$status'    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }

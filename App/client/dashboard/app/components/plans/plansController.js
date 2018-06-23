@@ -113,7 +113,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, $http
         $scope.disableButtons(true, '.opt-plan-'+plan_id);
 
         Notification('Procesando...');
-        PlansService.changeStatus(plan_id, ENABLED, 
+        PlansService.changeStatus(plan_id, ACTIVE,
             function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla

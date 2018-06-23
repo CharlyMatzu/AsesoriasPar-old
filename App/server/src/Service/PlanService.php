@@ -113,16 +113,9 @@ class PlanService{
         //Verifica que plan exista
         $this->getPlan_ById( $planId );
 
-        if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->perPlans->changeStatusToDisable($planId);
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","Error al deshabilitar plan", $result->getErrorMessage());
-        }
-        else if( $status == Utils::$STATUS_ACTIVE ){
-            $result = $this->perPlans->changeStatusToEnable($planId);
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","Error al habilitar plan", $result->getErrorMessage());
-        }
+        $result = $this->perPlans->changeStatus($planId, $status);
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("changeStatus","Error al cambiar status plan", $result->getErrorMessage());
     }
 
 
@@ -146,7 +139,9 @@ class PlanService{
 
     /**
      * @param $year
+     *
      * @return DataResult
+     * @throws InternalErrorException
      */
     private function isPlanExist_ByYear($year){
 

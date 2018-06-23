@@ -126,7 +126,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         $scope.disableButtons(true, '.opt-career-'+career_id);
         Notification("Procesando...");
 
-        CareerService.changeStatus(career_id, ENABLED,
+        CareerService.changeStatus(career_id, ACTIVE,
             function(success){
                 Notification.success("habilitado con exito");
                 $scope.getCareers();

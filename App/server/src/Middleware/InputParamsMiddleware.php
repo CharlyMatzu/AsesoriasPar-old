@@ -105,15 +105,16 @@ class InputParamsMiddleware extends Middleware
     public function checkParam_Status($req, $res, $next)
     {
         $status = self::getRouteParams($req)['status'];
-        //Verifica que sea un string numérico (no int porque viene como string)
-        if( !is_numeric($status) || $status === "" || $status == null )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
+        //Verifica los status disponibles
         if( ($status != Utils::$STATUS_ACTIVE)
             && ($status != Utils::$STATUS_DISABLE)
-            //&& ($status != Utils::$STATUS_NO_CONFIRM)
+            && ($status != Utils::$STATUS_PENDING)
+            && ($status != Utils::$STATUS_FINALIZED)
+            && ($status != Utils::$STATUS_VALIDATED)
+            && ($status != Utils::$STATUS_LOCKED)
         )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Debe ser: ACTIVE, DISABLED, PENDING, FINALIZED, VALIDATE, LOCKED");
 
         $res = $next($req, $res);
         return $res;

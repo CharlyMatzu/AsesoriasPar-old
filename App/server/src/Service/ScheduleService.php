@@ -533,22 +533,13 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function changeScheduleStatus($scheduleId, $status)
+    public function changeStatus($scheduleId, $status)
     {
         $this->getSchedule_ById( $scheduleId );
 
-        if( $status == Utils::$STATUS_ACTIVE ){
-            $result = $this->schedulesPer->enableSchedule( $scheduleId );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("changeScheduleStatus",
-                    "Error al habilitar horario", $result->getErrorMessage() );
-        }
-        else if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->schedulesPer->disableSchedule( $scheduleId );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("changeScheduleStatus",
-                    "Error al deshabilitar horario", $result->getErrorMessage() );
-        }
+        $result = $this->schedulesPer->changeStatus( $scheduleId, $status );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("changeStatus", "Error al cambiar status de horario", $result->getErrorMessage() );
     }
 
 
