@@ -35,7 +35,7 @@ class PeriodsPersistence extends Persistence{
      */
     public function getCurrentPeriod(){
         $query = $this->campos.
-                    "WHERE DATE(NOW()) BETWEEN date_start AND date_end";
+                    "WHERE (DATE(NOW()) BETWEEN date_start AND date_end) AND status = '".Utils::$STATUS_ACTIVE."'";
         //Obteniendo resultados
         return self::executeQuery($query);
     }

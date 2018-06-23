@@ -129,7 +129,6 @@ class StudentController
     {
         try {
             $studentSer = new StudentService();
-//            $hours = $req->getAttribute('schedule_hours');
             $studentSer->createSchedule( $params['id'] );
             return Utils::makeMessageResponse( $res, Utils::$CREATED, "Horario de alumno creado");
 

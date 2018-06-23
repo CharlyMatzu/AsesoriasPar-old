@@ -32,30 +32,14 @@ app.run(function($rootScope, $window, $http, RequestFactory, AuthFactory){
         var user = AuthFactory.getData();
         $rootScope.user = user;
 
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/users/"+user.id+"/student"
-        }).then(function(success){
-            $rootScope.student = success.data;
-        }, function(error){
-            $rootScope.signOut();
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/users/"+user.id+"/student",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     };
-
-
-    //Verifica la sesion
-    // (function(){
-    //     if( AuthFactory.isAuthenticated() ){
-    //         if( AuthFactory.isStudent() )
-    //             $rootScope.getStudentData();
-    //         else
-    //             // $window.location.href = "/";
-    //             console.log("STAFF")
-    //     }
-    //     else{
-    //         // $window.location.href = "/";
-    //         console.log("NO")
-    //     }
-    // })();
 
 });
