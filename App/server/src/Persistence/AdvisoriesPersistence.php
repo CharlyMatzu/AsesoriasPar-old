@@ -106,7 +106,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     //-----------------------
-    // Asesorias por estudiante
+    // asesorias por estudiante
     //-----------------------
 
 

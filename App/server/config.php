@@ -38,7 +38,8 @@
     //include_once ROOT_PATH . DS . "autoload.php";
     //include_once VENDOR_PATH. DS ."autoload.php";
 
-    define("SERVER_URL", "http://api.asesoriaspar.com/index.php");
+    // define("SERVER_URL", "http://api.asesoiaspar.com/index.php");
+    define("SERVER_URL", "http://192.168.1.72/AsesoriasPar-Web/App/server/index.php");
     //Obtiene la ruta a la cual se accedió al elemento (desde cliente)
 //    define("SERVER_URL", "http://".$_SERVER['HTTP_HOST'] ."/". $_SERVER['REQUEST_URI']);
 //    define("CLIENT_URL", "http://client.asesoriaspar.com");

@@ -186,7 +186,7 @@ class SubjectService{
 
 
     //-----------------
-    // ASESORIAS
+    // asesoriaS
     //-----------------
 
 //    public function getCurrAvailScheduleSubs_SkipSutdent( $idStudent ){

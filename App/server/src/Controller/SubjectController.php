@@ -102,7 +102,7 @@ class SubjectController
      *
      * @return Response
      */
-    public function getCurrentAdvisers_BySubject_IgnoreStudent($req, $res, $params){
+    public function getAdvisers_BySubject_IgnoreStudent($req, $res, $params){
         try {
             $subServ = new SubjectService();
             $result = $subServ->getCurrentAdvisers_BySubject_IgnoreStudent( $params['id'], $params['student'] );

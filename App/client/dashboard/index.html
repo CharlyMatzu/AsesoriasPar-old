@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" ng-app="AsesoriasPar">
+<html lang="es" ng-app="Dashboard">
 
 <head>
     <meta charset="utf-8">
@@ -98,18 +98,23 @@
                         <li class="nav-devider"></li>
                         <li class="nav-label">GENERAL</li>
                         <li>
+                            <a href="#!/inicio">
+                                <i class="fa fa-home"></i><span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#!/periodos">
                                 <i class="fa fa-calendar"></i><span class="hide-menu">Periodos de asesorias</span>
                             </a>
                         </li>
                         <li>
                             <a href="#!/planes">
-                                <i class="fa fa-book"></i><span class="hide-menu">Planes academicos</span>
+                                <i class="fa fa-clock-o"></i><span class="hide-menu">Planes academicos</span>
                             </a>
                         </li>
                         <li>
                             <a href="#!/carreras">
-                                <i class="fa fa-graduation-cap"></i><span class="hide-menu">Carreras</span>
+                                <i class="fa fa-book"></i><span class="hide-menu">Carreras</span>
                             </a>
                         </li>
                         <li> 
@@ -150,6 +155,12 @@
                                 <li><a href="#!/estudiantes/nuevo">Nuevo estudiante</a></li>
                             </ul>
                         </li> -->
+
+                        <li>
+                            <a href="#!/estudiantes">
+                                <i class="fa fa-graduation-cap"></i><span>Estudiantes</span>
+                            </a>
+                        </li>
 
                         <li>
                             <a href="#!/asesorias">
@@ -430,6 +441,15 @@
         <!-- new subject -->
         <script src="app/components/subjects/newSubject/newSubjectService.js"></script>
         <script src="app/components/subjects/newSubject/newSubjectController.js"></script>
+
+
+    <!-- estudiantes -->
+    <script src="app/components/students/studentsService.js"></script>
+    <script src="app/components/students/studentsController.js"></script>
+
+        <!-- detalle -->
+        <script src="app/components/students/detail/studentDetailService.js"></script>
+        <script src="app/components/students/detail/studentDetailController.js"></script>
 
         
     <!-- signout -->

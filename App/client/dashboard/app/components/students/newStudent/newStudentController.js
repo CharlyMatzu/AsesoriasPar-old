@@ -1,5 +1,5 @@
 app.controller('NewUserController', function($scope, $http, $timeout, NewUserService, Notification){
-    $scope.page.title = "Staff > Nuevo";
+    $scope.page.title = "Usuarios > Nuevo";
     $scope.loading = false;
 
 

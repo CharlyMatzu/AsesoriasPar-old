@@ -35,9 +35,10 @@ class AuthService
         $result = $this->userPer->getUser_BySignIn($email, $pass);
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("signIn","Ocurrió un error al authenticar", $result->getErrorMessage());
+            throw new InternalErrorException("signIn","Ocurrió un error al autenticar", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new UnauthorizedException("email o contraseña incorrectos");
+            throw new NotFoundException("email o contraseña incorrectos");
+//            throw new UnauthorizedException("email o contraseña incorrectos");
 
         //Si esta sin confirmar
         $user = $result->getData()[0];
@@ -95,7 +96,7 @@ class AuthService
         try{
             $text = "Confirmado con éxito el correo: ".$user['email'];
             $mail = new MailModel();
-            $mail->setSubject("Asesorías par: confirmado");
+            $mail->setSubject("asesorias par: confirmado");
             $mail->setBody($text);
             $mail->setPlainBody($text);
             $mail->addAdress( $user['email'] );

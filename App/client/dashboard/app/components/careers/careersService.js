@@ -15,7 +15,7 @@ app.service('CareerService', function($http, RequestFactory){
     this.addCareer = function(career, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: RequestFactory.getURL()+"index.php/careers",
+            url: RequestFactory.getURL()+"/careers",
             data: {
                 name: career.name,
                 short_name: career.short_name
@@ -30,7 +30,7 @@ app.service('CareerService', function($http, RequestFactory){
     this.updateCareer = function(career, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: RequestFactory.getURL()+"index.php/careers/"+career.id,
+            url: RequestFactory.getURL()+"/careers/"+career.id,
             data: {
                 name: career.name,
                 short_name: career.short_name
@@ -45,7 +45,7 @@ app.service('CareerService', function($http, RequestFactory){
     this.changeStatus = function(career_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: RequestFactory.getURL()+"index.php/careers/"+career_id+"/status/"+status
+            url: RequestFactory.getURL()+"/careers/"+career_id+"/status/"+status
         }).then(function (success){
             successCallback(success);
         },function (error){
@@ -56,7 +56,7 @@ app.service('CareerService', function($http, RequestFactory){
     this.deleteCareer = function(career_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: RequestFactory.getURL()+"index.php/careers/"+career_id
+            url: RequestFactory.getURL()+"/careers/"+career_id
         }).then(function (success){
             successCallback(success);
         },function (error){

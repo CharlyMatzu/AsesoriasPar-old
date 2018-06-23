@@ -26,7 +26,7 @@ class AppLogger
 //            $staff = $userServ->getStaffUsers();
 //            //email
 //            $mailServ = new MailService();
-//            $mailServ->sendEmailToStaff("Asesorías Par: Error registrado",
+//            $mailServ->sendEmailToStaff("asesorias Par: Error registrado",
 //                "Se registro un nuevo error a las ".Carbon::Now(Utils::TIMEZONE ), $staff);
 //
 //        }catch (RequestException $e){}

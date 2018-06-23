@@ -60,6 +60,17 @@ app.service('AdvisoriesService', function($http, RequestFactory){
         }, function(error){
             errorCallback(error);
         });
+    }
+
+    this.finalizeAdvisory = function(advisory_id, successCallback, errorCallback){
+        $http({
+            method: 'PATCH',
+            url: RequestFactory.getURL()+"/advisories/"+advisory_id+"/finalize"
+        }).then(function(success){
+            successCallback(success);
+        }, function(error){
+            errorCallback(error);
+        });
     } 
 
 

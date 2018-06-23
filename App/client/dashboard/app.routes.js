@@ -1,10 +1,10 @@
 app.config( function ($routeProvider) {
     $routeProvider
         
-        // .when("/", {
-        //     controller: "HomeController",
-        //     templateUrl: "app/components/home/homeView.html"
-        // })
+        .when("/", {
+            // controller: "HomeController",
+            templateUrl: "app/components/home/homeView.html"
+        })
 
         .when("/periodos", {
             controller: "PeriodsController",
@@ -42,10 +42,14 @@ app.config( function ($routeProvider) {
             templateUrl: "app/components/users/newUser/newUserView.html"
         })
 
-        // .when("/estudiantes", {
-        //     controller: "StudentsController",
-        //     templateUrl: "app/components/students/studentsView.html"
-        // })
+        .when("/estudiantes", {
+            controller: "StudentsController",
+            templateUrl: "app/components/students/studentsView.html"
+        })
+        .when("/estudiantes/:id", {
+            controller: "StudentDetailController",
+            templateUrl: "app/components/students/detail/studentDetailView.html"
+        })
         // .when("/estudiantes/nuevo", {
         //     controller: "NewStudentController",
         //     templateUrl: "app/components/students/newStudent/newStudentView.html"
@@ -67,5 +71,5 @@ app.config( function ($routeProvider) {
             // templateUrl: "app/components/email/emailView.html"
         })
 
-        .otherwise("/asesorias");
+        .otherwise("/");
 });

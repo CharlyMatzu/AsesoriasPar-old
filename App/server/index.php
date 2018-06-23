@@ -55,7 +55,8 @@ $app->get('/', function(Request $request, Response $response, $params){
 //--------------------------
 
 $app->post('/mail/send', 'MailController:sendMail')
-        ->add('InputMiddleware:checkData_Mail');
+        ->add('InputMiddleware:checkData_Mail')
+        ->add('AuthMiddleware:requireStaff');
 
 
 //Permite autenticarse (signin)
@@ -314,7 +315,7 @@ $app->get('/schedule/source', 'ScheduleController:getHoursAndDays');
 $app->get('/schedule/{id}', 'ScheduleController:getSchedule_ById')
         ->add('InputMiddleware:checkParam_id');
 
-$app->get('/schedule/adviser/{adviser}/alumn/{alumn}/match', 'ScheduleController:getCurrentMatchHours_ByStudents');
+$app->get('/schedule/adviser/{adviser}/alumn/{alumn}/match', 'ScheduleController:getScheduleMatchHours_ByStudents');
 //    ->add('InputMiddleware:checkParam_Id')
 //  ;
 
@@ -325,7 +326,7 @@ $app->get('/schedule/adviser/{adviser}/alumn/{alumn}/match', 'ScheduleController
 
 
 //obtiene asesores disponibles (activos) por materia
-$app->get('/subject/{id}/advisers', 'SubjectController:getCurrentAdvisers_BySubject')
+$app->get('/subject/{id}/advisers', 'SubjectController:getAdvisers_BySubject_IgnoreStudent')
     ->add('InputMiddleware:checkParam_id');
 
 //TODO: obtener asesores disponibles de dicha por materia
@@ -341,13 +342,12 @@ $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeSchedule
 //-------------------ESTUDIANTE
 
 //Obtiene horario actual de estudiante
-$app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule_ByStudentId')
+$app->get('/students/{id}/schedule', 'StudentController:getSchedule_ByStudentId')
     ->add('InputMiddleware:checkParam_Id');
 
 
 //crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
-//        ->add('InputMiddleware:checkData_schedule_hours')
         ->add('InputMiddleware:checkParam_Id');
 
 
@@ -386,7 +386,7 @@ $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects'
 
 
 //Obtiene asesorias actuales
-$app->get('/advisories', 'AdvisoryController:getCurrentAdvisories');
+$app->get('/advisories', 'AdvisoryController:getAdvisories');
 
 
 //Obtiene asesorias de estudiante
@@ -411,7 +411,7 @@ $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
 $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
         ->add('InputMiddleware:checkParam_Id');
 
-$app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getCurrentAdvisers_BySubject_IgnoreStudent')
+$app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getAdvisers_BySubject_IgnoreStudent')
     ->add('InputMiddleware:checkParam_Id');
 
 
@@ -424,14 +424,14 @@ $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisor
 $app->get('/advisories/{id}/schedule', 'AdvisoryController:getAdvisorySchedule')
     ->add('InputMiddleware:checkParam_Id');
 
-$app->put('/advisories/{id}/finalice', 'AdvisoryController:finaliceAdvisory')
+
+$app->patch('/advisories/{id}/finalize', 'AdvisoryController:finalizeAdvisory')
     ->add('InputMiddleware:checkParam_Id');
 
 
 $app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviser')
     ->add('InputMiddleware:checkData_advisory_schedule')
     ->add('InputMiddleware:checkParam_Id');
-
 
 
 //$app->put('/advisories/{id}/hours', 'AdvisoryController:updateAdvisoryHours');

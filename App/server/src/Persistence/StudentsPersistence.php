@@ -17,10 +17,17 @@ class StudentsPersistence extends Persistence{
                         s.facebook as 'facebook', 
                         s.date_register as 'date_register',
                         s.status as 'status',
-                        s.fk_user as 'user_id', 
+                        
+                        s.fk_user as 'user_id',
+                        u.email as 'user_email',
+                        u.status as 'user_status',
+                        
                         c.career_id as 'career_id',
-                        c.name as 'career_name'
-                        FROM student s";
+                        c.name as 'career_name',
+                        c.short_name as 'career_short_name'
+                        FROM student s
+                        INNER JOIN user u ON s.fk_user = u.user_id
+                        INNER JOIN career c ON c.career_id = s.fk_career ";
 
 
     /**
@@ -30,7 +37,6 @@ class StudentsPersistence extends Persistence{
      */
     public function getStudent_ById($id){
         $query =    $this->SELECT."
-                        INNER JOIN career c ON c.career_id = s.fk_career
                         WHERE s.student_id = ".$id;
         //Obteniendo resultados
         return $this->executeQuery($query);
@@ -40,8 +46,7 @@ class StudentsPersistence extends Persistence{
      * @return \App\Model\DataResult
      */
     public function getStudents(){
-        $query =    $this->SELECT."
-                    INNER JOIN career c ON c.career_id = s.fk_career";
+        $query =    $this->SELECT;
         //Obteniendo resultados
         return $this->executeQuery($query);
     }
@@ -49,7 +54,6 @@ class StudentsPersistence extends Persistence{
     public function getStudent_ByUserId($id)
     {
         $query =    $this->SELECT."
-                    INNER JOIN career c ON c.career_id = s.fk_career
                     WHERE s.fk_user = $id";
         //Obteniendo resultados
         return $this->executeQuery($query);
@@ -62,7 +66,6 @@ class StudentsPersistence extends Persistence{
     public function searchStudents($data)
     {
         $query =    $this->SELECT."
-                    INNER JOIN career c ON c.career_id = s.fk_career
                     WHERE (s.first_name LIKE '%$data%') OR
                           (s.last_name LIKE '%$data%') OR 
                           (s.phone LIKE '%$data%') OR 
@@ -78,7 +81,6 @@ class StudentsPersistence extends Persistence{
      */
     public function getStudent_ByItsonId($itsonId){
         $query =    $this->SELECT."
-                    INNER JOIN career c ON c.career_id = s.fk_career
                     WHERE s.itson_id = '$itsonId'";
         //Obteniendo resultados
         return $this->executeQuery($query);
@@ -194,16 +196,17 @@ class StudentsPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-    /**
-     * @param $idStudent
-     * @return \App\Model\DataResult
-     */
-    public function changeStatusToDeleted($idStudent ){
-        $query = "UPDATE student s
-                         SET s.status = ". Utils::$STATUS_DISABLE ."    
-                         WHERE s.student_id = " .$idStudent ;
-        return  self::executeQuery($query);
-    }
+//    /**
+//     * @param $idStudent int
+//     * @param $status int
+//     * @return \App\Model\DataResult
+//     */
+//    public function changeStatus($idStudent, $status ){
+//        $query = "UPDATE student s
+//                         SET s.status = $status
+//                         WHERE s.student_id = " .$idStudent ;
+//        return  self::executeQuery($query);
+//    }
 
 
 

@@ -9,10 +9,27 @@ angular.module("HostModule", [])
     //     notAuthorized: 'auth-not-authorized'
     // })
 
+    .constant('STATUS',{
+        OK: 200,
+        CREATED: 201,
+        NO_CONTENT: 204,
+
+        BAD_REQUEST: 400,
+        UNAUTHORIZED: 401,
+        FORBIDDEN: 403,
+        NOT_FOUND: 404,
+        CONFLICT: 409,
+
+        INTERNAL: 500
+    })
+
+
+
+
     .factory('RequestFactory', function($http){
 
-        var DEVELOPMENT = "http://api.asesoriaspar.com";
-        // var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
+        // var DEVELOPMENT = "http://api.asesoriaspar.com";
+        var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
         var PRODUCTION = "http://asesoriaspar.ronintopics.com";
         var DEVELOP_MODE = true;
             

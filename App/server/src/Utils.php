@@ -6,7 +6,7 @@ class Utils
 {
 
     //Status code for database registers
-    const HEADER_AUTH = "Authorization";
+//    const HEADER_AUTH = "Authorization";
     const TIMEZONE = 'America/Phoenix';
 
     //-------General
@@ -223,6 +223,11 @@ class Utils
         return $array;
     }
 
+    /**
+     * @param $role string
+     *
+     * @return bool
+     */
     public static function isRole($role)
     {
         if( $role === self::$ROLE_ADMIN || $role === self::$ROLE_MOD || $role === self::$ROLE_BASIC )
@@ -242,6 +247,11 @@ class Utils
         // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
         return $d && $d->format($format) === $date;
     }
+
+
+    //------------------------------
+    //    JSONs de configuración
+    //------------------------------
 
     /**
      * @throws InternalErrorException
@@ -287,6 +297,7 @@ class Utils
         $path_config = file_get_contents(CONFIG_PATH ."/mailer.config.json");
         if( !$path_config )
             throw new InternalErrorException("MailerConfig", "No se encontro archivo de configuracion");
+
         $json_config = json_decode( $path_config );
         if( $json_config == null || $json_config == false )
             throw new InternalErrorException("MailerConfig", "Error al decodificar json");

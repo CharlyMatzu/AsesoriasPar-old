@@ -105,7 +105,7 @@ class StudentController
      * @param $params array
      * @return Response
      */
-    public function getCurrentSchedule_ByStudentId($req, $res, $params)
+    public function getSchedule_ByStudentId($req, $res, $params)
     {
         try {
             $studentSer = new StudentService();
@@ -174,7 +174,7 @@ class StudentController
             $student_id = $params['id'];
             $subject = $req->getAttribute('advisory_subject');
             $studentSer->createAdvisoryCurrentPeriod( $student_id,  $subject);
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Asesoria creada con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "asesoria creada con exito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );

@@ -1,4 +1,2 @@
-[2018-06-14 23:21:05] SendMail.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Mailer.php[60] --- Error al enviar correo: You must provide at least one recipient email address. [] []
-[2018-06-14 23:52:28] insertUser.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Service\UserService.php[308] --- Ocurrio un error al verificar email de usuario: No database selected [] []
-[2018-06-14 23:54:08] insertUser.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Service\UserService.php[308] --- Ocurrio un error al verificar email de usuario: No database selected [] []
-[2018-06-14 23:54:49] insertUser.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Service\UserService.php[308] --- Ocurrio un error al verificar email de usuario: No database selected [] []
+
+[2018-06-19 21:35:42] getScheduleSubjects_ById_Enabled.CRITICAL: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\Service\ScheduleService.php[159] --- Error al obtener materias de horario: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM schedule_subjects ss                 INNER JOIN subject s ON ss.fk_subject' at line 10 [] []

@@ -1,0 +1,211 @@
+<div class="container-fluid">
+    
+    <div class="row">
+        <!-- profile -->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-two">
+                        <header>
+                            <div class="avatar">
+                                <img src="../../../../../assets/img/student_assign.jpg" alt="Allison Walker" />
+                            </div>
+                        </header>
+
+                        <h3>{{student.first_name}} {{student.last_name}}</h3>
+                        <div class="desc">
+                            {{student.career_name}}
+                        </div>
+                        <!-- TODO: agregar resumen de informacion -->
+                        <!-- TODO: agregar estado -->
+                        <div class="contacts">
+                            <a href=""><i class="fa fa-plus"></i></a>
+                            <a href=""><i class="fa fa-whatsapp"></i></a>
+                            <a href=""><i class="fa fa-envelope"></i></a>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="options">
+                            <button ng-show="student.status == 0" class="btn btn-success">Habilitar</button>
+                            <button ng-show="student.status == 2" class="btn btn-warning">Deshabilitar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end profile -->
+    </div>
+
+    <!-- informacion -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Información de estudiante</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="first_name">Nombre</label>
+                                    <input type="text" id="first_name" class="form-control" ng-model="student.first_name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="last_name">Apellido</label>
+                                    <input type="text" id="last_name" class="form-control" ng-model="student.last_name">
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                    <label for="itson_id">ID</label>
+                                    <input type="text" id="itson_id" class="form-control" ng-model="student.itson_id">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="phone">Teléfono</label>
+                                    <input type="text" id="phone" class="form-control" ng-model="student.phone">
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                    <label for="facebook">Facebook</label>
+                                    <input type="text" id="facebook" class="form-control" ng-model="student.facebook">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="career">Carrera</label>
+                                    <select id="career" class="form-control" ng-model="student.career_id">
+                                        <!-- TODO: add careers and select career -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="options col-lg-12">
+                                <button class="btn btn-success">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end información -->
+
+
+
+    <!-- Usuario -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Usuario</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="email">Correo electronico:</label>
+                            <input type="text" id="email" class="form-control" ng-model="student.user_email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pass">Contraseña</label>
+                            <input type="password" id="pass" class="form-control">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="pass2">Re-ingresar Contraseña</label>
+                            <input type="password" id="pass2" class="form-control">
+                        </div>
+
+                        <div class="options">
+                            <button class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end Usuario -->
+
+
+    <!-- Materias -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Materias como asesor:</h2>
+                </div>
+                <div class="card-body">
+                    <span ng-hide="schedule.subjects.length > 0">Alumno no tiene materias registradas</span>
+
+                    <div class="table-responsive" ng-show="schedule.subjects.length > 0">
+                        <table class="table">
+                            <tr>
+                                <th>Materia</th>
+                                <th>Plan</th>
+                                <th>Carrera</th>
+                                <th>Estado</th>
+                                <th>Validacion</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="sub in schedule.subjects">
+                                <td>{{sub.subject_name}}</td>
+                                <td>{{sub.plan}}</td>
+                                <td>{{sub.career_name}}</td>
+                                <td>
+                                    <span ng-show="sub.subject_status == 0" class="label label-danger">Deshabilitado</span>
+                                    <span ng-show="sub.subject_status == 2" class="label label-success">Activo</span>
+                                </td>
+                                <td>
+                                    <span ng-show="sub.status == 1" class="label label-warning">Pendiente</span>
+                                    <span ng-show="sub.status == 2" class="label label-success">Validada</span>
+                                </td>
+                                <td>
+                                    <button ng-show="sub.status == 1" class="btn btn-success">Validar</button>
+                                    <button ng-show="sub.status == 2" class="btn btn-warning">Bloquear</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end Materias -->
+
+
+
+    <!-- Horario -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Horario</h2>
+                </div>
+                <div class="card-body">
+                    <div class="schedule-container">
+                        <span ng-hide="daysAndHours.length > 0">No hay un horas</span>
+
+                        <div class="schedule" ng-show="daysAndHours.length > 0">
+                        
+                            <div class="column-item" ng-repeat="dh in daysAndHours">
+                                <div class="cell-item cell-header">{{dh.day}}</div>
+                                <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end Horario -->
+    
+
+</div>

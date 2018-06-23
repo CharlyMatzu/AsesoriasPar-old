@@ -40,7 +40,7 @@ class Mailer
             //Recipients
             $mail->setFrom($con->user, $con->name);
 //            $mail->addAddress('joe@example.net', 'Joe User');     // Add a recipient
-//            $mail->addAddress('asesoriaspar@ronintopics.com', 'AsesoriasPar');               // Name is optional
+//            $mail->addAddress('asesoriaspar@ronintopics.com', 'asesoriasPar');               // Name is optional
 //            $mail->addReplyTo('info@example.com', 'Information');
 //            $mail->addCC('juan_elchapo19@hotmail.com');
 //            $mail->addCC('carlosrozuma@gmail.com');

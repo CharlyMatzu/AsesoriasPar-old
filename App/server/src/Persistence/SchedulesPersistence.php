@@ -57,14 +57,14 @@ class SchedulesPersistence extends Persistence{
     const ORDER_BY_DAY = "dh.day_number, dh.hour";
 
     /**
-     * @param int $scheduleid
+     * @param int $schedule_id
      * @param String $orderType
      *
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
      * @return \App\Model\DataResult
      */
-    public function getScheduleHours_ByScheduleId( $scheduleid, $orderType ){
+    public function getScheduleHours_ByScheduleId($schedule_id, $orderType ){
         $query = "SELECT
                         sdh.schedule_dh_id as 'id',
                         sdh.fk_day_hour as 'day_hour_id',
@@ -72,7 +72,7 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
-                    WHERE sdh.fk_schedule = $scheduleid
+                    WHERE sdh.fk_schedule = $schedule_id
                     ORDER BY $orderType";
 
 
@@ -80,14 +80,14 @@ class SchedulesPersistence extends Persistence{
     }
 
     /**
-     * @param int $scheduleid
+     * @param int $schedule_id
      * @param String $orderType
      *
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
      * @return \App\Model\DataResult
      */
-    public function getScheduleHours_ByScheduleId_Enabled( $scheduleid, $orderType ){
+    public function getScheduleHours_ByScheduleId_Enabled($schedule_id, $orderType ){
         $query = "SELECT
                         sdh.schedule_dh_id as 'id',
                         sdh.fk_day_hour as 'day_hour_id',
@@ -95,7 +95,7 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
-                    WHERE sdh.fk_schedule = $scheduleid AND sdh.status = ".Utils::$STATUS_ENABLE."
+                    WHERE sdh.fk_schedule = $schedule_id AND sdh.status = ".Utils::$STATUS_ENABLE."
                     ORDER BY $orderType";
 
 
@@ -103,21 +103,28 @@ class SchedulesPersistence extends Persistence{
     }
 
     /**
-     * @param int $scheduleid
+     * @param $schedule_id int
+     *
      * @return \App\Model\DataResult
      * TODO: solo materias habilitadas
      */
-    public function getScheduleSubjects_ById($scheduleid)
+    public function getScheduleSubjects_ById($schedule_id)
     {
         $query = "SELECT
                   ss.schedule_subject_id as 'id',
+                  ss.status as 'status',
                   s.subject_id as 'subject_id',
                   s.name as 'subject_name',
-                  ss.status as 'status'
+                  s.status as 'subject_status',
+                  p.year as 'plan',
+                  c.name as 'career_name',
+                  c.short_name as 'career_short_name'
                   
                 FROM schedule_subjects ss
                 INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                WHERE ss.fk_schedule = $scheduleid AND 
+                INNER JOIN plan p ON s.fk_plan = p.plan_id
+                INNER JOIN career c ON s.fk_career = c.career_id
+                WHERE ss.fk_schedule = $schedule_id AND 
                 s.status = ".Utils::$STATUS_ENABLE;
 
         //Obteniendo resultados
@@ -125,21 +132,28 @@ class SchedulesPersistence extends Persistence{
     }
 
     /**
-     * @param int $scheduleid
+     * @param $schedule_id int
+     *
      * @return \App\Model\DataResult
      * TODO: solo materias habilitadas
      */
-    public function getScheduleSubjects_ById_Enabled($scheduleid)
+    public function getScheduleSubjects_ById_Enabled($schedule_id)
     {
         $query = "SELECT
                   ss.schedule_subject_id as 'id',
+                  ss.status as 'status',
                   s.subject_id as 'subject_id',
                   s.name as 'subject_name',
-                  ss.status as 'status'
+                  s.status as 'subject_status',
+                  p.year as 'plan',
+                  c.name as 'career_name',
+                  c.short_name as 'career_short_name'
                   
                 FROM schedule_subjects ss
                 INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                WHERE ss.fk_schedule = $scheduleid AND 
+                INNER JOIN plan p ON s.fk_plan = p.plan_id
+                INNER JOIN career c ON s.fk_career = c.career_id
+                WHERE ss.fk_schedule = $schedule_id AND 
                 (s.status = ".Utils::$STATUS_ENABLE." AND ss.status = ".Utils::$STATUS_ENABLE.")";
 
         //Obteniendo resultados
@@ -182,7 +196,7 @@ class SchedulesPersistence extends Persistence{
      */
     public function insertScheduleSubjects($scheduleId, $subject){
         $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject, status) 
-                      VALUES ($scheduleId, $subject, ".Utils::$STATUS_ACTIVE.")";
+                      VALUES ($scheduleId, $subject, ".Utils::$STATUS_PENDING.")";
 
         return self::executeQuery($query);
     }
@@ -320,8 +334,8 @@ class SchedulesPersistence extends Persistence{
                     s2.first_name,
                     s2.last_name,
                     s2.phone,
-                    s2.itson_id,
-                    s2.avatar as 'avatar'
+                    s2.itson_id
+                    
                   FROM schedule s
                   INNER JOIN student s2 ON s.fk_student = s2.student_id
                   INNER JOIN user u ON s2.fk_user = u.user_id

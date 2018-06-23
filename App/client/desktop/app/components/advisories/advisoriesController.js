@@ -112,8 +112,18 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         
     };
 
-    $scope.finalice = function(advisory_id){
-        Notification("Finalizar");
+    $scope.finalize = function(advisory_id){
+        Notification("Procesando...");
+
+        AdvisoriesService.finalizeAdvisory(advisory_id,
+            function(success){
+                Notification.success("Asesoria finalizada con éxito");
+                //TODO: obtener asesorias
+            },
+            function(error){
+                Notification.error("Ocurrio un error");
+            }
+        );
     };
 
 
