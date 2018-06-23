@@ -13,9 +13,17 @@
                         </header>
 
                         <h3>{{student.first_name}} {{student.last_name}}</h3>
+
+                        <div class="status text-center">
+                            <span ng-show="student.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
+                            <span ng-show="student.status === 'ACTIVE'" class="label label-success">Habilitado</span>
+                            <span ng-show="student.status === 'PENDING'" class="label label-warning">Pendiente</span>
+                        </div>
+
                         <div class="desc">
                             {{student.career_name}}
                         </div>
+                        
                         <!-- TODO: agregar resumen de informacion -->
                         <!-- TODO: agregar estado -->
                         <div class="contacts">
@@ -24,10 +32,13 @@
                             <a href=""><i class="fa fa-envelope"></i></a>
                             <div class="clear"></div>
                         </div>
+                        <div class="date text-center">{{student.date_register}}</div>
 
-                        <div class="options">
-                            <button ng-show="student.status === 'DISABLED'" class="btn btn-success">Habilitar</button>
-                            <button ng-show="student.status === 'ACTIVE'" class="btn btn-warning">Deshabilitar</button>
+                        <div class="options text-center">
+                            <button ng-show="student.status === 'DISABLED'" class="btn btn-success" ng-click="active(student.user_id)">Habilitar</button>
+
+                            <button ng-show="student.status === 'ACTIVE'" class="btn btn-warning" ng-click="disable(student.user_id)">Deshabilitar</button>
+                            
                             <button class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>
@@ -106,12 +117,19 @@
                     <h2>Usuario</h2>
                 </div>
                 <div class="card-body">
+                    <!-- email -->
                     <form>
                         <div class="form-group">
                             <label for="email">Correo electronico:</label>
                             <input type="text" id="email" class="form-control" ng-model="student.user_email">
                         </div>
-                        
+                        <button class="btn btn-success">Guardar</button>
+                    </form>
+                    <!-- end email -->
+                    <br><br>
+
+                    <!-- password -->
+                    <form>
                         <div class="form-group">
                             <label for="pass">Contraseña</label>
                             <input type="password" id="pass" class="form-control">
@@ -127,6 +145,7 @@
                             <button class="btn btn-success">Guardar</button>
                         </div>
                     </form>
+                    <!-- end password -->
                 </div>
             </div>
         </div>
@@ -190,7 +209,7 @@
                 </div>
                 <div class="card-body">
                     <div class="schedule-container">
-                        <span ng-hide="daysAndHours.length > 0">No hay un horas</span>
+                        <span ng-hide="daysAndHours.length > 0">No hay horario</span>
 
                         <div class="schedule" ng-show="daysAndHours.length > 0">
                         

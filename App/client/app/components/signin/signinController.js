@@ -23,7 +23,7 @@ angular.module("LoginApp").controller('SigninController', function($scope, $wind
                 },1000);
             },
             function(error){
-                if( error.status === STATUS.NOT_FOUND ){
+                if( error.status === STATUS.UNAUTHORIZED ){
                     $scope.alert.type = 'warning';
                     $scope.alert.message = "Correo o contraseña incorrectas";
                 }

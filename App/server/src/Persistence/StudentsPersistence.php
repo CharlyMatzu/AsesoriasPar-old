@@ -15,11 +15,10 @@ class StudentsPersistence extends Persistence{
                         s.phone as 'phone', 
                         s.facebook as 'facebook', 
                         s.date_register as 'date_register',
-                        s.status as 'status',
                         
                         s.fk_user as 'user_id',
                         u.email as 'user_email',
-                        u.status as 'user_status',
+                        u.status as 'status',
                         
                         c.career_id as 'career_id',
                         c.name as 'career_name',

@@ -73,11 +73,13 @@ class StudentService{
     }
 
     /**
-     * @param $itsonId String
+     * @param $itson_Id String
+     *
      * @return \App\Model\DataResult
+     * @throws InternalErrorException
      */
-    public function isItsonIdExist($itsonId){
-        $result = $this->perStudents->getStudent_ByItsonId( $itsonId );
+    public function isItsonIdExist($itson_Id){
+        $result = $this->perStudents->getStudent_ByItsonId( $itson_Id );
 
         if( Utils::isSuccessWithResult($result->getOperation()) )
             $result->setOperation(true);

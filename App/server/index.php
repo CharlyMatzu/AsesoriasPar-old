@@ -324,12 +324,14 @@ $app->get('/students/{id}', 'StudentController:getStudent_ById')
 $app->get('/students/search/{search}', 'StudentController:searchStudents')
     ->add('InputMiddleware:checkParam_Search');
 
+
 //TODO: VALIDAR AUTH
 //TODO: Obtener correos tipo gmail para agregar y enviarles correos
 
+
+
 //TODO: VALIDAR AUTH
 //Actualiza datos de usuario
-//TODO: update avatar, facebook, etc.
 $app->put('/students/{id}', 'StudentController:updateStudent')
     ->add('InputMiddleware:checkData_Student')
     ->add('InputMiddleware:checkParam_Id');
