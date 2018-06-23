@@ -1,7 +1,5 @@
 angular.module("Dashboard").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
     
-    $scope.url = RequestFactory.getBaseURL();
-    
     $scope.page.title = "Asesorias";
     $scope.advisories = [];
 

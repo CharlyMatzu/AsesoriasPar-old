@@ -20,7 +20,7 @@ app.run(function($rootScope, $window, $http, RequestFactory, AuthFactory){
 
     $rootScope.signOut = function(){
         AuthFactory.removeUser();
-        $window.location.href = "/";
+        // $window.location.href = "/";
     }
 
     // $rootScope.setActiveMenu = function(event){
@@ -44,16 +44,18 @@ app.run(function($rootScope, $window, $http, RequestFactory, AuthFactory){
 
 
     //Verifica la sesion
-    (function(){
-        if( AuthFactory.isAuthenticated() ){
-            if( AuthFactory.isStudent() )
-                $rootScope.getStudentData();
-            else
-                $window.location.href = "/";
-        }
-        else{
-            $window.location.href = "/";
-        }
-    })();
+    // (function(){
+    //     if( AuthFactory.isAuthenticated() ){
+    //         if( AuthFactory.isStudent() )
+    //             $rootScope.getStudentData();
+    //         else
+    //             // $window.location.href = "/";
+    //             console.log("STAFF")
+    //     }
+    //     else{
+    //         // $window.location.href = "/";
+    //         console.log("NO")
+    //     }
+    // })();
 
 });

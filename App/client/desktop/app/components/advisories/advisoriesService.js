@@ -1,76 +1,71 @@
-app.service('AdvisoriesService', function($http, RequestFactory){
+app.service('AdvisoriesService', function($http, RequestFactory, AuthFactory){
 
     this.getCurrentPeriod = function(successCallback, errorCallback){
-        //Obteniendo periodo actual
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/periods/current"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/periods/current",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
 
     this.getRequestedAdvisories = function(student_id, successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/student/"+student_id+"/advisories/requested"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/student/"+student_id+"/advisories/requested",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.getAdviserAdvisories = function(student_id, successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/student/"+student_id+"/advisories/adviser"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/student/"+student_id+"/advisories/adviser",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
 
     this.getSubjects = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/subjects/enabled"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/subjects/enabled",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     } 
 
     this.requestAdvisory = function(advisory, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/students/"+advisory.student+"/advisories",
-            data: {
-                subject: advisory.subject,
-                description: advisory.description
-            }
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'POST',
+            "/students/"+advisory.student+"/advisories",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.finalizeAdvisory = function(advisory_id, successCallback, errorCallback){
-        $http({
-            method: 'PATCH',
-            url: RequestFactory.getURL()+"/advisories/"+advisory_id+"/finalize"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'PATCH',
+            "/advisories/"+advisory_id+"/finalize",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     } 
 
 

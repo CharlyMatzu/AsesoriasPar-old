@@ -1,7 +1,5 @@
 app.controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
 
-    $scope.url = RequestFactory.getBaseURL();
-
     $scope.requestedAds = [];
     $scope.showRequestedAds = false;
 
