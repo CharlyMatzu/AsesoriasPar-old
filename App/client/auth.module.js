@@ -7,8 +7,8 @@ angular.module("AuthModule", ['LocalStorageModule'])
     })
 
     .constant('STORAGE', {
-        user:    'PAR_USER',
-        student: 'PAR_STUDENT',
+        user: 'PAR_USER',
+        token: 'PAR_TOKEN'
     })
 
     //Para cambiar tipo de session, es decir, por defecto usa LocalStorage, se puede cambiar a sessionStorage
@@ -26,30 +26,55 @@ angular.module("AuthModule", ['LocalStorageModule'])
         // };
 
         return{
+            setSession: function(data){
+                this.setToken( data.token );
+                this.setUser( data.user );
+            },
+
+            setToken: function(token){
+                localStorageService.set(STORAGE.token, token);
+            },
+
+            getToken: function(){
+                if( localStorageService.get(STORAGE.token) != undefined ){
+                    var token = localStorageService.get(STORAGE.token);
+                    return token;
+                }
+                return null;
+            },
+
             setUser: function(user){
                 localStorageService.set(STORAGE.user, JSON.stringify(user));
             },
 
-            removeUser: function(){
+        
+            getUser: function(){
+                if( localStorageService.get(STORAGE.user) != undefined ){
+                    var data = localStorageService.get(STORAGE.user);
+                    user = JSON.parse(data);
+                    return user;
+                }
+                return null;
+            },
+
+            removeSession: function(){
                 localStorageService.remove(STORAGE.user);
-                // localStorageService.remove(STORAGE.student);
+                localStorageService.remove(STORAGE.token);
             },
 
             isAuthenticated: function () {
-                var auth = localStorageService.get(STORAGE.user);
-                if( auth ){
-                    //Si no es null o vacio
-                    if( auth != null && auth != "" )
-                        return true;
-                    else
-                        return false;
-                }
+                var auth = this.getUser();
+                //Si no es null o vacio
+                if( auth != null && 
+                    auth != "" && 
+                    auth != undefined )
+                    return true;
                 else
                     return false;
             },
 
             isStudent: function(){
-                var data = this.getData();
+                var data = this.getUser();
                 if( data != null ){
                     if( data.role === USER_ROLES.basic )
                         return true;
@@ -60,7 +85,7 @@ angular.module("AuthModule", ['LocalStorageModule'])
             },
 
             isStaff: function(){
-                var data = this.getData();
+                var data = this.getUser();
                 if( data != null ){
                     if( data.role === USER_ROLES.mod || 
                         data.role === USER_ROLES.admin )
@@ -69,24 +94,6 @@ angular.module("AuthModule", ['LocalStorageModule'])
                         return false;
                 }
                 return false;
-            },
-
-            getToken: function(){
-                if( this.isAuthenticated() ){
-                    var user = localStorageService.get(STORAGE.user);
-                    user = JSON.parse(user);
-                    return user.token;
-                }
-                return null;
-            },
-
-            getData: function(){
-                if( this.isAuthenticated() ){
-                    var user = localStorageService.get(STORAGE.user);
-                    user = JSON.parse(user);
-                    return user.user;
-                }
-                return null;
             },
 
         };

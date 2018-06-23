@@ -319,29 +319,35 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
 
     
 
-    // (function(){
+    (function(){
 
-    //     $scope.loading.status = true;
-    //     $scope.period.message = "";
+        $scope.loading.status = true;
+        $scope.period.message = "";
         
-    //     ScheduleService.getCurrentPeriod(
-    //         function(success){
-    //             if( success.status == NO_CONTENT ){
-    //                 $scope.loading.status = false;
-    //                 $scope.period.message = "No hay un periodo actual disponible";
-    //                 console.log("Periodo no encontrado");
-    //             }
-    //             else{
-    //                 $scope.period.data = success.data;
-    //                 getStudentSchedule( $scope.student.id );
-    //             }
-    //         },
-    //         function(error){
-    //             $scope.loading.status = false;
-    //         }
-    //     );
+        ScheduleService.getCurrentPeriod(
+            function(success){
+                if( success.status == NO_CONTENT )
+                    Notification("Sin periodo");
+                else
+                    Notification.success("Periodo");
+
+
+                // if( success.status == NO_CONTENT ){
+                //     $scope.loading.status = false;
+                //     $scope.period.message = "No hay un periodo actual disponible";
+                //     console.log("Periodo no encontrado");
+                // }
+                // else{
+                //     $scope.period.data = success.data;
+                //     getStudentSchedule( $scope.student.id );
+                // }
+            },
+            function(error){
+                $scope.loading.status = false;
+            }
+        );
         
         
-    // })();
+    })();
 
 });

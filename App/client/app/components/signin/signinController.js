@@ -16,7 +16,7 @@ angular.module("LoginApp").controller('SigninController', function($scope, $wind
                 
                 $scope.loading.status = false;
                 //Se almacena info de usuario
-                AuthFactory.setUser( success.data );
+                AuthFactory.setSession( success.data );
 
                 $timeout(function(){
                     $scope.redirect();

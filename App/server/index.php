@@ -109,6 +109,7 @@ $app->put('/users/{id}/email', 'UserController:updateUserEmail')
         ->add('AuthMiddleware:requireBasic');
 
 
+//TODO: debe recibir el password viejo y el nuevo
 $app->put('/users/{id}/password', 'UserController:updateUserPassword')
         ->add('InputMiddleware:checkData_Password')
         ->add('InputMiddleware:checkParam_Id');
@@ -156,8 +157,8 @@ $app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail
 
 //Obtiene usuario por ID
 $app->get('/users/{id}', 'UserController:getUser_ById')
-        ->add('InputMiddleware:checkParam_Id')
-        ->add('AuthMiddleware:requireStaff');
+        ->add('InputMiddleware:checkParam_Id');
+//        ->add('AuthMiddleware:requireBasic');
 
 
 //Obtener estudiante por id de usuario
