@@ -1,4 +1,4 @@
-app.controller('UsersController', function($scope, $http, $window, Notification, UsersService){
+angular.module("Dashboard").controller('UsersController', function($scope, $http, $window, Notification, UsersService){
     $scope.page.title = "Staff > Registrados";
     
     $scope.users = [];
@@ -183,7 +183,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $scope.disableButtons(true, '.opt-user-'+user_id);
 
         Notification('Procesando...');
-        UsersService.changeStatus(user_id, ENABLED, 
+        UsersService.changeStatus(user_id, ACTIVE,
             function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla

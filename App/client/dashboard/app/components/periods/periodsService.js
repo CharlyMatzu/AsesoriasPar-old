@@ -1,66 +1,64 @@
-app.service('PeriodsService', function($http, RequestFactory){
+angular.module("Dashboard").service('PeriodsService', function($http, RequestFactory, AuthFactory){
 
     this.getPeriods = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/periods"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/periods",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.addPeriod = function(period, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/periods",
-            data: {
+        RequestFactory.makeTokenRequest(
+            'POST',
+            "/periods",
+            data = {
                 start: period.start,
                 end: period.end
-            }
-        }).then(function(success){
-            successCallback(success) 
-        }, function(error){
-            errorCallback(error)
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.updatePeriod = function(period, successCallback, errorCallback){
-        $http({
-            method: 'PUT',
-            url: RequestFactory.getURL()+"/periods/"+period.id,
-            data: {
+        RequestFactory.makeTokenRequest(
+            'PUT',
+            "/periods/"+period.id,
+            data = {
                 start: period.start,
                 end: period.end
-            }
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     this.changeStatus = function(period_id, status, successCallback, errorCallback){
-        $http({
-            method: 'PATCH',
-            url: RequestFactory.getURL()+"/periods/"+period_id+"/status/"+status
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'PATCH',
+            "/periods/"+period_id+"/status/"+status,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.deletePeriod = function(period_id, successCallback, errorCallback){
-        $http({
-            method: 'DELETE',
-            url: RequestFactory.getURL()+"/periods/"+period_id
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'DELETE',
+            "/periods/"+period_id,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     

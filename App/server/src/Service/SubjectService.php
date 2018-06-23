@@ -1,10 +1,10 @@
 <?php namespace App\Service;
 
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NoContentException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NoContentException;
+use App\Exceptions\Request\NotFoundException;
+use App\Exceptions\Request\RequestException;
 use App\Persistence\SubjectsPersistence;
 use App\Model\SubjectModel;
 use App\Utils;
@@ -26,7 +26,7 @@ class SubjectService{
         $result = $this->perSubjects->getSubjects();
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getSubjects","Ocurrio un error al obtener materias", $result->getErrorMessage());
+            throw new InternalErrorException("getSubjects","Ocurrió un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No se encontraron materias reistrados");
         else
@@ -40,11 +40,11 @@ class SubjectService{
      */
     public function getEnabledSubjects()
     {
-        $result = $this->perSubjects->getSubjects_ByStatus( Utils::$STATUS_ENABLE );
+        $result = $this->perSubjects->getSubjects_ByStatus( Utils::$STATUS_ACTIVE );
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getEnabledSubjects",
-                "Ocurrio un error al obtener materias", $result->getErrorMessage());
+                "Ocurrió un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No se encontraron materias reistrados");
         else
@@ -61,7 +61,7 @@ class SubjectService{
         $result = $this->perSubjects->getSubject_ById( $subject_id );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getSubjectById","Ocurrio un error al obtener la materia por ID", $result->getErrorMessage());
+            throw new InternalErrorException("getSubjectById","Ocurrió un error al obtener la materia por ID", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe materia");
         else
@@ -81,7 +81,7 @@ class SubjectService{
         $result = $this->perSubjects->getSubject_SearchFilter( $subject_career,$subject_semester,$subject_plan );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getSubject_Search","Ocurrio un error al obtener las materias", $result->getErrorMessage());
+            throw new InternalErrorException("getSubject_Search","Ocurrió un error al obtener las materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
         else
@@ -100,7 +100,7 @@ class SubjectService{
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("searchSubjects_ByName",
-                "Ocurrio un error al obtener materia por nombre", $result->getErrorMessage());
+                "Ocurrió un error al obtener materia por nombre", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
         else
@@ -117,7 +117,7 @@ class SubjectService{
         $result = $this->perSubjects->getSubjects_ByCareer( $careerID );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getCareerSubject","Ocurrio un error al obtener materias", $result->getErrorMessage());
+            throw new InternalErrorException("getCareerSubject","Ocurrió un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No se encontraron materias reistrados");
         else
@@ -137,7 +137,7 @@ class SubjectService{
         $result = $this->perSubjects->getSubjects_ByPlan( $plan  );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getPlanSubjects","Ocurrio un error al obtener materias", $result->getErrorMessage());
+            throw new InternalErrorException("getPlanSubjects","Ocurrió un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No se encontraron materias reistrados");
         else
@@ -155,7 +155,7 @@ class SubjectService{
         $result = $this->perSubjects->getSubjects_BySemester( $semester );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getSubjectBySemester","Ocurrio un error al obtener materias", $result->getErrorMessage());
+            throw new InternalErrorException("getSubjectBySemester","Ocurrió un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No se encontraron materias reistrados");
         else
@@ -173,7 +173,7 @@ class SubjectService{
 //        $result = $this->perSubjects->getSubjects_ByScheduleId( $id );
 //
 //        if( Utils::isError( $result->getOperation() ) )
-//            throw new InternalErrorException("Ocurrio un error al obtener materias");
+//            throw new InternalErrorException("Ocurrió un error al obtener materias");
 //        else if( Utils::isEmpty( $result->getOperation() ) )
 //            throw new NoContentException("No se encontraron materias reistrados");
 //        else
@@ -264,7 +264,7 @@ class SubjectService{
         $result = $this->perSubjects->insertSubject( $subject );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("insertSubject",
-                "Ocurrio un error al registrar la materia", $result->getErrorMessage());
+                "Ocurrió un error al registrar la materia", $result->getErrorMessage());
     }
 
     //--------------------UPDATE SUBJECT--------------------
@@ -309,7 +309,7 @@ class SubjectService{
         $result = $this->perSubjects->updateSubject( $subject );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("updateSubject",
-                "Ocurrio un error al actualizar la materia", $result->getErrorMessage());
+                "Ocurrió un error al actualizar la materia", $result->getErrorMessage());
     }
 
 
@@ -317,29 +317,20 @@ class SubjectService{
 
     /**
      * @param $subjectID
-     * @param $new_status
+     * @param $status
      *
      * @return void
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function changeStatus($subjectID, $new_status ){
+    public function changeStatus($subjectID, $status ){
 
         //comprueba si materia existe
         $this->getSubject_ById( $subjectID );
 
-        if( $new_status == Utils::$STATUS_DISABLE ){
-            $result = $this->perSubjects->changeStatusToDeleted( $subjectID );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("changeStatus",
-                    "Error al deshabilitar materia", $result->getErrorMessage());
-        }
-        else if( $new_status == Utils::$STATUS_ENABLE ){
-            $result = $this->perSubjects->changeStatusToEnable( $subjectID );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException("changeStatus",
-                    "Error al habilitar materia", $result->getErrorMessage());
-        }
+        $result = $this->perSubjects->changeStatus( $subjectID, $status );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("changeStatus",  "Error al cambiar status de materia", $result->getErrorMessage());
     }
 
     /**
@@ -374,7 +365,7 @@ class SubjectService{
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("isSubjectExist_ByName_ShortName",
-                "Ocurrio un error obtener materia por nombre/abreviacion");
+                "Ocurrió un error obtener materia por nombre/abreviacion");
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
@@ -464,7 +455,7 @@ class SubjectService{
 //        //TODO: Verificar que materia no se haya relacionado anteriomente (durante registros)
 //
 //
-//        //TODO: Usar transacciones
+//        //TODO: Usar transacciónes
 //        foreach ( $subjectsArray as $subID ){
 //            if( Utils::isError( $result->getOperation() ) )
 //                throw new InternalErrorException("No se pudo obtener materia", $result->getErrorMessage());

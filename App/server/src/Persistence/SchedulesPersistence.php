@@ -1,6 +1,5 @@
 <?php namespace App\Persistence;
 
-use App\Model\ScheduleModel;
 use App\Utils;
 
 class SchedulesPersistence extends Persistence{
@@ -23,6 +22,7 @@ class SchedulesPersistence extends Persistence{
      * @param $id int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSchedule_Byid($id){
         $query = $this->SELECT."
@@ -33,7 +33,9 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $studentId int
      * @param $period int
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSchedule_ByStudentId_Period($studentId, $period){
         $query = $this->SELECT."
@@ -44,6 +46,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSchedule_Last(){
         $query = $this->SELECT." 
@@ -60,9 +63,10 @@ class SchedulesPersistence extends Persistence{
      * @param int $schedule_id
      * @param String $orderType
      *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
-     * @return \App\Model\DataResult
      */
     public function getScheduleHours_ByScheduleId($schedule_id, $orderType ){
         $query = "SELECT
@@ -83,9 +87,10 @@ class SchedulesPersistence extends Persistence{
      * @param int $schedule_id
      * @param String $orderType
      *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
-     * @return \App\Model\DataResult
      */
     public function getScheduleHours_ByScheduleId_Enabled($schedule_id, $orderType ){
         $query = "SELECT
@@ -95,7 +100,7 @@ class SchedulesPersistence extends Persistence{
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
-                    WHERE sdh.fk_schedule = $schedule_id AND sdh.status = ".Utils::$STATUS_ENABLE."
+                    WHERE sdh.fk_schedule = $schedule_id AND sdh.status = '".Utils::$STATUS_ACTIVE."'
                     ORDER BY $orderType";
 
 
@@ -107,6 +112,7 @@ class SchedulesPersistence extends Persistence{
      *
      * @return \App\Model\DataResult
      * TODO: solo materias habilitadas
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getScheduleSubjects_ById($schedule_id)
     {
@@ -125,7 +131,7 @@ class SchedulesPersistence extends Persistence{
                 INNER JOIN plan p ON s.fk_plan = p.plan_id
                 INNER JOIN career c ON s.fk_career = c.career_id
                 WHERE ss.fk_schedule = $schedule_id AND 
-                s.status = ".Utils::$STATUS_ENABLE;
+                s.status = '".Utils::$STATUS_ACTIVE."'";
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -136,6 +142,7 @@ class SchedulesPersistence extends Persistence{
      *
      * @return \App\Model\DataResult
      * TODO: solo materias habilitadas
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getScheduleSubjects_ById_Enabled($schedule_id)
     {
@@ -154,7 +161,7 @@ class SchedulesPersistence extends Persistence{
                 INNER JOIN plan p ON s.fk_plan = p.plan_id
                 INNER JOIN career c ON s.fk_career = c.career_id
                 WHERE ss.fk_schedule = $schedule_id AND 
-                (s.status = ".Utils::$STATUS_ENABLE." AND ss.status = ".Utils::$STATUS_ENABLE.")";
+                (s.status = '".Utils::$STATUS_ACTIVE."' AND ss.status = '".Utils::$STATUS_ACTIVE."')";
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -165,6 +172,7 @@ class SchedulesPersistence extends Persistence{
      * @param $periodId int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertSchedule($studentId, $periodId ){
         $query = "INSERT INTO schedule(fk_student, fk_period) 
@@ -177,7 +185,9 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $scheduleId
      * @param $hour
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     //TODO: corregir
     public function insertScheduleHours($scheduleId, $hour){
@@ -193,10 +203,11 @@ class SchedulesPersistence extends Persistence{
      *
      * @return \App\Model\DataResult
      * TODO: status debe ser 1 para confirmar por admin
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertScheduleSubjects($scheduleId, $subject){
         $query = "INSERT INTO schedule_subjects (fk_schedule, fk_subject, status) 
-                      VALUES ($scheduleId, $subject, ".Utils::$STATUS_PENDING.")";
+                      VALUES ($scheduleId, $subject, '".Utils::$STATUS_PENDING."')";
 
         return self::executeQuery($query);
     }
@@ -210,9 +221,10 @@ class SchedulesPersistence extends Persistence{
      *
      * @param String $orderType
      *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      * @see SchedulesPersistence::ORDER_BY_DAY
      * @see SchedulesPersistence::ORDER_BY_HOUR
-     * @return \App\Model\DataResult
      */
     public function getDaysAndHours($orderType ){
         $query = "SELECT 
@@ -230,6 +242,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * Obtiene solo los dias registrados sin repetir
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getDays(){
         $query = "SELECT DISTINCT day, day_number 
@@ -244,11 +257,12 @@ class SchedulesPersistence extends Persistence{
      * @param $scheduleId int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function disableSchedule($scheduleId)
     {
         $query = "UPDATE schedule
-                  SET status = ".Utils::$STATUS_DISABLE."
+                  SET status = '".Utils::$STATUS_DISABLE."'
                   WHERE schedule_id = $scheduleId";
         return  self::executeQuery($query);
     }
@@ -256,12 +270,15 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $scheduleId int
      *
+     * @param $status
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function enableSchedule($scheduleId)
+    public function changeStatus($scheduleId, $status)
     {
         $query = "UPDATE schedule
-                  SET status = ".Utils::$STATUS_ENABLE."
+                  SET status = '$status'
                   WHERE schedule_id = $scheduleId";
         return  self::executeQuery($query);
     }
@@ -271,11 +288,12 @@ class SchedulesPersistence extends Persistence{
      * @param $hdId int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function disableScheduleHour($hdId)
     {
         $query = "UPDATE schedule_days_hours
-                  SET status = ".Utils::$STATUS_DISABLE."
+                  SET status = '".Utils::$STATUS_DISABLE."'
                   WHERE schedule_dh_id = $hdId";
         return  self::executeQuery($query);
     }
@@ -284,11 +302,12 @@ class SchedulesPersistence extends Persistence{
      * @param $hdId int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function enableScheduleHour($hdId)
     {
         $query = "UPDATE schedule_days_hours
-                  SET status = ".Utils::$STATUS_ENABLE."
+                  SET status = '".Utils::$STATUS_ACTIVE."'
                   WHERE schedule_dh_id = $hdId";
         return  self::executeQuery($query);
     }
@@ -298,11 +317,12 @@ class SchedulesPersistence extends Persistence{
      * @param $subjectId
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function disableScheduleSubject($subjectId)
     {
         $query = "UPDATE schedule_subjects
-                  SET status = ".Utils::$STATUS_DISABLE."
+                  SET status = '".Utils::$STATUS_DISABLE."'
                   WHERE schedule_subject_id = $subjectId";
         return  self::executeQuery($query);
     }
@@ -311,11 +331,12 @@ class SchedulesPersistence extends Persistence{
      * @param $subjectId int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function enableScheduleSubject($subjectId)
     {
         $query = "UPDATE schedule_subjects
-                  SET status = ".Utils::$STATUS_ENABLE."
+                  SET status = '".Utils::$STATUS_ACTIVE."'
                   WHERE schedule_subject_id = $subjectId";
         return  self::executeQuery($query);
     }
@@ -325,6 +346,7 @@ class SchedulesPersistence extends Persistence{
      * @param $period_id int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getAdvisers_BySubject_ByPeriod($subject_id, $period_id)
     {
@@ -341,8 +363,8 @@ class SchedulesPersistence extends Persistence{
                   INNER JOIN user u ON s2.fk_user = u.user_id
                   INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
                   WHERE ss.fk_subject = $subject_id AND
-                        ss.status = ".Utils::$STATUS_ACTIVE." AND
-                        u.status = ".Utils::$STATUS_ACTIVE." AND
+                        ss.status = '".Utils::$STATUS_ACTIVE."' AND
+                        u.status = '".Utils::$STATUS_ACTIVE."' AND
                         s.fk_period = $period_id";
         return  self::executeQuery($query);
     }

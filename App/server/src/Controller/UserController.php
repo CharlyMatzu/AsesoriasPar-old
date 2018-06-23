@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\StudentModel;
 use App\Model\UserModel;
 use App\Service\UserService;
@@ -128,7 +128,7 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            $result = $userServ->getStudent_ByUser( $params['id'] );
+            $result = $userServ->getStudent_ByUserId( $params['id'] );
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
@@ -148,11 +148,14 @@ class UserController
     public function createUser($req, $res)
     {
         try {
+
             $userServ = new UserService();
-            $role = $user = $req->getAttribute('role_data');
+
             /* @var $user UserModel */
-            $user = $req->getAttribute('user_data');
-            $user->setRole( $role );
+            $user = new UserModel();
+            $user->setEmail( $req->getAttribute('email_data') );
+            $user->setPassword( $req->getAttribute('password_data') );
+            $user->setRole( $req->getAttribute('role_data') );
 
             $userServ->insertUser( $user );
             return Utils::makeMessageResponse( $res, Utils::$CREATED, "Usuario registrado con éxito");
@@ -171,11 +174,11 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            /* @var $user User */
+            /* @var $user UserModel */
             $user = $req->getAttribute('user_data');
             //Se le asigna rol de estudiante (basic)
             $user->setRole( Utils::$ROLE_BASIC );
-            /* @var $student Student */
+            /* @var $student StudentModel */
             $student = $req->getAttribute('student_data');
             $student->setUser($user);
 
@@ -197,18 +200,63 @@ class UserController
      *
      * @return Response
      */
-    public function updateUser($req, $res, $params)
+    public function updateUserEmail($req, $res, $params)
     {
         try {
-            $userServ = new UserService();
-            $role = $user = $req->getAttribute('role_data');
-            /* @var $user UserModel */
-            $user = $req->getAttribute('user_data');
-            $user->setRole( $role );
-            $user->setId( $params['id'] );
+            $user = new UserModel();
+            $user->setId(  $params['id'] );
+            $user->setEmail( $req->getAttribute('email_data') );
 
-            $userServ->updateUser( $user );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Actualizado con exito");
+            $userServ = new UserService();
+            $userServ->updateUserEmail( $user  );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Email Actualizado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params
+     *
+     * @return Response
+     */
+    public function updateUserPassword($req, $res, $params)
+    {
+        try {
+            $user = new UserModel();
+            $user->setId(  $params['id'] );
+            $user->setPassword( $req->getAttribute('password_data') );
+
+            $userServ = new UserService();
+            $userServ->updateUserPassword( $user  );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Password Actualizado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params
+     *
+     * @return Response
+     */
+    public function updateUserRole($req, $res, $params)
+    {
+        try {
+            $user = new UserModel();
+            $user->setId(  $params['id'] );
+            $user->setRole( $req->getAttribute('role_data') );
+
+            $userServ = new UserService();
+            $userServ->updateUserRole( $user  );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Rol Actualizado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -227,7 +275,7 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Status modificado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Status modificado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -245,7 +293,7 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->deleteUser( $params['id'] );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Eliminado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Eliminado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );

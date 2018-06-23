@@ -63,13 +63,13 @@ $container['notFoundHandler'] = function ($c) {
 
 $container['phpErrorHandler'] = function ($c) {
     return function ($request, $response, $error) use ($c) {
-        \App\AppLogger::makeErrorLog("PHPErrorHandler","Ocurrio un error: $error");
+        \App\AppLogger::makeErrorLog("PHPErrorHandler","Ocurrió un error: $error");
 
-        return Utils::makeMessageResponse($response, 405, "Ocurrio un error, intentelo más tarde");
+        return Utils::makeMessageResponse($response, 405, "Ocurrió un error, intentelo más tarde");
 //        return $c['response']
 //            ->withStatus(500)
 //            ->withHeader('Content-Type', 'text/html')
-//            ->write('Ocurrio un error, intentelo más tarde');
+//            ->write('Ocurrió un error, intentelo más tarde');
     };
 };
 

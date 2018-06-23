@@ -1,11 +1,10 @@
 <?php namespace App\Service;
 
-use App\Exceptions\BadRequestException;
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NoContentException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
+
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NoContentException;
+use App\Exceptions\Request\NotFoundException;
 use App\Persistence\PeriodsPersistence;
 use App\Model\PeriodModel;
 use DateTime;
@@ -28,7 +27,7 @@ class PeriodService{
         $result = $this->perPeriods->getPeriods();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getPeriods","Ocurrio un error al obtener periodos", $result->getErrorMessage());
+            throw new InternalErrorException("getPeriods","Ocurrió un error al obtener periodos", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron periodos reistrados");
         else
@@ -45,7 +44,7 @@ class PeriodService{
         $result = $this->perPeriods->getPeriod_ById( $periodId );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getPeriodById","Ocurrio un error al obtener periodo", $result->getErrorMessage());
+            throw new InternalErrorException("getPeriodById","Ocurrió un error al obtener periodo", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe periodo");
         else
@@ -63,7 +62,7 @@ class PeriodService{
         $result = $this->perPeriods->getPeriods_Range( $date_start, $date_end );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getPeriodByRange","Ocurrio un error al obtener periodo", $result->getErrorMessage());
+            throw new InternalErrorException("getPeriodByRange","Ocurrió un error al obtener periodo", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("No se encontraron periodos reistrados");
         else
@@ -119,7 +118,7 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("createPeriod",
-                "Ocurrio un error al comprobar periodo entre fechas", $result->getErrorMessage());
+                "Ocurrió un error al comprobar periodo entre fechas", $result->getErrorMessage());
 
         else if( $result->getOperation() == true )
             throw new ConflictException("Periodo se empalma con otro");
@@ -139,7 +138,7 @@ class PeriodService{
 
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("createPeriod",
-                "Ocurrio un error al registrar periodo", $result->getErrorMessage());
+                "Ocurrió un error al registrar periodo", $result->getErrorMessage());
     }
 
 //   ------------------------------------- UPDATE CYCLES
@@ -147,8 +146,9 @@ class PeriodService{
     /**
      * @param $period PeriodModel
      *
+     * @throws ConflictException
      * @throws InternalErrorException
-     * @throws RequestException
+     * @throws NotFoundException
      */
     public function updatePeriod( $period ){
 
@@ -171,32 +171,19 @@ class PeriodService{
 
 
     /**
-     * @param $periodId
+     * @param $period_Id
      * @param $status
      *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function changeStatus($periodId, $status ){
+    public function changeStatus($period_Id, $status ){
 
-        $result = $this->isPeriodExist_ById($periodId);
+        $this->getPeriod_ById($period_Id);
 
+        $result = $this->perPeriods->changeStatus( $period_Id, $status );
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("changeStatus","Error al comprobar existencia de periodo", $result->getErrorMessage());
-
-        else if( $result->getOperation() == false )
-            throw new NotFoundException("Periodo no existe");
-
-        if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->perPeriods->changeStatusToDelete( $periodId );
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","No se pudo deshabilitar periodo", $result->getErrorMessage());
-        }
-        else if( $status == Utils::$STATUS_ENABLE ){
-            $result = $this->perPeriods->changeStatusToEnable( $periodId );
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","No se pudo habilitar periodo", $result->getErrorMessage());
-        }
+            throw new InternalErrorException("changeStatus","Error al cambiar estado de periodo", $result->getErrorMessage());
     }
 
     /**

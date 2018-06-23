@@ -1,7 +1,7 @@
 <?php namespace App\Service;
 use App\Auth;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\RequestException;
 use App\Mailer;
 use App\Model\MailModel;
 use App\Model\UserModel;
@@ -12,7 +12,7 @@ class MailService
     /**
      * @param $mailModel MailModel
      *
-     * @throws InternalErrorException
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function sendMail($mailModel){
         Mailer::sendMail($mailModel->getAddress(), $mailModel->getSubject(), $mailModel->getBody(), $mailModel->getPlainBody());

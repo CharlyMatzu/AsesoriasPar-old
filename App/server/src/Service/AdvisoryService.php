@@ -1,11 +1,13 @@
 <?php namespace App\Service;
 
 
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NoContentException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
+
+use App\Exceptions\Persistence\TransactionException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NoContentException;
+use App\Exceptions\Request\NotFoundException;
+use App\Exceptions\Request\RequestException;
 use App\Model\MailModel;
 use App\Persistence\PlansPeristence;
 use App\Utils;
@@ -24,9 +26,9 @@ class AdvisoryService
 
 
     /**
-     * @throws InternalErrorException
-     * @throws \App\Exceptions\NoContentException
-     * @return \mysqli_result
+     * @return \mysqli_result|null
+     * @throws \App\Exceptions\Request\InternalErrorException
+     * @throws \App\Exceptions\Request\NoContentException
      */
     public function getCurrentAdvisories()
     {
@@ -178,9 +180,9 @@ class AdvisoryService
     /**
      * @param $advisory AdvisoryModel
      *
-     * @throws ConflictException
      * @throws InternalErrorException
      * @throws NoContentException
+     * @throws ConflictException
      * @throws NotFoundException
      */
     public function insertAdvisory_CurrentPeriod($advisory)
@@ -196,7 +198,7 @@ class AdvisoryService
         //TODO: no debe estar empalmada con otra asesoria a la misma hora/dia (activa: status 2)
 
 
-        //Se buscan asesorias activas en el mismo periodo que tengan la misma materia del mismo asesor
+        //Se buscan asesorías activas en el mismo periodo que tengan la misma materia del mismo asesor
         $advisories = $this->perasesorias->getStudentAdvisories_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
         if( Utils::isError( $advisories->getOperation() ) )
             throw new InternalErrorException("insertAdvisory_CurrentPeriod",
@@ -209,14 +211,14 @@ class AdvisoryService
         $subjectServ = new SubjectService();
         $subjectServ->getSubject_ById( $subject_id );
 
-        //Se registra asesorias
+        //Se registra asesorías
         $result = $this->perasesorias->insertAdvisory( $advisory, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("insertAdvisory",
                 "Error al registrar asesorias", $advisories->getErrorMessage());
 
 
-        //Envia correo de confirmacion
+        //envía correo de confirmación
         try{
 
             $userServ = new UserService();
@@ -243,7 +245,7 @@ class AdvisoryService
      */
     private function checkAdvisoryRedundancy($advisories ){
 
-        //Si esta vacio, no es redundante
+        //Si esta vacío, no es redundante
         if( empty($advisories) )
             return;
 
@@ -275,10 +277,13 @@ class AdvisoryService
         $adviser = $studentServ->getStudent_ById( $adviser_id );
         $alumn = $studentServ->getStudent_ById( $advisory['alumn_id'] );
 
-        //----Inicia transaccion
-        $trans = PlansPeristence::initTransaction();
-        if( !$trans )
-            throw new InternalErrorException("assignAdviser", "Error al iniciar transaccion");
+        //----Inicia transacción
+        try {
+            PlansPeristence::initTransaction();
+        } catch (TransactionException $e) {
+            throw new InternalErrorException("assignAdviser", $e->getMessage());
+        }
+
 
         //Actualiza datos de asesoria
         $result = $this->perasesorias->assignAdviser( $advisory_id, $adviser_id );
@@ -296,15 +301,17 @@ class AdvisoryService
         }
 
         //Se guarda registro
-        $trans = PlansPeristence::commitTransaction();
-        if( !$trans )
-            throw new InternalErrorException("assignAdviser", "Error al registrar transaccion");
+        try {
+            PlansPeristence::commitTransaction();
+        } catch (TransactionException $e) {
+            throw new InternalErrorException("assignAdviser", $e->getMessage());
+        }
 
         //Envío de correo
         try{
             $userServ =  new UserService();
-            $adviserUser = $userServ->getUsers_ByStudentId( $adviser['id'] );
-            $alumnUser = $userServ->getUsers_ByStudentId( $alumn['id'] );
+            $adviserUser = $userServ->getUser_ByStudentId( $adviser['id'] );
+            $alumnUser = $userServ->getUser_ByStudentId( $alumn['id'] );
 
             //Obteniendo materia
             $subServ = new SubjectService();

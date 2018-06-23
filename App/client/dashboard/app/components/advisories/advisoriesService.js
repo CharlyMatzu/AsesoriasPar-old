@@ -1,4 +1,4 @@
-app.service('AdvisoriesService', function($http, RequestFactory){
+angular.module("Dashboard").service('AdvisoriesService', function($http, RequestFactory){
     
 
     this.getAdvisories = function(successCallback, errorCallback){

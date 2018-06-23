@@ -14,12 +14,20 @@ class PlansPeristence extends Persistence{
                           status
                         FROM plan ";
 
+    /**
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
     public function getPlans(){
         $query = $this->campos;
         //Obteniendo resultados
         return self::executeQuery($query);
     }
 
+    /**
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
     public function getLastPlan(){
         $query = $this->campos.
                     "ORDER BY plan_id DESC LIMIT 1";
@@ -27,6 +35,12 @@ class PlansPeristence extends Persistence{
         return self::executeQuery($query);
     }
 
+    /**
+     * @param $planId
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
     public function getPlan_ById($planId){
         $query = $this->campos.
             "WHERE plan_id = $planId";
@@ -36,8 +50,11 @@ class PlansPeristence extends Persistence{
 
     /**
      * Obtiene el plan que conincida con el año
+     *
      * @param $year
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPlan_ByYear( $year ){
         $query = $this->campos.
@@ -48,8 +65,11 @@ class PlansPeristence extends Persistence{
 
     /**
      * Busca las coincidencias con uno o mas valores numericos que concuerden con el año del plan
+     *
      * @param $number
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPlan_BySearch( $number ){
         $query = $this->campos.
@@ -60,10 +80,13 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $year string año del plan
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function createPlan( $year ){
-        $query = "INSERT INTO plan(year) VALUES('$year')";
+        $query = "INSERT INTO plan(year, status) 
+                  VALUES('$year', '".Utils::$STATUS_DISABLE."')";
         //Obteniendo resultados
         return self::executeQuery($query);
     }
@@ -73,6 +96,7 @@ class PlansPeristence extends Persistence{
      * @param $year string
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function updatePlan( $planID, $year ){
         $query = "UPDATE plan SET year = '$year' WHERE plan_id = $planID";
@@ -82,22 +106,15 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $id
+     *
+     * @param $status
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToDisable($id ){
+    public function changeStatus($id, $status ){
         $query = "UPDATE plan
-                  SET status = ".Utils::$STATUS_DISABLE."
-                  WHERE plan_id = $id";
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * @param $id
-     * @return \App\Model\DataResult
-     */
-    public function changeStatusToEnable($id ){
-        $query = "UPDATE plan
-                  SET status = ".Utils::$STATUS_ENABLE."
+                  SET status = '$status'
                   WHERE plan_id = $id";
         return  self::executeQuery($query);
     }
@@ -105,7 +122,9 @@ class PlansPeristence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function deletePlan($id)
     {

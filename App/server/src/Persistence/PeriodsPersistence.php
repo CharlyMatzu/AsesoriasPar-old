@@ -21,6 +21,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPeriods(){
         $query = $this->campos;
@@ -30,6 +31,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getCurrentPeriod(){
         $query = $this->campos.
@@ -40,7 +42,9 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPeriod_ById($id){
         $query = $this->campos."
@@ -52,7 +56,9 @@ class PeriodsPersistence extends Persistence{
     /**
      * @param $start
      * @param $end
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPeriods_Range( $start, $end ){
         $query = $this->campos."
@@ -64,7 +70,9 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $date
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPeriod_ByDate($date){
         $query = $this->campos."
@@ -75,6 +83,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getLastPeriod(){
         $query = $this->campos."
@@ -85,8 +94,10 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $date string fecha correspondiente para comparar
+     *
      * @return \App\Model\DataResult
      * /TODO: debe ser capaz de saber si se empalma con diferentes fechas y no solo la ultima
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPeriodWhereIsBetween( $date ){
         $query = "SELECT * FROM period 
@@ -103,7 +114,9 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getPeriod_ByScheduleId( $id ){
         $query = $this->campos." 
@@ -116,11 +129,13 @@ class PeriodsPersistence extends Persistence{
     /**
      * @param $start string fecha de inicio
      * @param $end string fecha de termino
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertPeriod( $start, $end ){
         $query = "INSERT INTO period (date_start, date_end, status) 
-                  VALUES('$start', '$end', ".Utils::$STATUS_DISABLE.")";
+                  VALUES('$start', '$end', '".Utils::$STATUS_DISABLE."')";
         return  self::executeQuery($query);
     }
 
@@ -128,6 +143,7 @@ class PeriodsPersistence extends Persistence{
      * @param $period PeriodModel
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function updatePeriod( $period ){
         $query = "UPDATE period c
@@ -138,24 +154,17 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * cambia el estado a 0 indicando que esta eliminado o deshabilitado
+     *
      * @param $id int
+     *
+     * @param $status
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToDelete( $id ){
+    public function changeStatus($id, $status ){
         $query = "UPDATE period
-                  SET status = ".Utils::$STATUS_DISABLE."
-                  WHERE period_id = $id";
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * cambia el estado a 2 indicando que esta habilitado
-     * @param $id int
-     * @return \App\Model\DataResult
-     */
-    public function changeStatusToEnable( $id ){
-        $query = "UPDATE period
-                  SET status = ".Utils::$STATUS_ENABLE."
+                  SET status = '$status'
                   WHERE period_id = $id";
         return  self::executeQuery($query);
     }
@@ -164,6 +173,7 @@ class PeriodsPersistence extends Persistence{
      * @param $id
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function deletePeriod($id)
     {

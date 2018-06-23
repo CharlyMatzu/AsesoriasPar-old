@@ -1,4 +1,4 @@
-app.controller('StudentsController', function($scope, $http, $window, Notification, StudentsService){
+angular.module("Dashboard").controller('StudentsController', function($scope, $http, $window, Notification, StudentsService){
     $scope.page.title = "Estudiantes";
     
     $scope.students = [];
@@ -83,7 +83,7 @@ app.controller('StudentsController', function($scope, $http, $window, Notificati
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
-        StudentsService.changeStatus(user_id, ENABLED, 
+        StudentsService.changeStatus(user_id, ACTIVE,
             function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla

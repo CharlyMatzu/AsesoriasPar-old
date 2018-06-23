@@ -14,7 +14,6 @@ class UsersPersistence extends Persistence{
     private $SELECT = "SELECT 
                         u.user_id as 'id',
                         u.email,
-                        u.password,
                         u.date_register,
                         u.status,
                         -- Role
@@ -25,6 +24,7 @@ class UsersPersistence extends Persistence{
     /**
      * Método que regresa todos los usuarios
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUsers(){
         $query = $this->SELECT;
@@ -33,6 +33,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getStaffUsers()
     {
@@ -43,31 +44,34 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getEnableUsers()
     {
         $query = $this->SELECT.
-                "WHERE u.status = ".Utils::$STATUS_ENABLE;
+                "WHERE u.status = '".Utils::$STATUS_ACTIVE."'";
         return  self::executeQuery($query);
     }
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getDisabledUsers()
     {
         $query = $this->SELECT.
-            "WHERE u.status = ".Utils::$STATUS_DISABLE;
+            "WHERE u.status = '".Utils::$STATUS_DISABLE."'";
         return  self::executeQuery($query);
     }
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getNoconfirmUsers()
+    public function getNoConfirmUsers()
     {
         $query = $this->SELECT.
-            "WHERE u.status = ".Utils::$STATUS_NO_CONFIRM;
+            "WHERE u.status = '".Utils::$STATUS_PENDING."'";
         return  self::executeQuery($query);
     }
 
@@ -75,9 +79,12 @@ class UsersPersistence extends Persistence{
     /**
      * Método que regresa un usuario en la coincidencia con un nombre de
      * usuario y la contraseña
+     *
      * @param String $email Correo del usuario
      * @param String $pass Contraseña
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_BySignIn($email, $pass){
         $ePass = $this->crypt($pass);
@@ -88,8 +95,11 @@ class UsersPersistence extends Persistence{
 
     /**
      * Método que regresa un usuario en la coincidencia con el ID
+     *
      * @param int $id ID del usuario
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ById($id){
         $query = $this->SELECT."
@@ -99,11 +109,25 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $id
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getEnabledBasicUser_ById($id){
+        $query = $this->SELECT."
+                WHERE u.user_id = $id AND (u.status = '".Utils::$STATUS_ACTIVE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
-                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = ".Utils::$STATUS_ENABLE;
+                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = '".Utils::$STATUS_ACTIVE."'";
         return  self::executeQuery($query);
     }
 
@@ -111,6 +135,7 @@ class UsersPersistence extends Persistence{
      * @param $student_id int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ByStudentId( $student_id ){
         $query = $this->SELECT.
@@ -123,6 +148,7 @@ class UsersPersistence extends Persistence{
      * @param $email
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchUsers_ByEmail($email)
     {
@@ -135,6 +161,7 @@ class UsersPersistence extends Persistence{
      * @param $email
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchStaffUsers_ByEmail($email)
     {
@@ -147,6 +174,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_Last(){
         $query = $this->SELECT." 
@@ -156,7 +184,9 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $email String
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ByEmail($email){
         $query = $this->SELECT."
@@ -168,62 +198,75 @@ class UsersPersistence extends Persistence{
      * @param $user UserModel objeto tipo User con la información de registro
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertUser( $user ){
         $passC = self::crypt( $user->getPassword() );
         $query = "INSERT INTO user (email, password, fk_role, status)
-                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', ".Utils::$STATUS_NO_CONFIRM.")";
+                  VALUES('".$user->getEmail()."','".$passC."', '".$user->getRole()."', '".Utils::$STATUS_PENDING."')";
         return  self::executeQuery($query);
     }
 
     /**
-     * @param $user UserModel objeto tipo User con la informacion de registro
+     * @param $user UserModel objeto tipo User con la información de registro
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function updateUser( $user ){
+    public function updateUserEmail( $user ){
         $query = "UPDATE user u
-                         SET    u.email = '".$user->getEmail()."',
-                                u.fk_role = '".$user->getRole()."'   
-                         WHERE u.user_id = ".$user->getId();
+                         SET    u.email = '".$user->getEmail()."'   
+                         WHERE  u.user_id = ".$user->getId();
+        return  self::executeQuery($query);
+    }
 
-        //Si hay password, se agrega
-        if( !empty($user->getPassword()) ){
-            $passC = self::crypt( $user->getPassword() );
-            $query = "UPDATE user u
-                         SET    u.email = '".$user->getEmail()."',
-                                u.password = '".$passC."', 
-                                u.fk_role = '".$user->getRole()."'   
-                         WHERE u.user_id = ".$user->getId();
-        }
+    /**
+     * @param $user UserModel objeto tipo User con la información de registro
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function updateUserPassword( $user ){
+        $pass = self::crypt( $user->getPassword() );
+        $query = "UPDATE user u
+                         SET    u.password = '$pass'   
+                         WHERE  u.user_id = ".$user->getId();
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $user UserModel objeto tipo User con la información de registro
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function updateUserRole( $user ){
+        $query = "UPDATE user u
+                         SET    u.fk_role = '".$user->getRole()."'   
+                         WHERE  u.user_id = ".$user->getId();
         return  self::executeQuery($query);
     }
 
     /**
      * @param $id
+     *
+     * @param $status
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function changeStatusToDisable($id ){
+    public function changeStatus($id, $status ){
         $query = "UPDATE user u
-                         SET u.status = ".Utils::$STATUS_DISABLE."    
-                         WHERE user_id = ".$id;
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * @param $id
-     * @return \App\Model\DataResult
-     */
-    public function changeStatusToEnable($id ){
-        $query = "UPDATE user u
-                         SET u.status = ".Utils::$STATUS_ENABLE."    
+                         SET u.status = '$status'    
                          WHERE user_id = ".$id;
         return  self::executeQuery($query);
     }
 
     /**
      * @param $roleName String
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getRole_ByName($roleName)
     {
@@ -232,10 +275,11 @@ class UsersPersistence extends Persistence{
     }
 
 
-
     /**
      * @param $id int
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function deleteUser_ById($id)
     {

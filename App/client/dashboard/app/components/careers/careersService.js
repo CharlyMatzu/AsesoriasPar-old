@@ -1,67 +1,65 @@
-app.service('CareerService', function($http, RequestFactory){
+angular.module("Dashboard").service('CareerService', function($http, RequestFactory, AuthFactory){
     
 
     this.getCareers = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            url: RequestFactory.getURL()+"/careers"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'GET',
+            "/careers",
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.addCareer = function(career, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/careers",
-            data: {
+        RequestFactory.makeTokenRequest(
+            'POST',
+            "/careers",
+            data = {
                 name: career.name,
                 short_name: career.short_name
-            }
-        }).then(function(success){
-            successCallback(success) 
-        }, function(error){
-            errorCallback(error)
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.updateCareer = function(career, successCallback, errorCallback){
-        $http({
-            method: 'PUT',
-            url: RequestFactory.getURL()+"/careers/"+career.id,
-            data: {
+        RequestFactory.makeTokenRequest(
+            'PUT',
+            "/careers"+career.id,
+            data = {
                 name: career.name,
                 short_name: career.short_name
-            }
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     this.changeStatus = function(career_id, status, successCallback, errorCallback){
-        $http({
-            method: 'PATCH',
-            url: RequestFactory.getURL()+"/careers/"+career_id+"/status/"+status
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'PATCH',
+            "/careers/"+career_id+"/status/"+status,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
 
     this.deleteCareer = function(career_id, successCallback, errorCallback){
-        $http({
-            method: 'DELETE',
-            url: RequestFactory.getURL()+"/careers/"+career_id
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        RequestFactory.makeTokenRequest(
+            'DELETE',
+            "/careers/"+career_id,
+            null,
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
     

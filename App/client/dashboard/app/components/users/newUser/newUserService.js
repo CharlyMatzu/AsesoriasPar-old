@@ -1,4 +1,4 @@
-app.service('NewUserService', function($http, RequestFactory){
+angular.module("Dashboard").service('NewUserService', function($http, RequestFactory, AuthFactory){
 
 
     // this.getRoles = function(successCallback, errorCallback){
@@ -19,19 +19,18 @@ app.service('NewUserService', function($http, RequestFactory){
 
 
     this.addUser = function(user, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/users",
-            data: {
+        RequestFactory.makeTokenRequest(
+            'POST',
+            '/users',
+            data = {
                 email: user.email,
                 password: user.pass,
                 role: user.role
-            }
-        }).then(function(success){
-            successCallback(success) 
-        }, function(error){
-            errorCallback(error)
-        });
+            },
+            AuthFactory.getToken(),
+            successCallback,
+            errorCallback
+        );
     }
     
 

@@ -1,5 +1,6 @@
 <?php namespace App;
-use App\Exceptions\InternalErrorException;
+
+use App\Exceptions\Request\InternalErrorException;
 use DateTime;
 
 class Utils
@@ -10,16 +11,18 @@ class Utils
     const TIMEZONE = 'America/Phoenix';
 
     //-------General
-    public static $STATUS_DISABLE = 0;
-    public static $STATUS_NO_CONFIRM = 1;
-    public static $STATUS_ENABLE = 2;
+    public static $STATUS_DISABLE = 'DISABLED';
+    public static $STATUS_ACTIVE = 'ACTIVE';
 
     //-------Advisories
-    public static $STATUS_CANCELED = 0;
-    public static $STATUS_PENDING = 1;
-    public static $STATUS_ACTIVE = 2;
+    //also for subject
+    public static $STATUS_PENDING = 'PENDING';
     //also for period
-    public static $STATUS_FINALIZED = 3;
+    public static $STATUS_FINALIZED = 'FINALIZED';
+
+    //-------Subjects
+    public static $STATUS_VALIDATED = 'VALIDATED';
+    public static $STATUS_LOCKED = 'LOCKED';
 
     //--------ROLES
     public static $ROLE_ADMIN = "administrator";
@@ -28,8 +31,12 @@ class Utils
 
 
     //------------OTROS
-    const EXPREG_EMAIL = "/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/";
-    const EXPREG_PASS = "^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$";
+    const EXPREG_EMAIL = "/[a-zA-Z._+-]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}/";
+    const EXPREG_PASS = "/[a-zA-Z0-9_!@#$&*.]/";
+    const EXPREG_NAME = "/[a-zA-Z\sñÑáéíóúÁÉÍÓÚ]/";
+    const EXPREG_SEARCH = "/[a-zA-Z0-9_!@ñÑáéíóúÁÉÍÓÚ\s]/";
+    const EXPREG_ITSON_ID = "/\d/";
+//    const EXPREG_PHONE = "//";
 
 
 
@@ -37,18 +44,18 @@ class Utils
     // OPERATIONS
     //++++++++++++++++++++++++
     /**
-     * Esta variable indica que ocurrio un error en la operacion
+     * Esta variable indica que Ocurrió un error en la operacion
      * @var int 1
      */
     public static $OPERATION_ERROR = 1;
     /**
      * Esta variable indica que no se encontraron resultados, es decir, es null
-     * pero no ocurrio un error
+     * pero no Ocurrió un error
      * @var int 2
      */
     public static $OPERATION_EMPTY = 2;
     /**
-     * Esta variable indica una operacion exitosa sin retornar valores
+     * Esta variable indica una operación exitosa sin retornar valores
      * @var int 3
      */
     public static $OPERATION_SUCCESS = 3;
@@ -60,7 +67,7 @@ class Utils
 
 
     /**
-     * Cuando ocurrio un error
+     * Cuando Ocurrió un error
      * @param $result int
      * @return bool
      */
@@ -87,7 +94,7 @@ class Utils
     }
 
     /**
-     * Cuando el valor es nulo o vacio
+     * Cuando el valor es nulo o vacío
      * @param $result int
      * @return bool
      */
@@ -236,6 +243,8 @@ class Utils
             return false;
     }
 
+
+
     /**
      * @param $date String
      * @return bool
@@ -269,20 +278,20 @@ class Utils
 
 
         if( !isset($json_config->mode) || !isset($json_config->connection) )
-            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexión");
 
         //Obteniendo el modo y las conexiones
         $mode = $json_config->mode;
-        $connections = $json_config->connection; //objetos de conexion
+        $connections = $json_config->connection; //objetos de conexión
 
-        //Se obtiene conexion especifica, si no existe, se lanza error
+        //Se obtiene conexión especifica, si no existe, se lanza error
         if( !isset($connections->$mode) )
-            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexión");
 
         $con = $connections->$mode;
 
         if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
-            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MySQLConfig", "Faltan datos de conexión");
 
         return $con;
     }
@@ -304,20 +313,20 @@ class Utils
 
 
         if( !isset($json_config->mode) || !isset($json_config->connection) )
-            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexión");
 
         //Obteniendo el modo y las conexiones
         $mode = $json_config->mode;
-        $connections = $json_config->connection; //objetos de conexion
+        $connections = $json_config->connection; //objetos de conexión
 
-        //Se obtiene conexion especifica, si no existe, se lanza error
+        //Se obtiene conexión especifica, si no existe, se lanza error
         if( !isset($connections->$mode) )
-            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexión");
 
         $con = $connections->$mode;
 
         if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->smtp_secure) || !isset($con->port) || !isset($con->name) )
-            throw new InternalErrorException("MailerConfig", "Faltan datos de conexion");
+            throw new InternalErrorException("MailerConfig", "Faltan datos de conexión");
 
         return $con;
     }

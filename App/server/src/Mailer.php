@@ -1,6 +1,6 @@
 <?php namespace App;
 
-use App\Exceptions\InternalErrorException;
+use App\Exceptions\Request\InternalErrorException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -63,7 +63,7 @@ class Mailer
             $mail->isHTML(true);                                  // Set email format to HTML
 
             $mail->send();
-            AppLogger::makeActivityLog("Mailer", "Se ha enviado correo con exito");
+            AppLogger::makeActivityLog("Mailer", "Se ha enviado correo con éxito");
         } catch (Exception $e) {
             //echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
             throw new InternalErrorException("Mailer", "Error al enviar correo", $mail->ErrorInfo);

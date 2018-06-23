@@ -1,4 +1,4 @@
-app.controller('SubjectsController', function($scope, $http, $timeout, $window, Notification, SubjectService){
+angular.module("Dashboard").controller('SubjectsController', function($scope, $http, $timeout, $window, Notification, SubjectService){
     $scope.page.title = "Materias > Registros";
     
     $scope.subjects = [];
@@ -242,7 +242,7 @@ app.controller('SubjectsController', function($scope, $http, $timeout, $window, 
         $scope.disableButtons(true, '.opt-subject-'+subject_id);
         Notification("Procesando...");
 
-        SubjectService.changeStatus(subject_id, ENABLED,
+        SubjectService.changeStatus(subject_id, ACTIVE,
             function(success){
                 Notification.success("habilitado con exito");
                 $scope.getSubjects();

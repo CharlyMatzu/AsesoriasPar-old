@@ -1,4 +1,4 @@
-app.controller('NewSubjectController', function($scope, $window, $timeout, $http, NewSubjectService, Notification){
+angular.module("Dashboard").controller('NewSubjectController', function($scope, $window, $timeout, $http, NewSubjectService, Notification){
     $scope.page.title = "Materias > Nuevo";
 
     $scope.plans = [];
@@ -73,11 +73,11 @@ app.controller('NewSubjectController', function($scope, $window, $timeout, $http
      */
     $scope.addSubject = function(subject){
         Notification("Procesando...");
-        if( subject.career == null || subject.career == "" ){
+        if( subject.career_id == null || subject.career_id == "" ){
             Notification.warning("Debe seleccionar una carrera");
             return;
         }
-        if( subject.plan == null || subject.plan == "" ){
+        if( subject.plan_id == null || subject.plan_id == "" ){
             Notification.warning("Debe seleccionar una Plan");
             return;
         }

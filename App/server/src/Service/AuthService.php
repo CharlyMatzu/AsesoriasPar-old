@@ -1,11 +1,11 @@
 <?php namespace App\Service;
 
 use App\Auth;
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\RequestException;
-use App\Exceptions\UnauthorizedException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NotFoundException;
+use App\Exceptions\Request\RequestException;
+use App\Exceptions\Request\UnauthorizedException;
 use App\Model\MailModel;
 use App\Model\StudentModel;
 use App\Persistence\UsersPersistence;
@@ -26,9 +26,6 @@ class AuthService
      *
      * @return array
      * @throws InternalErrorException
-     * @throws NotFoundException
-     * @throws ConflictException
-     * TODO: solo debe funcionar si usuario esta activo
      * @throws UnauthorizedException
      */
     public function signIn($email, $pass){
@@ -37,19 +34,22 @@ class AuthService
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException("signIn","Ocurrió un error al autenticar", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NotFoundException("email o contraseña incorrectos");
-//            throw new UnauthorizedException("email o contraseña incorrectos");
+            throw new UnauthorizedException("email o contraseña incorrectos");
 
         //Si esta sin confirmar
         $user = $result->getData()[0];
 
         if( $user['status'] == Utils::$STATUS_DISABLE ) {
-            throw new NotFoundException("Usuario o contraseña e incorrectos");
-            //TODO reenviar correo de confirmación
+            throw new UnauthorizedException("email o contraseña e incorrectos");
         }
-        else if( $user['status'] == Utils::$STATUS_NO_CONFIRM ) {
-            throw new ConflictException("Usuario no ha confirmado correo electrónico");
-            //TODO reenviar correo de confirmación
+        else if( $user['status'] == Utils::$STATUS_PENDING ) {
+
+            try{
+                $mailServ = new MailService();
+                $mailServ->sendConfirmEmail( UserService::makeUserModel($user) );
+            }catch (InternalErrorException $e) {}
+
+            throw new UnauthorizedException("Usuario no ha confirmado correo electrónico");
         }
 
         //TODO: no usar id de BD
@@ -66,7 +66,7 @@ class AuthService
      * @param $student StudentModel
      *
      * @throws InternalErrorException
-     * @throws RequestException
+     * @throws \App\Exceptions\Request\RequestException
      */
     public function signUp($student){
         $userServ = new UserService();
@@ -78,6 +78,8 @@ class AuthService
      *
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws \App\Exceptions\Request\UnauthorizedException
+     * @throws ConflictException
      */
     public function confirmUser($token)
     {
@@ -89,8 +91,17 @@ class AuthService
         }
         //Verifica que exista usuario
         $userServ = new UserService();
-        $user = $userServ->getUser_ById( $id )[0];
-        $userServ->changeStatus( $id, Utils::$STATUS_ENABLE );
+        $user = $userServ->getUser_ById( $id );
+
+        //Se comprueba estado actual
+        if( $user['status'] == Utils::$STATUS_ACTIVE )
+            throw new ConflictException("Ya se ha confirmado correo");
+
+        if( $user['status'] == Utils::$STATUS_DISABLE )
+            throw new NotFoundException("No existe usuario");
+
+        //Se cambia status
+        $userServ->changeStatus( $id, Utils::$STATUS_ACTIVE );
 
         //Envío de correo de
         try{

@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\PeriodModel;
 use App\Service\PeriodService;
 use Slim\Http\Request;
@@ -67,7 +67,7 @@ class PeriodController
             /* @var $period PeriodModel */
             $period = $req->getAttribute('period_data');
             $periodService->createPeriod( $period->getDateStart(), $period->getDateEnd() );
-            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Periodo registrado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Periodo registrado con éxito");
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
@@ -87,7 +87,7 @@ class PeriodController
             $period = $req->getAttribute('period_data');
             $period->setId( $params['id'] );
             $periodService->updatePeriod( $period );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Periodo actualizado con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Periodo actualizado con éxito");
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
@@ -103,7 +103,7 @@ class PeriodController
         try {
             $periodService = new PeriodService();
             $periodService->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Modificado status de periodo con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Modificado status de periodo con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );

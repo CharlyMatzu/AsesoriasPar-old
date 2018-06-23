@@ -1,6 +1,6 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\RequestException;
+use App\Exceptions\Request\RequestException;
 use App\Model\CareerModel;
 use App\Service\CareerService;
 use Slim\Http\Request;
@@ -79,7 +79,7 @@ class CareerController
             $user = $req->getAttribute('career_data');
             $user->setId( $params['id'] );
             $careerService->updateCarrers( $user );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Se actualizo carrera con exito");
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Se actualizo carrera con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -96,15 +96,8 @@ class CareerController
     public function changeStatus($req, $res, $params){
         try {
             $careerService = new CareerService();
-            if( $params['status'] == Utils::$STATUS_DISABLE ){
-                $careerService->disableCareer( $params['id'] );
-                return Utils::makeMessageResponse( $res, Utils::$OK, "Desactivado con exito");
-            }
-            else if( $params['status'] == Utils::$STATUS_ENABLE ){
-                $careerService->enableCareer( $params['id'] );
-                return Utils::makeMessageResponse( $res, Utils::$OK, "Activado con exito");
-            }
-
+            $careerService->changeStatus( $params['id'], $params['status'] );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Se actualizo status con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );

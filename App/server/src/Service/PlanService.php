@@ -1,9 +1,9 @@
 <?php namespace App\Service;
 
-use App\Exceptions\ConflictException;
-use App\Exceptions\InternalErrorException;
-use App\Exceptions\NoContentException;
-use App\Exceptions\NotFoundException;
+use App\Exceptions\Request\ConflictException;
+use App\Exceptions\Request\InternalErrorException;
+use App\Exceptions\Request\NoContentException;
+use App\Exceptions\Request\NotFoundException;
 
 use App\Model\DataResult;
 use App\Persistence\PlansPeristence;
@@ -26,7 +26,7 @@ class PlanService{
         $result = $this->perPlans->getPlans();
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getPlans","Ocurrio un error al obtener planes", $result->getErrorMessage());
+            throw new InternalErrorException("getPlans","Ocurrió un error al obtener planes", $result->getErrorMessage());
 
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NoContentException("Sin planes registrados");
@@ -46,7 +46,7 @@ class PlanService{
         $result = $this->perPlans->getPlan_ById( $planId );
 
         if( Utils::isError($result->getOperation()) )
-            throw new InternalErrorException("getPlanById","Ocurrio un error al obtener plan", $result->getErrorMessage());
+            throw new InternalErrorException("getPlanById","Ocurrió un error al obtener plan", $result->getErrorMessage());
 
         else if( Utils::isEmpty($result->getOperation()) )
             throw new NotFoundException("No existe plan");
@@ -68,7 +68,7 @@ class PlanService{
         else if( $result->getOperation() == true )
             throw new ConflictException("Plan ya existe");
 
-        //Inteta registrar
+        //Intenta registrar
         $this->perPlans->createPlan($year);
 
         if( Utils::isError($result->getOperation()) )
@@ -84,7 +84,8 @@ class PlanService{
      * @throws ConflictException
      */
     public function updatePlan($planId, $year){
-        $result = $this->getPlan_ById( $planId );
+        //Verifica que exista plan
+        $this->getPlan_ById( $planId );
 
         //Comprobando que no exista año
         $result = $this->isPlanExist_ByYear( $year );
@@ -112,16 +113,9 @@ class PlanService{
         //Verifica que plan exista
         $this->getPlan_ById( $planId );
 
-        if( $status == Utils::$STATUS_DISABLE ){
-            $result = $this->perPlans->changeStatusToDisable($planId);
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","Error al deshabilitar plan", $result->getErrorMessage());
-        }
-        else if( $status == Utils::$STATUS_ENABLE ){
-            $result = $this->perPlans->changeStatusToEnable($planId);
-            if( Utils::isError($result->getOperation()) )
-                throw new InternalErrorException("changeStatus","Error al habilitar plan", $result->getErrorMessage());
-        }
+        $result = $this->perPlans->changeStatus($planId, $status);
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("changeStatus","Error al cambiar status plan", $result->getErrorMessage());
     }
 
 
@@ -145,7 +139,9 @@ class PlanService{
 
     /**
      * @param $year
+     *
      * @return DataResult
+     * @throws InternalErrorException
      */
     private function isPlanExist_ByYear($year){
 
@@ -158,15 +154,15 @@ class PlanService{
         return $result;
     }
 
-    private function isPlanExist_ById($planId){
-        $result = $this->perPlans->getPlan_ById($planId);
-        if( Utils::isSuccessWithResult( $result->getOperation() ) )
-            $result->setOperation(true);
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            $result->setOperation(false);
-
-        return $result;
-    }
+//    private function isPlanExist_ById($planId){
+//        $result = $this->perPlans->getPlan_ById($planId);
+//        if( Utils::isSuccessWithResult( $result->getOperation() ) )
+//            $result->setOperation(true);
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            $result->setOperation(false);
+//
+//        return $result;
+//    }
 
 
 }

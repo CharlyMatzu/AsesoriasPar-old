@@ -35,7 +35,7 @@ angular.module("HostModule", [])
             
             
         var getServerURL = function(){
-            if( DEVELOP_MODE == true )
+            if( DEVELOP_MODE === true )
                 return DEVELOPMENT;
             else
                 return PRODUCTION;
@@ -46,23 +46,33 @@ angular.module("HostModule", [])
                 return getServerURL()+'/index.php';
             },
 
-            getBaseURL: function() {
-                return getServerURL();
-            },
+            // getBaseURL: function() {
+            //     return getServerURL();
+            // },
 
-            makeRequest: function(method, url, data, use_token, successCallback, errorCallback){
-                //TODO: SEND TOKEN
+            /**
+             * @param {String} method   GET, POST, PUT, PATCH, DELETE
+             * @param {String} route    /route/param
+             * @param {String} data     Informacion en formato JSON
+             * @param {boolean} token   Para utilizar o no el token
+             * @param {callable} successCallback    callback para success
+             * @param {callable} errorCallback      callback para error
+             */
+            makeTokenRequest: function(method, route, data, token, successCallback, errorCallback){
+                if( token == null )
+                    token = "";
+
                 $http({
                     method: method,
-                    url: getBaseURL()+url,
-                    data: data
+                    url: this.getURL()+route,
+                    data: data,
+                    headers: {'Authorization': 'Bearer ' + token}
                 }).then(function(success){
                     successCallback(success);
                 }, function(error){
-                    //TODO: CHECK access
                     errorCallback(error);
                 });
-            }
+            },
         };
             
     })

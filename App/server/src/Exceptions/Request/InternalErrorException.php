@@ -1,4 +1,4 @@
-<?php namespace App\Exceptions;
+<?php namespace App\Exceptions\Request;
 
 
 use App\AppLogger;
@@ -18,7 +18,7 @@ class InternalErrorException extends RequestException
         parent::__construct("Algo salio mal, intentelo más tarde", Utils::$INTERNAL_SERVER_ERROR);
 
         //---Log de errores
-        AppLogger::makeErrorLog($title, $this->getFile()."[".$this->getLine()."] --- $message: $details");
+        AppLogger::makeErrorLog($title, $this->getFile()."[".$this->getLine()."] --- $message: $details --- TRACE:".$this->getTraceAsString());
     }
 
 }

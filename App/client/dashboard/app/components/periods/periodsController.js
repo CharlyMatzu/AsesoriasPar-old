@@ -1,4 +1,4 @@
-app.controller('PeriodsController', function($scope, $http, Notification, PeriodsService){
+angular.module("Dashboard").controller('PeriodsController', function($scope, $http, Notification, PeriodsService){
     $scope.page.title = "Periodos";
     
     $scope.periods = [];
@@ -170,7 +170,7 @@ app.controller('PeriodsController', function($scope, $http, Notification, Period
         $scope.disableButtons(true, '.opt-period-'+period_id);
         Notification("Procesando...");
 
-        PeriodsService.changeStatus(period_id, ENABLED,
+        PeriodsService.changeStatus(period_id, ACTIVE,
             function(success){
                 Notification.success("habilitado con exito");
                 getPeriods();

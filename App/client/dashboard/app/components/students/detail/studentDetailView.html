@@ -26,8 +26,8 @@
                         </div>
 
                         <div class="options">
-                            <button ng-show="student.status == 0" class="btn btn-success">Habilitar</button>
-                            <button ng-show="student.status == 2" class="btn btn-warning">Deshabilitar</button>
+                            <button ng-show="student.status === 'DISABLED'" class="btn btn-success">Habilitar</button>
+                            <button ng-show="student.status === 'ACTIVE'" class="btn btn-warning">Deshabilitar</button>
                             <button class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                     <span ng-hide="schedule.subjects.length > 0">Alumno no tiene materias registradas</span>
 
                     <div class="table-responsive" ng-show="schedule.subjects.length > 0">
-                        <table class="table">
+                        <table class="table text-center">
                             <tr>
                                 <th>Materia</th>
                                 <th>Plan</th>
@@ -159,16 +159,16 @@
                                 <td>{{sub.plan}}</td>
                                 <td>{{sub.career_name}}</td>
                                 <td>
-                                    <span ng-show="sub.subject_status == 0" class="label label-danger">Deshabilitado</span>
-                                    <span ng-show="sub.subject_status == 2" class="label label-success">Activo</span>
+                                    <span ng-show="sub.subject_status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
+                                    <span ng-show="sub.subject_status === 'ACTIVE'" class="label label-success">Activo</span>
                                 </td>
                                 <td>
-                                    <span ng-show="sub.status == 1" class="label label-warning">Pendiente</span>
-                                    <span ng-show="sub.status == 2" class="label label-success">Validada</span>
+                                    <span ng-show="sub.status === 'PENDING'" class="label label-warning">Pendiente</span>
+                                    <span ng-show="sub.status === 'VALIDATED'" class="label label-success">Validada</span>
                                 </td>
                                 <td>
-                                    <button ng-show="sub.status == 1" class="btn btn-success">Validar</button>
-                                    <button ng-show="sub.status == 2" class="btn btn-warning">Bloquear</button>
+                                    <button ng-show="sub.status === 'PENDING'" class="btn btn-success">Validar</button>
+                                    <button ng-show="sub.status === 'VALIDATED'" class="btn btn-warning">Bloquear</button>
                                 </td>
                             </tr>
                         </table>

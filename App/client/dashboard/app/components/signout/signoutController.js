@@ -1,4 +1,4 @@
-app.controller('SignoutController', function($scope){
+angular.module("Dashboard").controller('SignoutController', function($scope){
 
     (function(){
         $scope.signOut();

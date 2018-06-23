@@ -1,6 +1,5 @@
 <?php namespace App\Persistence;
 
-use App\Model\CareerModel;
 use App\Model\StudentModel;
 use App\Utils;
 
@@ -34,6 +33,7 @@ class StudentsPersistence extends Persistence{
      * @param $id int
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getStudent_ById($id){
         $query =    $this->SELECT."
@@ -44,6 +44,7 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getStudents(){
         $query =    $this->SELECT;
@@ -51,17 +52,39 @@ class StudentsPersistence extends Persistence{
         return $this->executeQuery($query);
     }
 
+    /**
+     * @param $id int
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
     public function getStudent_ByUserId($id)
     {
         $query =    $this->SELECT."
-                    WHERE s.fk_user = $id";
+                    WHERE s.fk_user = $id AND u.fk_role = '".Utils::$ROLE_BASIC."'";
+        //Obteniendo resultados
+        return $this->executeQuery($query);
+    }
+
+    /**
+     * @param $id int
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getStudent_ByEnabledUserId($id)
+    {
+        $query =    $this->SELECT."
+                    WHERE s.fk_user = $id AND (u.status = '".Utils::$STATUS_ACTIVE."' AND u.fk_role = '".Utils::$ROLE_BASIC."')";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }
 
     /**
      * @param $data string
+     *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchStudents($data)
     {
@@ -78,6 +101,7 @@ class StudentsPersistence extends Persistence{
      * @param $itsonId
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getStudent_ByItsonId($itsonId){
         $query =    $this->SELECT."
@@ -167,6 +191,7 @@ class StudentsPersistence extends Persistence{
      * @param $student StudentModel
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertStudent( $student ){
         $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career)
@@ -184,6 +209,7 @@ class StudentsPersistence extends Persistence{
      * @param $student StudentModel
      *
      * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function updateStudent( $student ){
         $query = "UPDATE  student s 

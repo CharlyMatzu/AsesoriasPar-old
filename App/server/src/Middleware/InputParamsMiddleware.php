@@ -1,17 +1,12 @@
 <?php namespace App\Middleware;
 
 
-use App\Auth;
+
 use App\Model\AdvisoryModel;
 use App\Model\CareerModel;
-use App\Model\MailModel;
 use App\Model\PeriodModel;
 use App\Model\StudentModel;
 use App\Model\SubjectModel;
-use App\Model\UserModel;
-use Carbon\Carbon;
-use PHPMailer\PHPMailer\Exception;
-use Carbon\Exceptions\InvalidDateException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Utils;
@@ -19,13 +14,13 @@ use App\Utils;
 class InputParamsMiddleware extends Middleware
 {
 
-    //Cuando es un valor por GET, el método debe llamarse checkParam_NombreParametro[s]
+    //Cuando es un valor por GET, el método debe llamarse checkParam_NombreParámetro[s]
     //Cuando es un valor mediante POST o similar, el método debe llamarse checkData_Nombre
 
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -33,10 +28,10 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Id($req, $res, $next)
     {
-        $id = $this->getRouteParams($req)['id'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        $id = self::getRouteParams($req)['id'];
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($id) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -44,17 +39,19 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
      * @return Response
      */
-    public function checkParam_search_student($req, $res, $next)
+    public function checkParam_Search($req, $res, $next)
     {
-//        $student_search = $this->getRouteParams($req)['search_student'];
 
-        //TODO: validar un poco
+        $search = self::getRouteParams($req)['search'];
+
+        if( !preg_match(Utils::EXPREG_SEARCH, $search) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: no es un email valido");
 
         $res = $next($req, $res);
         return $res;
@@ -62,7 +59,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -70,17 +67,17 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Advisory($req, $res, $next)
     {
-        $advisory = $this->getRouteParams($req)['advisory'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        $advisory = self::getRouteParams($req)['advisory'];
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($advisory) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
     }
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -88,10 +85,10 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Schedule($req, $res, $next)
     {
-        $id = $this->getRouteParams($req)['schedule'];
-        //Verifica que sea un string numerico (no int porque viene como string)
+        $id = self::getRouteParams($req)['schedule'];
+        //Verifica que sea un string numérico (no int porque viene como string)
         if( !is_numeric($id) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "parámetros invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -99,7 +96,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -107,16 +104,17 @@ class InputParamsMiddleware extends Middleware
      */
     public function checkParam_Status($req, $res, $next)
     {
-        $status = $this->getRouteParams($req)['status'];
-        //Verifica que sea un string numerico (no int porque viene como string)
-        if( !is_numeric($status) || $status === "" || $status == null )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+        $status = self::getRouteParams($req)['status'];
 
-        if( ($status != Utils::$STATUS_ENABLE)
+        //Verifica los status disponibles
+        if( ($status != Utils::$STATUS_ACTIVE)
             && ($status != Utils::$STATUS_DISABLE)
-            //&& ($status != Utils::$STATUS_NO_CONFIRM)
+            && ($status != Utils::$STATUS_PENDING)
+            && ($status != Utils::$STATUS_FINALIZED)
+            && ($status != Utils::$STATUS_VALIDATED)
+            && ($status != Utils::$STATUS_LOCKED)
         )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Debe ser: ACTIVE, DISABLED, PENDING, FINALIZED, VALIDATE, LOCKED");
 
         $res = $next($req, $res);
         return $res;
@@ -124,32 +122,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
-     * @param $req Request
-     * @param $res Response
-     * @param $next callable
-     * @return Response
-     */
-    public function checkParam_Email($req, $res, $next)
-    {
-        $email = $this->getRouteParams($req)['email'];
-        //Verifica que sea un string numerico (no int porque viene como string)
-        if( empty($email) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
-
-        //TODO: no debe contener caracteres extraños
-
-        //Si no es un correo valido
-//        if( !preg_match(Utils::EXPREG_EMAIL, $email) )
-//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
-
-        $res = $next($req, $res);
-        return $res;
-    }
-
-
-    /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -159,16 +132,16 @@ class InputParamsMiddleware extends Middleware
     {
         $params = $req->getParsedBody();
         if( !isset($params['role']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: role");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros: Se requiere: role");
 
-        if( empty($params['role']) || empty($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
+        if( empty($params['role']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros de rol invalidos: Campos vacíos");
 
         //El tipo basic es solo con estudiante
         if( //$params['role'] != Utils::$ROLE_BASIC &&
             $params['role'] != Utils::$ROLE_MOD &&
             $params['role'] != Utils::$ROLE_ADMIN)
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros de rol invalidos: moderator o administrator");
 
 
         $req = $req->withAttribute('role_data', $params['role']);
@@ -178,46 +151,31 @@ class InputParamsMiddleware extends Middleware
     }
 
 
+
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
      * @return Response
      */
-    public function checkData_Mail($req, $res, $next)
+    public function checkData_Email($req, $res, $next)
     {
         $params = $req->getParsedBody();
-        if( !isset($params['address']) || !isset($params['subject']) || !isset($params['body']) || !isset($params['plainBody']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: address, subject, body, plainBody");
+        if( !isset($params['email']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros: Se requiere email");
 
-        if( empty($params['address']) || empty($params['subject']) || empty($params['body']) || empty($params['plainBody']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
+        if( empty($params['email']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: email vacío");
 
-        if( !is_array($params['address']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Address debe ser array de correos");
+        $email = $params['email'];
 
-
-        foreach ( $params['address'] as $address ){
-            //Si esta vacio
-            if( empty($address) )
-                return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Address no valido: vacio");
-            if( !is_string($address) )
-                return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Address no valido: No es Email");
-            //TODO: validar
-//            if(  !preg_match(Utils::EXPREG_EMAIL, $address ) )
-//                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Address no valido: No es email valido");
-        }
+        if( !preg_match(Utils::EXPREG_EMAIL, $email) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: no es un email valido");
 
 
-        $mail = new MailModel();
-        $mail->setAddress( $params['address'] );
-        $mail->setSubject( $params['subject'] );
-        $mail->setBody( $params['body'] );
-        $mail->setPlainBody( $params['plainBody'] );
-
-
-        $req = $req->withAttribute('mail_data', $mail);
+        //Se envían los Parámetros mediante el request ya validados
+        $req = $req->withAttribute('email_data', $email);
 
         $res = $next($req, $res);
         return $res;
@@ -225,38 +183,31 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
      * @return Response
      */
-    public function checkData_User($req, $res, $next)
+    public function checkData_Password($req, $res, $next)
     {
         $params = $req->getParsedBody();
-        if( !isset($params['email']) || !isset($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password");
+        if( !isset($params['password']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros: Se requiere password");
 
-        //FIXME: debe poder aceptar password vacio para el caso del update
-        if( empty($params['email']) || empty($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
 
-        $email = $params['email'];
+        if( empty($params['password']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: password vacío");
+
         $pass = $params['password'];
 
-        //TODO validar
-//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
-//            !preg_match(Utils::EXPREG_PASS, $pass) ||
-//            !Utils::isRole($role) )
-//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+        //FIXME: deja pasar
+        if( !preg_match(Utils::EXPREG_PASS, $pass) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: no es un password valido");
 
-        //Se crea objeto
-        $user = new UserModel();
-        $user->setEmail($email);
-        $user->setPassword($pass);
 
-        //Se envian los parametros mediante el request ya validados
-        $req = $req->withAttribute('user_data', $user);
+        //Se envían los Parámetros mediante el request ya validados
+        $req = $req->withAttribute('password_data', $pass);
 
         $res = $next($req, $res);
         return $res;
@@ -275,12 +226,12 @@ class InputParamsMiddleware extends Middleware
             !isset($params['itson_id']) || !isset($params['phone']) ||
             !isset($params['career']))
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Faltan parametros: Se requiere: first_name, last_name, itson_id, phone");
+                "Faltan Parámetros: Se requiere: first_name, last_name, itson_id, phone");
 
         if( empty($params['first_name']) || empty($params['last_name']) ||
             empty($params['itson_id']) || empty($params['phone']) ||
             empty($params['career']))
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
 
         $first = $params['first_name'];
         $last = $params['last_name'];
@@ -288,18 +239,10 @@ class InputParamsMiddleware extends Middleware
         $phone = $params['phone'];
         $career = $params['career'];
 
-        //TODO validar
-//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
-//            !preg_match(Utils::EXPREG_PASS, $pass) ||
-//            !Utils::isRole($role) )
-//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
-
-
 
         //Se crea objeto estudiante
         $student = new StudentModel();
         //Se agregan datos
-//        $student->setUser( $user );
         $student->setFirstName($first);
         $student->setLastName($last);
         $student->setItsonId($itson);
@@ -307,7 +250,7 @@ class InputParamsMiddleware extends Middleware
         $student->setCareer($career);
 
 
-        //Se envian los parametros mediante el request ya validados
+        //Se envían los Parámetros mediante el request ya validados
         $req = $req->withAttribute('student_data', $student);
 
         $res = $next($req, $res);
@@ -317,45 +260,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
-     * @param $req Request
-     * @param $res Response
-     * @param $next callable
-     * @return Response
-     */
-    public function checkData_Auth($req, $res, $next)
-    {
-        $params = $req->getParsedBody();
-        if( !isset($params['email']) || !isset($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: email, password");
-
-        if( empty($params['email']) || empty($params['password']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
-
-        $email = $params['email'];
-        $pass = $params['password'];
-
-        //TODO validar
-//        if( !preg_match(Utils::EXPREG_EMAIL, $email) ||
-//            !preg_match(Utils::EXPREG_PASS, $pass))
-//            return Utils::makeJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
-
-        //Se crea objeto
-        $user = new UserModel();
-        $user->setEmail($email);
-        $user->setPassword($pass);
-
-        //Se envian los parametros mediante el request ya validados
-        $req = $req->withAttribute('user_auth', $user);
-
-        $res = $next($req, $res);
-        return $res;
-    }
-
-
-
-    /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -365,11 +270,11 @@ class InputParamsMiddleware extends Middleware
     {
         $params = $req->getParsedBody();
         if( !isset($params['name']) || !isset($params['short_name']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: name, short_name");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: name, short_name");
 
-        //TODO: podria dejarse abreviacion vacio
+        //TODO: podria dejarse abreviacion vacío
         if( empty($params['name']) || empty($params['short_name']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros vacios");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros vacios");
 
         $name = $params['name'];
         $short_name = $params['short_name'];
@@ -380,7 +285,7 @@ class InputParamsMiddleware extends Middleware
         $career->setName( $name );
         $career->setShortName( $short_name );
 
-        //Se envian los parametros mediante el request ya validados
+        //Se envian los Parámetros mediante el request ya validados
         $req = $req->withAttribute('career_data', $career);
 
         $res = $next($req, $res);
@@ -389,7 +294,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -399,16 +304,16 @@ class InputParamsMiddleware extends Middleware
     {
         $params = $req->getParsedBody();
         if( !isset($params['year']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: year");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: year");
 
         if( empty($params['year']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: no debe estar vacio");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan: no debe estar vacío");
 
         if( ( !is_numeric($params['year']) ) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan, debe ser numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan, debe ser numérico");
 
         if( ( strlen( $params['year'] ) != 4 ) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: deben ser 4 digitos");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan: deben ser 4 digitos");
 
         $res = $next($req, $res);
         return $res;
@@ -416,7 +321,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -427,22 +332,22 @@ class InputParamsMiddleware extends Middleware
         $params = $req->getParsedBody();
         if( !isset($params['name']) || !isset($params['short_name']) || !isset($params['description']) ||
             !isset($params['semester']) || !isset($params['plan']) || !isset($params['career']))
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, 
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros, 
             Se requiere: name, short_name, description, semester, plan, career");
 
         //Solo campos que se ocupan
         if( empty($params['name']) || empty($params['semester']) || empty($params['plan']) || empty($params['career']))
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Campos vacíos");
 
         //TODO: validar formato, tipo, etc..
         if( !is_numeric($params['semester']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Semestre no es numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Semestre no es numérico");
 
         if( !is_numeric($params['plan']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Plan no es numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Plan no es numérico");
 
         if( !is_numeric($params['career']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Carrera no es numerico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Carrera no es numérico");
 
 
         $subject = new SubjectModel();
@@ -461,7 +366,7 @@ class InputParamsMiddleware extends Middleware
 
 
     /**
-     * Verifica que el parametro enviado sea un valor valido
+     * Verifica que el parámetros enviado sea un valor valido
      * @param $req Request
      * @param $res Response
      * @param $next callable
@@ -471,7 +376,7 @@ class InputParamsMiddleware extends Middleware
     {
         $params = $req->getParsedBody();
         if( !isset($params['start']) || !isset($params['end']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: start, end");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: start, end");
 
         if( empty($params['start']) || empty($params['end']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
@@ -507,10 +412,10 @@ class InputParamsMiddleware extends Middleware
 
         $params = $req->getParsedBody();
         if( !isset($params['hours']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: hours");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: hours");
 
 //        if( empty($params['hours']) )
-//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
 
         if( !is_array($params['hours']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Debe ser un array");
@@ -540,10 +445,10 @@ class InputParamsMiddleware extends Middleware
 
         $params = $req->getParsedBody();
         if ( !isset($params['hours']) || !isset($params['adviser']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: hours, adviser");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: hours, adviser");
 
         if( empty($params['hours']) || empty($params['adviser']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros vacios");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros vacios");
 
         if (!is_array($params['hours']))
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Hours debe ser array");
@@ -577,10 +482,10 @@ class InputParamsMiddleware extends Middleware
 
         $params = $req->getParsedBody();
         if( !isset($params['subjects']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: subjects");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: subjects");
 
 //        if( empty($params['subjects']) )
-//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Subjects vacio");
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Subjects vacío");
 
 
         if( !is_array($params['subjects']) )
@@ -613,52 +518,27 @@ class InputParamsMiddleware extends Middleware
         $params = $req->getParsedBody();
         if( !isset($params['subject']) || !isset($params['description']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Faltan parametros, Se requiere: subject, description");
+                "Faltan Parámetros, Se requiere: subject, description");
 
         if( empty($params['subject']) || empty($params['description']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: campos vacios");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: campos vacios");
 
         //no debe ser array
         if( is_array($params['subject']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: subject no debe ser array");
+                "Parámetros invalidos: subject no debe ser array");
 
         //Verificando que sean datos numericos
         $subject = $params['subject'];
         if( !is_numeric($subject) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: subject no es numerico");
+                "Parámetros invalidos: subject no es numérico");
 
         $advisory = new AdvisoryModel();
         $advisory->setSubject( $subject );
         $advisory->setDescription( $params['description'] );
 
         $req = $req->withAttribute('advisory_data', $advisory);
-
-        $res = $next($req, $res);
-        return $res;
-    }
-
-
-    /**
-     * Verifica que el parametro enviado sea un valor valido
-     * @param $req Request
-     * @param $res Response
-     * @param $next callable
-     * @return Response
-     */
-    public function checkParam_Token($req, $res, $next)
-    {
-        $token = $this->getRouteParams($req)['token'];
-        //Verifica que sea un string numerico (no int porque viene como string)
-        if( empty($token) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Token debe incluirse");
-
-        try{
-            Auth::CheckToken( $token );
-        }catch (\Exception $e) {
-            return Utils::makeMessageResponse($res, Utils::$CONFLICT, $e->getMessage());
-        }
 
         $res = $next($req, $res);
         return $res;
