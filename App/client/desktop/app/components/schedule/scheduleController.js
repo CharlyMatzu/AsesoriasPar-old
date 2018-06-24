@@ -1,5 +1,6 @@
-app.controller('ScheduleController', function($scope, $http, Notification, ScheduleService){
+angular.module("Desktop").controller('ScheduleController', function($scope, $http, Notification, STATUS, ScheduleService){
 
+    
     $scope.daysAndHours = [];
     $scope.schedule = {};
     $scope.noRepeatedSubjects = [];
@@ -40,7 +41,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
         
         ScheduleService.getSubjects(
             function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     Notification.warning("No hay materias disponibles");
                 }
                 else{
@@ -131,7 +132,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
      * @param {} studen_id 
      */
     var createSchedule = function(studen_id){
-        $scope.loading.message = "Creando horario";
+        // $scope.loading.message = "Creando horario";
 
         ScheduleService.createSchedule(studen_id,
             function(success){
@@ -305,7 +306,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
             function(success){
                 // Notification.success("Horario actualizado con exito");
                 $scope.showUpdateHours = false;
-                // $scope.loading.status = false;
+                $scope.loading.status = false;
 
                 //TODO: recargar datos
                 // getStudentSchedule( $scope.student.id );
@@ -320,34 +321,14 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
     
 
     (function(){
-
         $scope.loading.status = true;
-        $scope.period.message = "";
-        
-        ScheduleService.getCurrentPeriod(
-            function(success){
-                if( success.status == NO_CONTENT )
-                    Notification("Sin periodo");
-                else
-                    Notification.success("Periodo");
+        // $scope.period.message = "";
 
-
-                // if( success.status == NO_CONTENT ){
-                //     $scope.loading.status = false;
-                //     $scope.period.message = "No hay un periodo actual disponible";
-                //     console.log("Periodo no encontrado");
-                // }
-                // else{
-                //     $scope.period.data = success.data;
-                //     getStudentSchedule( $scope.student.id );
-                // }
-            },
-            function(error){
-                $scope.loading.status = false;
-            }
-        );
-        
-        
+        //Si hay periodo actual, se busca horario
+        if( $scope.period != null ){
+            Notification("hay periodo");
+            // getStudentSchedule( $scope.student.id );
+        }
     })();
 
 });

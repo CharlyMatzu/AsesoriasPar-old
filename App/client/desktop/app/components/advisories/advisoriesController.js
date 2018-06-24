@@ -1,4 +1,4 @@
-app.controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
+angular.module("Desktop").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
 
     $scope.requestedAds = [];
     $scope.showRequestedAds = false;
@@ -22,16 +22,17 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         $scope.showRequestedAds = true;
         $scope.showAdviserdAds = false;
 
-        AdvisoriesService.getRequestedAdvisories( $scope.student.id,
-            function(success){
-                $scope.requestedAds = success.data;
-                $scope.loading.status = false;
-            },
-            function(error){
-                Notification.error("Ocurrio un error: "+error.data);
-                $scope.loading.status = false;
-            }
-        );
+        AdvisoriesService.getRequestedAdvisories( $scope.student.id )
+            .then(
+                function(success){
+                    $scope.requestedAds = success.data;
+                    $scope.loading.status = false;
+                },
+                function(error){
+                    Notification.error("Ocurrio un error: "+error.data);
+                    $scope.loading.status = false;
+                }
+            );
     };
 
     $scope.getAdviserAds = function(){
@@ -39,28 +40,30 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
         $scope.showRequestedAds = false;
         $scope.showAdviserdAds = true;
 
-        AdvisoriesService.getAdviserAdvisories( $scope.student.id,
-            function(success){
-                $scope.adviserAds = success.data;
-                $scope.loading.status = false;
-            },
-            function(error){
-                Notification.error("Ocurrio un error: "+error.data);
-                $scope.loading.status = false;
-            }
-        );
+        AdvisoriesService.getAdviserAdvisories( $scope.student.id )
+            .then(
+                function(success){
+                    $scope.adviserAds = success.data;
+                    $scope.loading.status = false;
+                },
+                function(error){
+                    Notification.error("Ocurrio un error: "+error.data);
+                    $scope.loading.status = false;
+                }
+            );
     };
     
 
     $scope.getSubjects = function(){
-        AdvisoriesService.getSubjects(
-            function(success){
-                $scope.subjects = success.data;
-            },
-            function(error){
-                Notification.error("Error: "+error.data);
-            }
-        );
+        AdvisoriesService.getSubjects()
+            .then(
+                function(success){
+                    $scope.subjects = success.data;
+                },
+                function(error){
+                    Notification.error("Error: "+error.data);
+                }
+            );
     };
 
     $scope.newAdvisory = function(){
@@ -92,64 +95,47 @@ app.controller('AdvisoriesController', function($scope, $http, Notification, Adv
             description: "Sin descripcion",
             student: $scope.student.id
         };
-        AdvisoriesService.requestAdvisory(advsory, 
-            function(success){
-                Notification.success("Solicitado con exito");
-                $scope.closeNewAdvisory();
-                $scope.getRequestedAds();
-            },
-            function(error){
-                if( error.status == CONFLICT ){
-                    Notification.warning("Error al solicitar asesoria: "+error.data);
+        AdvisoriesService.requestAdvisory(advsory)
+            .then(
+                function(success){
+                    Notification.success("Solicitado con exito");
+                    $scope.closeNewAdvisory();
+                    $scope.getRequestedAds();
+                },
+                function(error){
+                    if( error.status == CONFLICT ){
+                        Notification.warning("Error al solicitar asesoria: "+error.data);
+                    }
+                    else{
+                        Notification.error("Error al solicitar asesoria: "+error.data);
+                    }
                 }
-                else{
-                    Notification.error("Error al solicitar asesoria: "+error.data);
-                }
-            }
-        );
+            );
         
     };
 
     $scope.finalize = function(advisory_id){
         Notification("Procesando...");
 
-        AdvisoriesService.finalizeAdvisory(advisory_id,
-            function(success){
-                Notification.success("Asesoria finalizada con éxito");
-                //TODO: obtener asesorias
-            },
-            function(error){
-                Notification.error("Ocurrio un error");
-            }
-        );
+        AdvisoriesService.finalizeAdvisory(advisory_id)
+            .then(
+                function(success){
+                    Notification.success("Asesoria finalizada con éxito");
+                    //TODO: obtener asesorias
+                },
+                function(error){
+                    Notification.error("Ocurrio un error");
+                }
+            );
     };
 
 
-
     (function(){
-
-        $scope.loading.status = true;
-        $scope.period.message = "";
-        
-        AdvisoriesService.getCurrentPeriod(
-            function(success){
-                if( success.status == NO_CONTENT ){
-                    $scope.loading.status = false;
-                    $scope.period.message = "No hay un periodo actual disponible";
-                }
-                else{
-                    $scope.period.data = success.data;
-                    $scope.showAdvisories = true;
-
-                    $scope.getRequestedAds();
-                }
-            },
-            function(error){
-                $scope.loading.status = false;
+        $scope.loadData(
+            function(){
+                $scope.getRequestedAds();
             }
         );
-        
-        
     })();
 
 
