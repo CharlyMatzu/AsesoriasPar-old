@@ -19,6 +19,56 @@
 }
 
 
+.slide.ng-enter{
+    animation-duration: .25s;
+    height: 0;
+}
+
+.slide.ng-enter-active{
+    height: auto;
+}
+
+.slide.ng-leave{
+    animation-duration: .25s;
+    height: auto;
+}
+
+.slide.ng-leave-active{
+    height: 0;
+}
+
+.slideUp{
+    animation-duration: .25s;
+    animation: slideUp;
+}
+
+@keyframes slideUp {
+    from {
+        height: auto;
+    }
+    to {
+        height: 0;
+    }
+}
+
+.slideDown{
+    animation-duration: .25s;
+    animation: slideUp;
+}
+
+
+@keyframes slideDown {
+    from {
+        height: 0;
+    }
+    to {
+        height: auto;
+    }
+}
+
+
+
+
 //--------------------ngAnimations
 
 // fadeIn

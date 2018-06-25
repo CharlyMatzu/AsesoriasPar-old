@@ -1,39 +1,36 @@
 <div class="section advisories-section" ng-controller="AdvisoriesController">
     <div class="container">
 
-        <div class="row">
-            <div class="options" class="col-lg-12">
-                <button class="btn btn-primary">Boton</button>
-            </div>
-        </div>
+        <div class="advisories-container">
 
-        <div class="row">
-            <div class="avisories-container col-lg-12">
-                
-                <!-- items -->
-                <div class="item" ng-repeat="ad in requestedAds">
-                    <div class="avatar">
-                        <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_assign.jpg" alt="">
-                        <img ng-show="ad.adviser_id == null" src="../../../../assets/img/teacher_empty.jpg" alt="">
-                    </div>
-                    <div class="info">
-                        <div ng-show="ad.adviser_id != null" class="info-item student" >{{ad.adviser_first_name}} {{ad.adviser_last_name}}</div>
-                        <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
-                        <div class="info-item subject">{{ad.subject_name}}</div>
-                        <div class="info-item status">
-                            <span ng-show="ad.status === 'PENDING'" class="label label-default">Pendiente</span>
-                            <span ng-show="ad.status === 'ACTIVE'" class="label label-success">Activo</span>
-                            <span ng-show="ad.status === 'FINALIZED'" class="label label-danger">Finalizado</span>
-                        </div>
-                        
-                        <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
-                    </div>
+            <!-- spinner -->
+            <div class="spinner-container" ng-if="loading">
+                <div class="spinner"></div>
+            </div>
+
+
+            <!-- asesorías -->
+            <div class="advisories" ng-if="!loading">
+
+                <!-- emtpy advisories -->
+                <div class="empty text-center" ng-if="requestedAds.length == 0">
+                    <p class="alert alert-primary">No ha solicitado asesorias</p>
+                    <p>Cambiar por imagen jejeje</p>
                 </div>
-                <!-- end items -->
+
+
+                <!-- with content -->
+                <div class="empty text-center" ng-if="requestedAds.length > 0">
+                    <p class="alert alert-success">Sí tienes asesorias man</p>
+                    <p>Reemplazar por asesorias</p>
+                </div>
+
 
             </div>
-        </div>
+            <!-- end asesorías -->
 
+
+        </div>
 
     </div>
 </div>

@@ -1,9 +1,3 @@
-// Boostrap resize
-.container{
-    max-width: 1200px;
-}
-
-
 .modal-wrap{
     position: fixed;
     top: 0;
@@ -12,6 +6,9 @@
     left: 0;
     z-index: 999;
     background-color: rgba(#fff, .7);
+    // .content{
+        // overflow: scroll;
+    // }
 }
 
 .modal-main{
@@ -22,7 +19,14 @@
         height: 100%;
         width: 100%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        .text{
+        }
+        .spinner{
+            margin: 20px;
+        }
     }
 }

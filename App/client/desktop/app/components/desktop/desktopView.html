@@ -1,5 +1,5 @@
 <!-- submenu -->
-<div class="sub-menu" ng-if="showSubmenu">
+<div class="sub-menu slide" ng-if="showSubmenu">
     <ul class="nav-bar">
         <div class="container">
             <li class="menu-item">
@@ -20,11 +20,13 @@
 <!-- end submenu -->
 
 <!-- content -->
-<div class="content">
+<div class="content-wrapper">
 
-    <div ng-include="'app/partials/desktop/advisories/advisoriesPartial.html'" ng-if="showAdvisories"></div>
+    <div ng-include="'app/partials/period-message.html'" ng-if="period == null" class="fadeIn"></div>
 
-    <div ng-include="'app/partials/desktop/schedule/schedulePartial.html'"></div>
+    <div ng-include="'app/partials/desktop/advisories/advisoriesPartial.html'" ng-if="showAdvisories" class="fadeIn"></div>
+
+    <div ng-include="'app/partials/desktop/schedule/schedulePartial.html'" ng-if="showSchedule" class="fadeIn"></div>
 
 </div>
 <!-- end content -->

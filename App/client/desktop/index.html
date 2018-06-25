@@ -46,9 +46,10 @@
             
         </header>
 
-        <div class="main-loader modal-main fadeOut" ng-if="loadingSite">
+        <div class="main-loader modal-main fadeOut" ng-if="loadingState">
             <div class="content">
-                <h1 class="flicker">Cargando...</h1>
+                <div class="spinner"></div>
+                <h3 class="text flicker">Cargando...</h3>
             </div>
         </div>
 
@@ -89,18 +90,19 @@
 
     <!-- desktop -->
 
-        <script src="app/components/desktop/desktopController.js"></script>
+    <script src="app/components/desktop/desktopController.js"></script>
 
-            <!-- asesorias -->
-            <script src="app/partials/desktop/advisories/advisoriesService.js"></script>
-            <script src="app/partials/desktop/advisories/advisoriesController.js"></script>
+        <!-- asesorias -->
+        <script src="app/partials/desktop/advisories/advisoriesService.js"></script>
+        <script src="app/partials/desktop/advisories/advisoriesController.js"></script>
 
-            <!-- horario -->
-            <script src="app/partials/desktop/schedule/scheduleService.js"></script>
-            <script src="app/partials/desktop/schedule/scheduleController.js"></script>
+        <!-- horario -->
+        <script src="app/partials/desktop/schedule/scheduleService.js"></script>
+        <script src="app/partials/desktop/schedule/scheduleController.js"></script>
 
-        <script src="app/components/profile/profileService.js"></script>
-        <script src="app/components/profile/profileController.js"></script>
+    <!-- profile -->
+    <script src="app/components/profile/profileService.js"></script>
+    <script src="app/components/profile/profileController.js"></script>
 
 </body>
 </html>

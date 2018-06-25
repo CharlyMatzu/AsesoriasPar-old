@@ -1,46 +1,60 @@
 angular.module("Desktop").controller('DesktopController', function($scope, $http, $routeParams, $window, $location){
 
 
-
-    $scope.showSubmenu = false;
+    $scope.showSubmenu = true;
+    
     $scope.showAdvisories = false;
     $scope.showAlumns = false;
     $scope.showSubjects = false;
     $scope.showSchedule = false;
     $scope.menu.title = 'desktop';
-    $scope.submenu = '';
     $scope.page.title = 'Escritorio';
+    $scope.submenu = '';
 
 
     var checkRouteParam = function(){
-        $scope.showSubmenu = true;
-
         //Chequeo de ruta para mostrar datos
-        var submenu = $routeParams.route;
-        $scope.submenu = submenu;
+        console.log("RUTA: "+$routeParams.route);
+        
+        //FIXME: arreglar
+        //Si existe un valor de parametro
+        if( $routeParams.route ){
 
-        switch( submenu ){
-            case 'asesorias': $scope.showAdvisories = true; break;
-            case 'alumnos': $scope.showAlumns = true; break;
-            case 'materias': $scope.showSubjects = true; break;
-            case 'horario': $scope.showSchedule = true; break;
+            var submenu = $routeParams.route;
+            //Para activar clase de submenus
+            $scope.submenu = submenu;
 
-            default: $window.location = "#!/escritorio/asesorias";
+            //Si no hay periodo no permite redireccionar
+            if( !$scope.period ){
+                $window.location = "#!/escritorio";
+                return;
+            }
+                
+            switch( submenu ){
+                case 'asesorias': $scope.showAdvisories = true; break;
+                case 'alumnos': $scope.showAlumns = true; break;
+                case 'materias': $scope.showSubjects = true; break;
+                case 'horario': $scope.showSchedule = true; break;
+    
+                default: $window.location = "#!/escritorio/asesorias"; break;
+            }
         }
+        
     };
 
 
     (function(){
-        $scope.loadData(
-            function(){
-                // console.log("Datos cargados");
-            }
-        );
-        // $scope.$watch('period', function(){
-        //     console.log("Cambio valor");
-        // });
-        checkRouteParam();
-        
+        if( $routeParams.period )
+            checkRouteParam();
+        else
+            $scope.getCurrentPeriod()
+                .then(function(success){
+                    checkRouteParam();
+                }, function(error){
+                    console.log("Ocurrio un error");
+                });
     })();
+
+
 
 });

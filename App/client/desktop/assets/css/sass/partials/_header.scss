@@ -5,12 +5,14 @@
         .nav-bar{
             margin: 0;
             padding: 20px 0;
-            // background-color: peru;
+            
             display: flex;
+            justify-content: flex-end;
 
             .nav-item{
                 // padding: 10px 15px;
-                margin-right: 45px;
+                margin-left: 45px;
+                // margin-right: 45px;
 
                 list-style: none;
                 .nav-btn{
@@ -34,8 +36,10 @@
 
     .header-title{
         color: #fff;
-        padding: 0 0 20px;
+        padding-bottom: 50px;
+        margin: 0;
         .title{
+            margin: 0;
             font-weight: 100;
         }
     }

@@ -1,9 +1,9 @@
 angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModule', 'ngAnimate'])
 
 
-    .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS){
+    .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS, $q, $timeout){
 
-        $rootScope.loadingSite = true;
+        $rootScope.loadingState = true;
         $rootScope.student = null;
         $rootScope.user = null;
         $rootScope.period = null;
@@ -21,13 +21,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
         };
 
 
-        $rootScope.getCurrentPeriod = function(dataCallback){
-            //Si ya hay datos, se llama al callback
-            if( $rootScope.period != null ){
-                dataCallback();
-                return;
-            }
-
+        $rootScope.getCurrentPeriod = function(){
             var promise = RequestFactory.makeTokenRequest(
                 'GET',
                 "/periods/current",
@@ -37,95 +31,116 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
 
             promise.then(
                 function(success){
-                    if( success.status !== STATUS.NO_CONTENT ){
+                    if( success.status != STATUS.NO_CONTENT )
                         $rootScope.period = success.data;
-                        dataCallback();
-                    }
-                    else
-                        $rootScope.period = null;
-                },
-                function(error){
-                    $rootScope.period = null;
+                }, function(error){
+                    console.log(erro.data);
                 });
+
+            return promise;
         };
 
 
 
 
         // //TODO: debe verificarse esto antes de cargar el sitio
-        var getStudent = function(user_id, successCallback){
+        $rootScope.getStudent = function(user_id){
+
             var promise = RequestFactory.makeTokenRequest(
                 'GET',
                 "/users/"+user_id+"/student",
                 null,
                 AuthFactory.getToken()
             );
+            return promise;
 
-            promise.then(
-                function(success){
-                    //Se asigna estudiante
-                    $rootScope.student = success.data;
-                    successCallback();
-                },
-                function(error){
-                    alert("Error: "+error.data);
-                    $rootScope.signOut();
-                }
-            );
+            // promise.then(
+            //     function(success){
+            //         //Se asigna estudiante
+            //         $rootScope.student = success.data;
+            //         successCallback();
+            //     },
+            //     function(error){
+            //         alert("Error: "+error.data);
+            //         $rootScope.signOut();
+            //     }
+            // );
         };
 
 
 
         //TODO: si dicho usuario esta deshabilitado, no debe poder hacerse nada y debe sacarse
-        $rootScope.getUser = function(successCallback){
+        $rootScope.getUser = function(){
             // //Se obtiene usuario guardado
             var user = AuthFactory.getUser();
 
-            //Se hace peticion para obtener usuario actualizado (en caso de tener cambios)
-            var promise = RequestFactory.makeTokenRequest(
-                'GET',
-                "/users/"+user.id,
-                null,
-                AuthFactory.getToken(),
-            );
+            if( user == null || user.role !== 'basic' ){
+                alert("Ocurrio un error");
+                $rootScope.signOut();
+            }
+            else{
+                // //Se hace peticion para obtener usuario actualizado (en caso de tener cambios)
+                var promise = RequestFactory.makeTokenRequest(
+                    'GET',
+                    "/users/"+user.id,
+                    null,
+                    AuthFactory.getToken(),
+                );
+                return promise;
+            }
             
-            promise.then(
-                function(success){
-                    AuthFactory.setUser( success.data );
-                    $rootScope.user = success.data;
+            // promise.then(
+            //     function(success){
+            //         AuthFactory.setUser( success.data );
+            //         $rootScope.user = success.data;
+            //     },
+            //     function(error){
+            //         console.log("Error: "+error.data);
+            //         $rootScope.signOut();
+            //     }
+            // );
 
-                    //Se obtiene estudiante
-                    getStudent( user.id, successCallback );
-                },
-                function(error){
-                    console.log("Error: "+error.data);
-                    $rootScope.signOut();
-                }
-            );
+            
         };
 
-
-        $rootScope.loadData = function(callback){
-            $rootScope.getCurrentPeriod(
-                function(){
-                    $rootScope.getUser(
-                        function(){
-                            callback();
-                        }
-                    );
-                }
-            )
-        };
 
         
-
         (function(){
-            $rootScope.loadData(
-                function(){
-                    //TODO: quitar loader general cuando se agregue
-                    $rootScope.loadingSite = false;
-                }
-            );
+            $rootScope.getUser()
+                //Promesa de usuario
+                .then(function(success){ 
+                    var user = success.data;
+                    $rootScope.user = user;
+                    AuthFactory.setUser( user );
+                    return $rootScope.getStudent( user.id );
+                }, function(error){
+                    
+                })
+                
+                //Promesa de estudiante
+                .then(function(success){ 
+                    var student = success.data;
+                    $rootScope.student = student;
+                }, function(error){
+                    alert("No existe estudiante asociado");
+                    $rootScope.signOut();
+                })
+
+                // //Promesa de periodo
+                // .then(function(success){ 
+                //     if( success.status !== STATUS.NO_CONTENT )
+                //         $rootScope.period = success.data;
+                //     else
+                //         $rootScope.period = null;
+
+                // }, function(error){
+                    
+                // })
+                
+                .catch(function(){ console.log("Fallo algo"); })
+                .finally(function(){
+                    $rootScope.loadingState = false;
+                });
         })();
 
         
