@@ -1,0 +1,135 @@
+.container {
+  max-width: 1200px; }
+
+.modal-wrap, .modal-main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.7); }
+
+.modal-main {
+  background-color: #1f2532;
+  color: #fff; }
+  .modal-main .content {
+    height: 100%;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center; }
+
+.flicker {
+  -webkit-animation: flick;
+  animation: flick;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite; }
+
+@-webkit-keyframes flick {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes flick {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+.fadeIn.ng-enter {
+  opacity: 0;
+  -webkit-transition: all ease-in 0.25s;
+  -o-transition: all ease-in 0.25s;
+  transition: all ease-in 0.25s; }
+
+.fadeIn.ng-enter-active {
+  opacity: 1; }
+
+.fadeOut.ng-leave {
+  opacity: 1;
+  -webkit-transition: all ease-in 0.25s;
+  -o-transition: all ease-in 0.25s;
+  transition: all ease-in 0.25s; }
+
+.fadeOut.ng-leave-active {
+  opacity: 0; }
+
+.color-secondary {
+  color: #8E1D39 !important; }
+  .color-secondary:hover {
+    color: #FF3366 !important; }
+
+.header {
+  background-color: #1F2532; }
+  .header .main-menu .nav-bar {
+    margin: 0;
+    padding: 20px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .header .main-menu .nav-bar .nav-item {
+      margin-right: 45px;
+      list-style: none; }
+      .header .main-menu .nav-bar .nav-item .nav-btn {
+        color: #596377;
+        font-weight: bold;
+        text-decoration: none;
+        -webkit-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        font-size: .8em; }
+        .header .main-menu .nav-bar .nav-item .nav-btn:hover {
+          color: #fff; }
+      .header .main-menu .nav-bar .nav-item .active {
+        color: #fff; }
+  .header .header-title {
+    color: #fff;
+    padding: 0 0 20px; }
+    .header .header-title .title {
+      font-weight: 100; }
+
+.main .sub-menu {
+  background-color: #1F2532; }
+  .main .sub-menu .nav-bar {
+    margin: 0;
+    padding: 0; }
+    .main .sub-menu .nav-bar .container {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+    .main .sub-menu .nav-bar .menu-item {
+      list-style: none; }
+      .main .sub-menu .nav-bar .menu-item .menu-tab {
+        color: #898f9a;
+        text-decoration: none;
+        padding: 18px 11px 20px;
+        margin-right: 30px;
+        letter-spacing: .8px;
+        display: block;
+        -webkit-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s;
+        text-transform: uppercase;
+        font-size: 1em; }
+        .main .sub-menu .nav-bar .menu-item .menu-tab:hover {
+          color: #fff; }
+      .main .sub-menu .nav-bar .menu-item .menu-tab.active {
+        color: #fff;
+        -webkit-box-shadow: inset 0 -4px 0px #FF3366;
+        box-shadow: inset 0 -4px 0px #FF3366; }

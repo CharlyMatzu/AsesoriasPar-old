@@ -1,5 +1,8 @@
 angular.module("Desktop").controller('ScheduleController', function($scope, $http, Notification, STATUS, ScheduleService){
 
+
+    $scope.page.title = $scope.page.title +'  >  Horario';
+
     
     // $scope.daysAndHours = [];
     // $scope.schedule = {};

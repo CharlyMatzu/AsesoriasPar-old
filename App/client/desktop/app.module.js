@@ -1,11 +1,18 @@
-angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModule'])
+angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModule', 'ngAnimate'])
 
 
     .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS){
 
+        $rootScope.loadingSite = true;
         $rootScope.student = null;
         $rootScope.user = null;
         $rootScope.period = null;
+        $rootScope.menu = {
+            title: 'TITLE'
+        };
+        $rootScope.page = {
+            title: "PAGE TITLE"
+        };
         
 
         $rootScope.signOut = function(){
@@ -61,7 +68,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                     successCallback();
                 },
                 function(error){
-                    console.log("Error: "+error.data);
+                    alert("Error: "+error.data);
                     $rootScope.signOut();
                 }
             );
@@ -116,10 +123,14 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
             $rootScope.loadData(
                 function(){
                     //TODO: quitar loader general cuando se agregue
+                    $rootScope.loadingSite = false;
                 }
             );
         })();
 
+        
+        //TODO: siempre debe hacer peticiones al servidor para obtener un nuevo token y verificar la sesion
 
-        });
-        // end run
+
+    });
+    // end run

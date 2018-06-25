@@ -1,0 +1,42 @@
+.flicker{
+    animation: flick;
+    animation-duration: 1s;
+    animation-direction: alternate;
+    // animation-delay: 3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+
+
+@keyframes flick {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+//--------------------ngAnimations
+
+// fadeIn
+.fadeIn.ng-enter{
+    opacity: 0;
+    transition:all ease-in 0.25s;
+}
+
+.fadeIn.ng-enter-active{
+    opacity: 1;
+}
+
+// fadeOut
+.fadeOut.ng-leave{
+    opacity: 1;
+    transition:all ease-in 0.25s;
+}
+
+.fadeOut.ng-leave-active{
+    opacity: 0;
+}

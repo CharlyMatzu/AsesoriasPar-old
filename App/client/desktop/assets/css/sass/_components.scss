@@ -1,0 +1,28 @@
+// Boostrap resize
+.container{
+    max-width: 1200px;
+}
+
+
+.modal-wrap{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    background-color: rgba(#fff, .7);
+}
+
+.modal-main{
+    @extend .modal-wrap;
+    background-color: rgba($primary-color, 1);
+    color: #fff;
+    .content{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

@@ -14,7 +14,7 @@ angular.module("AuthModule", ['LocalStorageModule'])
     //Para cambiar tipo de session, es decir, por defecto usa LocalStorage, se puede cambiar a sessionStorage
     .config(function(localStorageServiceProvider){
         //Al cerrar navegador, se cierra sesion
-        localStorageServiceProvider.setStorageType('sessionStorage');
+        // localStorageServiceProvider.setStorageType('sessionStorage');
     })
 
     .factory('AuthFactory', function($http, USER_ROLES, STORAGE, localStorageService){
