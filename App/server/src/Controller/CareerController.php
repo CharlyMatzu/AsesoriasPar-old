@@ -44,6 +44,26 @@ class CareerController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     *
+     * @return Response
+     */
+    public function getCareerSubjects($req, $res, $params){
+        try {
+            $careerService = new CareerService();
+            $result = $careerService->getSubjects_ByCareer( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+
 
     /**
      * @param $req Request

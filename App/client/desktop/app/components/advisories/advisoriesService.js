@@ -42,7 +42,7 @@ angular.module("Desktop").service('AdvisoriesService', function($http, RequestFa
         return RequestFactory.makeTokenRequest(
             'POST',
             "/students/"+advisory.student+"/advisories",
-            null,
+            advisory,
             AuthFactory.getToken()
         );
     }

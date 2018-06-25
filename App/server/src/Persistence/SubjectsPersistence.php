@@ -5,7 +5,7 @@ use App\Model\SubjectModel;
 class SubjectsPersistence extends Persistence{
     public function __construct(){}
 
-    private $campos = "SELECT
+    private $SELECT = "SELECT
                         s.subject_id as 'id',
                         s.name as 'name',
                         s.short_name as 'short_name',
@@ -24,7 +24,7 @@ class SubjectsPersistence extends Persistence{
      * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubjects(){
-        $query = $this->campos."
+        $query = $this->SELECT."
                         INNER JOIN career c ON s.fk_career = c.career_id
                         INNER JOIN plan p ON s.fk_plan = p.plan_id 
                         ORDER BY s.semester, s.name";
@@ -40,10 +40,10 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubjects_ByStatus($status)
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                         INNER JOIN career c ON s.fk_career = c.career_id
                         INNER JOIN plan p ON s.fk_plan = p.plan_id
-                        WHERE s.status = $status 
+                        WHERE s.status = '$status' 
                         ORDER BY s.semester, s.name";
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -56,7 +56,7 @@ class SubjectsPersistence extends Persistence{
      * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ById($subjectID){
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.subject_id = ".$subjectID;
@@ -76,7 +76,7 @@ class SubjectsPersistence extends Persistence{
 
         //filtro de solo carrera
         if($subject_career != 0  && $subject_semester == 0  && $subject_plan == 0){
-            $query = $this->campos."
+            $query = $this->SELECT."
             INNER JOIN career c ON s.fk_career = c.career_id
             INNER JOIN plan p ON s.fk_plan = p.plan_id
             WHERE s.fk_career =".$subject_career;
@@ -84,7 +84,7 @@ class SubjectsPersistence extends Persistence{
         }
         //filtro de solo semestre
         else if($subject_semester != 0 && $subject_career ==0 && $subject_plan == 0){
-            $query = $this->campos."
+            $query = $this->SELECT."
             INNER JOIN career c ON s.fk_career = c.career_id
             INNER JOIN plan p ON s.fk_plan = p.plan_id
             WHERE s.semester =".$subject_semester;
@@ -92,7 +92,7 @@ class SubjectsPersistence extends Persistence{
         }
         //filtro de solo plan
         else if($subject_plan != 0 && $subject_career == 0 && $subject_semester == 0){
-            $query = $this->campos."
+            $query = $this->SELECT."
             INNER JOIN career c ON s.fk_career = c.career_id
             INNER JOIN plan p ON s.fk_plan = p.plan_id
             WHERE s.fk_plan =".$subject_plan;
@@ -100,7 +100,7 @@ class SubjectsPersistence extends Persistence{
         }
         //filtro de carrera y semestre
         else if($subject_career != 0  && $subject_semester != 0  && $subject_plan == 0 ){
-            $query = $this->campos."
+            $query = $this->SELECT."
             INNER JOIN career c ON s.fk_career = c.career_id
             INNER JOIN plan p ON s.fk_plan = p.plan_id
             WHERE s.fk_career =".$subject_career." 
@@ -109,7 +109,7 @@ class SubjectsPersistence extends Persistence{
         }
         //filtro de carrera y plan
         else if($subject_semester == 0 && $subject_career != 0 && $subject_plan != 0){
-            $query = $this->campos."
+            $query = $this->SELECT."
             INNER JOIN career c ON s.fk_career = c.career_id
             INNER JOIN plan p ON s.fk_plan = p.plan_id
             WHERE s.fk_career =".$subject_career." 
@@ -118,7 +118,7 @@ class SubjectsPersistence extends Persistence{
         }
         //filtro de solo semestre y plan
         else if($subject_plan != 0 && $subject_semester != 0 && $subject_career== 0){
-            $query = $this->campos."
+            $query = $this->SELECT."
             INNER JOIN career c ON s.fk_career = c.career_id
             INNER JOIN plan p ON s.fk_plan = p.plan_id
             WHERE s.semester =".$subject_semester."
@@ -128,7 +128,7 @@ class SubjectsPersistence extends Persistence{
         //todos los filtros
         else{
         
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.fk_career = ".$subject_career." 
@@ -147,7 +147,7 @@ class SubjectsPersistence extends Persistence{
      * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getSubject_ByName($name){
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.name = '$name'";
@@ -163,7 +163,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubject_ByShortName($shortName)
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.short_name = '$shortName'";
@@ -178,7 +178,7 @@ class SubjectsPersistence extends Persistence{
      * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function searchSubjects_ByName($name){
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.name LIKE '%$name%'  OR s.short_name LIKE '%$name%'";
@@ -197,7 +197,7 @@ class SubjectsPersistence extends Persistence{
     public function getSubject_ByName_ShortName($name, $plan, $career, $subject_id = null){
 
 
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                       WHERE (s.fk_career = $career AND s.fk_plan = $plan) AND
@@ -219,7 +219,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubjects_BySemester( $semester )
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                     INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.semester = ".$semester." ";
         //Obteniendo resultados
@@ -234,7 +234,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubjects_ByPlan( $planID )
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                     INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.fk_plan = $planID";
         //Obteniendo resultados
@@ -249,7 +249,8 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubjects_ByCareer($careerID )
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
+                     INNER JOIN career c ON s.fk_career = c.career_id
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE c.career_id = $careerID";
 
@@ -267,7 +268,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubject_ByName_Career($name, $careerID)
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE (s.name LIKE '%$name%' OR s.short_name LIKE '%$name%') AND s.fk_career = $careerID";
         //Obteniendo resultados
@@ -284,7 +285,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubject_ByName_Career_Plan($name, $careerID, $planID)
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE (s.name LIKE '%$name%' OR s.short_name LIKE '%$name%') AND s.fk_career = $careerID AND s.fk_plan = $planID";
         //Obteniendo resultados
@@ -300,7 +301,7 @@ class SubjectsPersistence extends Persistence{
      */
     public function getSubject_ByCareer_Plan($careerID, $planID)
     {
-        $query = $this->campos."
+        $query = $this->SELECT."
                      INNER JOIN plan p ON s.fk_plan = p.plan_id
                      WHERE s.fk_career = $careerID AND s.fk_plan = $planID";
         //Obteniendo resultados
@@ -427,18 +428,7 @@ class SubjectsPersistence extends Persistence{
 //        return self::executeQuery($query);
 //    }
 //
-//    /**
-//     * @param $careerId
-//     * @return \Objects\DataResult
-//     */
-//    public function getSubjects_ByCareerId( $careerId ){
-//        $query = $this->campos."
-//                        INNER JOIN career c ON s.fk_career = c.career_id
-//                        WHERE c.career_id = ".$careerId."
-//                        ORDER BY s.semester, s.name ASC";
-//        //Obteniendo resultados
-//        return self::executeQuery($query);
-//    }
+
 //
 //    /**
 //     * @param $careerName

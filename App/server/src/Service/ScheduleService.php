@@ -1,7 +1,5 @@
 <?php namespace App\Service;
 
-
-use App\AppLogger;
 use App\Exceptions\Request\ConflictException;
 use App\Exceptions\Request\InternalErrorException;
 use App\Exceptions\Request\NoContentException;
@@ -97,7 +95,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleHours_ById($id)
+    public function getScheduleHours_BySchedule($id)
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
@@ -108,22 +106,22 @@ class ScheduleService{
         return $this->formatScheduleHours($result->getData());
     }
 
-    /**
-     * @param $id int
-     * @return \mysqli_result|array|null
-     * @throws InternalErrorException
-     * @throws NoContentException
-     */
-    public function getScheduleHours_ById_Enabled($id)
-    {
-        $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("");
-
-        return $this->formatScheduleHours($result->getData());
-    }
+//    /**
+//     * @param $id int
+//     * @return \mysqli_result|array|null
+//     * @throws InternalErrorException
+//     * @throws NoContentException
+//     */
+//    public function getScheduleHours_ById_Enabled($id)
+//    {
+//        $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException("getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            throw new NoContentException("");
+//
+//        return $this->formatScheduleHours($result->getData());
+//    }
 
 
 
@@ -133,9 +131,9 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleSubjects_ById($id)
+    public function getScheduleSubjects_BySchedule($id)
     {
-        $result = $this->schedulesPer->getScheduleSubjects_ById( $id );
+        $result = $this->schedulesPer->getScheduleSubjects_BySchedule( $id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getScheduleSubjects_ById",
                 "Error al obtener materias de horario", $result->getErrorMessage());
@@ -145,23 +143,23 @@ class ScheduleService{
         return $result->getData();
     }
 
-    /**
-     * @param $id
-     * @return \mysqli_result|null
-     * @throws InternalErrorException
-     * @throws NoContentException
-     */
-    public function getScheduleSubjects_ById_Enabled($id)
-    {
-        $result = $this->schedulesPer->getScheduleSubjects_ById_Enabled( $id );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getScheduleSubjects_ById_Enabled",
-                "Error al obtener materias de horario", $result->getErrorMessage());
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("");
-
-        return $result->getData();
-    }
+//    /**
+//     * @param $id
+//     * @return \mysqli_result|null
+//     * @throws InternalErrorException
+//     * @throws NoContentException
+//     */
+//    public function getScheduleSubjects_ById_Enabled($id)
+//    {
+//        $result = $this->schedulesPer->getScheduleSubjects_ById_Enabled( $id );
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException("getScheduleSubjects_ById_Enabled",
+//                "Error al obtener materias de horario", $result->getErrorMessage());
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            throw new NoContentException("");
+//
+//        return $result->getData();
+//    }
 
 
     /**
@@ -206,10 +204,10 @@ class ScheduleService{
 
         //se obtiene horario de asesor
         $adviser_schedule = $this->getCurrentSchedule_ByStudentId( $adviser_id );
-        $adviser_hours = $this->getScheduleHours_ById_Enabled( $adviser_schedule['id'] );
+        $adviser_hours = $this->getScheduleHours_BySchedule( $adviser_schedule['id'] );
         //Se obtiene horario de alumno
         $alumn_schedule = $this->getCurrentSchedule_ByStudentId( $alumn_id );
-        $alumn_hours = $this->getScheduleHours_ById_Enabled( $alumn_schedule['id'] );
+        $alumn_hours = $this->getScheduleHours_BySchedule( $alumn_schedule['id'] );
 
         $result = $this->checkScheduleHoursMatch($adviser_hours, $alumn_hours);
         if( empty($result) )
@@ -306,24 +304,24 @@ class ScheduleService{
 
 
     /**
-     * @param $scheduleid int
+     * @param $schedule_id int
      * @param $newHours array
      *
      * @throws InternalErrorException
      */
-    public function insertScheduleHours($scheduleid, $newHours){
+    public function insertScheduleHours($schedule_id, $newHours){
 
         //Se obtiene horas actuales
         $hours = array();
         try{
-            $hours = $this->getScheduleHours_ById( $scheduleid );
+            $hours = $this->getScheduleHours_BySchedule( $schedule_id );
         }catch (NoContentException $e){}
 
 
         foreach ($newHours as $h ){
             //Si no exsiste, se agrega
             if( !$this->isHoursInArray($h, $hours) ){
-                $result = $this->schedulesPer->insertScheduleHours( $scheduleid, $h );
+                $result = $this->schedulesPer->insertScheduleHours( $schedule_id, $h );
                 if( Utils::isError( $result->getOperation() ) )
                     throw new InternalErrorException(static::class, "Error al registrar horas de horario", $result->getErrorMessage());
             }
@@ -353,7 +351,7 @@ class ScheduleService{
 
         $subjects = array();
         try{
-            $subjects = $this->getScheduleSubjects_ById($schedule_id);
+            $subjects = $this->getScheduleSubjects_BySchedule($schedule_id);
         }catch (InternalErrorException $e){
             try {
                 SchedulesPersistence::rollbackTransaction();
@@ -470,7 +468,7 @@ class ScheduleService{
         //---Se obtienen horas y dias
         $days_hours = array();
         try{
-            $days_hours = $this->getScheduleHours_ById( $scheduleId );
+            $days_hours = $this->getScheduleHours_BySchedule( $scheduleId );
             //si esta vacío, no hay problema
         }catch (NoContentException $e){}
 
@@ -567,7 +565,7 @@ class ScheduleService{
         //---Se obtienen horas y dias
         $subjects = array();
         try{
-            $subjects = $this->getScheduleSubjects_ById( $scheduleId );
+            $subjects = $this->getScheduleSubjects_BySchedule( $scheduleId );
         }catch (InternalErrorException $e){
             throw new InternalErrorException("updateScheduleSubjects",
                 "se detuvo actualización de materias", $e->getMessage());
@@ -653,6 +651,27 @@ class ScheduleService{
     }
 
 
+    /**
+     * @param $subject_id
+     * @param $schedule_id
+     *
+     * @return array
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getScheduleSubject_BySubject( $subject_id, $schedule_id )
+    {
+        $result = $this->schedulesPer->getScheduleSubject_BySubject_BySchedule( $subject_id, $schedule_id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "getScheduleSubject_BySubject",
+                "Error al habilitar hora de horario:", $result->getErrorMessage() );
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No se encontró materia");
+        else
+            return $result->getData()[0];
+    }
+
+
     //------------------MATERIAS
 
     /**
@@ -721,7 +740,9 @@ class ScheduleService{
 
     /**
      * @param $schedule array|\mysqli_result
+     *
      * @return array
+     * @throws InternalErrorException
      */
     public function formatScheduleHours($schedule ){
         $daysArray = $this->schedulesPer->getDays()->getData();

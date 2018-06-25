@@ -189,6 +189,11 @@ $app->get('/careers/{id}', 'CareerController:getCareer_ById')
         ->add('InputMiddleware:checkParam_Id');
 
 //TODO: obtener materias por carrera
+//TODO: VALIDAR AUTH
+//Obtiene materias de carrera
+$app->get('/career/{id}/subjects', 'CareerController:getCareerSubjects')
+    ->add('InputMiddleware:checkParam_Id');
+
 
 //TODO: VALIDAR AUTH
 //Crear carrera
@@ -270,8 +275,6 @@ $app->get('/subjects/enabled', 'SubjectController:getEnabledSubjects');
 //TODO: VALIDAR AUTH
 //Obtiene materias
 $app->get('/subjects/carrera/{career}/semestre/{semester}/plan/{plan}', 'SubjectController:getSubject_Search');
-
-//TODO: agregar ruta directo de career --> /career/{id}/subject/{id}
 
 //TODO: VALIDAR AUTH
 //Obtiene materia por id
@@ -387,6 +390,7 @@ $app->delete('/periods/{id}', 'PeriodController:deletePeriod')
 //  SCHEDULE, HOURS AND DAYS ROUTES
 //--------------------------
 
+
 //TODO: VALIDAR AUTH
 //Obtiene horas y dias disponibles para utilizar
 $app->get('/schedule/source', 'ScheduleController:getHoursAndDays');
@@ -433,13 +437,20 @@ $app->get('/students/{id}/schedule', 'StudentController:getSchedule_ByStudentId'
 
 
 //TODO: VALIDAR AUTH
+$app->get('/schedule/{id}/subjects', 'ScheduleController:getScheduleSubjects')
+    ->add('InputMiddleware:checkParam_Id');
+
+
+//TODO: VALIDAR AUTH
 //crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
         ->add('InputMiddleware:checkParam_Id');
 
 
+
 //TODO: obtener materias de horario
 //TODO: deshabilitar para ser asesor
+
 
 //TODO: VALIDAR AUTH
 //actualiza horas de horario
@@ -527,17 +538,17 @@ $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisor
 
 //TODO: VALIDAR AUTH
 $app->get('/advisories/{id}/schedule', 'AdvisoryController:getAdvisorySchedule')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id');
 
 
 //TODO: VALIDAR AUTH
 $app->patch('/advisories/{id}/finalize', 'AdvisoryController:finalizeAdvisory')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id');
 
 //TODO: VALIDAR AUTH
 $app->post('/advisories/{id}/assign', 'AdvisoryController:assignAdviser')
-    ->add('InputMiddleware:checkData_advisory_schedule')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkData_advisory_schedule')
+        ->add('InputMiddleware:checkParam_Id');
 
 //TODO: VALIDAR AUTH
 //$app->put('/advisories/{id}/hours', 'AdvisoryController:updateAdvisoryHours');

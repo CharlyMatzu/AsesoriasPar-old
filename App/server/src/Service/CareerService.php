@@ -105,6 +105,22 @@ class CareerService{
     }
 
 
+    /**
+     * @param $id
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws NoContentException
+     */
+    public function getSubjects_ByCareer($id)
+    {
+        $this->getCareer_ById($id);
+        $subServ = new SubjectService();
+        return $subServ->getSubjects_ByCareer( $id );
+    }
+
+
     /** -----------------------INSERT , UPDATE , DELETE , SEARCH -------------------------- */
 
     /**
@@ -252,6 +268,8 @@ class CareerService{
         $career->setStatus( $c['status'] );
         return $career;
     }
+
+
 
 
 }

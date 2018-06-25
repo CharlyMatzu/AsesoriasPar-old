@@ -520,8 +520,12 @@ class InputParamsMiddleware extends Middleware
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
                 "Faltan Parámetros, Se requiere: subject, description");
 
-        if( empty($params['subject']) || empty($params['description']) )
+        if( empty($params['subject']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: campos vacios");
+
+        //Si esta vacío, se le pone un texto por default
+        if( empty($params['description']) )
+            $params['description'] = "Sin descripción";
 
         //no debe ser array
         if( is_array($params['subject']) )

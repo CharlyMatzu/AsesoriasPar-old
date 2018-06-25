@@ -1,60 +1,59 @@
-angular.module("Desktop").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
+angular.module("Desktop").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory, STATUS){
+
+    $scope.loading = false;
 
     $scope.requestedAds = [];
-    $scope.showRequestedAds = false;
+    $scope.showRequestedAds = true;
 
     $scope.adviserAds = [];
-    $scope.showAdviserdAds = false;
+    $scope.showAdviserdAds = true;
     
-
     $scope.showAdvisories = false;
-    $scope.showNewAdvisory = false;
+    $scope.showNewRequest = false;
 
     //Request advisory
-    $scope.subjects = {};
+    $scope.subjects = null;
     $scope.selectedSub = null;
 
 
 
-    $scope.getRequestedAds = function(){
-        $scope.loading.status = true;
-        
-        $scope.showRequestedAds = true;
-        $scope.showAdviserdAds = false;
+    var getRequestedAds = function(){
+        $scope.loading = true;
 
         AdvisoriesService.getRequestedAdvisories( $scope.student.id )
             .then(
                 function(success){
                     $scope.requestedAds = success.data;
-                    $scope.loading.status = false;
+                    $scope.loading = false;
                 },
                 function(error){
                     Notification.error("Ocurrio un error: "+error.data);
-                    $scope.loading.status = false;
+                    $scope.loading = false;
                 }
-            );
+            )
+            .finally(function(){
+                $scope.showRequestedAds = true;
+            });
     };
 
-    $scope.getAdviserAds = function(){
-        $scope.loading.status = true;
-        $scope.showRequestedAds = false;
-        $scope.showAdviserdAds = true;
+    var getAdviserAds = function(){
+        $scope.loading = true;
 
         AdvisoriesService.getAdviserAdvisories( $scope.student.id )
             .then(
                 function(success){
                     $scope.adviserAds = success.data;
-                    $scope.loading.status = false;
+                    $scope.loading = false;
                 },
                 function(error){
                     Notification.error("Ocurrio un error: "+error.data);
-                    $scope.loading.status = false;
+                    $scope.loading = false;
                 }
             );
     };
     
 
-    $scope.getSubjects = function(){
+    var getSubjects = function(){
         AdvisoriesService.getSubjects()
             .then(
                 function(success){
@@ -66,15 +65,17 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
             );
     };
 
-    $scope.newAdvisory = function(){
+
+    $scope.newRequest = function(){
         //TODO: obtener solo materias que no se han solicitado
-        $scope.getSubjects();
+        getSubjects();
         $scope.selectedSub = null;
-        $scope.showNewAdvisory = true;
+        $scope.showNewRequest = true;
     }
+    
 
     $scope.closeNewAdvisory = function(){
-        $scope.showNewAdvisory = false;
+        $scope.showNewRequest = false;
         $scope.selectedSub = null;
     }
 
@@ -95,20 +96,23 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
             description: "Sin descripcion",
             student: $scope.student.id
         };
+
         AdvisoriesService.requestAdvisory(advsory)
             .then(
                 function(success){
-                    Notification.success("Solicitado con exito");
+                    if( success.status === STATUS.NO_CONTENT )
+                        Notification.warning("No se pudo finalizar solicitud");
+                    else
+                        Notification.success(success.data);
+
                     $scope.closeNewAdvisory();
-                    $scope.getRequestedAds();
+                    getRequestedAds();
                 },
                 function(error){
-                    if( error.status == CONFLICT ){
-                        Notification.warning("Error al solicitar asesoria: "+error.data);
-                    }
-                    else{
-                        Notification.error("Error al solicitar asesoria: "+error.data);
-                    }
+                    if( error.status == STATUS.CONFLICT )
+                        Notification.warning(error.data);
+                    else
+                        Notification.error(error.data);
                 }
             );
         
@@ -121,7 +125,11 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
             .then(
                 function(success){
                     Notification.success("Asesoria finalizada con éxito");
-                    //TODO: obtener asesorias
+                    
+                    //TODO: Verificar cual tipo es
+                    //obtener asesorias
+                    getRequestedAds();
+                    getAdviserAds();
                 },
                 function(error){
                     Notification.error("Ocurrio un error");
@@ -131,9 +139,11 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
 
 
     (function(){
+        $scope.showRequestedAds = false;
+        $scope.showAdviserdAds = false;
         $scope.loadData(
             function(){
-                $scope.getRequestedAds();
+                getRequestedAds();
             }
         );
     })();

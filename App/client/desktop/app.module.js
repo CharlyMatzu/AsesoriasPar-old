@@ -5,13 +5,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
 
         $rootScope.student = null;
         $rootScope.user = null;
-        $rootScope.token = null;
         $rootScope.period = null;
-
-        $rootScope.loading = {
-            status: false,
-            message: ""
-        };
         
 
         $rootScope.signOut = function(){
@@ -121,7 +115,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
         (function(){
             $rootScope.loadData(
                 function(){
-                    //TODO: quitar loader
+                    //TODO: quitar loader general cuando se agregue
                 }
             );
         })();
