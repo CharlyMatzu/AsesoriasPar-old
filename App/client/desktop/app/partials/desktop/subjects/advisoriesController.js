@@ -5,7 +5,13 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
 
     $scope.loading = false;
 
-    $scope.advisories = [];
+    $scope.requestedAds = [];
+    // $scope.showRequestedAds = true;
+
+    // $scope.adviserAds = [];
+    // $scope.showAdviserdAds = true;
+    
+    // $scope.showAdvisories = false;
     $scope.showNewRequest = false;
 
     //Request advisory
@@ -14,13 +20,13 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
 
 
 
-    var getAdvisories = function(){
+    var getRequestedAds = function(){
         $scope.loading = true;
 
         AdvisoriesService.getRequestedAdvisories( $scope.student.id )
             .then(
                 function(success){
-                    $scope.advisories = success.data;
+                    $scope.requestedAds = success.data;
                 },
                 function(error){
                     Notification.error("Ocurrio un error: "+error.data);
@@ -30,6 +36,25 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
                 $scope.loading = false;
             });
     };
+
+    // var getAdviserAds = function(){
+    //     $scope.loading = true;
+    //     $scope.showAdviserdAds = false;
+
+    //     AdvisoriesService.getAdviserAdvisories( $scope.student.id )
+    //         .then(
+    //             function(success){
+    //                 $scope.adviserAds = success.data;
+    //             },
+    //             function(error){
+    //                 Notification.error(error.data);
+    //             }
+    //         )
+    //         .finally(function(){
+    //             $scope.loading = false;
+    //             $scope.showAdviserdAds = true;
+    //         });
+    // };
     
 
     var getSubjects = function(){
@@ -85,7 +110,7 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
                         Notification.success(success.data);
 
                     $scope.closeNewAdvisory();
-                    getAdvisories();
+                    getRequestedAds();
                 },
                 function(error){
                     if( error.status == STATUS.CONFLICT )
@@ -107,7 +132,7 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
                     
                     //TODO: Verificar cual tipo es
                     //obtener asesorias
-                    getAdvisories();
+                    getRequestedAds();
                     // getAdviserAds();
                 },
                 function(error){
@@ -119,7 +144,7 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
 
     //Si se ejecuta, se considera un periodo como existente (desktopController lo determina)
     (function(){
-        getAdvisories();
+        getRequestedAds();
     })();
 
 });

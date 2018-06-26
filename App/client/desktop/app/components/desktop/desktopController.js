@@ -3,7 +3,7 @@ angular.module("Desktop").controller('DesktopController', function($scope, $http
     $scope.showSubmenu = true;
     
     $scope.showAdvisories = false;
-    $scope.showAlumns = false;
+    $scope.showStudents = false;
     $scope.showSubjects = false;
     $scope.showSchedule = false;
     $scope.menu.title = 'desktop';
@@ -31,7 +31,7 @@ angular.module("Desktop").controller('DesktopController', function($scope, $http
                 
             switch( submenu ){
                 case 'asesorias': $scope.showAdvisories = true; break;
-                case 'alumnos': $scope.showAlumns = true; break;
+                case 'alumnos': $scope.showStudents = true; break;
                 case 'materias': $scope.showSubjects = true; break;
                 case 'horario': $scope.showSchedule = true; break;
     
