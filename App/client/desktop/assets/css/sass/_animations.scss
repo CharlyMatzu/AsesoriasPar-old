@@ -68,12 +68,12 @@
 
 
 //-------------------Schedule
-@keyframes hour-active {
+@keyframes active-hour {
     from {
-        background-color: rgba(#6ECC8E, 0);
+        background-color: rgba($hour-color-active, 0);
     }
     to {
-        background-color: rgba(#6ECC8E, 1);
+        background-color: rgba($hour-color-active, 1);
     }
 }
 

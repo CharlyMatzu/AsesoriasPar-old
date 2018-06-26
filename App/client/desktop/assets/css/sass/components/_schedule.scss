@@ -14,21 +14,21 @@
             .cell-item{
                 color: #212121;
                 padding: 10px 20px;
-                background: #DDDBDB;
+                background: $hour-color-static;
                 border: 2px solid #fff;
             }
 
             .cell-header{
                 // background: #92E55A;
-                background-color: #004186;
+                background-color: $schedule-color-header;
                 color: #fff;
                 font-weight: bold;
             }
 
             // --------- COLUMNT ITEM ACTIVE STATE
             .active{
-                background-color: #6ECC8E;
-                animation-name: hour-active;
+                background-color: $hour-color-active;
+                animation-name: active-hour;
                 animation-duration: 1s;
                 color: #fff;
                 transition: .3s;
@@ -48,18 +48,18 @@
                 cursor: pointer;
                 transition: .3s;
                 &:hover{
-                    background-color: #DDDBDB - 20;
+                    background-color: $hour-color-static - 20;
                 }
             }
             // --------- COLUMNT ITEM ACTIVE STATE
             .active{
-                background-color: #404040;
+                background-color: $hour-color-active-selectable;
                 animation-name: selected;
                 animation-duration: 1s;
                 color: #fff;
                 transition: .3s;
                 &:hover{
-                    background-color: #404040 - 20;
+                    background-color: $hour-color-active-selectable - 20;
                 }
             }
         }

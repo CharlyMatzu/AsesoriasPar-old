@@ -87,17 +87,17 @@ body {
   to {
     height: auto; } }
 
-@-webkit-keyframes hour-active {
+@-webkit-keyframes active-hour {
   from {
-    background-color: rgba(110, 204, 142, 0); }
+    background-color: rgba(242, 114, 128, 0); }
   to {
-    background-color: #6ecc8e; } }
+    background-color: #f27280; } }
 
-@keyframes hour-active {
+@keyframes active-hour {
   from {
-    background-color: rgba(110, 204, 142, 0); }
+    background-color: rgba(242, 114, 128, 0); }
   to {
-    background-color: #6ecc8e; } }
+    background-color: #f27280; } }
 
 .fadeIn.ng-enter {
   opacity: 0;
@@ -393,13 +393,13 @@ body {
       background: #DDDBDB;
       border: 2px solid #fff; }
     .schedule-container .schedule .column-item .cell-header {
-      background-color: #004186;
+      background-color: #345D7E;
       color: #fff;
       font-weight: bold; }
     .schedule-container .schedule .column-item .active {
-      background-color: #6ECC8E;
-      -webkit-animation-name: hour-active;
-      animation-name: hour-active;
+      background-color: #F27280;
+      -webkit-animation-name: active-hour;
+      animation-name: active-hour;
       -webkit-animation-duration: 1s;
       animation-duration: 1s;
       color: #fff;
