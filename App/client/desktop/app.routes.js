@@ -3,6 +3,11 @@ angular.module("Desktop")
     .config( function ($routeProvider) {
         $routeProvider
             
+            .when("/loading", {
+                template: null,
+                controller: "InitController"
+            })
+
             //Parametro opcional con signo ?
             .when("/escritorio/:route?", {
                 controller: "DesktopController",
@@ -14,5 +19,5 @@ angular.module("Desktop")
                 templateUrl: "app/components/profile/profileView.html"
             })
 
-            .otherwise("/escritorio");
+            .otherwise("/loading");
     })

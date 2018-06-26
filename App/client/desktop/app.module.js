@@ -1,7 +1,7 @@
 angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModule', 'ngAnimate'])
 
 
-    .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS, $q, $timeout){
+    .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS, $q, $timeout, $window){
 
         $rootScope.loadingState = true;
         $rootScope.student = null;
@@ -13,6 +13,20 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
         $rootScope.page = {
             title: "PAGE TITLE"
         };
+
+        
+        $rootScope.setLoading = function(state){
+            $rootScope.loadingState = state;
+        }
+
+        $rootScope.setUser = function(user){
+            $rootScope.user = user;
+            AuthFactory.setUser( user );
+        }
+
+        $rootScope.setStudent = function(student){
+            $rootScope.student = student;
+        }
         
 
         $rootScope.signOut = function(){
@@ -104,48 +118,88 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
         };
 
 
+        // $scope.loadData = function(){
+            // $rootScope.getUser()
+            //     //Promesa de usuario
+            //     .then(function(success){ 
+            //         var user = success.data;
+            //         $rootScope.user = user;
+            //         AuthFactory.setUser( user );
+            //         return $rootScope.getStudent( user.id );
+            //     }, function(error){
+                    
+            //     })
+                
+            //     //Promesa de estudiante
+            //     .then(function(success){ 
+            //         var student = success.data;
+            //         $rootScope.student = student;
+            //     }, function(error){
+            //         alert("No existe estudiante asociado");
+            //         $rootScope.signOut();
+            //     })
+
+            //     // //Promesa de periodo
+            //     // .then(function(success){ 
+            //     //     if( success.status !== STATUS.NO_CONTENT )
+            //     //         $rootScope.period = success.data;
+            //     //     else
+            //     //         $rootScope.period = null;
+
+            //     // }, function(error){
+                    
+            //     // })
+                
+            //     .catch(function(){ console.log("Fallo algo"); })
+            //     .finally(function(){
+            //         $rootScope.loadingState = false;
+            //     });
+        // }
+
         
         (function(){
-            $rootScope.getUser()
-                //Promesa de usuario
-                .then(function(success){ 
-                    var user = success.data;
-                    $rootScope.user = user;
-                    AuthFactory.setUser( user );
-                    return $rootScope.getStudent( user.id );
-                }, function(error){
-                    
-                })
-                
-                //Promesa de estudiante
-                .then(function(success){ 
-                    var student = success.data;
-                    $rootScope.student = student;
-                }, function(error){
-                    alert("No existe estudiante asociado");
-                    $rootScope.signOut();
-                })
-
-                // //Promesa de periodo
-                // .then(function(success){ 
-                //     if( success.status !== STATUS.NO_CONTENT )
-                //         $rootScope.period = success.data;
-                //     else
-                //         $rootScope.period = null;
-
-                // }, function(error){
-                    
-                // })
-                
-                .catch(function(){ console.log("Fallo algo"); })
-                .finally(function(){
-                    $rootScope.loadingState = false;
-                });
+            //Para que inicie en dicho directorio
+            //TODO: tomar directorio actual para redireccionar una vez termine
+            $window.location = "#!/loading";
         })();
 
         
         //TODO: siempre debe hacer peticiones al servidor para obtener un nuevo token y verificar la sesion
 
 
-    });
+    })
     // end run
+
+
+    //Primer controlador en iniciar
+    .controller('InitController', function($scope, $window, AuthFactory){
+
+        (function(){
+            $scope.getUser()
+                //Promesa de usuario
+                .then(function(success){ 
+
+                        var user = success.data;
+                        $scope.setUser(user);
+                        return $scope.getStudent( user.id );
+
+                    }, function(error){
+                })
+            //Promesa de estudiante
+                .then(function(success){ 
+
+                    var student = success.data;
+                    $scope.setStudent(student);
+
+                }, function(error){
+
+                    console.log(error);
+                    alert("No existe estudiante asociado");
+                    $scope.signOut();
+                })
+                .finally(function(){
+                    $window.location = "#!/escritorio";
+                });
+        })();
+        
+    });

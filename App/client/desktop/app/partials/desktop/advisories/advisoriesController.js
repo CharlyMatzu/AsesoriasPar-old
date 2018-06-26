@@ -1,19 +1,17 @@
 angular.module("Desktop").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory, STATUS){
 
-    
-    $scope.page.title = 'Escritorio > Asesorías';
 
-    
+    $scope.page.title = 'Escritorio > Asesorías';    
 
     $scope.loading = false;
 
-    $scope.requestedAds = [1];
-    $scope.showRequestedAds = true;
+    $scope.requestedAds = [];
+    // $scope.showRequestedAds = true;
 
-    $scope.adviserAds = [];
-    $scope.showAdviserdAds = true;
+    // $scope.adviserAds = [];
+    // $scope.showAdviserdAds = true;
     
-    $scope.showAdvisories = false;
+    // $scope.showAdvisories = false;
     $scope.showNewRequest = false;
 
     //Request advisory
@@ -24,7 +22,6 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
 
     var getRequestedAds = function(){
         $scope.loading = true;
-        $scope.showRequestedAds = false;
 
         AdvisoriesService.getRequestedAdvisories( $scope.student.id )
             .then(
@@ -40,24 +37,24 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
             });
     };
 
-    var getAdviserAds = function(){
-        $scope.loading = true;
-        $scope.showAdviserdAds = false;
+    // var getAdviserAds = function(){
+    //     $scope.loading = true;
+    //     $scope.showAdviserdAds = false;
 
-        AdvisoriesService.getAdviserAdvisories( $scope.student.id )
-            .then(
-                function(success){
-                    $scope.adviserAds = success.data;
-                },
-                function(error){
-                    Notification.error(error.data);
-                }
-            )
-            .finally(function(){
-                $scope.loading = false;
-                $scope.showAdviserdAds = true;
-            });
-    };
+    //     AdvisoriesService.getAdviserAdvisories( $scope.student.id )
+    //         .then(
+    //             function(success){
+    //                 $scope.adviserAds = success.data;
+    //             },
+    //             function(error){
+    //                 Notification.error(error.data);
+    //             }
+    //         )
+    //         .finally(function(){
+    //             $scope.loading = false;
+    //             $scope.showAdviserdAds = true;
+    //         });
+    // };
     
 
     var getSubjects = function(){
@@ -136,7 +133,7 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
                     //TODO: Verificar cual tipo es
                     //obtener asesorias
                     getRequestedAds();
-                    getAdviserAds();
+                    // getAdviserAds();
                 },
                 function(error){
                     Notification.error("Ocurrio un error");
@@ -145,33 +142,9 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
     };
 
 
-
-    $scope.getAdviserAds = function(){
-        $scope.showRequestedAds = false;
-        $scope.showAdviserdAds = true;
-    };
-
-    $scope.getRequestedAds = function(){
-        $scope.showRequestedAds = true;
-        $scope.showAdviserdAds = false;
+    //Si se ejecuta, se considera un periodo como existente (desktopController lo determina)
+    (function(){
         getRequestedAds();
-    };
-
-
-    // (function(){
-    //     $scope.loading = true;
-    //     $scope.showRequestedAds = false;
-    //     $scope.showAdviserdAds = false;
-    //     $scope.loadData(
-    //         function(){
-    //             getRequestedAds();
-    //         }
-    //     );
-    // })();
-
-
-    // (function(){
-    //     getRequestedAds();
-    // })();
+    })();
 
 });

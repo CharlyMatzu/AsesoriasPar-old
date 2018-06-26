@@ -1,13 +1,13 @@
 angular.module("Desktop").service('AdvisoriesService', function($http, RequestFactory, AuthFactory){
 
-    this.getCurrentPeriod = function(){
-        return RequestFactory.makeTokenRequest(
-            'GET',
-            "/periods/current",
-            null,
-            AuthFactory.getToken()
-        );
-    }
+    // this.getCurrentPeriod = function(){
+    //     return RequestFactory.makeTokenRequest(
+    //         'GET',
+    //         "/periods/current",
+    //         null,
+    //         AuthFactory.getToken()
+    //     );
+    // }
     
 
     this.getRequestedAdvisories = function(student_id){
