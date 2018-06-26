@@ -25,7 +25,7 @@ angular.module("Desktop").controller('DesktopController', function($scope, $rout
 
             //Si no hay periodo no permite redireccionar
             if( !$scope.period ){
-                $window.location = "#!/escritorio";
+                // $window.location = "#!/escritorio";
                 return;
             }
                 
@@ -47,6 +47,7 @@ angular.module("Desktop").controller('DesktopController', function($scope, $rout
 
 
     (function(){
+        //TODO: mejorar
         //Si hay periodo, se va directo
         if( $routeParams.period )
             checkRouteParam();

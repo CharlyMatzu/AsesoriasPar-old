@@ -13,17 +13,20 @@ angular.module("AuthModule", ['LocalStorageModule'])
 
     //Para cambiar tipo de session, es decir, por defecto usa LocalStorage, se puede cambiar a sessionStorage
     .config(function(localStorageServiceProvider){
-        //Al cerrar navegador, se cierra sesion
+        //Al cerrar navegador, se cierra sesión
         // localStorageServiceProvider.setStorageType('sessionStorage');
     })
 
     .factory('AuthFactory', function($http, USER_ROLES, STORAGE, localStorageService){
 
-        // var isSupported = function(){
-        //     if(localStorageService.isSupported) {
-        //         //...
-        //     }
-        // };
+        //TODO: separar cada tipo y unificarlo en un sólo objeto
+        var authentication = {
+
+        };
+        var session = {
+
+        };
+        var factory = {};
 
         return{
             setSession: function(data){
@@ -36,11 +39,11 @@ angular.module("AuthModule", ['LocalStorageModule'])
             },
 
             getToken: function(){
-                if( localStorageService.get(STORAGE.token) != undefined ){
-                    var token = localStorageService.get(STORAGE.token);
-                    return token;
-                }
-                return null;
+                //Si hay un token
+                if( localStorageService.get(STORAGE.token) )
+                    return localStorageService.get(STORAGE.token);
+                else
+                    return null;
             },
 
             setUser: function(user){
@@ -49,52 +52,42 @@ angular.module("AuthModule", ['LocalStorageModule'])
 
         
             getUser: function(){
-                if( localStorageService.get(STORAGE.user) != undefined ){
+                if( localStorageService.get(STORAGE.user) !== undefined ){
                     var data = localStorageService.get(STORAGE.user);
-                    user = JSON.parse(data);
-                    return user;
+                    return  JSON.parse(data);
                 }
                 return null;
             },
 
             removeSession: function(){
+                alert("Se esta cerrando sesión");
                 localStorageService.remove(STORAGE.user);
                 localStorageService.remove(STORAGE.token);
             },
 
             isAuthenticated: function () {
                 var auth = this.getUser();
-                //Si no es null o vacio
-                if( auth != null && 
-                    auth != "" && 
-                    auth != undefined )
-                    return true;
-                else
-                    return false;
+                //Si no es null o vacío
+                return auth != null &&
+                    auth !== "" &&
+                    auth !== undefined;
             },
 
             isStudent: function(){
                 var data = this.getUser();
-                if( data != null ){
-                    if( data.role === USER_ROLES.basic )
-                        return true;
-                    else
-                        return false;
-                }
+                if( data != null )
+                    return data.role === USER_ROLES.basic;
                 return false;
             },
 
             isStaff: function(){
                 var data = this.getUser();
                 if( data != null ){
-                    if( data.role === USER_ROLES.mod || 
-                        data.role === USER_ROLES.admin )
-                        return true;
-                    else
-                        return false;
+                    return data.role === USER_ROLES.mod ||
+                        data.role === USER_ROLES.admin;
                 }
                 return false;
-            },
+            }
 
         };
 

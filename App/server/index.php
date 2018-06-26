@@ -519,14 +519,21 @@ $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
 
 
 //--------------ADVISORIES
+
 //TODO: VALIDAR AUTH
 //Obtiene asesoria por id
 $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
         ->add('InputMiddleware:checkParam_Id');
 
+
 //TODO: VALIDAR AUTH
+//TODO: debe regresar a todo y omitir a estudiante mediante token
+//TODO: omitir materias deshabilitadas dependiendo del token (si es estudiante)
+
+//Obtiene asesores disponibles para dicha materia omitiendo a un estudiante por id
 $app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getAdvisers_BySubject_IgnoreStudent')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id');
+        //TODO: check 'student' param
 
 
 //TODO: VALIDAR AUTH

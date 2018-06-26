@@ -1,16 +1,20 @@
-angular.module("Desktop").controller('SubjestsController', function($scope, Notification, SubjestsService, ScheduleService, STATUS){
+angular.module("Desktop")
+    .controller('SubjestsController', function($scope, Notification, SubjestsService, ScheduleService, STATUS){
 
 
     $scope.page.title = 'Escritorio > Materias';
-    $scope.noRepeatedSubjects = [];
+    $scope.showRequireSchedule = false;
     $scope.showUpdateSubjects = false;
     $scope.schedule = null;
-    $scope.showRequireSchedule = false;
+    $scope.subjects = [];
+    $scope.noRepeatedSubjects = [];
+    
+    
     
 
     //TODO: las materias que no son parte del horario deben solicitar a la API
     var setNoRepeatSubjects = function(data){
-        let subs = $scope.schedule.subjects;
+        var subs = $scope.schedule.subjects;
         $scope.subjects = [];
 
         //Recorre materias
@@ -25,7 +29,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
                     break;
                 }
             }
-            //Si no se encontro, entonces se agrega para seleccionar
+            //Si no se encontró, entonces se agrega para seleccionar
             if( !isSelected ){
                 //Se agrega materia que no esta en horario para mostrar
                 $scope.subjects.push( data[i] );
@@ -34,12 +38,14 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
     };
 
 
+    //Obtiene materias para seleccionar
     var getSubjects = function(){
         
         SubjestsService.getSubjects()
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     Notification.warning("No hay materias disponibles");
+                    $scope.showUpdateSubjects = false;
                 }
                 else{
                     // Notification.success("Materias cargadas");
@@ -51,6 +57,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
             }, 
             function(error){
                 Notification.error("Error al cargar materias: "+error.data);
+                $scope.showUpdateSubjects = false;
             });
     };
     
@@ -58,9 +65,15 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
     $scope.openSubjectsUpdate = function(){
         $scope.showUpdateSubjects = true;
         // $scope.schedule.subjects = [];
-        // $scope.subjects = [];
+        
+        $scope.subjects = [];
         //Obtiene materias
         getSubjects();
+    };
+
+    $scope.closeSubjectsUpdate = function(){
+        $scope.showUpdateSubjects = false;
+        $scope.subjects = [];
     };
 
 
@@ -70,7 +83,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
         SubjestsService.updateScheduleSubjects(schedule_id, subjects)
             .then(function(success){
                 // Recarga materias
-                // Notification.success("Actualizando con exito");
+                // Notification.success("Actualizando con éxito");
                 getStudentSchedule( $scope.student.id );
             },
             function(error){
@@ -87,7 +100,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
             //Verifica que sea un elemento selecionado
             if( $( event.currentTarget ).parents().hasClass('selected-items') ){
                 //Remueve elemento del array
-                let index = $( event.currentTarget ).data('index');
+                var index = $( event.currentTarget ).data('index');
                 var scheduleSubs = $scope.schedule.subjects;
                 scheduleSubs.splice(index, 1);
                 
@@ -105,7 +118,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
     $scope.addSubject = function(event){
         
         if( $( event.currentTarget ).parents().hasClass('selectable') ){
-            //Verifica que sea un elemento selecionado
+            //Verifica que sea un elemento seleccionado
             if( $( event.currentTarget ).parents().hasClass('available') ){
 
                 var subjects = [];
@@ -117,7 +130,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
                     subjects.push( $scope.schedule.subjects[i]['subject_id'] );
                 }
 
-                //Envia para actualizar
+                //Envía para actualizar
                 updateSubjects( $scope.schedule.id, subjects );
             }
         }
@@ -133,7 +146,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
 
         ScheduleService.getStudentSchedule(studen_id)
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     //Si no tiene un horario, se crea
                     return ScheduleService.createSchedule(studen_id)
                 }
@@ -145,7 +158,7 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
                     Notification.error("Error al obtener horario de alumno");
             
             })
-            //Peticion de crear horario
+            //Petición de crear horario
             .then(function(success){
                 return ScheduleService.getStudentSchedule(studen_id);
             }, function(error){

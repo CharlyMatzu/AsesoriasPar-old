@@ -1,7 +1,7 @@
 angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModule', 'ngAnimate'])
 
 
-    .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS, $q, $timeout, $window){
+    .run(function($rootScope, $window, $http, RequestFactory, AuthFactory, STATUS, $q, $timeout){
 
         $rootScope.loadingState = true;
         $rootScope.student = null;
@@ -17,19 +17,20 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
         
         $rootScope.setLoading = function(state){
             $rootScope.loadingState = state;
-        }
+        };
 
         $rootScope.setUser = function(user){
             $rootScope.user = user;
             AuthFactory.setUser( user );
-        }
+        };
 
         $rootScope.setStudent = function(student){
             $rootScope.student = student;
-        }
+        };
         
 
         $rootScope.signOut = function(){
+            alert("Se esta cerrando sesion");
             AuthFactory.removeSession();
             $window.location.href = "/";
         };
@@ -48,7 +49,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                     if( success.status != STATUS.NO_CONTENT )
                         $rootScope.period = success.data;
                 }, function(error){
-                    console.log(erro.data);
+                    console.log(error.data);
                 });
 
             return promise;
@@ -67,18 +68,6 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                 AuthFactory.getToken()
             );
             return promise;
-
-            // promise.then(
-            //     function(success){
-            //         //Se asigna estudiante
-            //         $rootScope.student = success.data;
-            //         successCallback();
-            //     },
-            //     function(error){
-            //         alert("Error: "+error.data);
-            //         $rootScope.signOut();
-            //     }
-            // );
         };
 
 
@@ -89,7 +78,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
             var user = AuthFactory.getUser();
 
             if( user == null || user.role !== 'basic' ){
-                alert("Ocurrio un error");
+                alert("Usuario no es estudiante o no esta autenticado");
                 $rootScope.signOut();
             }
             else{
@@ -102,59 +91,9 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                 );
                 return promise;
             }
-            
-            // promise.then(
-            //     function(success){
-            //         AuthFactory.setUser( success.data );
-            //         $rootScope.user = success.data;
-            //     },
-            //     function(error){
-            //         console.log("Error: "+error.data);
-            //         $rootScope.signOut();
-            //     }
-            // );
 
             
         };
-
-
-        // $scope.loadData = function(){
-            // $rootScope.getUser()
-            //     //Promesa de usuario
-            //     .then(function(success){ 
-            //         var user = success.data;
-            //         $rootScope.user = user;
-            //         AuthFactory.setUser( user );
-            //         return $rootScope.getStudent( user.id );
-            //     }, function(error){
-                    
-            //     })
-                
-            //     //Promesa de estudiante
-            //     .then(function(success){ 
-            //         var student = success.data;
-            //         $rootScope.student = student;
-            //     }, function(error){
-            //         alert("No existe estudiante asociado");
-            //         $rootScope.signOut();
-            //     })
-
-            //     // //Promesa de periodo
-            //     // .then(function(success){ 
-            //     //     if( success.status !== STATUS.NO_CONTENT )
-            //     //         $rootScope.period = success.data;
-            //     //     else
-            //     //         $rootScope.period = null;
-
-            //     // }, function(error){
-                    
-            //     // })
-                
-            //     .catch(function(){ console.log("Fallo algo"); })
-            //     .finally(function(){
-            //         $rootScope.loadingState = false;
-            //     });
-        // }
 
         
         (function(){
@@ -173,6 +112,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
 
     //Primer controlador en iniciar
     .controller('InitController', function($scope, $window, AuthFactory){
+        $scope.setLoading(true);
 
         (function(){
             $scope.getUser()
@@ -185,7 +125,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
 
                     }, function(error){
                 })
-            //Promesa de estudiante
+                //Promesa de estudiante
                 .then(function(success){ 
 
                     var student = success.data;

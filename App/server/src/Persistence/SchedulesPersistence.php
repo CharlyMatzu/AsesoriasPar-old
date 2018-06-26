@@ -318,58 +318,33 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $hdId int
+     * @param $status int
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function disableScheduleHour($hdId)
+    public function changeStatus_ScheduleHour($hdId, $status)
     {
         $query = "UPDATE schedule_days_hours
-                  SET status = '".Utils::$STATUS_DISABLE."'
-                  WHERE schedule_dh_id = $hdId";
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * @param $hdId int
-     *
-     * @return \App\Model\DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function enableScheduleHour($hdId)
-    {
-        $query = "UPDATE schedule_days_hours
-                  SET status = '".Utils::$STATUS_ACTIVE."'
+                  SET status = '$status'
                   WHERE schedule_dh_id = $hdId";
         return  self::executeQuery($query);
     }
 
 
-    /**
-     * @param $subjectId
-     *
-     * @return \App\Model\DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function disableScheduleSubject($subjectId)
-    {
-        $query = "UPDATE schedule_subjects
-                  SET status = '".Utils::$STATUS_DISABLE."'
-                  WHERE schedule_subject_id = $subjectId";
-        return  self::executeQuery($query);
-    }
 
     /**
-     * @param $subjectId int
+     * @param $subject_id int
+     * @param $status int
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function enableScheduleSubject($subjectId)
+    public function changetStatus_ScheduleSubject($subject_id, $status)
     {
         $query = "UPDATE schedule_subjects
-                  SET status = '".Utils::$STATUS_ACTIVE."'
-                  WHERE schedule_subject_id = $subjectId";
+                  SET status = '$status'
+                  WHERE schedule_subject_id = $subject_id";
         return  self::executeQuery($query);
     }
 

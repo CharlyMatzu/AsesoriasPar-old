@@ -1,14 +1,17 @@
-angular.module("Desktop").service('SubjestsService', function($http, RequestFactory, AuthFactory){
+angular.module("Desktop")
+    .service('SubjestsService', function($http, RequestFactory, AuthFactory){
 
     
     this.updateScheduleSubjects = function(schedule_id, subjects){
         return RequestFactory.makeTokenRequest(
             'PUT',
             "/schedule/"+schedule_id+"/subjects",
-            null,
+            data = {
+                subjects: subjects
+            },
             AuthFactory.getToken()
         );
-    }
+    };
     
     this.getSubjects = function(){
         return RequestFactory.makeTokenRequest(
@@ -17,6 +20,6 @@ angular.module("Desktop").service('SubjestsService', function($http, RequestFact
             null,
             AuthFactory.getToken()
         );
-    }
+    };
 
 });

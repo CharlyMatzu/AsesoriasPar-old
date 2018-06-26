@@ -319,13 +319,13 @@ class ScheduleService{
 
 
         foreach ($newHours as $h ){
-            //Si no exsiste, se agrega
+            //Si no existe, se agrega
             if( !$this->isHoursInArray($h, $hours) ){
                 $result = $this->schedulesPer->insertScheduleHours( $schedule_id, $h );
                 if( Utils::isError( $result->getOperation() ) )
                     throw new InternalErrorException(static::class, "Error al registrar horas de horario", $result->getErrorMessage());
             }
-            //Si ya exite, no se hace nada
+            //Si ya existe, no se hace nada
         }
     }
 
@@ -400,21 +400,6 @@ class ScheduleService{
     }
 
 
-//    public function getCurrAvailSchedules_SkipStudent($subjectId, $studentId){
-//        $cycle = $this->getCurrentPeriod();
-//        if( !is_array($cycle) )
-//            return $cycle;
-//        else{
-//            $result = $this->schedulesPer->getAvailSchedules_SkipStudent_ByPeriod( $subjectId, $studentId, $cycle['id'] );
-//            if( $result == false )
-//                return 'error';
-//            else
-//                return $result;
-//        }
-//
-//    }
-
-
 
 
 //    //------------------------------
@@ -479,7 +464,7 @@ class ScheduleService{
         }
 
 
-        //Se comparan cuales ya no estan para deshabilitar
+        //Se comparan cuales ya no están para deshabilitar
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
 
         try{
@@ -489,11 +474,11 @@ class ScheduleService{
                 foreach( $days['data'] as $hour ){
                     //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
                     if( !in_array($hour['day_hour_id'], $newHours) ){
-                        $this->disableHour($hour['id']);
+                        $this->changeStatus_ScheduleHour( $hour['id'], Utils::$STATUS_DISABLE );
                     }
                     //si ya existe, se habilita
                     else{
-                        $this->enableHour($hour['id']);
+                        $this->changeStatus_ScheduleHour( $hour['id'], Utils::$STATUS_ACTIVE );
                     }
                 }
             }
@@ -580,7 +565,7 @@ class ScheduleService{
         }
 
 
-        //Se comparan cuales ya no estan para deshabilitar
+        //Se comparan cuales ya no están para deshabilitar
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
 
         try{
@@ -588,12 +573,12 @@ class ScheduleService{
             foreach ( $subjects as $sub ){
                 //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
                 if( !in_array($sub['subject_id'], $newSubjects) ){
-                    $this->disableSubjec($sub['id']);
+                    $this->changeStatus_ScheduleSubject( $sub['id'], Utils::$STATUS_DISABLE );
                 }
-                //si exta ya existe, se habilita
+                //si ésta ya existe, se habilita
                 else{
-                    //TODO: se debe tener cuidado si la materia aun no ha sido validada para no habilitarla
-                    $this->enableSubject($sub['id']);
+                    //FIXME: se debe tener cuidado si la materia aun no ha sido validada para no habilitarla
+                    $this->changeStatus_ScheduleSubject( $sub['id'], Utils::$STATUS_ACTIVE );
                 }
             }
         }catch (RequestException $e){
@@ -606,7 +591,7 @@ class ScheduleService{
         }
 
 
-        //Se registran horas
+        //Se registran materias nuevas
         try{
             $this->insertScheduleSubjects( $scheduleId, $newSubjects );
         }catch (RequestException $e){
@@ -623,32 +608,48 @@ class ScheduleService{
     //-----------------HORAS
 
     /**
-     * @param $hourId int
+     * @param $sc_hourId
+     * @param $status
      *
      * @throws InternalErrorException
      */
-    private function disableHour($hourId)
+    private function changeStatus_ScheduleHour($sc_hourId, $status )
     {
-        //TODO: notificar a usuarios asociados
-        $result = $this->schedulesPer->disableScheduleHour($hourId);
+        //TODO: notificar a usuarios asociados al ser desactivado y deshabilitar asesorías asociadas
+        $result = $this->schedulesPer->changeStatus_ScheduleHour($sc_hourId, $status);
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "disableHour",
-                "Error al deshabilitar hora de horario: $hourId", $result->getErrorMessage() );
+                "Error al deshabilitar hora de horario: $sc_hourId", $result->getErrorMessage() );
 
     }
 
-    /**
-     * @param $hourId INT
-     *
-     * @throws InternalErrorException
-     */
-    private function enableHour($hourId)
-    {
-        $result = $this->schedulesPer->enableScheduleHour($hourId);
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "enableHour",
-                "Error al habilitar hora de horario: $hourId", $result->getErrorMessage() );
-    }
+//    /**
+//     * @param $hourId int
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function disableHour($hourId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changeStatus_ScheduleHour($hourId, Utils::$STATUS_DISABLE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableHour",
+//                "Error al deshabilitar hora de horario: $hourId", $result->getErrorMessage() );
+//
+//    }
+//
+//    /**
+//     * @param $hourId INT
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function enableHour($hourId)
+//    {
+//        $result = $this->schedulesPer->changeStatus_ScheduleHour($hourId, Utils::$STATUS_ACTIVE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "enableHour",
+//                "Error al habilitar hora de horario: $hourId", $result->getErrorMessage() );
+//    }
 
 
     /**
@@ -676,31 +677,74 @@ class ScheduleService{
 
     /**
      * @param $subId int
-     *
+     * @param $status int
      * @throws InternalErrorException
      */
-    private function disableSubjec($subId)
+    private function changeStatus_ScheduleSubject($subId, $status)
     {
         //TODO: notificar a usuarios asociados
-        $result = $this->schedulesPer->disableScheduleSubject($subId);
+        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, $status);
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "disableSubject",
                 "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
 
     }
 
-    /**
-     * @param $subId INT
-     *
-     * @throws InternalErrorException
-     */
-    private function enableSubject($subId)
-    {
-        $result = $this->schedulesPer->enableScheduleSubject($subId);
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "enableSubject",
-                "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
-    }
+//    /**
+//     * @param $subId int
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function disableSubjec($subId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_DISABLE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableSubject",
+//                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+//
+//    }
+//
+//    /**
+//     * @param $subId int
+//     * @throws InternalErrorException
+//     */
+//    private function validateSubjec($subId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_VALIDATED);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableSubject",
+//                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+//
+//    }
+
+//    /**
+//     * @param $subId int
+//     * @throws InternalErrorException
+//     */
+//    private function validateSubjec($subId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_VALIDATED);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableSubject",
+//                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+//
+//    }
+
+//    /**
+//     * @param $subId INT
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function enableSubject($subId)
+//    {
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_ACTIVE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "enableSubject",
+//                "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
+//    }
 
     /**
      * @param $subject_id int
