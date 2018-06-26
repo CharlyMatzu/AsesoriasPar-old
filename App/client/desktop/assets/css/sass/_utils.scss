@@ -1,0 +1,6 @@
+.color-secondary{
+    color: #8E1D39 !important;
+    &:hover{
+        color: $secondary-color !important;
+    }
+}

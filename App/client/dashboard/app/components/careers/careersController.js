@@ -18,8 +18,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
 
-        CareerService.getCareers(
-            function(success){
+        CareerService.getCareers()
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
@@ -44,8 +44,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
     $scope.addCareer = function(career){
         Notification("Procesando...");
         
-        CareerService.addCareer(career, 
-            function(success){
+        CareerService.addCareer(career)
+            .then(function(success){
                 Notification.success("Registrado con exito");
                 $scope.getCareers();
             },
@@ -58,7 +58,6 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
 
     $scope.editCareer = function(career){
         $scope.career = career
-
         $scope.showUpdateForm = true;
     }
 
@@ -66,8 +65,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
     $scope.updateCareer = function(career){
         Notification("Procesando...");
         
-        CareerService.updateCareer(career, 
-            function(success){
+        CareerService.updateCareer(career)
+            .then(function(success){
                 Notification.success("Actualizado con exito");
                 $scope.getCareers();
             },
@@ -86,8 +85,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-career-'+career_id);
         
-        CareerService.deleteCareer(career_id,
-            function(success){
+        CareerService.deleteCareer(career_id)
+            .then(function(success){
                 Notification.success("Eliminado con exito");
                 $scope.getCareers();
             },
@@ -106,8 +105,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         $scope.disableButtons(true, '.opt-career-'+career_id);
         Notification("Procesando...");
 
-        CareerService.changeStatus(career_id, DISABLED,
-            function(success){
+        CareerService.changeStatus(career_id, DISABLED)
+            .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 $scope.getCareers();
             },
@@ -137,6 +136,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
             }
         );
     }
+
 
     //Obtiene todos por default
     $scope.getCareers();

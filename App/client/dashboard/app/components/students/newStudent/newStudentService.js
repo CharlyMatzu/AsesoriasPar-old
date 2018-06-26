@@ -1,19 +1,23 @@
-angular.module("Dashboard").service('NewUserService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('NewStudentService', function($http, RequestFactory, AuthFactory){
 
     
-    this.addUser = function(user, successCallback, errorCallback){
-        // RequestFactory.makeTokenRequest(
-        //     'POST',
-        //     "/users", //Puede ser
-        //     data = {
-        //         email: user.email,
-        //         password: user.pass,
-        //         role: user.role
-        //     },
-        //     AuthFactory.getToken(),
-        //     successCallback,
-        //     errorCallback
-        // );
+    this.addStudent = function(student){
+        return RequestFactory.makeTokenRequest(
+            'POST',
+            "/auth/signUp",
+            data = {
+                email: student.email,
+                password: student.pass,
+                
+                first_name: student.first_name,
+                last_name: student.last_name,
+                itson_id: student.itson_id,
+                phone: student.phone,
+                facebook: student.facebook,
+                career: student.career,
+            },
+            AuthFactory.getToken(),
+        );
     }
     
 

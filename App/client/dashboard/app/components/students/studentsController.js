@@ -1,13 +1,15 @@
 angular.module("Dashboard").controller('StudentsController', function($scope, $http, $window, Notification, StudentsService){
-    $scope.page.title = "Estudiantes";
     
+    
+    $scope.page.title = "Estudiantes > Detalle";
     $scope.students = [];
+    $scope.loading = true;
 
 
 
     //-----------------------
 
-    $scope.goToNewUser = function(){
+    $scope.goToNewStudent = function(){
         $window.location.href = '#!/estudiantes/nuevo';
     }
 
@@ -23,8 +25,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
         $scope.loading.status = true;
         $scope.loading.message = "Buscando estudiantes con "+data;
 
-        StudentsService.searchStudent(data,
-            function(success){
+        StudentsService.searchStudent(data)
+            .then(function(success){
                 if( success.status == NO_CONTENT )
                     $scope.loading.message = "No se encontraron estudiantes";
                 else
@@ -49,8 +51,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
 
         // $scope.students = [];
 
-        StudentsService.getStudents(
-            function(success){
+        StudentsService.getStudents()
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     $scope.students = [];
                     $scope.loading.message = "No se encontraron estudiantes";
@@ -69,8 +71,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
     }
 
 
-    $scope.openStudent = function(student_id){
-        $window.location = "#!/estudiantes/"+student_id;
+    $scope.openStudentDetail = function(student_id){
+        $window.location = "#!/estudiantes/"+student_id+"/detalle";
     }
 
 
@@ -83,8 +85,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
-        StudentsService.changeStatus(user_id, ACTIVE,
-            function(success){
+        StudentsService.changeStatus(user_id, ACTIVE)
+            .then(function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getStudents();
@@ -106,8 +108,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
-        StudentsService.deleteStudent(user_id,
-            function(success){
+        StudentsService.deleteStudent(user_id)
+            .then(function(success){
                 Notification.success("Estudiante eliminado con exito");
                 $scope.getStudents();
             },
@@ -129,8 +131,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
-        StudentsService.changeStatus(user_id, DISABLED, 
-            function(success){
+        StudentsService.changeStatus(user_id, DISABLED)
+            .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 $scope.getStudents();
             },

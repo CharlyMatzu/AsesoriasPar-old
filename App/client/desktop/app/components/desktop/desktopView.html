@@ -1,0 +1,36 @@
+<!-- submenu -->
+<div class="sub-menu slide" ng-if="showSubmenu">
+    <ul class="nav-bar">
+        <div class="container">
+            <li class="menu-item">
+                <a href="#!/escritorio/asesorias" class="menu-tab" ng-class="{active: submenu == 'asesorias'}">Asesorias</a>
+            </li>
+            <li class="menu-item">
+                <a href="#!/escritorio/alumnos" class="menu-tab" ng-class="{active: submenu == 'alumnos'}">Mis Alumnos</a>
+            </li>
+            <li class="menu-item">
+                <a href="#!/escritorio/materias" class="menu-tab" ng-class="{active: submenu == 'materias'}">Materias (Asesor)</a>
+            </li>
+            <li class="menu-item">
+                <a href="#!/escritorio/horario" class="menu-tab" ng-class="{active: submenu == 'horario'}">Horario</a>
+            </li>
+        </div>
+    </ul>
+</div>
+<!-- end submenu -->
+
+<!-- content -->
+<div class="content-wrapper">
+
+    <div ng-include="'app/partials/period-message.html'" ng-if="period == null" class="fadeIn"></div>
+
+    <div ng-include="'app/partials/desktop/advisories/advisoriesPartial.html'" ng-if="showAdvisories" class="fadeIn"></div>
+
+    <div ng-include="'app/partials/desktop/students/studentsPartial.html'" ng-if="showStudents" class="fadeIn"></div>
+
+    <div ng-include="'app/partials/desktop/subjects/subjectsPartial.html'" ng-if="showSubjects" class="fadeIn"></div>
+
+    <div ng-include="'app/partials/desktop/schedule/schedulePartial.html'" ng-if="showSchedule" class="fadeIn"></div>
+
+</div>
+<!-- end content -->

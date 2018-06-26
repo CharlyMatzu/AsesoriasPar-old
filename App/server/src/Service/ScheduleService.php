@@ -1,7 +1,5 @@
 <?php namespace App\Service;
 
-
-use App\AppLogger;
 use App\Exceptions\Request\ConflictException;
 use App\Exceptions\Request\InternalErrorException;
 use App\Exceptions\Request\NoContentException;
@@ -97,7 +95,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleHours_ById($id)
+    public function getScheduleHours_BySchedule($id)
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
@@ -108,22 +106,22 @@ class ScheduleService{
         return $this->formatScheduleHours($result->getData());
     }
 
-    /**
-     * @param $id int
-     * @return \mysqli_result|array|null
-     * @throws InternalErrorException
-     * @throws NoContentException
-     */
-    public function getScheduleHours_ById_Enabled($id)
-    {
-        $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("");
-
-        return $this->formatScheduleHours($result->getData());
-    }
+//    /**
+//     * @param $id int
+//     * @return \mysqli_result|array|null
+//     * @throws InternalErrorException
+//     * @throws NoContentException
+//     */
+//    public function getScheduleHours_ById_Enabled($id)
+//    {
+//        $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException("getScheduleHours_ById","Error al obtener dias y horas de horario", $result->getErrorMessage());
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            throw new NoContentException("");
+//
+//        return $this->formatScheduleHours($result->getData());
+//    }
 
 
 
@@ -133,9 +131,9 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleSubjects_ById($id)
+    public function getScheduleSubjects_BySchedule($id)
     {
-        $result = $this->schedulesPer->getScheduleSubjects_ById( $id );
+        $result = $this->schedulesPer->getScheduleSubjects_BySchedule( $id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getScheduleSubjects_ById",
                 "Error al obtener materias de horario", $result->getErrorMessage());
@@ -145,23 +143,23 @@ class ScheduleService{
         return $result->getData();
     }
 
-    /**
-     * @param $id
-     * @return \mysqli_result|null
-     * @throws InternalErrorException
-     * @throws NoContentException
-     */
-    public function getScheduleSubjects_ById_Enabled($id)
-    {
-        $result = $this->schedulesPer->getScheduleSubjects_ById_Enabled( $id );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getScheduleSubjects_ById_Enabled",
-                "Error al obtener materias de horario", $result->getErrorMessage());
-        else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("");
-
-        return $result->getData();
-    }
+//    /**
+//     * @param $id
+//     * @return \mysqli_result|null
+//     * @throws InternalErrorException
+//     * @throws NoContentException
+//     */
+//    public function getScheduleSubjects_ById_Enabled($id)
+//    {
+//        $result = $this->schedulesPer->getScheduleSubjects_ById_Enabled( $id );
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException("getScheduleSubjects_ById_Enabled",
+//                "Error al obtener materias de horario", $result->getErrorMessage());
+//        else if( Utils::isEmpty( $result->getOperation() ) )
+//            throw new NoContentException("");
+//
+//        return $result->getData();
+//    }
 
 
     /**
@@ -206,10 +204,10 @@ class ScheduleService{
 
         //se obtiene horario de asesor
         $adviser_schedule = $this->getCurrentSchedule_ByStudentId( $adviser_id );
-        $adviser_hours = $this->getScheduleHours_ById_Enabled( $adviser_schedule['id'] );
+        $adviser_hours = $this->getScheduleHours_BySchedule( $adviser_schedule['id'] );
         //Se obtiene horario de alumno
         $alumn_schedule = $this->getCurrentSchedule_ByStudentId( $alumn_id );
-        $alumn_hours = $this->getScheduleHours_ById_Enabled( $alumn_schedule['id'] );
+        $alumn_hours = $this->getScheduleHours_BySchedule( $alumn_schedule['id'] );
 
         $result = $this->checkScheduleHoursMatch($adviser_hours, $alumn_hours);
         if( empty($result) )
@@ -306,28 +304,28 @@ class ScheduleService{
 
 
     /**
-     * @param $scheduleid int
+     * @param $schedule_id int
      * @param $newHours array
      *
      * @throws InternalErrorException
      */
-    public function insertScheduleHours($scheduleid, $newHours){
+    public function insertScheduleHours($schedule_id, $newHours){
 
         //Se obtiene horas actuales
         $hours = array();
         try{
-            $hours = $this->getScheduleHours_ById( $scheduleid );
+            $hours = $this->getScheduleHours_BySchedule( $schedule_id );
         }catch (NoContentException $e){}
 
 
         foreach ($newHours as $h ){
-            //Si no exsiste, se agrega
+            //Si no existe, se agrega
             if( !$this->isHoursInArray($h, $hours) ){
-                $result = $this->schedulesPer->insertScheduleHours( $scheduleid, $h );
+                $result = $this->schedulesPer->insertScheduleHours( $schedule_id, $h );
                 if( Utils::isError( $result->getOperation() ) )
                     throw new InternalErrorException(static::class, "Error al registrar horas de horario", $result->getErrorMessage());
             }
-            //Si ya exite, no se hace nada
+            //Si ya existe, no se hace nada
         }
     }
 
@@ -353,7 +351,7 @@ class ScheduleService{
 
         $subjects = array();
         try{
-            $subjects = $this->getScheduleSubjects_ById($schedule_id);
+            $subjects = $this->getScheduleSubjects_BySchedule($schedule_id);
         }catch (InternalErrorException $e){
             try {
                 SchedulesPersistence::rollbackTransaction();
@@ -400,21 +398,6 @@ class ScheduleService{
             throw new InternalErrorException("InsertScheduleSubjects", $e->getMessage());
         }
     }
-
-
-//    public function getCurrAvailSchedules_SkipStudent($subjectId, $studentId){
-//        $cycle = $this->getCurrentPeriod();
-//        if( !is_array($cycle) )
-//            return $cycle;
-//        else{
-//            $result = $this->schedulesPer->getAvailSchedules_SkipStudent_ByPeriod( $subjectId, $studentId, $cycle['id'] );
-//            if( $result == false )
-//                return 'error';
-//            else
-//                return $result;
-//        }
-//
-//    }
 
 
 
@@ -470,7 +453,7 @@ class ScheduleService{
         //---Se obtienen horas y dias
         $days_hours = array();
         try{
-            $days_hours = $this->getScheduleHours_ById( $scheduleId );
+            $days_hours = $this->getScheduleHours_BySchedule( $scheduleId );
             //si esta vacío, no hay problema
         }catch (NoContentException $e){}
 
@@ -481,7 +464,7 @@ class ScheduleService{
         }
 
 
-        //Se comparan cuales ya no estan para deshabilitar
+        //Se comparan cuales ya no están para deshabilitar
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
 
         try{
@@ -491,11 +474,11 @@ class ScheduleService{
                 foreach( $days['data'] as $hour ){
                     //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
                     if( !in_array($hour['day_hour_id'], $newHours) ){
-                        $this->disableHour($hour['id']);
+                        $this->changeStatus_ScheduleHour( $hour['id'], Utils::$STATUS_DISABLE );
                     }
                     //si ya existe, se habilita
                     else{
-                        $this->enableHour($hour['id']);
+                        $this->changeStatus_ScheduleHour( $hour['id'], Utils::$STATUS_ACTIVE );
                     }
                 }
             }
@@ -567,7 +550,7 @@ class ScheduleService{
         //---Se obtienen horas y dias
         $subjects = array();
         try{
-            $subjects = $this->getScheduleSubjects_ById( $scheduleId );
+            $subjects = $this->getScheduleSubjects_BySchedule( $scheduleId );
         }catch (InternalErrorException $e){
             throw new InternalErrorException("updateScheduleSubjects",
                 "se detuvo actualización de materias", $e->getMessage());
@@ -582,7 +565,7 @@ class ScheduleService{
         }
 
 
-        //Se comparan cuales ya no estan para deshabilitar
+        //Se comparan cuales ya no están para deshabilitar
         //NOTA: se le puede poner un try/catch para que continue a pesar del error
 
         try{
@@ -590,12 +573,12 @@ class ScheduleService{
             foreach ( $subjects as $sub ){
                 //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
                 if( !in_array($sub['subject_id'], $newSubjects) ){
-                    $this->disableSubjec($sub['id']);
+                    $this->changeStatus_ScheduleSubject( $sub['id'], Utils::$STATUS_DISABLE );
                 }
-                //si exta ya existe, se habilita
+                //si ésta ya existe, se habilita
                 else{
-                    //TODO: se debe tener cuidado si la materia aun no ha sido validada para no habilitarla
-                    $this->enableSubject($sub['id']);
+                    //FIXME: se debe tener cuidado si la materia aun no ha sido validada para no habilitarla
+                    $this->changeStatus_ScheduleSubject( $sub['id'], Utils::$STATUS_ACTIVE );
                 }
             }
         }catch (RequestException $e){
@@ -608,7 +591,7 @@ class ScheduleService{
         }
 
 
-        //Se registran horas
+        //Se registran materias nuevas
         try{
             $this->insertScheduleSubjects( $scheduleId, $newSubjects );
         }catch (RequestException $e){
@@ -625,31 +608,68 @@ class ScheduleService{
     //-----------------HORAS
 
     /**
-     * @param $hourId int
+     * @param $sc_hourId
+     * @param $status
      *
      * @throws InternalErrorException
      */
-    private function disableHour($hourId)
+    private function changeStatus_ScheduleHour($sc_hourId, $status )
     {
-        //TODO: notificar a usuarios asociados
-        $result = $this->schedulesPer->disableScheduleHour($hourId);
+        //TODO: notificar a usuarios asociados al ser desactivado y deshabilitar asesorías asociadas
+        $result = $this->schedulesPer->changeStatus_ScheduleHour($sc_hourId, $status);
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "disableHour",
-                "Error al deshabilitar hora de horario: $hourId", $result->getErrorMessage() );
+                "Error al deshabilitar hora de horario: $sc_hourId", $result->getErrorMessage() );
 
     }
 
+//    /**
+//     * @param $hourId int
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function disableHour($hourId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changeStatus_ScheduleHour($hourId, Utils::$STATUS_DISABLE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableHour",
+//                "Error al deshabilitar hora de horario: $hourId", $result->getErrorMessage() );
+//
+//    }
+//
+//    /**
+//     * @param $hourId INT
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function enableHour($hourId)
+//    {
+//        $result = $this->schedulesPer->changeStatus_ScheduleHour($hourId, Utils::$STATUS_ACTIVE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "enableHour",
+//                "Error al habilitar hora de horario: $hourId", $result->getErrorMessage() );
+//    }
+
+
     /**
-     * @param $hourId INT
+     * @param $subject_id
+     * @param $schedule_id
      *
+     * @return array
      * @throws InternalErrorException
+     * @throws NotFoundException
      */
-    private function enableHour($hourId)
+    public function getScheduleSubject_BySubject( $subject_id, $schedule_id )
     {
-        $result = $this->schedulesPer->enableScheduleHour($hourId);
+        $result = $this->schedulesPer->getScheduleSubject_BySubject_BySchedule( $subject_id, $schedule_id );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "enableHour",
-                "Error al habilitar hora de horario: $hourId", $result->getErrorMessage() );
+            throw new InternalErrorException( "getScheduleSubject_BySubject",
+                "Error al habilitar hora de horario:", $result->getErrorMessage() );
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No se encontró materia");
+        else
+            return $result->getData()[0];
     }
 
 
@@ -657,31 +677,74 @@ class ScheduleService{
 
     /**
      * @param $subId int
-     *
+     * @param $status int
      * @throws InternalErrorException
      */
-    private function disableSubjec($subId)
+    private function changeStatus_ScheduleSubject($subId, $status)
     {
         //TODO: notificar a usuarios asociados
-        $result = $this->schedulesPer->disableScheduleSubject($subId);
+        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, $status);
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "disableSubject",
                 "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
 
     }
 
-    /**
-     * @param $subId INT
-     *
-     * @throws InternalErrorException
-     */
-    private function enableSubject($subId)
-    {
-        $result = $this->schedulesPer->enableScheduleSubject($subId);
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "enableSubject",
-                "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
-    }
+//    /**
+//     * @param $subId int
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function disableSubjec($subId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_DISABLE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableSubject",
+//                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+//
+//    }
+//
+//    /**
+//     * @param $subId int
+//     * @throws InternalErrorException
+//     */
+//    private function validateSubjec($subId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_VALIDATED);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableSubject",
+//                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+//
+//    }
+
+//    /**
+//     * @param $subId int
+//     * @throws InternalErrorException
+//     */
+//    private function validateSubjec($subId)
+//    {
+//        //TODO: notificar a usuarios asociados
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_VALIDATED);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "disableSubject",
+//                "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );
+//
+//    }
+
+//    /**
+//     * @param $subId INT
+//     *
+//     * @throws InternalErrorException
+//     */
+//    private function enableSubject($subId)
+//    {
+//        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, Utils::$STATUS_ACTIVE);
+//        if( Utils::isError( $result->getOperation() ) )
+//            throw new InternalErrorException( "enableSubject",
+//                "Error al habilitar materia de horario: $subId", $result->getErrorMessage() );
+//    }
 
     /**
      * @param $subject_id int
@@ -721,7 +784,9 @@ class ScheduleService{
 
     /**
      * @param $schedule array|\mysqli_result
+     *
      * @return array
+     * @throws InternalErrorException
      */
     public function formatScheduleHours($schedule ){
         $daysArray = $this->schedulesPer->getDays()->getData();

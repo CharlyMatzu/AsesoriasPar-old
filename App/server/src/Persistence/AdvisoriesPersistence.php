@@ -380,7 +380,7 @@ class AdvisoriesPersistence extends Persistence{
      */
     public function changeAdvisoryStatus($advisory_id, $status){
         $query = "UPDATE advisory_request ar
-                    SET status = $status
+                    SET status = '$status'
                    WHERE ar.advisory_id = $advisory_id";
         return self::executeQuery($query);
     }

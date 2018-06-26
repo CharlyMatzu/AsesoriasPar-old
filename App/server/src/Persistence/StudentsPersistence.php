@@ -228,7 +228,7 @@ class StudentsPersistence extends Persistence{
 //     */
 //    public function changeStatus($idStudent, $status ){
 //        $query = "UPDATE student s
-//                         SET s.status = $status
+//                         SET s.status = '$status'
 //                         WHERE s.student_id = " .$idStudent ;
 //        return  self::executeQuery($query);
 //    }

@@ -18,13 +18,13 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
      * 
      * @param {*} user 
      */
-    $scope.loadData = function(user){
+    var loadData = function(user){
         Notification("Cargando datos...");
         
         //Se obtienen Carreras
-        NewSubjectService.getCareers(
+        NewSubjectService.getCareers()
 
-            function(success){
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     Notification.warning("No hay carreras registradas, redireccionando...");
                     //Si no hay, redirecciona
@@ -45,8 +45,8 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
 
         //Obteniendo planes
         //Se obtien planes
-        NewSubjectService.getPlans(
-            function(success){
+        NewSubjectService.getPlans()
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     Notification.warning("No hay planes registrados, redireccionando...");
                     //Si no hay, redirecciona
@@ -64,7 +64,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
             }
         );
-    }
+    };
 
 
     /**
@@ -87,8 +87,8 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
             return;
         }
         
-        NewSubjectService.addSubject(subject, 
-            function(success){
+        NewSubjectService.addSubject(subject)
+            .then(function(success){
                 Notification.success("Registrado con exito");
                 //TODO: Limpiar campo
                 // $scope.subject = {};
@@ -97,10 +97,12 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
                 Notification.error("Error: "+error.data);
             }
         );
-    }
+    };
 
 
     //Para cargar datos
-    $scope.loadData();
+    (function(){
+        loadData();
+    })();
 
 });

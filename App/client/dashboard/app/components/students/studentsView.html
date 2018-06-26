@@ -1,11 +1,9 @@
 <div class="container-fluid">
     
+    <!-- options -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-info">
-                <!-- <div class="card-header">
-                    <h4 class="m-b-0 text-white">Opciones</h4>
-                </div> -->
                 <div class="card-body">
                     <div class="form-inline">
                         <button ng-click="goToNewStudent()" class="btn btn-primary basic-right-margin">
@@ -39,6 +37,7 @@
     </div>
     <!-- end options -->
     
+    
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-info">
@@ -67,12 +66,12 @@
                                 <td>{{s.career_name}}</td>
                                 <td>{{s.date_register}}</td>
                                 <td>
-                                    <span ng-show="s.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
-                                    <span ng-show="s.status === 'ACTIVE'" class="label label-success">Habilitado</span>
-                                    <span ng-show="s.status === 'PENDING'" class="label label-warning">Pendiente</span>
+                                    <span ng-show="s.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="s.status === 'ACTIVE'" class="badge badge-success">Habilitado</span>
+                                    <span ng-show="s.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
                                 </td>
                                 <td>
-                                    <button ng-click="openStudent(s.id)" class="opt-student-{{s.user_id}} btn btn-primary">Detalles</button>
+                                    <button ng-click="openStudentDetail(s.id)" class="opt-student-{{s.user_id}} btn btn-primary">Detalles</button>
                                     <button ng-show="s.status === 'DISABLED'" ng-click="enableStudent(s.user_id)" class="opt-student-{{s.user_id}} btn btn-success">Habilitar</button>
                                     <button ng-show="s.status === 'PENDING'" ng-click="" class="opt-student-{{s.user_id}} btn btn-primary">Reenviar</button>
                                     <button ng-show="s.status === 'ACTIVE'" ng-click="disableStudent(s.user_id)" class="opt-student-{{s.user_id}} btn btn-warning">Deshabilitar</button>

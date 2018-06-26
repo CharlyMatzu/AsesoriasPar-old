@@ -58,20 +58,28 @@ angular.module("HostModule", [])
              * @param {callable} successCallback    callback para success
              * @param {callable} errorCallback      callback para error
              */
-            makeTokenRequest: function(method, route, data, token, successCallback, errorCallback){
+            makeTokenRequest: function(method, route, data, token){
                 if( token == null )
                     token = "";
 
-                $http({
+                //Retorna promesa
+                return $http({
                     method: method,
                     url: this.getURL()+route,
                     data: data,
                     headers: {'Authorization': 'Bearer ' + token}
-                }).then(function(success){
-                    successCallback(success);
-                }, function(error){
-                    errorCallback(error);
                 });
+
+                // $http({
+                //     method: method,
+                //     url: this.getURL()+route,
+                //     data: data,
+                //     headers: {'Authorization': 'Bearer ' + token}
+                // }).then(function(success){
+                //     successCallback(success);
+                // }, function(error){
+                //     errorCallback(error);
+                // });
             },
         };
             

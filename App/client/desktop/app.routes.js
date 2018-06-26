@@ -1,17 +1,23 @@
-app.config( function ($routeProvider) {
-    $routeProvider
-        
-        .when("/asesorias", {
-            controller: "AdvisoriesController",
-            templateUrl: "app/components/advisories/advisoriesView.html"
-        })
-        .when("/horario", {
-            controller: "ScheduleController",
-            templateUrl: "app/components/schedule/scheduleView.html"
-        })
-        .when("/horario/actualizar", {
-            controller: "HoursAndDaysController",
-            templateUrl: "app/components/schedule/hoursAndDaysView.html"
-        })
-        .otherwise("/asesorias");
-});
+angular.module("Desktop")
+
+    .config( function ($routeProvider) {
+        $routeProvider
+            
+            .when("/loading", {
+                template: null,
+                controller: "InitController"
+            })
+
+            //Parametro opcional con signo ?
+            .when("/escritorio/:route?", {
+                controller: "DesktopController",
+                templateUrl: "app/components/desktop/desktopView.html"
+            })
+            
+            .when("/perfil", {
+                controller: "ProfileController",
+                templateUrl: "app/components/profile/profileView.html"
+            })
+
+            .otherwise("/loading");
+    })

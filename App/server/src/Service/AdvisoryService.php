@@ -185,7 +185,7 @@ class AdvisoryService
      * @throws ConflictException
      * @throws NotFoundException
      */
-    public function insertAdvisory_CurrentPeriod($advisory)
+    public function insertAdvisory_CurrentPeriod( $advisory )
     {
         //se obtiene periodo actual
         $periodServ = new PeriodService();
@@ -194,6 +194,7 @@ class AdvisoryService
 
         $student_id = $advisory->getStudent();
         $subject_id = $advisory->getSubject();
+
 
         //TODO: no debe estar empalmada con otra asesoria a la misma hora/dia (activa: status 2)
 
@@ -205,7 +206,7 @@ class AdvisoryService
                 "Error al obtener asesorias", $advisories->getErrorMessage());
 
         //Verifica que no exista una asesoria similar activa
-        $this->checkAdvisoryRedundancy( $advisories->getData() );
+        $this->checkAdvisoryRedundancy( $advisories->getData(), $advisory );
 
         //Se verifica que materia exista
         $subjectServ = new SubjectService();
@@ -239,11 +240,18 @@ class AdvisoryService
 
 
     /**
+     * Verifica que no se pueda solicitar una asesoría para la misma materia si ya hay una solicitud en proceso o activa,
+     * de igual manera, verifica que no se pueda solicitar de una materia de la que es asesor
+     *
      * @param $advisories array|\mysqli_result
+     * @param $advisory AdvisoryModel
+     *
      * @return void
      * @throws ConflictException
+     * @throws InternalErrorException
+     * @throws NoContentException
      */
-    private function checkAdvisoryRedundancy($advisories ){
+    private function checkAdvisoryRedundancy( $advisories, $advisory ){
 
         //Si esta vacío, no es redundante
         if( empty($advisories) )
@@ -253,10 +261,27 @@ class AdvisoryService
             //Si se encuentra una asesorias activa de la misma materia
             // en estado activa o pendiente, entonces es redundante
             if( $ad['status'] == Utils::$STATUS_ACTIVE )
-                throw new ConflictException("Ya existe asesorias con dicha materia activa");
+                throw new ConflictException("Ya existe asesorias activa con dicha materia");
             else if( $ad['status'] == Utils::$STATUS_PENDING )
-                throw new ConflictException("Ya existe asesorias con dicha materia pendiente");
+                throw new ConflictException("Ya existe asesorias pendiente con dicha materia");
         }
+
+
+        try{
+            //Se obtiene horario actual de alumno
+            $scheServ = new ScheduleService();
+            $schedule = $scheServ->getCurrentSchedule_ByStudentId( $advisory->getStudent() );
+
+            //verificar que no pueda solicitar asesoría de materia de la que es asesor (validada)
+            $subject = $scheServ->getScheduleSubject_BySubject( $advisory->getSubject(), $schedule['id'] );
+            if( $subject['status'] === Utils::$STATUS_VALIDATED )
+                throw new ConflictException("No se puede solicitar asesoría de una materia de la que es asesor");
+
+            //Si no se encontró, no hay problema
+        }
+        catch ( NotFoundException $e){}
+        catch ( NoContentException $e){}
+
     }
 
     /**
@@ -341,13 +366,17 @@ class AdvisoryService
     /**
      * @param $advisory_id
      *
+     * @return bool
      * @throws InternalErrorException
      * @throws NotFoundException
      */
     public function finalizeAdvisory($advisory_id){
-        $this->getAdvisory_ById( $advisory_id );
+        $result = $this->getAdvisory_ById( $advisory_id );
 
-        //TODO: verificar si ya fue finalizada anteriormente
+        //verificar si ya fue finalizada anteriormente
+        if( $result['status'] === Utils::$STATUS_FINALIZED )
+            return true;
+
         $result = $this->perasesorias->finalizeAdvisory($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )

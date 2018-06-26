@@ -7,87 +7,87 @@ angular.module("AuthModule", ['LocalStorageModule'])
     })
 
     .constant('STORAGE', {
-        user:    'PAR_USER',
-        student: 'PAR_STUDENT',
+        user: 'PAR_USER',
+        token: 'PAR_TOKEN'
     })
 
     //Para cambiar tipo de session, es decir, por defecto usa LocalStorage, se puede cambiar a sessionStorage
     .config(function(localStorageServiceProvider){
-        //Al cerrar navegador, se cierra sesion
-        localStorageServiceProvider.setStorageType('sessionStorage');
+        //Al cerrar navegador, se cierra sesión
+        // localStorageServiceProvider.setStorageType('sessionStorage');
     })
 
     .factory('AuthFactory', function($http, USER_ROLES, STORAGE, localStorageService){
 
-        // var isSupported = function(){
-        //     if(localStorageService.isSupported) {
-        //         //...
-        //     }
-        // };
+        //TODO: separar cada tipo y unificarlo en un sólo objeto
+        var authentication = {
+
+        };
+        var session = {
+
+        };
+        var factory = {};
 
         return{
+            setSession: function(data){
+                this.setToken( data.token );
+                this.setUser( data.user );
+            },
+
+            setToken: function(token){
+                localStorageService.set(STORAGE.token, token);
+            },
+
+            getToken: function(){
+                //Si hay un token
+                if( localStorageService.get(STORAGE.token) )
+                    return localStorageService.get(STORAGE.token);
+                else
+                    return null;
+            },
+
             setUser: function(user){
                 localStorageService.set(STORAGE.user, JSON.stringify(user));
             },
 
-            removeUser: function(){
+        
+            getUser: function(){
+                if( localStorageService.get(STORAGE.user) !== undefined ){
+                    var data = localStorageService.get(STORAGE.user);
+                    return  JSON.parse(data);
+                }
+                return null;
+            },
+
+            removeSession: function(){
+                alert("Se esta cerrando sesión");
                 localStorageService.remove(STORAGE.user);
-                // localStorageService.remove(STORAGE.student);
+                localStorageService.remove(STORAGE.token);
             },
 
             isAuthenticated: function () {
-                var auth = localStorageService.get(STORAGE.user);
-                if( auth ){
-                    //Si no es null o vacio
-                    if( auth != null && auth != "" )
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                    return false;
+                var auth = this.getUser();
+                //Si no es null o vacío
+                return auth != null &&
+                    auth !== "" &&
+                    auth !== undefined;
             },
 
             isStudent: function(){
-                var data = this.getData();
-                if( data != null ){
-                    if( data.role === USER_ROLES.basic )
-                        return true;
-                    else
-                        return false;
-                }
+                var data = this.getUser();
+                if( data != null )
+                    return data.role === USER_ROLES.basic;
                 return false;
             },
 
             isStaff: function(){
-                var data = this.getData();
+                var data = this.getUser();
                 if( data != null ){
-                    if( data.role === USER_ROLES.mod || 
-                        data.role === USER_ROLES.admin )
-                        return true;
-                    else
-                        return false;
+                    return data.role === USER_ROLES.mod ||
+                        data.role === USER_ROLES.admin;
                 }
                 return false;
-            },
-
-            getToken: function(){
-                if( this.isAuthenticated() ){
-                    var user = localStorageService.get(STORAGE.user);
-                    user = JSON.parse(user);
-                    return user.token;
-                }
-                return null;
-            },
-
-            getData: function(){
-                if( this.isAuthenticated() ){
-                    var user = localStorageService.get(STORAGE.user);
-                    user = JSON.parse(user);
-                    return user.user;
-                }
-                return null;
-            },
+            }
 
         };
 

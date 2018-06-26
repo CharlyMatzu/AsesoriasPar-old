@@ -15,9 +15,9 @@
                         <h3>{{student.first_name}} {{student.last_name}}</h3>
 
                         <div class="status text-center">
-                            <span ng-show="student.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
-                            <span ng-show="student.status === 'ACTIVE'" class="label label-success">Habilitado</span>
-                            <span ng-show="student.status === 'PENDING'" class="label label-warning">Pendiente</span>
+                            <span ng-show="student.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                            <span ng-show="student.status === 'ACTIVE'" class="badge badge-success">Habilitado</span>
+                            <span ng-show="student.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
                         </div>
 
                         <div class="desc">
@@ -178,12 +178,12 @@
                                 <td>{{sub.plan}}</td>
                                 <td>{{sub.career_name}}</td>
                                 <td>
-                                    <span ng-show="sub.subject_status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
-                                    <span ng-show="sub.subject_status === 'ACTIVE'" class="label label-success">Activo</span>
+                                    <span ng-show="sub.subject_status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="sub.subject_status === 'ACTIVE'" class="badge badge-success">Activo</span>
                                 </td>
                                 <td>
-                                    <span ng-show="sub.status === 'PENDING'" class="label label-warning">Pendiente</span>
-                                    <span ng-show="sub.status === 'VALIDATED'" class="label label-success">Validada</span>
+                                    <span ng-show="sub.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
+                                    <span ng-show="sub.status === 'VALIDATED'" class="badge badge-success">Validada</span>
                                 </td>
                                 <td>
                                     <button ng-show="sub.status === 'PENDING'" class="btn btn-success">Validar</button>

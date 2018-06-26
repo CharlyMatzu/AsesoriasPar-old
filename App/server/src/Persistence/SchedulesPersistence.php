@@ -79,9 +79,10 @@ class SchedulesPersistence extends Persistence{
                     WHERE sdh.fk_schedule = $schedule_id
                     ORDER BY $orderType";
 
-
         return self::executeQuery($query);
     }
+
+
 
     /**
      * @param int $schedule_id
@@ -114,7 +115,7 @@ class SchedulesPersistence extends Persistence{
      * TODO: solo materias habilitadas
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getScheduleSubjects_ById($schedule_id)
+    public function getScheduleSubjects_BySchedule($schedule_id)
     {
         $query = "SELECT
                   ss.schedule_subject_id as 'id',
@@ -131,6 +132,37 @@ class SchedulesPersistence extends Persistence{
                 INNER JOIN plan p ON s.fk_plan = p.plan_id
                 INNER JOIN career c ON s.fk_career = c.career_id
                 WHERE ss.fk_schedule = $schedule_id AND 
+                s.status = '".Utils::$STATUS_ACTIVE."'";
+
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param $subject_id int
+     *
+     * @param $schedule_id int
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getScheduleSubject_BySubject_BySchedule( $subject_id, $schedule_id )
+    {
+        $query = "SELECT
+                  ss.schedule_subject_id as 'id',
+                  ss.status as 'status',
+                  s.subject_id as 'subject_id',
+                  s.name as 'subject_name',
+                  s.status as 'subject_status',
+                  p.year as 'plan',
+                  c.name as 'career_name',
+                  c.short_name as 'career_short_name'
+                  
+                FROM schedule_subjects ss
+                INNER JOIN subject s ON ss.fk_subject = s.subject_id
+                INNER JOIN plan p ON s.fk_plan = p.plan_id
+                INNER JOIN career c ON s.fk_career = c.career_id
+                WHERE (ss.fk_schedule = $schedule_id AND ss.fk_subject = $subject_id) AND 
                 s.status = '".Utils::$STATUS_ACTIVE."'";
 
         //Obteniendo resultados
@@ -286,58 +318,33 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $hdId int
+     * @param $status int
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function disableScheduleHour($hdId)
+    public function changeStatus_ScheduleHour($hdId, $status)
     {
         $query = "UPDATE schedule_days_hours
-                  SET status = '".Utils::$STATUS_DISABLE."'
-                  WHERE schedule_dh_id = $hdId";
-        return  self::executeQuery($query);
-    }
-
-    /**
-     * @param $hdId int
-     *
-     * @return \App\Model\DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function enableScheduleHour($hdId)
-    {
-        $query = "UPDATE schedule_days_hours
-                  SET status = '".Utils::$STATUS_ACTIVE."'
+                  SET status = '$status'
                   WHERE schedule_dh_id = $hdId";
         return  self::executeQuery($query);
     }
 
 
-    /**
-     * @param $subjectId
-     *
-     * @return \App\Model\DataResult
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function disableScheduleSubject($subjectId)
-    {
-        $query = "UPDATE schedule_subjects
-                  SET status = '".Utils::$STATUS_DISABLE."'
-                  WHERE schedule_subject_id = $subjectId";
-        return  self::executeQuery($query);
-    }
 
     /**
-     * @param $subjectId int
+     * @param $subject_id int
+     * @param $status int
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function enableScheduleSubject($subjectId)
+    public function changetStatus_ScheduleSubject($subject_id, $status)
     {
         $query = "UPDATE schedule_subjects
-                  SET status = '".Utils::$STATUS_ACTIVE."'
-                  WHERE schedule_subject_id = $subjectId";
+                  SET status = '$status'
+                  WHERE schedule_subject_id = $subject_id";
         return  self::executeQuery($query);
     }
 
@@ -368,6 +375,8 @@ class SchedulesPersistence extends Persistence{
                         s.fk_period = $period_id";
         return  self::executeQuery($query);
     }
+
+
 
 
 

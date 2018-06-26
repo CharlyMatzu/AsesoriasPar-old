@@ -4,6 +4,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     $scope.student = [];
     $scope.schedule = {};
     $scope.daysAndHours = [];
+    $scope.loading = true;
 
 
     var getDaysAndHours = function(){
@@ -104,8 +105,8 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
             $scope.loading.status = true;
             $scope.loading.message = "Obteniendo Datos de usuario";
 
-            StudentDetailService.getStudent(id,
-                function(success){
+            StudentDetailService.getStudent(id)
+                .then(function(success){
                     if( success.status == NO_CONTENT ){
                         Notification("No existe estudiante");
                         $window.location.href = "#!/estudiantes";
@@ -146,8 +147,8 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
-        StudentDetailService.changeStatus(user_id, ACTIVE,
-            function(success){
+        StudentDetailService.changeStatus(user_id, ACTIVE)
+            .then(function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getStudent();
@@ -170,13 +171,13 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
-        StudentDetailService.changeStatus(user_id, DISABLED, 
-            function(success){
+        StudentDetailService.changeStatus(user_id, DISABLED) 
+            .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 $scope.getStudent();
             },
             function(error){
-                Notification.error("Error al deshabilitar Estudiante");
+                Notification.error("Error al deshabilitar Estudiante: "+ error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-student-'+user_id);
             }
@@ -192,8 +193,8 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     //     //Deshabilita botones
     //     $scope.disableButtons(true, '.opt-student-'+user_id);
 
-    //     StudentDetailService.deleteStudent(user_id,
-    //         function(success){
+    //     StudentDetailService.deleteStudent(user_id)
+    //         .then(function(success){
     //             Notification.success("Estudiante eliminado con exito");
     //             $scope.getStudent();
     //         },

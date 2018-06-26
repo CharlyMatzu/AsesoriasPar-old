@@ -1,0 +1,76 @@
+.schedule-container{
+    .schedule{
+        width: 100%;
+        display: flex;
+        overflow-x: auto; //Para que sea "responsivo"
+
+        .column-item{
+            flex: 1; // Let all the flexible items be the same length
+            display: inline-block;
+
+            // background-color: peru;
+            text-align: center;
+
+            .cell-item{
+                color: #212121;
+                padding: 10px 20px;
+                background: $hour-color-static;
+                border: 2px solid #fff;
+            }
+
+            .cell-header{
+                // background: #92E55A;
+                background-color: $schedule-color-header;
+                color: #fff;
+                font-weight: bold;
+            }
+
+            // --------- COLUMNT ITEM ACTIVE STATE
+            .active{
+                background-color: $hour-color-active;
+                animation-name: active-hour;
+                animation-duration: 1s;
+                color: #fff;
+                transition: .3s;
+            }
+        }
+
+        // --------- COLUMN HIDDE STATE
+        .hide{
+            display: none;
+        }
+    }
+
+    // ---------Schedule table when is selectable
+    .selectable{
+        .column-item{
+            .cell-hour{
+                cursor: pointer;
+                transition: .3s;
+                &:hover{
+                    background-color: $hour-color-static - 20;
+                }
+            }
+            // --------- COLUMNT ITEM ACTIVE STATE
+            .active{
+                background-color: $hour-color-active-selectable;
+                animation-name: selected;
+                animation-duration: 1s;
+                color: #fff;
+                transition: .3s;
+                &:hover{
+                    background-color: $hour-color-active-selectable - 20;
+                }
+            }
+        }
+    }
+
+    .selectable-actives{
+        .active-selected{
+            background-color: #1B95E0 !important;
+            &:hover{
+                background-color: #1B95E0 - 20 !important;
+            }
+        }
+    }
+}

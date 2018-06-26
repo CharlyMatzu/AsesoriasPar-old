@@ -1,0 +1,51 @@
+.modal-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.subjects-container{
+    margin-bottom: 20px;
+    height: 200px;
+    width: 100%;
+
+    .subjects{
+        padding: 20px 0;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+
+        .item{
+            padding: 7px 12px;
+            margin: 0 10px 10px 0;
+            border-radius: 10px;
+            color: #1B95E0;
+            font-weight: bold;
+            border: 1px solid #1B95E0;
+            transition: .3s;
+        }
+    }
+
+    .selectable{
+        .item{
+            cursor: pointer;
+            &:hover{
+                background-color: #1B95E0;
+                color: #fff;
+            }
+        }
+    }
+
+    .selected-items{
+        .item{
+            border-color: #FF5555;
+            color: #FF5555;
+            &:hover{
+                background-color: #FF5555;
+                color: #fff;
+            }
+        }
+    }
+}

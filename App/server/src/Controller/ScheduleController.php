@@ -108,6 +108,25 @@ class ScheduleController
      * @param $params array
      * @return Response
      */
+    public function getScheduleSubjects($req, $res, $params)
+    {
+        try {
+            $scheduleService = new ScheduleService();
+            $scheduleService->getScheduleSubjects_BySchedule( $params['id'] );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Materias actualizadas");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
     public function updateScheduleSubjects($req, $res, $params)
     {
         try {

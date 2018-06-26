@@ -1,0 +1,80 @@
+<div class="section section-subjects" ng-controller="SubjestsController">
+    <div class="container">
+
+
+        <!-- subjects -->
+        <div class="subjects-container">
+            <!-- spinner -->
+            <div class="spinner-container" ng-if="loading">
+                <div class="spinner"></div>
+            </div>
+    
+            <!-- Messages and options -->
+
+            <div class="options" ng-if="!loading">
+                <p>Poner una descripción de para que son estas materias</p>
+                <!-- emtpy advisories -->
+                <div class="empty text-center" ng-if="schedule.subjects.length == 0">
+                    <p class="alert alert-primary">No ha seleccionado materias</p>
+                    <p>Cambiar por imagen jejeje</p>
+                </div>
+                <button class="btn btn-primary" ng-click="openSubjectsUpdate()">Actualizar mis materias</button>
+            </div>
+
+
+            <p>Poner más datos: nombre, status, carrera, plan</p>
+            <div class="subjects selected-items" ng-if="!loading">
+
+                <!-- items -->
+                <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-subject-id="{{sub.subject_id}}">La materia {{sub.subject_name}} del horario esta {{sub.status}}, y la materia en si: {{sub.subject_status}} de la carrera {{sub.career_name}}</div>
+                <!-- end items -->
+
+            </div>
+
+        </div>
+        <!-- end subjects -->
+
+
+
+        <!-- Modal subjects -->
+        <div class="update-subjects-container modal-wrap fadeIn" ng-if="showUpdateSubjects">
+            <div class="container">
+                
+                <!-- spinner -->
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                </div>
+                
+                <div class="content">
+        
+                    <!-- subjects -->
+                    <div class="subjects-container text-center">
+                        <h3>Materias disponibles</h3>
+                        <!-- options -->
+                        <div class="options form-inline text-center">
+                            <!-- <label for="search" class="sr-only">Buscar</label> -->
+                            <input type="text" id="search" placeholder="Buscar" class="search form-control">
+                            <button ng-click="closeSubjectsUpdate()" class="btn btn-danger">Cerrar ventana</button>
+                        </div>
+                        <!-- selected items -->
+                        <div class="subjects selectable selected-items" ng-show="schedule.subjects.length > 0">
+                            <div class="item" ng-repeat="sub in schedule.subjects" ng-click="removeSubject($event)" data-subject-id="{{sub.subject_id}}" data-index="{{$index}}">{{sub.subject_name}}</div>
+                        </div>
+                        <hr>
+                        
+                        <!-- available items -->
+                        <div class="subjects selectable available" ng-show="subjects.length > 0">
+                            <div class="item" ng-repeat="sub in subjects" ng-click="addSubject($event)" data-index="{{$index}}" data-subject-id="{{sub.id}}">{{sub.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end Modal subjects -->
+        
+        
+        
+
+    </div>
+</div>
+

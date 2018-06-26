@@ -1,62 +1,52 @@
 angular.module("Dashboard").service('StudentDetailService', function($http, RequestFactory, AuthFactory){
 
     
-    this.getStudent = function(student_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getStudent = function(student_id){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/students/"+student_id,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
-    this.getDaysAndHours = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getDaysAndHours = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/schedule/source",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     } 
 
 
-    this.getStudentSchedule = function(student_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getStudentSchedule = function(student_id){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/students/"+student_id+"/schedule",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
-    this.changeStatus = function(user_id, status, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.changeStatus = function(user_id, status){
+        return RequestFactory.makeTokenRequest(
             'PATCH',
             "/users/"+user_id+"/status/"+status,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
-    this.deleteStudent = function(user_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.deleteStudent = function(user_id){
+        return RequestFactory.makeTokenRequest(
             'DELETE',
             "/users/"+user_id,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     

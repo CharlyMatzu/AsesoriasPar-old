@@ -1,0 +1,55 @@
+<div class="section advisories-section" ng-controller="StudentsController">
+    <div class="container">
+
+        <div class="advisories-container">
+
+            <!-- spinner -->
+            <div class="spinner-container" ng-if="loading">
+                <div class="spinner"></div>
+            </div>
+
+
+            <div class="require-message fadeIn" ng-if="showRequireSchedule">
+                <p class="alert alert-warning">No tiene un horario de disponibilidad. Para poder ofrecer asesorías (ser asesor) es necesario indicar un horario seleccionando las horas en las que puedes recibir aseserías. Para crear un horario presione <a href="#!/escritorio/horario">aqui</a>, además es necesario indicar aquellas materias de las cuales puedes ofrecer asesorías, eso puedes hacerlo <a href="#!/escritorio/materias">aquí</a></p>
+            </div>
+
+
+            <!-- asesorías -->
+            <div class="advisories" ng-if="!loading && !showRequireSchedule">
+
+                <!-- emtpy advisories -->
+                <div class="empty text-center" ng-if="advisories.length == 0">
+                    <p class="alert alert-primary">No se hay asesorias asignadas</p>
+                    <p>Cambiar por imagen jejeje</p>
+                </div>
+
+                <!-- items -->
+                <div class="item" ng-repeat="ad in advisories">
+                    <div class="avatar">
+                        <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_assign.jpg" alt="">
+                        <img ng-show="ad.adviser_id == null" src="../../../../assets/img/student_empty.jpg" alt="">
+                    </div>
+                    <div class="info">
+                        <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
+                        <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
+                        <div class="info-item subject">{{ad.subject_name}}</div>
+                        <div class="info-item status">
+                            <span ng-show="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
+                            <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                            <span ng-show="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
+                        </div>
+
+                        <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
+                    </div>
+                </div>
+                <!-- end items -->
+
+
+            </div>
+            <!-- end asesorías -->
+
+
+        </div>
+
+    </div>
+</div>

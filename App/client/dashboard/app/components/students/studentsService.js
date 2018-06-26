@@ -1,50 +1,42 @@
 angular.module("Dashboard").service('StudentsService', function($http, RequestFactory, AuthFactory){
 
     
-    this.getStudents = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getStudents = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/students",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
-    this.searchStudents = function(data,successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.searchStudents = function(data){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/students/search/"+data,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
-    this.changeStatus = function(user_id, status, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.changeStatus = function(user_id, status){
+        return RequestFactory.makeTokenRequest(
             'PATCH',
             "/users/"+user_id+"/status/"+status,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
-    this.deleteStudent = function(user_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.deleteStudent = function(user_id){
+        return RequestFactory.makeTokenRequest(
             'DELETE',
             "/users/"+user_id,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
