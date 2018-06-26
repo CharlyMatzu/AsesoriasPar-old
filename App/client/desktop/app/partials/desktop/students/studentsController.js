@@ -1,10 +1,8 @@
-angular.module("Desktop").controller('StudentsController', function($scope, Notification, StudentsService, STATUS){
+angular.module("Desktop").controller('StudentsController', function($scope, Notification, StudentsService, ScheduleService, STATUS){
 
 
     $scope.page.title = 'Escritorio > Alumnos';
-
-    $scope.loading = false;
-
+    $scope.loading = true;
     $scope.advisories = [];
 
 
@@ -55,9 +53,53 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
     };
 
 
+    var checkSchedule = function(){
+
+        //Si ya tiene un horario
+        if( $scope.schedule != null ){
+            //Si tiene horas disponibles
+            if( $scope.schedule.days_hours.length > 0 &&
+                $scope.schedule.subjects.length > 0)
+                getAdvisories();
+            else{
+                $scope.showRequireSchedule = true;
+                $scope.loading = false;
+            }
+        }
+        else{
+            //Si no tiene horario, se hace peticion a la BD
+            ScheduleService.getStudentSchedule( $scope.student.id )
+                .then(
+                    function(success){
+                        //
+                        if( success.status == STATUS.NO_CONTENT ){
+                            $scope.showRequireSchedule = true;
+                            $scope.loading = false;
+                        }
+                        else{
+                            $scope.schedule = success.data;
+
+                            //Si tiene horas disponibles
+                            if( $scope.schedule.days_hours.length > 0 &&
+                                $scope.schedule.subjects.length > 0)
+                                getAdvisories();
+                            else{
+                                $scope.showRequireSchedule = true;
+                                $scope.loading = false;
+                            }
+                        }
+                },
+                function(error){
+                    Notification.error("Error: "+error.data);
+                    $scope.loading = false;
+                });
+            }
+    };
+
+
     //Si se ejecuta, se considera un periodo como existente (desktopController lo determina)
     (function(){
-        getAdvisories();
+        checkSchedule();
     })();
 
 });

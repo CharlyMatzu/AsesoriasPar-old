@@ -9,66 +9,72 @@
             <br><br>
 
             <!-- spinner -->
-            <!-- <div class="spinner-container" ng-if="loading">
+            <div class="spinner-container" ng-if="loading">
                 <div class="spinner"></div>
-            </div> -->
-    
-            <!-- estudiante -->
-            <h5>Información de estudiante</h5>
-            <form class="profile-form">
-                <div class="form-group">
-                    <label for="">Correo electronico:</label>
-                    <input type="text" class="form-control" ng-model="student.user_email">
-                </div>
-    
-                <div class="form-group">
-                    <label for="">ID Itson:</label>
-                    <input type="text" class="form-control" ng-model="student.itson_id">
-                </div>
-    
-                <div class="form-group">
-                    <label for="">Nombre:</label>
-                    <input type="text" class="form-control" ng-model="student.first_name">
-                </div>
-    
-                <div class="form-group">
-                    <label for="">Apellido:</label>
-                    <input type="text" class="form-control" ng-model="student.last_name">
-                </div>
-    
-                <div class="form-group">
-                    <label for="">Teléfono:</label>
-                    <input type="text" class="form-control" ng-model="student.phone">
-                </div>
-    
-                <div class="form-group">
-                    <label for="">Facebook:</label>
-                    <input type="text" class="form-control" ng-model="student.facebook">
-                </div>
-    
-                <div class="options">
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                </div>
-            </form>
-            <!-- end estudiante -->
-            <br><br><br>
-    
-            <h5>Cambiar contraseña</h5>
-            <form class="profile-form">
-                <div class="form-group">
-                    <label for="">Contraseña vieja:</label>
-                    <input type="text" class="form-control" ng-model="pass.old">
-                </div>
-    
-                <div class="form-group">
-                    <label for="">Nueva contraseña:</label>
-                    <input type="text" class="form-control" ng-model="pass.new">
-                </div>
-    
-                <div class="options">
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                </div>
-            </form>
+            </div>
+            
+            
+            <div class="profile-form" ng-if="!loading">
+                <!-- estudiante -->
+                <h5>Información de estudiante</h5>
+                <form class="profile-form">
+                    <div class="form-group">
+                        <label for="">Correo electronico:</label>
+                        <input type="text" class="form-control" ng-model="student.user_email">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="">ID Itson:</label>
+                        <input type="text" class="form-control" ng-model="student.itson_id">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="">Nombre:</label>
+                        <input type="text" class="form-control" ng-model="student.first_name">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="">Apellido:</label>
+                        <input type="text" class="form-control" ng-model="student.last_name">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="">Teléfono:</label>
+                        <input type="text" class="form-control" ng-model="student.phone">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="">Facebook:</label>
+                        <input type="text" class="form-control" ng-model="student.facebook">
+                    </div>
+        
+                    <div class="options">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+                <!-- end estudiante -->
+                <br><br><br>
+        
+                <!-- password -->
+                <h5>Cambiar contraseña</h5>
+                <form class="profile-form">
+                    <div class="form-group">
+                        <label for="">Contraseña vieja:</label>
+                        <input type="text" class="form-control" ng-model="pass.old">
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="">Nueva contraseña:</label>
+                        <input type="text" class="form-control" ng-model="pass.new">
+                    </div>
+        
+                    <div class="options">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+                <!-- end password -->
+            </div>
+
         </div>
     </div>
 

@@ -1,10 +1,20 @@
-angular.module("Desktop").controller('ProfileController', function($scope, $http, $routeParams, $window, $location){
+angular.module("Desktop").controller('ProfileController', function($scope, ProfileService){
 
     //Menu general
     $scope.menu.title = 'profile';
     //Titulo
     $scope.page.title = 'Perfil de usuario';
 
-    console.log( "Usuario: " + $scope.student );
+    // $scope.loading = true;
+
+
+    (function(){
+        if( $scope.student == null ){
+            alert("No hay un usuario asignado, se cerrara sesión");
+            $scope.signOut();
+        }
+
+        $scope.loading = false;
+    })();
 
 });

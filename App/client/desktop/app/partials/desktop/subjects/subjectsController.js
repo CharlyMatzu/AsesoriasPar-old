@@ -4,6 +4,8 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
     $scope.page.title = 'Escritorio > Materias';
     $scope.noRepeatedSubjects = [];
     $scope.showUpdateSubjects = false;
+    $scope.schedule = null;
+    $scope.showRequireSchedule = false;
     
 
     //TODO: las materias que no son parte del horario deben solicitar a la API

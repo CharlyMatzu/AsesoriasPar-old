@@ -1,4 +1,4 @@
-angular.module("Desktop").controller('DesktopController', function($scope, $http, $routeParams, $window, $location){
+angular.module("Desktop").controller('DesktopController', function($scope, $routeParams, $window){
 
     $scope.showSubmenu = true;
     

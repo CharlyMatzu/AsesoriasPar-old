@@ -9,8 +9,13 @@
             </div>
 
 
+            <div class="require-message fadeIn" ng-if="showRequireSchedule">
+                <p class="alert alert-warning">No tiene un horario de disponibilidad. Para poder recibir asesorías es necesario indicar un horario seleccionando las horas en las que puedes recibir aseserías. Para crear un horario presione <a href="#!/escritorio/horario">aqui</a></p>
+            </div>
+
+
             <!-- asesorías -->
-            <div class="advisories" ng-if="!loading">
+            <div class="advisories" ng-if="!loading && !showRequireSchedule">
 
                 <!-- emtpy advisories -->
                 <div class="empty text-center" ng-if="advisories.length == 0">
