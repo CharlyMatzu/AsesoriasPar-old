@@ -5,28 +5,8 @@
     right: 0;
     left: 0;
     z-index: 999;
-    background-color: rgba(#fff, .7);
+    background-color: rgba(#212121, .7);
     // .content{
         // overflow: scroll;
     // }
-}
-
-.modal-main{
-    @extend .modal-wrap;
-    background-color: rgba($primary-color, 1);
-    color: #fff;
-    .content{
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        .text{
-        }
-        .spinner{
-            margin: 20px;
-        }
-    }
 }

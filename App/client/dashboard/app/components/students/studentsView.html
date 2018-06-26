@@ -67,9 +67,9 @@
                                 <td>{{s.career_name}}</td>
                                 <td>{{s.date_register}}</td>
                                 <td>
-                                    <span ng-show="s.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
-                                    <span ng-show="s.status === 'ACTIVE'" class="label label-success">Habilitado</span>
-                                    <span ng-show="s.status === 'PENDING'" class="label label-warning">Pendiente</span>
+                                    <span ng-show="s.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="s.status === 'ACTIVE'" class="badge badge-success">Habilitado</span>
+                                    <span ng-show="s.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
                                 </td>
                                 <td>
                                     <button ng-click="openStudent(s.id)" class="opt-student-{{s.user_id}} btn btn-primary">Detalles</button>

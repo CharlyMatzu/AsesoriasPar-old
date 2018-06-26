@@ -1,4 +1,4 @@
-angular.module("Desktop").controller('StudentsController', function($scope, $http, Notification, StudentsService, RequestFactory, STATUS){
+angular.module("Desktop").controller('StudentsController', function($scope, Notification, StudentsService, STATUS){
 
 
     $scope.page.title = 'Escritorio > Alumnos';

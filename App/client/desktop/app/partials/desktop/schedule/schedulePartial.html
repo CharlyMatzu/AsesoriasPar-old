@@ -1,9 +1,35 @@
 <div class="section schedule-section" ng-controller="ScheduleController">
     <div class="container">
-        <div class="row">
+
+            <!-- spinner -->
+            <div class="spinner-container" ng-if="loading">
+                <div class="spinner"></div>
+            </div>
+
+            <div class="schedule-container fadeIn" ng-if="!loading">
+
+                <div class="options">
+                    <!-- Botones de accion -->
+                    <button class="btn btn-primary fadeIn" ng-show="!showUpdateSchedule" ng-disabled="loading" ng-click="initUpdateSchedule()">Actualizar Horario</button>
+                    
+                    <!-- Cuando se esta actualizando -->
+                    <button class="btn btn-danger fadeIn" ng-disabled="loading" ng-show="showUpdateSchedule" ng-disabled="loading" ng-click="cancelUpdate()">Cancelar</button>
+                    <button class="btn btn-success fadeIn" ng-show="showUpdateSchedule" ng-click="updateScheduleHours(schedule.id)">Guardar</button>
+                </div>
+                <br><br>
+        
+                <!-- Horario -->
+                <div class="schedule ng-class:{'selectable': showUpdateSchedule}" ng-show="daysAndHours.length > 0">
+                    
+                    <div class="column-item" ng-repeat="dh in daysAndHours">
+                        <div class="cell-item cell-header">{{dh.day}}</div>
+                        <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                    </div>
+            
+                </div>
+                <!-- end horario
+                 -->
+            </div>
     
-            sadadasddasdasdsada
-    
-        </div>
     </div>
 </div>

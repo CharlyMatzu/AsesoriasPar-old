@@ -18,6 +18,15 @@
                     <p>Cambiar por imagen jejeje</p>
                 </div>
 
+                <!-- new -->
+                <div class="item new" ng-click="newRequest()">
+                    <div class="icon-container">
+                        <span class="icon fa fa-plus"></span>
+                        <!-- Solicitar -->
+                    </div>
+                </div>
+                <!-- end new -->
+
                 <!-- items -->
                 <div class="item" ng-repeat="ad in advisories">
                     <div class="avatar">
@@ -29,9 +38,9 @@
                         <div ng-show="ad.adviser_id == null" class="info-item student" >SIN ASESOR</div>
                         <div class="info-item subject">{{ad.subject_name}}</div>
                         <div class="info-item status">
-                            <span ng-show="ad.status === 'PENDING'" class="label label-default">Pendiente</span>
-                            <span ng-show="ad.status === 'ACTIVE'" class="label label-success">Activo</span>
-                            <span ng-show="ad.status === 'FINALIZED'" class="label label-danger">Finalizado</span>
+                            <span ng-show="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
+                            <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                            <span ng-show="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
                         </div>
                         
                         <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
@@ -47,4 +56,40 @@
         </div>
 
     </div>
+
+
+    <!-- Modal -->
+    <div class="new-advisory-container modal-wrap fadeIn" ng-if="showNewRequest">
+        <div class="container">
+            
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="subjects-container">
+                        <div class="options">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="buscar">
+                            </div>
+                            <button class="btn btn-outline-danger" ng-click="closeNewAdvisory()">Cancelar</button>
+                            <button class="btn btn-outline-success" ng-click="requestAdvisory()">Solicitar</button>
+                        </div>
+                        <div class="subjects selected-items">
+                            <div class="item" ng-show="selectedSub != null" ng-click="selectedSub = null" data-subject-id="{{selectedSub.subject_id}}">{{selectedSub.name}}</div>
+                        </div>
+                        <hr>
+            
+                        <div class="subjects selectable">
+                            <div class="item" ng-repeat="sub in subjects" ng-click="selectSub(sub)" data-subject-id="{{sub.subject_id}}">{{sub.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
 </div>
+
+
+
+
+

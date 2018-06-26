@@ -1,15 +1,16 @@
-angular.module("Desktop").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory, STATUS){
+angular.module("Desktop").controller('AdvisoriesController', function($scope, Notification, AdvisoriesService, STATUS){
 
 
     $scope.page.title = 'Escritorio > Asesorías';    
 
     $scope.loading = false;
+    $scope.loadingSubjects = false;
 
     $scope.advisories = [];
     $scope.showNewRequest = false;
 
     //Request advisory
-    $scope.subjects = null;
+    $scope.subjects = [];
     $scope.selectedSub = null;
 
 
@@ -33,6 +34,9 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
     
 
     var getSubjects = function(){
+        $scope.loadingSubjects = true;
+        $scope.subjects = [];
+
         AdvisoriesService.getSubjects()
             .then(
                 function(success){
@@ -41,7 +45,10 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
                 function(error){
                     Notification.error("Error: "+error.data);
                 }
-            );
+            )
+            .finally(function(){
+                $scope.loadingSubjects = false;
+            });
     };
 
 
@@ -92,8 +99,10 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, $h
                         Notification.warning(error.data);
                     else
                         Notification.error(error.data);
+
+                    $scope.showNewRequest = false;
                 }
-            );
+            )
         
     };
 

@@ -85,9 +85,9 @@
                                     <td>{{p.end}}</td>
                                     <td>{{p.date_register}}</td>
                                     <td>
-                                        <span ng-show="p.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
-                                        <span ng-show="p.status === 'ACTIVE'" class="label label-success">Activo</span>
-                                        <span ng-show="p.status == 3" class="label label-primary">Finalizado</span>
+                                        <span ng-show="p.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                        <span ng-show="p.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                        <span ng-show="p.status == 3" class="badge badge-primary">Finalizado</span>
                                     </td>
                                     <td>
                                         <button ng-click="editPeriod(p)" class="opt-period-{{p.id}} btn btn-primary">Editar</button>

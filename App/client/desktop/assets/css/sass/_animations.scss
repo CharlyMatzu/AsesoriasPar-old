@@ -67,6 +67,17 @@
 }
 
 
+//-------------------Schedule
+@keyframes hour-active {
+    from {
+        background-color: rgba(#6ECC8E, 0);
+    }
+    to {
+        background-color: rgba(#6ECC8E, 1);
+    }
+}
+
+
 
 
 //--------------------ngAnimations

@@ -1,0 +1,123 @@
+angular.module("Desktop").controller('SubjestsController', function($scope, Notification, SubjestsService, STATUS){
+
+
+    $scope.page.title = 'Escritorio > Materias';
+    $scope.noRepeatedSubjects = [];
+    $scope.showUpdateSubjects = false;
+    
+
+    //TODO: las materias que no son parte del horario deben solicitar a la API
+    var setNoRepeatSubjects = function(data){
+        let subs = $scope.schedule.subjects;
+        $scope.subjects = [];
+
+        //Recorre materias
+        
+        for( var i=0; i < data.length; i++ ){
+            //Recorre materias
+            var isSelected = false;
+            for( var j=0; j < subs.length; j++ ){
+                //Recorre materias individuales
+                if( data[i]['id'] === subs[j]['subject_id'] ){
+                    isSelected = true;
+                    break;
+                }
+            }
+            //Si no se encontro, entonces se agrega para seleccionar
+            if( !isSelected ){
+                //Se agrega materia que no esta en horario para mostrar
+                $scope.subjects.push( data[i] );
+            }
+        }
+    };
+
+
+    var getSubjects = function(){
+        
+        SubjestsService.getSubjects()
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT ){
+                    Notification.warning("No hay materias disponibles");
+                }
+                else{
+                    // Notification.success("Materias cargadas");
+                    // $scope.subjects = success.data;
+                    //TODO: hacer que la API regresa dichas materias y no que se haga desde el cliente
+                    setNoRepeatSubjects(success.data);
+                }
+                    
+            }, 
+            function(error){
+                Notification.error("Error al cargar materias: "+error.data);
+            });
+    };
+    
+    
+    $scope.openSubjectsUpdate = function(){
+        $scope.showUpdateSubjects = true;
+        // $scope.schedule.subjects = [];
+        // $scope.subjects = [];
+        //Obtiene materias
+        getSubjects();
+    };
+
+
+    var updateSubjects = function(schedule_id, subjects){
+        Notification("Actualizando materias");
+
+        SubjestsService.updateScheduleSubjects(schedule_id, subjects)
+            .then(function(success){
+                // Recarga materias
+                // Notification.success("Actualizando con exito");
+                getStudentSchedule( $scope.student.id );
+            },
+            function(error){
+                Notification.error("Error al actualizar materias: "+error.data);
+            });
+    };
+
+    $scope.removeSubject = function(event){
+        
+        //TODO: pedir confirmacion
+        if( $( event.currentTarget ).parents().hasClass('selectable') ){
+            //Verifica que sea un elemento selecionado
+            if( $( event.currentTarget ).parents().hasClass('selected-items') ){
+                //Remueve elemento del array
+                let index = $( event.currentTarget ).data('index');
+                var scheduleSubs = $scope.schedule.subjects;
+                scheduleSubs.splice(index, 1);
+                
+                var subjects = [];
+                for( var i=0; i < scheduleSubs.length; i++ ){
+                    subjects.push( scheduleSubs[i]['subject_id'] );
+                }
+                //Se recarga
+                updateSubjects( $scope.schedule.id, subjects );
+            }
+        }
+    };
+
+    
+    $scope.addSubject = function(event){
+        
+        if( $( event.currentTarget ).parents().hasClass('selectable') ){
+            //Verifica que sea un elemento selecionado
+            if( $( event.currentTarget ).parents().hasClass('available') ){
+
+                var subjects = [];
+                //Obtiene materia seleccionada
+                var sub = $(event.currentTarget).data('subject-id');
+                subjects.push( sub );
+                //Obtiene materias ya seleccionadas
+                for( var i=0; i < $scope.schedule.subjects.length; i++ ){
+                    subjects.push( $scope.schedule.subjects[i]['subject_id'] );
+                }
+
+                //Envia para actualizar
+                updateSubjects( $scope.schedule.id, subjects );
+            }
+        }
+    };
+    
+
+});

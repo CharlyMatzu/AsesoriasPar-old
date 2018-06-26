@@ -66,8 +66,8 @@
                                 <td>{{p.year}}</td>
                                 <td>{{p.date_register}}</td>
                                 <td>
-                                    <span ng-show="p.status === 'DISABLED'" class="label label-danger">Deshabilitado</span>
-                                    <span ng-show="p.status === 'ACTIVE'" class="label label-success">Activo</span>
+                                    <span ng-show="p.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="p.status === 'ACTIVE'" class="badge badge-success">Activo</span>
                                 </td>
                                 <td>
                                         <button ng-click="editPlan(p)" class="opt-plan-{{p.id}} btn btn-primary">Editar</button>

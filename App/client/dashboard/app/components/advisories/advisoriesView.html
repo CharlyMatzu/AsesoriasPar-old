@@ -47,9 +47,9 @@
                                     </div>
 
                                     <div class="status">
-                                        <span ng-show="ad.status === 'PENDING'" class="label label-warning">Pendiente</span>
-                                        <span ng-show="ad.status === 'ACTIVE'" class="label label-success">Activo</span>
-                                        <span ng-show="ad.status === 'FINALIZED'" class="label label-danger">Finalizado</span>
+                                        <span ng-show="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
+                                        <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                        <span ng-show="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
                                     </div>
 
                                     <button class="btn-opt" ng-show="ad.status === 'PENDING' || ad.status == 'ACTIVE'"><span class="fa fa-times"></span> Finalizar</button>
