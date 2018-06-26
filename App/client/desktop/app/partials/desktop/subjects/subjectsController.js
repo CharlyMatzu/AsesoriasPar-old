@@ -1,4 +1,4 @@
-angular.module("Desktop").controller('SubjestsController', function($scope, Notification, SubjestsService, STATUS){
+angular.module("Desktop").controller('SubjestsController', function($scope, Notification, SubjestsService, ScheduleService, STATUS){
 
 
     $scope.page.title = 'Escritorio > Materias';
@@ -78,6 +78,8 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
             });
     };
 
+
+
     $scope.removeSubject = function(event){
         
         //TODO: pedir confirmacion
@@ -120,6 +122,50 @@ angular.module("Desktop").controller('SubjestsController', function($scope, Noti
             }
         }
     };
+
+
+    /**
+     * Obtiene horario de estudiante
+     */
+    var getStudentSchedule = function(studen_id){
+        $scope.showUpdateSchedule = false;
+        $scope.loading = true;
+
+        ScheduleService.getStudentSchedule(studen_id)
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT ){
+                    //Si no tiene un horario, se crea
+                    return ScheduleService.createSchedule(studen_id)
+                }
+                else
+                    $scope.schedule = success.data;
+                
+                },
+                function(error){
+                    Notification.error("Error al obtener horario de alumno");
+            
+            })
+            //Peticion de crear horario
+            .then(function(success){
+                return ScheduleService.getStudentSchedule(studen_id);
+            }, function(error){
+                Notification.error("Error al crear horario");
+            })
+            //Obtener horario nuevamente
+            .then(function(success){
+                $scope.schedule = success.data;
+            }, function(error){
+                Notification.error("Error al obtener horario");
+            })
+            .finally(function(){
+                $scope.loading = false;
+            });
+    };
+
+
+    (function(){
+        getStudentSchedule( $scope.student.id );
+    })();
     
 
 });

@@ -1,5 +1,6 @@
 angular.module("Desktop").service('SubjestsService', function($http, RequestFactory, AuthFactory){
 
+    
     this.updateScheduleSubjects = function(schedule_id, subjects){
         return RequestFactory.makeTokenRequest(
             'PUT',
@@ -8,8 +9,6 @@ angular.module("Desktop").service('SubjestsService', function($http, RequestFact
             AuthFactory.getToken()
         );
     }
-
-
     
     this.getSubjects = function(){
         return RequestFactory.makeTokenRequest(
