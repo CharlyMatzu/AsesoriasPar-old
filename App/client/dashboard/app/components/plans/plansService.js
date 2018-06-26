@@ -1,64 +1,54 @@
 angular.module("Dashboard").service('PlansService', function($http, RequestFactory, AuthFactory){
 
   
-    this.getPlans = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getPlans = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/plans",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.insertPlan = function(plan, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.insertPlan = function(plan){
+        return RequestFactory.makeTokenRequest(
             'POST',
             "/plans",
             data = {
                 year: plan
             },
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.updatePlan = function(plan, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.updatePlan = function(plan){
+        return RequestFactory.makeTokenRequest(
             'PUT',
             "/plans/"+plan.id,
             data = {
                 year: plan.year
             },
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
-    this.deletePlan = function(plan_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.deletePlan = function(plan_id){
+        return RequestFactory.makeTokenRequest(
             'DELETE',
             "/plans/"+plan_id,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
 
     
-    this.changeStatus = function(plan_id, status, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.changeStatus = function(plan_id, status){
+        return RequestFactory.makeTokenRequest(
             'PATCH',
             "/plans/"+plan_id+"/status/"+status,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 

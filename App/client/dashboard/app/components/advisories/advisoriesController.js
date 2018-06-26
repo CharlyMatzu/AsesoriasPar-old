@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory){
+angular.module("Dashboard").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory, STATUS){
     
     $scope.page.title = "Asesorias";
     $scope.advisories = [];
@@ -24,9 +24,9 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
         $scope.showAdvisers = false;
         $scope.showSchedule = false;
 
-        AdvisoriesService.getAdvisories(
-            function(success){
-                if( success.status == NO_CONTENT ){
+        AdvisoriesService.getAdvisories()
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT ){
                     Notification("No hay asesorias registradas en el periodo actual");
                 }
                 else{
@@ -43,9 +43,9 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
         var subject_id = advisory.subject_id;
         var student_id = advisory.alumn_id;
 
-        AdvisoriesService.getSubjectAdvisers_Ignore(subject_id, student_id,
-            function(success){
-                if( success.status == NO_CONTENT )
+        AdvisoriesService.getSubjectAdvisers_Ignore(subject_id, student_id)
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT )
                     Notification("No hay asesores disponibles");
                 else
                     $scope.advisers = success.data;
@@ -58,9 +58,9 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
 
 
     var checkScheduleMatch = function(adviser_id, alumn_id){
-        AdvisoriesService.getMatchHours(adviser_id, alumn_id,
-            function(success){
-                if( success.status == NO_CONTENT )
+        AdvisoriesService.getMatchHours(adviser_id, alumn_id)
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT )
                     $scope.matchHours = null;
                 else
                     $scope.matchHours = success.data;
@@ -177,6 +177,7 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
 
 
     (function(){
+        //TODO: verificar si hay un periodo actual
         $scope.getAdvisories();
     })();
     

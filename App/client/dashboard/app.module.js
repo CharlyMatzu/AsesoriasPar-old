@@ -45,7 +45,7 @@ angular.module("Dashboard")
         };
 
         $rootScope.signOut = function(){
-            AuthFactory.removeUser();
+            AuthFactory.removeSession();
             $window.location.href = "/";
         };
 
@@ -57,7 +57,7 @@ angular.module("Dashboard")
                     $window.location.href = "/";
                 // Se obtiene informacion del usuario
                 else
-                    $rootScope.session = AuthFactory.getData();
+                    $rootScope.session = AuthFactory.getUser();
             }
             else{
                 $window.location.href = "/";
@@ -67,4 +67,13 @@ angular.module("Dashboard")
 
         
         
+    })
+
+
+    .controller('SignoutController', function($scope){
+
+        (function(){
+            $scope.signOut();
+        })();
+    
     });

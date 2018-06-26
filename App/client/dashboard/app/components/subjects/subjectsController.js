@@ -28,8 +28,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
 
         $scope.subjects = [];
 
-        SubjectService.getSubjects(
-            function(success){
+        SubjectService.getSubjects()
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
@@ -56,8 +56,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
 
         $scope.subjects = [];
 
-        SubjectService.getSubject_Search(subject,
-            function(success){
+        SubjectService.getSubject_Search(subject)
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
@@ -88,8 +88,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         $scope.loading.status = true;
         $scope.loading.message = "Buscando materias con "+data;
 
-        SubjectService.searchSubjects(data,
-            function(success){
+        SubjectService.searchSubjects(data)
+            .then(function(success){
                 if( success.status == NO_CONTENT )
                     $scope.loading.message = "No se encontraron materias";
                 else
@@ -118,9 +118,9 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         $scope.disableButtons(true, '.opt-subjects-'+subject.id);
         
         //Se obtienen Carreras
-        SubjectService.getCareers(
+        SubjectService.getCareers()
 
-            function(success){
+            .then(function(success){
                 Notification.success("Carreras cargadas");
 
                 $scope.careers = success.data;
@@ -181,8 +181,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         
         $scope.disableButtons(true, '.opt-subjects-'+subject.id);
         
-        SubjectService.updateSubject(subject, 
-            function(success){
+        SubjectService.updateSubject(subject)
+            .then(function(success){
                 Notification.success("Actualizado con exito");
                 $scope.getSubjects();
             },
@@ -202,8 +202,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-subject-'+subject_id);
         
-        SubjectService.deleteSubject(subject_id,
-            function(success){
+        SubjectService.deleteSubject(subject_id)
+            .then(function(success){
                 Notification.success("Eliminado con exito");
                 $scope.getSubjects();
             },
@@ -222,8 +222,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         $scope.disableButtons(true, '.opt-subject-'+subject_id);
         Notification("Procesando...");
 
-        SubjectService.changeStatus(subject_id, DISABLED,
-            function(success){
+        SubjectService.changeStatus(subject_id, DISABLED)
+            .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 $scope.getSubjects();
             },
@@ -242,8 +242,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         $scope.disableButtons(true, '.opt-subject-'+subject_id);
         Notification("Procesando...");
 
-        SubjectService.changeStatus(subject_id, ACTIVE,
-            function(success){
+        SubjectService.changeStatus(subject_id, ACTIVE)
+            .then(function(success){
                 Notification.success("habilitado con exito");
                 $scope.getSubjects();
             },
@@ -254,48 +254,48 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
         );
     }
 
-    //Obteniendo planes
-        //Se obtien planes
-        SubjectService.getPlans(
-            function(success){
-                if( success.status == NO_CONTENT ){
-                    Notification.warning("No hay planes registrados, redireccionando...");
-                    //Si no hay, redirecciona
-                    $timeout(function(){
-                        $window.location.href = '#!/planes';
-                    }, 2000);
-                }
-                else{
-                    Notification.success("Planes cargados");
-                    $scope.plans = success.data;
-                }
-            },
-            function(error){
-                Notification.error("Error al cargar planes: "+error.data);
-                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-            }
-        );
-        //Se obtienen Carreras
-        SubjectService.getCareers(
+    // //Obteniendo planes
+    //     //Se obtien planes
+    //     SubjectService.getPlans()
+    //         .then(function(success){
+    //             if( success.status == NO_CONTENT ){
+    //                 Notification.warning("No hay planes registrados, redireccionando...");
+    //                 //Si no hay, redirecciona
+    //                 $timeout(function(){
+    //                     $window.location.href = '#!/planes';
+    //                 }, 2000);
+    //             }
+    //             else{
+    //                 Notification.success("Planes cargados");
+    //                 $scope.plans = success.data;
+    //             }
+    //         },
+    //         function(error){
+    //             Notification.error("Error al cargar planes: "+error.data);
+    //             $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+    //         }
+    //     );
+    //     //Se obtienen Carreras
+    //     SubjectService.getCareers()
 
-            function(success){
-                if( success.status == NO_CONTENT ){
-                    Notification.warning("No hay carreras registradas, redireccionando...");
-                    //Si no hay, redirecciona
-                    $timeout(function(){
-                        $window.location.href = '#!/carreras';
-                    }, 2000);
-                }
-                else{
-                    Notification.success("Carreras cargadas");
-                    $scope.careers = success.data;
-                }
-            },
-            function(error){
-                Notification.error("Error al cargar carreras: "+error.data);
-                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-            }
-        );
+    //         .then(function(success){
+    //             if( success.status == NO_CONTENT ){
+    //                 Notification.warning("No hay carreras registradas, redireccionando...");
+    //                 //Si no hay, redirecciona
+    //                 $timeout(function(){
+    //                     $window.location.href = '#!/carreras';
+    //                 }, 2000);
+    //             }
+    //             else{
+    //                 Notification.success("Carreras cargadas");
+    //                 $scope.careers = success.data;
+    //             }
+    //         },
+    //         function(error){
+    //             Notification.error("Error al cargar carreras: "+error.data);
+    //             $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+    //         }
+    //     );
 
     //Obtiene todos por default
     $scope.getSubjects();

@@ -1,65 +1,55 @@
 angular.module("Dashboard").service('SubjectService', function($http, RequestFactory, AuthFactory){
 
 
-    this.getCareers = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getCareers = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/careers",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.getPlans = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getPlans = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/plans",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
 
-    this.getSubjects = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getSubjects = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/subjects",
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
-    this.getSubject_Search = function(subject,successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getSubject_Search = function(subject){
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/subjects/carrera/"+subject.career+"/semestre/"+subject.semester+"/plan/"+subject.plan,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
-    this.searchSubjects = function(data,successCallback, errorCallback){ 
-        RequestFactory.makeTokenRequest(
+    this.searchSubjects = function(data){ 
+        return RequestFactory.makeTokenRequest(
             'GET',
             "/subjects/search/"+data,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     } 
 
 
-    this.updateSubject = function(subject, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.updateSubject = function(subject){
+        return RequestFactory.makeTokenRequest(
             'PUT',
             "/subjects",
             data = {
@@ -70,31 +60,25 @@ angular.module("Dashboard").service('SubjectService', function($http, RequestFac
                 semester: subject.semester,
                 plan: subject.plan
             },
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
-    this.changeStatus = function(subject_id, status, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.changeStatus = function(subject_id, status){
+        return RequestFactory.makeTokenRequest(
             'PATCH',
             "/subjects/"+subject_id+"/status/"+status,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.deleteSubject = function(subject_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.deleteSubject = function(subject_id){
+        return RequestFactory.makeTokenRequest(
             'PATCH',
             "/subjects/"+subject_id,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     

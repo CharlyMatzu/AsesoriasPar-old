@@ -31,7 +31,7 @@ class Utils
 
 
     //------------OTROS
-    const EXPREG_EMAIL = "/[a-zA-Z._+-]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}/";
+    const EXPREG_EMAIL = "/[a-zA-Z0-9._+-]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}/";
     const EXPREG_PASS = "/[a-zA-Z0-9_!@#$&*.]/";
     const EXPREG_NAME = "/[a-zA-Z\sñÑáéíóúÁÉÍÓÚ]/";
     const EXPREG_SEARCH = "/[a-zA-Z0-9_!@ñÑáéíóúÁÉÍÓÚ\s]/";

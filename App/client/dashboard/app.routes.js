@@ -52,10 +52,10 @@ angular.module("Dashboard")
                 controller: "StudentDetailController",
                 templateUrl: "app/components/students/detail/studentDetailView.html"
             })
-            // .when("/estudiantes/nuevo", {
-            //     controller: "NewStudentController",
-            //     templateUrl: "app/components/students/newStudent/newStudentView.html"
-            // })
+            .when("/estudiantes/nuevo", {
+                controller: "NewStudentController",
+                templateUrl: "app/components/students/newStudent/newStudentView.html"
+            })
 
             .when("/asesorias", {
                 controller: "AdvisoriesController",

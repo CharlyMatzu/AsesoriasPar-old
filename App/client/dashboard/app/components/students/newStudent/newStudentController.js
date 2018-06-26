@@ -1,32 +1,29 @@
 angular.module("Dashboard").controller('NewUserController', function($scope, $http, $timeout, NewUserService, Notification){
-    $scope.page.title = "Usuarios > Nuevo";
+    
+    $scope.page.title = "Estudiantes > Nuevo";
     $scope.loading = false;
 
 
     /**
      * 
-     * @param {*} user 
+     * @param {*} student 
      * @return bool
      */
-    var validate = function(user){
-        if( user.pass != user.pass2 ){
+    var validate = function(student){
+        if( student.pass != student.pass2 ){
             Notification.warning('Contraseñas no coinciden');
-            return false;
-        }
-        if( user.role == null || user.role == "" ){
-            Notification.warning('No se ha seleccionado un rol');
             return false;
         }
             
         return true;
-    }
+    };
 
     /**
      * 
-     * @param {*} user 
+     * @param {*} student 
      */
-    $scope.addUser = function(user){
-        if( !validate(user) )
+    $scope.addStudent = function(student){
+        if( !validate(student) )
             return;
 
         
@@ -36,10 +33,10 @@ angular.module("Dashboard").controller('NewUserController', function($scope, $ht
         $scope.loading.status = true;
 
         //Peticion
-        NewUserService.addUser(user,
+        NewUserService.addStudent(student,
             function(success){
                 $scope.alert.type = 'success';
-                $scope.alert.message = "Se ha registrado usuario correctamente"
+                $scope.alert.message = "Se ha registrado estudiante correctamente"
                 $scope.loading.status = false;
             },
             function (error){
@@ -53,7 +50,11 @@ angular.module("Dashboard").controller('NewUserController', function($scope, $ht
                 
             }
         );
-    }
+    };
+
+    (function(){
+        
+    })();
 
 
 });

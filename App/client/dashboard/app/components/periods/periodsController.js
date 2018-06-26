@@ -25,7 +25,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
 
         var newDate = date.getFullYear() +"/"+ month +"/"+ day; //month starts in 0 end in 11
         return newDate;
-    }
+    };
 
     /**
      * Obtiene periodos registrados
@@ -37,8 +37,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
 
-        PeriodsService.getPeriods(
-            function(success){
+        PeriodsService.getPeriods()
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
@@ -54,7 +54,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
                 $scope.loading.message = "Error: "+error.data;
             }
         );
-    }
+    };
 
     /**
      * Agrega un periodo
@@ -74,8 +74,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         // period.end = cutDate(period.end);
         
         
-        PeriodsService.addPeriod(period, 
-            function(success){
+        PeriodsService.addPeriod(period)
+            .then(function(success){
                 Notification.success("Registrado con exito");
                 getPeriods();
             },
@@ -83,7 +83,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
                 Notification.error("Error: "+error.data);
             }
         );
-    }
+    };
 
 
     $scope.editPeriod = function(period){
@@ -93,7 +93,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         $scope.period.end = new Date(period.end);
 
         $scope.showUpdateForm = true;
-    }
+    };
 
 
     $scope.updatePeriod = function(period){
@@ -110,8 +110,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         period.end = cutDate(period.end);
         
         
-        PeriodsService.updatePeriod(period, 
-            function(success){
+        PeriodsService.updatePeriod(period)
+            .then(function(success){
                 Notification.success("Actualizado con exito");
                 getPeriods();
             },
@@ -119,7 +119,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
                 Notification.error("Error: "+error.data);
             }
         );
-    }
+    };
 
 
     
@@ -130,8 +130,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-period-'+period_id);
         
-        PeriodsService.deletePeriod(period_id,
-            function(success){
+        PeriodsService.deletePeriod(period_id)
+            .then(function(success){
                 Notification.success("Eliminado con exito");
                 getPeriods();
             },
@@ -140,7 +140,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
                 $scope.disableButtons(false, '.opt-period-'+period_id);
             }
         );
-    }
+    };
 
     /**
      * 
@@ -150,8 +150,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         $scope.disableButtons(true, '.opt-period-'+period_id);
         Notification("Procesando...");
 
-        PeriodsService.changeStatus(period_id, DISABLED,
-            function(success){
+        PeriodsService.changeStatus(period_id, DISABLED)
+            .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 getPeriods();
             },
@@ -160,7 +160,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
                 $scope.disableButtons(false, '.opt-period-'+period_id);
             }
         );
-    }
+    };
 
     /**
      * 
@@ -170,8 +170,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         $scope.disableButtons(true, '.opt-period-'+period_id);
         Notification("Procesando...");
 
-        PeriodsService.changeStatus(period_id, ACTIVE,
-            function(success){
+        PeriodsService.changeStatus(period_id, ACTIVE)
+            .then(function(success){
                 Notification.success("habilitado con exito");
                 getPeriods();
             },
@@ -180,9 +180,11 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
                 $scope.disableButtons(false, '.opt-period-'+period_id);
             }
         );
-    }
+    };
 
-    //Obtiene todos por default
-    getPeriods();
+    (function(){    
+        //Obtiene todos por default
+        getPeriods();
+    })();
 
 });
