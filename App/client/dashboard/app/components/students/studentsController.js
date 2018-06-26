@@ -1,7 +1,9 @@
 angular.module("Dashboard").controller('StudentsController', function($scope, $http, $window, Notification, StudentsService){
-    $scope.page.title = "Estudiantes";
     
+    
+    $scope.page.title = "Estudiantes > Detalle";
     $scope.students = [];
+    $scope.loading = true;
 
 
 
@@ -69,8 +71,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
     }
 
 
-    $scope.openStudent = function(student_id){
-        $window.location = "#!/estudiantes/"+student_id;
+    $scope.openStudentDetail = function(student_id){
+        $window.location = "#!/estudiantes/"+student_id+"/detalle";
     }
 
 

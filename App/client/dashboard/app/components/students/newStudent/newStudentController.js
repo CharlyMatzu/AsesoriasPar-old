@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('NewUserController', function($scope, $http, $timeout, NewUserService, Notification){
+angular.module("Dashboard").controller('NewStudentController', function($scope, $http, $timeout, NewStudentService, Notification){
     
     $scope.page.title = "Estudiantes > Nuevo";
     $scope.loading = false;
@@ -53,7 +53,7 @@ angular.module("Dashboard").controller('NewUserController', function($scope, $ht
     };
 
     (function(){
-        
+        // alert("Si llega");
     })();
 
 

@@ -4,6 +4,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     $scope.student = [];
     $scope.schedule = {};
     $scope.daysAndHours = [];
+    $scope.loading = true;
 
 
     var getDaysAndHours = function(){
@@ -176,7 +177,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
                 $scope.getStudent();
             },
             function(error){
-                Notification.error("Error al deshabilitar Estudiante");
+                Notification.error("Error al deshabilitar Estudiante: "+ error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-student-'+user_id);
             }

@@ -23,6 +23,7 @@ angular.module("Dashboard")
                 templateUrl: "app/components/careers/careersView.html"
             })
 
+            //--------- MATERIAS
             .when("/materias", {
                 controller: "SubjectsController",
                 templateUrl: "app/components/subjects/subjectsView.html"
@@ -44,11 +45,12 @@ angular.module("Dashboard")
                 templateUrl: "app/components/users/newUser/newUserView.html"
             })
 
+            //--------- Estudiantes
             .when("/estudiantes", {
                 controller: "StudentsController",
                 templateUrl: "app/components/students/studentsView.html"
             })
-            .when("/estudiantes/:id", {
+            .when("/estudiantes/:id/detalle", {
                 controller: "StudentDetailController",
                 templateUrl: "app/components/students/detail/studentDetailView.html"
             })
@@ -57,6 +59,7 @@ angular.module("Dashboard")
                 templateUrl: "app/components/students/newStudent/newStudentView.html"
             })
 
+            //--------- Asesorias
             .when("/asesorias", {
                 controller: "AdvisoriesController",
                 templateUrl: "app/components/advisories/advisoriesView.html"
@@ -66,11 +69,6 @@ angular.module("Dashboard")
             .when("/correo", {
                 // controller: "EmailController",
                 templateUrl: "app/components/email/emailView.html"
-            })
-
-            .when("/signout", {
-                controller: "SignoutController"
-                // templateUrl: "app/components/email/emailView.html"
             })
 
             .otherwise("/");
