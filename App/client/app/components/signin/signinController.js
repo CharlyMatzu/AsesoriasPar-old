@@ -9,8 +9,8 @@ angular.module("LoginApp").controller('SigninController', function($scope, $wind
         $scope.loading.status = true;
         $scope.loading.message = "Iniciando sesion";
 
-        SigninService.signin(user,
-            function(success){
+        SigninService.signin(user)
+            .then(function(success){
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Autenticado correctamente, redireccionando";
                 

@@ -189,6 +189,36 @@ class InputParamsMiddleware extends Middleware
      * @param $next callable
      * @return Response
      */
+    public function checkData_Password_Update($req, $res, $next)
+    {
+        $params = $req->getParsedBody();
+        if( !isset($params['old']) || !isset($params['new']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros: Se requiere old, new");
+
+
+        if( empty($params['old']) || empty($params['new']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: parametros vacíos");
+
+        //FIXME: deja pasar
+        if( !preg_match(Utils::EXPREG_PASS, $params['old']) ||
+            !preg_match(Utils::EXPREG_PASS, $params['new']) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: no es un password valido");
+
+
+        //Se envían los Parámetros mediante el request ya validados
+        $req = $req->withAttribute('password_update_data', $params);
+
+        $res = $next($req, $res);
+        return $res;
+    }
+
+    /**
+     * Verifica que el parámetros enviado sea un valor valido
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     * @return Response
+     */
     public function checkData_Password($req, $res, $next)
     {
         $params = $req->getParsedBody();
@@ -322,10 +352,10 @@ class InputParamsMiddleware extends Middleware
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: year");
 
         if( empty($params['year']) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan: no debe estar vacío");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetro vacío");
 
         if( ( !is_numeric($params['year']) ) )
-            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan, debe ser numérico");
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Debe ser numerico");
 
         if( ( strlen( $params['year'] ) != 4 ) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan: deben ser 4 digitos");

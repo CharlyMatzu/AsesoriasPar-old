@@ -1,22 +1,17 @@
 angular.module("LoginApp").service('SignupService', function($http, RequestFactory){
     
     this.getCareers = function(successCallback, errorCallback){
-        $http({
-            method: 'GET',
-            //TODO: cambiar URL para obtener solo carreras activas
-            url: RequestFactory.getURL()+"/careers"
-        }).then(function(success){
-            successCallback(success);
-        }, function(error){
-            errorCallback(error);
-        });
+        return RequestFactory.makeRequest(
+            'GET',
+            "/careers"
+        );
     }
 
     this.signup = function(student, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/auth/signup",
-            data: {
+        return RequestFactory.makeRequest(
+            'GET',
+            "/auth/signup",
+            data = {
                 email: student.email,
                 password: student.pass,
                 first_name: student.first_name,
@@ -25,11 +20,7 @@ angular.module("LoginApp").service('SignupService', function($http, RequestFacto
                 itson_id: student.itson_id,
                 phone: student.phone
             }
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+        );
     }
 
 });

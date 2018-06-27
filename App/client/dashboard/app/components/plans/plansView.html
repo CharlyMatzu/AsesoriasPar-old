@@ -83,7 +83,7 @@
                 <form action="" ng-submit="addPlan(newPlan)">
                     <div class="form-group">
                         <label for="plan">Ingrese plan:</label>
-                        <input type="text" id="plan" min="4" max="4" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
+                        <input type="text" min="4" max="4" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
                     </div>
                     <button type="submit" class="btn btn-success">Registrar</button>
                     <button ng-click="showNewPlan = false" type="reset" class="btn btn-outline-danger">Cancelar</button>
@@ -106,7 +106,7 @@
 
                     <div class="form-group">
                         <label for="year">Año:</label>
-                        <input type="text" id="year" class="form-control" ng-model="plan.year" >
+                        <input type="text" id="year" class="form-control" ng-model="plan.year" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                     <button type="button" ng-click="showUpdatePlan = false" class="btn btn-outline-danger">Cancelar</button>

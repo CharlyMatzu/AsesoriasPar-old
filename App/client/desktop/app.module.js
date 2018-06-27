@@ -30,7 +30,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
         
 
         $rootScope.signOut = function(){
-            alert("Se esta cerrando sesion");
+            // alert("Se esta cerrando sesion");
             AuthFactory.removeSession();
             $window.location.href = "/";
         };

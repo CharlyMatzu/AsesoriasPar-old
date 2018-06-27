@@ -127,7 +127,20 @@ class UsersPersistence extends Persistence{
      */
     public function getRoleUser($id){
         $query = $this->SELECT."
-                WHERE u.user_id = ".$id." AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = '".Utils::$STATUS_ACTIVE."'";
+                WHERE u.user_id = $id AND r.name = '".Utils::$ROLE_BASIC."' AND u.status = '".Utils::$STATUS_ACTIVE."'";
+        return  self::executeQuery($query);
+    }
+
+    /**
+     * @param $id int
+     * @param $pass String
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getUser_ById_ByPassword($id, $pass){
+        $query = $this->SELECT."
+                WHERE u.user_id = $id AND u.password = '$pass' LIMIT 1";
         return  self::executeQuery($query);
     }
 
@@ -208,29 +221,30 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user UserModel objeto tipo User con la información de registro
-     *
+     * @param $user_id
+     * @param $email String
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function updateUserEmail( $user ){
+    public function updateUserEmail($user_id, $email ){
         $query = "UPDATE user u
-                         SET    u.email = '".$user->getEmail()."'   
-                         WHERE  u.user_id = ".$user->getId();
+                         SET    u.email = '$email'   
+                         WHERE  u.user_id = $user_id";
         return  self::executeQuery($query);
     }
 
     /**
-     * @param $user UserModel objeto tipo User con la información de registro
+     * @param $user_id int
+     * @param $newPass String
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function updateUserPassword( $user ){
-        $pass = self::crypt( $user->getPassword() );
+    public function updateUserPassword( $user_id, $newPass ){
+        $ePass = self::crypt( $newPass );
         $query = "UPDATE user u
-                         SET    u.password = '$pass'   
-                         WHERE  u.user_id = ".$user->getId();
+                         SET    u.password = '$ePass'   
+                         WHERE  u.user_id = $user_id";
         return  self::executeQuery($query);
     }
 

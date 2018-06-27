@@ -78,4 +78,28 @@ class AuthController
         }
     }
 
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params
+     *
+     * @return Response
+     */
+    public function updateUserPassword_auth($req, $res, $params)
+    {
+        try {
+            $user = new UserModel();
+            $passArray = $req->getAttribute('password_update_data');
+
+            //TODO: cambiar a AuthService
+
+            $userServ = new UserService();
+            $userServ->updateUserPassword_UsingOld( $params['id'], $passArray  );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Password Actualizado con éxito");
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 }

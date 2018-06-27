@@ -1,6 +1,7 @@
 <?php namespace App\Service;
 
 use App\Auth;
+use App\Exceptions\Auth\TokenException;
 use App\Exceptions\Request\ConflictException;
 use App\Exceptions\Request\InternalErrorException;
 use App\Exceptions\Request\NotFoundException;
@@ -76,18 +77,17 @@ class AuthService
     /**
      * @param $token
      *
+     * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
-     * @throws \App\Exceptions\Request\UnauthorizedException
-     * @throws ConflictException
      */
     public function confirmUser($token)
     {
         //Obtiene datos de token
         try{
             $id = Auth::getData($token);
-        } catch (\Exception $e) {
-            throw new InternalErrorException('confirmUser', "Error al obtener data de token", $e->getMessage());
+        } catch (TokenException $e) {
+            throw new ConflictException( $e->getMessage() );
         }
         //Verifica que exista usuario
         $userServ = new UserService();

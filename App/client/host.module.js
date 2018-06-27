@@ -54,9 +54,22 @@ angular.module("HostModule", [])
              * @param {String} method   GET, POST, PUT, PATCH, DELETE
              * @param {String} route    /route/param
              * @param {String} data     Informacion en formato JSON
+             */
+            makeRequest: function(method, route, data){
+                
+                //Retorna promesa
+                return $http({
+                    method: method,
+                    url: this.getURL()+route,
+                    data: data
+                });
+            },
+
+            /**
+             * @param {String} method   GET, POST, PUT, PATCH, DELETE
+             * @param {String} route    /route/param
+             * @param {String} data     Informacion en formato JSON
              * @param {boolean} token   Para utilizar o no el token
-             * @param {callable} successCallback    callback para success
-             * @param {callable} errorCallback      callback para error
              */
             makeTokenRequest: function(method, route, data, token){
                 if( token == null )
@@ -69,17 +82,6 @@ angular.module("HostModule", [])
                     data: data,
                     headers: {'Authorization': 'Bearer ' + token}
                 });
-
-                // $http({
-                //     method: method,
-                //     url: this.getURL()+route,
-                //     data: data,
-                //     headers: {'Authorization': 'Bearer ' + token}
-                // }).then(function(success){
-                //     successCallback(success);
-                // }, function(error){
-                //     errorCallback(error);
-                // });
             },
         };
             

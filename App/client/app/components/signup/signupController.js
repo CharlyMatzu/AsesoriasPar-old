@@ -1,35 +1,32 @@
 angular.module("LoginApp").controller('SignupController', function($scope, $window, $timeout, Notification, SignupService){
     
     $scope.careers = [];
-
     $scope.alert.type = '';
-    $scope.loading.status = false;
-    $scope.loading.message = "";
+    $scope.loading = false;
     
 
     $scope.loadCareers = function(){
-        Notification.primary("Obteniendo carreras");
+        
+        $scope.loading = true;
 
-        SignupService.getCareers(
-            function(success){
+        SignupService.getCareers()
+            .then(function(success){
                 if( success.status == NO_CONTENT ){
-                    Notification.warning("No se encontraron carreras disponibles");
+                    // Notification.warning("No hay carreras disponibles por lo que no será posible continuar con el registro");
                     $scope.alert.type = 'warning';
                     $scope.alert.message = "No se encontraron carreras disponibles";
                 }   
-                else{
-                    Notification.success("Carreras cargadas");
+                else
                     $scope.careers = success.data;
-                    // $scope.alert.type = 'warning';
-                    // $scope.alert.message = "No se encontraron carreras disponibles";
-                }
+
+                $scope.loading = false;
             },
             function(error){
-                Notification.error("Error al cargar carreras: "+error.data);
-                $scope.alert.type = 'warning';
-                $scope.alert.message = "Error al cargar carreras: "+error.data;
-            }
-        );
+                // Notification.error("Error al cargar carreras: "+error.data);
+                $scope.alert.type = 'danger';
+                $scope.alert.message = "Error al cargar carreras";
+                $scope.loading = false;
+            });
     }
 
     $scope.loadCareers();
@@ -41,15 +38,13 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
         //     return;
         // }
 
-        $scope.loading.status = true;
-        $scope.loading.message = "Registrando usuario";
+        $scope.loading = true;
 
-        SignupService.signup(student,
-            function(success){
-                // Notification.success("Registrado con exito!");
+        SignupService.signup(student)
+            .then(function(success){
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Registrado con exito,redireccionando";
-                $scope.loading.status = false;
+                $scope.loading = false;
                 
                 $scope.student = {};
 
@@ -67,7 +62,7 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
                     $scope.alert.type = '';
                 }, 5000);
                 
-                $scope.loading.status = false;
+                $scope.loading = false;
             }
         );
     }

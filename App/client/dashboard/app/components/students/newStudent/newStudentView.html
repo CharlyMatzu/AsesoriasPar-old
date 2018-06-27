@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="card card card-outline-info">
                 <div class="card-header">
                     <h4 class="m-b-0 text-white">Formulario de registro</h4>
@@ -30,52 +30,58 @@
 
                     <!-- _______Form________ -->
                     <form ng-submit="addStudent(student)">
-                        <div class="form-group">
-                            <label for="">Nombre</label>    
-                            <input type="text" ng-model="student.first_name" class="form-control" placeholder="Nombre" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Apellido</label>
-                            <input type="text" ng-model="student.last_name" class="form-control" placeholder="Apellido" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">ID Itson:</label>
-                            <input type="text" ng-model="student.itson_id" class="form-control" placeholder="0000011111" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Teléfono:</label>
-                            <input type="text" ng-model="student.phone" class="form-control" placeholder="teléfono" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Facebook:</label>
-                            <input type="text" ng-model="student.facebook" class="form-control" placeholder="https://www.facebook.com/perfil" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="career">Carrera</label>
-                            <select id="career" class="form-control" ng-model="student.career" required>
-                                <option ng-repeat="car in enabledCareers" value="{{car.id}}">{{car.name}}</option>
-                            </select>
-                        </div>
-                        
-
-                        <div class="form-group">
-                            <label for="email">Correo electronico</label>    
-                            <input type="email" id="email" ng-model="student.email" class="form-control" placeholder="Correo electronico" >
-                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Nombre</label>    
+                                    <input type="text" ng-model="student.first_name" class="form-control" placeholder="Nombre" required>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="">Apellido</label>
+                                    <input type="text" ng-model="student.last_name" class="form-control" placeholder="Apellido" required>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="">ID Itson:</label>
+                                    <input type="text" ng-model="student.itson_id" class="form-control" placeholder="0000011111" required>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="">Teléfono:</label>
+                                    <input type="text" ng-model="student.phone" class="form-control" placeholder="teléfono" required>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="">Facebook:</label>
+                                    <input type="text" ng-model="student.facebook" class="form-control" placeholder="https://www.facebook.com/perfil" >
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="career">Carrera</label>
+                                    <select id="career" class="form-control" ng-model="student.career" required>
+                                        <option ng-repeat="car in enabledCareers" value="{{car.id}}">{{car.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
     
-                        <div class="form-group">
-                            <label for="pass">Contraseña</label>    
-                            <input type="password" id="pass" ng-model="student.pass" class="form-control" placeholder="Contraseña" required>
-                        </div>
-    
-                        <div class="form-group">
-                            <label for="pass2">Re-ingresar Contraseña</label>    
-                            <input type="password" id="pass2" ng-model="student.pass2" class="form-control" placeholder="Contraseña" required>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="email">Correo electronico</label>    
+                                    <input type="email" id="email" ng-model="student.email" class="form-control" placeholder="Correo electronico" >
+                                </div>
+            
+                                <div class="form-group">
+                                    <label for="pass">Contraseña</label>    
+                                    <input type="password" id="pass" ng-model="student.pass" class="form-control" placeholder="Contraseña" required>
+                                </div>
+            
+                                <div class="form-group">
+                                    <label for="pass2">Re-ingresar Contraseña</label>    
+                                    <input type="password" id="pass2" ng-model="student.pass2" class="form-control" placeholder="Contraseña" required>
+                                </div>
+                            </div>
                         </div>
     
                         <div class="form-actions">

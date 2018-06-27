@@ -8,6 +8,7 @@ use App\Exceptions\Auth\TokenException;
 use App\Exceptions\Request\UnauthorizedException;
 use App\Model\UserModel;
 use Carbon\Carbon;
+use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
@@ -105,8 +106,14 @@ abstract class Auth
                 self::$secret_key,
                 self::$encrypt
             )->data;
-        }catch (UnexpectedValueException $ex){
-            throw new TokenException( $ex->getMessage() );
+        } catch (SignatureInvalidException $e){
+            throw new TokenException( "Fallo la verificación del token" );
+        }catch (BeforeValidException $e){
+            throw new TokenException( $e->getMessage() );
+        } catch ( ExpiredException $e){
+            throw new TokenException( "El token ha expirado" );
+        } catch (UnexpectedValueException $ex){
+            throw new TokenException( "El token no es valido" );
         }
     }
 

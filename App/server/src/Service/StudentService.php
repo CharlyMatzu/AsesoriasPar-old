@@ -121,25 +121,25 @@ class StudentService{
      *
      * @throws ConflictException
      * @throws InternalErrorException
-     * @throws NoContentException
      * @throws NotFoundException
      * @throws \App\Exceptions\Persistence\TransactionException
      */
     public function updateStudent( $email, $student ){
 
-        //Comprueba que exista email
+        //Verificar si estudiante existe
+        $student_aux = $this->getStudent_ById( $student->getId() );
+
+        //Obtenemos su usuario
         $userServ = new UserService();
-        $user = $userServ->getUser_ByEmail( $email );
+        $user = $userServ->getUser_ByStudentId( $student->getId() );
 
         Persistence::initTransaction();
+
         try{
-            $userServ->updateUserEmail( UserService::makeUserModel($user) );
+            $userServ->updateUserEmail( $user['id'], $email );
         }catch (RequestException $e){
             Persistence::rollbackTransaction();
         }
-
-        //Verificar si estudiante existe
-        $student_aux = $this->getStudent_ById( $student->getId() );
 
         //Verificamos si cambio el ID de itson
         if( $student_aux['itson_id'] != $student->getItsonId() ){

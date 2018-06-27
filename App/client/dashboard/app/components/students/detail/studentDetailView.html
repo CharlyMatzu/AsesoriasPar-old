@@ -69,7 +69,7 @@
                     <h2>Información de estudiante</h2>
                 </div>
                 <div class="card-body">
-                    
+
                     <form ng-submit="updateStudentData(student)">
                         <div class="row">
                             <!-- col 1 -->
@@ -112,7 +112,7 @@
                                 <div class="form-group">
                                     <label for="career">Carrera</label>
                                     <select id="career" class="form-control" ng-model="student.career_id" required>
-                                        <!-- TODO: add careers and select career -->
+                                        <option ng-repeat="c in careers" value="{{c.id}}"{{c.name}}></option>
                                     </select>
                                 </div>
                             </div>

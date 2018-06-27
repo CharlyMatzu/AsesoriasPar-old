@@ -82,6 +82,26 @@ class UserService{
     }
 
     /**
+     * @param $id int
+     * @param $pass String
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function getUser_ById_ByPassword($id, $pass){
+
+        $result = $this->userPer->getUser_ById_ByPassword( $id, $pass );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("getUser_ById_ByPassword","Ocurrió un error al obtener usuario", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NotFoundException("No se encontró usuario");
+        else
+            return $result->getData()[0];
+    }
+
+    /**
      * Obtiene usuario por id de estudiante
      *
      * @param $student_id int
@@ -444,15 +464,15 @@ class UserService{
 
 
     /**
-     * @param $user UserModel
-     *
+     * @param $user_id
+     * @param $email
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function updateUserEmail($user){
+    public function updateUserEmail($user_id, $email){
 
-        $result = $this->getUser_ById( $user->getId() );
+        $result = $this->getUser_ById( $user_id );
 
         //Verifica que email
         $user_db = self::makeUserModel( $result );
@@ -460,9 +480,9 @@ class UserService{
         //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
         //TODO: no debe eliminarse usuario con cron
         //Si cambio el email
-        if( $user_db !== $user->getEmail() ){
+        if( $user_db !== $email ){
             //Se obtiene
-            $result = $this->isEmailUsed( $user->getEmail() );
+            $result = $this->isEmailUsed( $email );
             //Operación
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException( "updateUserEmail","Ocurrió un error al verificar email de usuario", $result->getErrorMessage());
@@ -471,26 +491,50 @@ class UserService{
         }
 
         //Se actualiza usuario
-        $result = $this->userPer->updateUserEmail( $user );
+        $result = $this->userPer->updateUserEmail( $user_id, $email );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "updateUser","Ocurrió un error al actualizar email", $result->getErrorMessage());
 
     }
 
     /**
-     * @param $user UserModel
+     * @param $user_id int
+     * @param $pass String
      *
      * @throws InternalErrorException
      * @throws NotFoundException
      */
-    public function updateUserPassword($user){
+    public function updateUserPassword($user_id, $pass){
 
-        $this->getUser_ById( $user->getId() );
+        $this->getUser_ById( $user_id );
 
         //Se actualiza usuario
-        $result = $this->userPer->updateUserPassword( $user );
+        $result = $this->userPer->updateUserPassword( $user_id, $pass );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "updateUserPassword","Ocurrió un error al actualizar password", $result->getErrorMessage());
+    }
+
+    /**
+     * @param $user_id int
+     * @param $passArray array
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws ConflictException
+     */
+    public function updateUserPassword_UsingOld($user_id, $passArray){
+
+        $this->getUser_ById( $user_id );
+
+        //Se verifica si el password viejo es correcto
+        try{
+            $this->getUser_ById_ByPassword( $user_id, $passArray['old'] );
+        }catch (NotFoundException $e){
+            throw new ConflictException("Password viejo no coincide con usuario");
+        }
+
+        //Se actualiza usuario
+        $this->updateUserPassword( $user_id, $passArray['new'] );
     }
 
 

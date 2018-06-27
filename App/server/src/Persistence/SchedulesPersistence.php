@@ -26,7 +26,7 @@ class SchedulesPersistence extends Persistence{
      */
     public function getSchedule_Byid($id){
         $query = $this->SELECT."
-                WHERE  s.schedule_id = ".$id;
+                WHERE  s.schedule_id = $id LIMIT 1";
         return  self::executeQuery($query);
     }
 
@@ -39,7 +39,7 @@ class SchedulesPersistence extends Persistence{
      */
     public function getSchedule_ByStudentId_Period($studentId, $period){
         $query = $this->SELECT."
-                WHERE  s.fk_student = $studentId AND s.fk_period = $period";
+                WHERE  s.fk_student = $studentId AND s.fk_period = $period LIMIT 1";
         return  self::executeQuery($query);
     }
 

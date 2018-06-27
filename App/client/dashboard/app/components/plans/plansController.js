@@ -15,7 +15,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
     $scope.newPlan = "";
     
 
-    var getPlans = function(){
+    $scope.getPlans = function(){
 
         //Vaciando campo
         $scope.plans = [];
@@ -39,16 +39,31 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
             }
         );
     };
+
+    /**
+     * Verifica que el plan sea un valor valido
+     * @param {String} plan 
+     */
+    var validatePlan = function(plan){
+        if( plan.length != 4 )
+            return "deben ser 4 digitos";
+
+        if( !Number.isInteger(plan) )
+            return "Debe ser numerico entero";
+
+        return null;
+    }
     
     /**
      * 
      * @param {*} plan 
      */
     $scope.addPlan = function(plan){
-        if( plan == "" || plan == null ){
-            Notification.warning('Campo vacio');
+        if( validatePlan(plan) ){
+            Notification.error( validatePlan(plan) );
             return;
         }
+        
         
         Notification.primary('Procesando registro...');
 
@@ -56,7 +71,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         PlansService.insertPlan(plan)
             .then(function(success){
                 Notification.success('Plan registrado con exito');
-                getPlans();
+                $scope.getPlans();
             }, 
             function(error){
                 Notification.error("Error al registrar plan: "+error.data);
@@ -74,16 +89,20 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
 
     $scope.updatePlan = function(plan){
+        if( validatePlan(plan) ){
+            Notification.error( validatePlan(plan) );
+            return;
+        }
        
         //Se hace peticion
         PlansService.updatePlan(plan)
             .then(function(success){
                 Notification.success('Plan actualizado');
-                getPlans();
+                $scope.getPlans();
             }, 
             function(error){
-                $scope.errorSnack("Error al actualizar plan: "+error.data);
-                $scope.showUpdatePlan = false;
+                Notification.error("Error al actualizar plan: "+error.data);
+                // $scope.showUpdatePlan = false;
             });
     };
 
@@ -97,7 +116,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         PlansService.deletePlan(plan_id)
             .then(function(success){
                 Notification.success('Plan eliminado con exito');
-                getPlans();
+                $scope.getPlans();
             },
             function(error){
                 Notification.error('Error: '+error.data);
@@ -118,7 +137,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
             .then(function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
-                getPlans();
+                $scope.getPlans();
             },
             function(error){
                 Notification.error("Error al Habilitar Plan: " + error.data);
@@ -141,7 +160,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         PlansService.changeStatus(plan_id, DISABLED)
             .then(function(success){
                 Notification.success("Deshabilitado con exito");
-                getPlans();
+                $scope.getPlans();
             },
             function(error){
                 Notification.error("Error al deshabilitar plan: " + error.data);
@@ -153,7 +172,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
     (function(){
         //Se carguen datos al iniciar pagina
-        getPlans();
+        $scope.getPlans();
     })();
 
 });

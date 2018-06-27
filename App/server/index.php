@@ -71,6 +71,16 @@ $app->post('/auth/signup', 'AuthController:signup')
         ->add('InputMiddleware:checkData_Password')
         ->add('InputMiddleware:checkData_Email');
 
+//Permite actualizar password enviando el viejo
+$app->put('/auth/{id}/password', 'AuthController:updateUserPassword_auth')
+        ->add('InputMiddleware:checkData_Password_Update')
+        ->add('InputMiddleware:checkParam_Id');
+
+//Permite actualizar password enviando el viejo y enviando el token como parametro
+//$app->put('/auth/{id}/password/{token}', 'AuthController:updateUserPassword_auth')
+//        ->add('InputMiddleware:checkData_Password_Update')
+//        ->add('InputMiddleware:checkParam_Id');
+
 //Para verificar usuario y activar
 $app->get('/auth/confirm/{token}', 'AuthController:confirm');
 
@@ -107,17 +117,20 @@ $app->put('/users/{id}/email', 'UserController:updateUserEmail')
         ->add('AuthMiddleware:requireBasic');
 
 
-//TODO: debe recibir el password viejo y el nuevo
+//TODO: VALIDAR AUTH
+//Cambia password sin solicitar viejo
 $app->put('/users/{id}/password', 'UserController:updateUserPassword')
         ->add('InputMiddleware:checkData_Password')
-        ->add('InputMiddleware:checkParam_Id');
-//        ->add('AuthMiddleware:requireBasic');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireStaff');
 
 
+//TODO: VALIDAR AUTH
+//Se actualiza rol
 $app->put('/users/{id}/role', 'UserController:updateUserRole')
         ->add('InputMiddleware:checkData_Role')
-        ->add('InputMiddleware:checkParam_Id');
-//        ->add('AuthMiddleware:requireBasic');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireStaff');
 
 
 

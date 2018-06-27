@@ -227,11 +227,10 @@ class UserController
     {
         try {
             $user = new UserModel();
-            $user->setId(  $params['id'] );
-            $user->setPassword( $req->getAttribute('password_data') );
+            $pass = $req->getAttribute('password_update');
 
             $userServ = new UserService();
-            $userServ->updateUserPassword( $user  );
+            $userServ->updateUserPassword( $params['id'], $pass  );
             return Utils::makeMessageResponse( $res, Utils::$OK, "Password Actualizado con éxito");
 
         } catch (RequestException $e) {

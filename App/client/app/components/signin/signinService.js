@@ -1,18 +1,14 @@
-angular.module("LoginApp").service('SigninService', function($http, RequestFactory){
+angular.module("LoginApp").service('SigninService', function($http, RequestFactory, AuthFactory){
 
-    this.signin = function(user, successCallback, errorCallback){
-        $http({
-            method: 'POST',
-            url: RequestFactory.getURL()+"/auth/signin",
-            data: {
+    this.signin = function(user){
+        return RequestFactory.makeRequest(
+            'POST',
+            "/auth/signin",
+            data = {
                 email: user.email,
                 password: user.pass
-            }
-        }).then(function (success){
-            successCallback(success);
-        },function (error){
-            errorCallback(error);
-        });
+            },
+        );
     }
 
 });
