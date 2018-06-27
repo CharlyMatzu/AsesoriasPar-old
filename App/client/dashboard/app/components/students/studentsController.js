@@ -1,10 +1,9 @@
 angular.module("Dashboard").controller('StudentsController', function($scope,  $window, Notification, StudentsService, STATUS){
     
     
-    $scope.page.title = "Estudiantes > Detalle";
+    $scope.page.title = "Estudiantes";
     $scope.students = [];
     $scope.loading = true;
-
 
 
     //-----------------------
@@ -140,10 +139,13 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
                 $scope.disableButtons(false, '.opt-student-'+user_id);
             }
         );
-    }
+    };
 
 
+    (function(){
+        $scope.getStudents();
+    })();
     //Se carguen datos al iniciar pagina
-    $scope.getStudents();
+    
 
 });

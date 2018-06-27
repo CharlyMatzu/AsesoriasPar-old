@@ -11,10 +11,10 @@ angular.module("Dashboard").service('StudentDetailService', function( RequestFac
     }
 
 
-    this.getDaysAndHours = function(){
+    this.getDaysAndHours_source = function(){
         return RequestFactory.makeTokenRequest(
             'GET',
-            "/schedule/source",
+            "/students",
             null,
             AuthFactory.getToken()
         );

@@ -93,9 +93,10 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
 
     $scope.editPeriod = function(period){
         $scope.period.id = period.id;
+
         //FIXME: El dia se le resta -1, debe ser igual
-        $scope.period.start = new Date(period.start);
-        $scope.period.end = new Date(period.end);
+        $scope.period.start = new Date( period.start );
+        $scope.period.end = new Date( period.end );
 
         $scope.showUpdatePeriod = true;
     };

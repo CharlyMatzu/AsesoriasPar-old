@@ -1,5 +1,6 @@
 angular.module("Dashboard").controller('StudentDetailController', function($scope,  $window, Notification, StudentDetailService, CareerService, $routeParams, STATUS){
-    $scope.page.title = "Estudiante";
+
+    $scope.page.title = "Estudiante > Detalle";
     
     $scope.student = [];
     $scope.schedule = {};
@@ -8,19 +9,6 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     $scope.careers = [];
 
 
-
-    var getDaysAndHours = function(){
-
-        StudentDetailService.getDaysAndHours(
-            function(success){
-                Notification.success("Horario cargado con exito");
-                $scope.daysAndHours = success.data;
-            },
-            function(error){
-                Notification.error("Error al iniciarlizar horario");
-            }
-        );
-    }
 
     /**
      * Elemento seleccionado que permite ser "activado" si un elemento padre tiene su clase "selectable"
@@ -69,43 +57,20 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     };
 
     
-    $scope.getStudent = function(){
+    $scope.loadData = function(){
         //Se obtiene id de ruta
         var id = $routeParams.id;
+
+        $scope.loading = true;
         
         //Si esta vacio o no es númerico, regresa a estudiantes
         if( id == null || !Number.parseInt(id) ){
             $window.location.href = "#!/estudiantes";
         }
         else{
-            $scope.loading = true;
 
-            //FIXME: debe cargar carreras y seleccionar la actual
-            StudentDetailService.getStudent(id)
-                .then(function(success){
-                    if( success.status == STATUS.NO_CONTENT ){
-                        Notification("No existe estudiante");
-                        $window.location.href = "#!/estudiantes";
-                        return;
-                    }
-                    else{
-                        //Se asignar informacion
-                        $scope.student = success.data;
-                        //Se obtienen carreras
-                        return CareerService.getCareers();
-                    }
-                        
-                },
-                function( error ){
-                    if( error.status == NOT_FOUND ){
-                        Notification.warning(error.data);
-                        $window.location.href = "#!/estudiantes";    
-                    }
-                    else
-                        Notification.error("Error: "+error.data);
-                        $scope.loading = false;
-                })
-                //Carreras
+            CareerService.getCareers()
+                //Promesa carreras
                 .then(function(success){
                     if( success.status === STATUS.NO_CONTENT ){
                         alert("No se encontraron carreras registradas");
@@ -113,37 +78,54 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
                         $scope.careers = [];
                     }
                     else{
+                        $scope.careers = success.data;
+                        return StudentDetailService.getStudent(id);
+                    }
+                    
+                })
+                
+                //Promesa estudiante;
+                .then(function(success){
 
-                        //Se obtiene horario
-                        return $scope.getStudentSchedule( id ); 
+                    //Se asignar informacion
+                    $scope.student = success.data;
+                    //Se obtienen horario
+                    return StudentDetailService.getStudentSchedule( id );
+
+                    
+                })
+                
+                //Promesa horario
+                .then(function(success){
+
+                    if( success.status == STATUS.NO_CONTENT ){
+                        $scope.schedule = null;
+                        throw "Sin horario";
+                    }
+                    else{
+                        $scope.schedule = success.data;
+                        //Se obtiene dias y horas
+                        return StudentDetailService.getDaysAndHours_source();
                     }
 
-                    $scope.loading = false;
-                    
-                }, function(error){
-                    alert("Ocurrio un error: "+error.data);
-                    // $window.location = "#!/carreras";
-                    $scope.loading = false;
                 })
-                //Se obtiene horario
+                
+                //Promesa dias y horas
                 .then(function(success){
-                        if( success.status == STATUS.NO_CONTENT ){
-                            //Si no tiene un horario, se crea
-                            // createSchedule(studen_id);
-                            // TODO: mostrar mensaje de horario no creado
-                        }
-                        else{
-                            //Se asigna informacion
-                            $scope.schedule = success.data;
-                            //Se manda a llamar la funcion de las horas disponibles
-                            getDaysAndHours();
-                        }
-                        
-                    },
-                    function(error){
-                        Notification.error("Error al obtener horario de alumno");
-                        $scope.loading = false;
-                    });
+                    if( success.status == STATUS.NO_CONTENT )
+                        alert("Error al cargar horas");
+                    else
+                        $scope.daysAndHours = success.data;
+
+                    $scope.loading = false;    
+                })
+                //FIXME: arreglar el manejo de errores
+                .catch(function(error){
+                    if( error.data )
+                        Notification.warning( error.data );
+                    $scope.loading = false;
+                });
+
         }
     }
 
@@ -231,6 +213,6 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
 
 
     //Se carguen datos al iniciar pagina
-    $scope.getStudent();
+    $scope.loadData();
 
 });

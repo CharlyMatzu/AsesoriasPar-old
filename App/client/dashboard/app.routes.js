@@ -20,7 +20,12 @@ angular.module("Dashboard")
 
             .when("/carreras", {
                 controller: "CareersController",
-                templateUrl: "app/components/careers/careersView.html"
+                templateUrl: "app/components/careers/careersView.html",
+                resolve: {
+                    check: function(UtilsFactory){
+                        UtilsFactory.onlyAdmin_Redirect();
+                    }
+                }
             })
 
             //--------- MATERIAS
@@ -38,11 +43,21 @@ angular.module("Dashboard")
             //--------------USUARIOS
             .when("/usuarios", {
                 controller: "UsersController",
-                templateUrl: "app/components/users/usersView.html"
+                templateUrl: "app/components/users/usersView.html",
+                resolve: {
+                    check: function(UtilsFactory){
+                        UtilsFactory.onlyAdmin_Redirect();
+                    }
+                }
             })
             .when("/usuarios/nuevo", {
                 controller: "NewUserController",
-                templateUrl: "app/components/users/newUser/newUserView.html"
+                templateUrl: "app/components/users/newUser/newUserView.html",
+                resolve: {
+                    check: function(UtilsFactory){
+                        UtilsFactory.onlyAdmin_Redirect();
+                    }
+                }
             })
 
             //--------- Estudiantes

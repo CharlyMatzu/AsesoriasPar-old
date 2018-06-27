@@ -204,10 +204,12 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
             });
-    }
+    };
 
 
     //Se carguen datos al iniciar pagina
-    $scope.getUsers();
+    (function(){
+        $scope.getUsers();
+    })();
 
 });

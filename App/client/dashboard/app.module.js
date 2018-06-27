@@ -2,7 +2,7 @@ angular.module("Dashboard", ['ngRoute', 'ui-notification', 'LocalStorageModule',
 
 angular.module("Dashboard")
     //Cuando iniciar el modulo
-    .run(function($rootScope, $window, AuthFactory){
+    .run(function($rootScope, $window, AuthFactory, UtilsFactory){
         
         $rootScope.session = {};
         $rootScope.token = {};
@@ -12,19 +12,12 @@ angular.module("Dashboard")
             title: "PAGE TITLE"
         };
 
-        //User
-        $rootScope.session = {};
-
         //-STATUS VARIABLES
         $rootScope.alert = {
             type: "",
             status: false,
             message: "",
         };
-        
-        $rootScope.showUpdateForm = false;
-        $rootScope.showCreateForm = false;
-        $rootScope.showModalForm = false;
 
 
         //-----------FUNCIONES GLOBALES
@@ -43,6 +36,11 @@ angular.module("Dashboard")
         $rootScope.signOut = function(){
             AuthFactory.removeSession();
             $window.location.href = "/";
+        };
+
+        //Verifica el rol, si es administrador retorna true
+        $rootScope.isAdmin = function(){
+            return UtilsFactory.isAdmin();
         };
 
 
@@ -65,11 +63,24 @@ angular.module("Dashboard")
         
     })
 
+    .factory('UtilsFactory', function(AuthFactory, $window){
 
-    .controller('SignoutController', function($scope){
+        var work = false;
+        
+        return {
+            isAdmin: function(){
+                return AuthFactory.getUser().role === 'administrator';
+            },
 
-        (function(){
-            $scope.signOut();
-        })();
-    
+            //Si no es administrador, redirecciona (utilizado en routes)
+            onlyAdmin_Redirect: function(){
+                if( work ){
+                    if( !this.isAdmin() )
+                        $window.location = "#!/";
+                }
+                return true;
+                
+            }
+        };            
+
     });
