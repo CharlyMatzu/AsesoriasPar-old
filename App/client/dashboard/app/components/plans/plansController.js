@@ -1,13 +1,17 @@
 angular.module("Dashboard").controller('PlansController', function($scope, Notification, PlansService, STATUS){
+
+
     $scope.page.title = "Planes academicos"
     $scope.plans = [];
-
+    $scope.loading = true;
+    $scope.showUpdatePlan = false;
+    $scope.showNewPlan = false;
     $scope.plan = {
         id: 0,
         year: 0
     };
 
-    $scope.showUpdateForm = false;
+    $scope.showUpdatePlan = false;
     $scope.newPlan = "";
     
 
@@ -15,27 +19,23 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
         //Vaciando campo
         $scope.plans = [];
-
-        $scope.showUpdateForm = false;
-
-        $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
+        $scope.showUpdatePlan = false;
+        $scope.loading = true;
 
         PlansService.getPlans()
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT )
-                    $scope.loading.message = "No se encontraron planes";
+                    $scope.plans = [];
                 else
                     $scope.plans = success.data;
 
                 //Enabling refresh button
-                $scope.loading.status = false;
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data);
-                $scope.loading.status = false;
-                $scope.loading.message = "Ocurrio un error =(";
+                $scope.loading = false;
             }
         );
     };
@@ -69,7 +69,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         $scope.plan.year = plan.year;
 
         //Muestra form
-        $scope.showUpdateForm = true;
+        $scope.showUpdatePlan = true;
     };
 
 
@@ -83,6 +83,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
             }, 
             function(error){
                 $scope.errorSnack("Error al actualizar plan: "+error.data);
+                $scope.showUpdatePlan = false;
             });
     };
 

@@ -69,6 +69,7 @@
                         </table>
                     </div>
                 </div>
+                
             </div>
         </div>
         <!-- end table -->
@@ -85,7 +86,11 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <h3>Nuevo Periodo</h3>
+
+                <div class="text-center">
+                    <h3>Nuevo Periodo</h3>
+                </div>
+
                 <form action="" ng-submit="addPeriod(newPeriod)">
                     <div class="form-group">
                         <label for="start">Fecha de inicio:</label>
@@ -110,11 +115,15 @@
 
 
 <!-- Update -->
-<div class="modal-container modal-period-update fade animate" ng-show="showUpdateForm">
+<div class="modal-container modal-period-update" ng-show="showUpdatePeriod">
     <div class="col-lg-6" >
         <div class="card">
             <div class="card-body">
-                <h3>Actualizar Periodo</h3>
+
+                <div class="text-center">
+                    <h3>Actualizar periodo</h3>
+                </div>
+
                 <form action="" ng-submit="updatePeriod(period)">
                     <div class="form-group">
                         <label for="start">Fecha de inicio:</label>
@@ -128,7 +137,7 @@
                         <input type="date" id="end" class="form-control"  ng-model="period.end" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button ng-click="showUpdateForm = false" type="reset" class="btn btn-outline-danger">Cancelar</button>
+                    <button ng-click="showUpdatePeriod = false" type="reset" class="btn btn-outline-danger">Cancelar</button>
                 </form>
             </div>
         </div>

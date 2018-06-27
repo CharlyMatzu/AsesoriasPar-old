@@ -2,7 +2,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
     
     $scope.page.title = "Periodos";
     $scope.showNewPeriod = false;
-    $scope.showUpdateForm = false;
+    $scope.showUpdatePeriod = false;
     $scope.periods = [];
     $scope.loading = true;
     $scope.period = {
@@ -10,6 +10,8 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         start: null,
         end: null
     }
+
+
 
     /**
      * Formatea la fecha
@@ -35,7 +37,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
      */
     $scope.getPeriods = function(){
 
-        $scope.showUpdateForm = false;
+        $scope.showUpdatePeriod = false;
         $scope.showNewPeriod = false;
         $scope.loading = true;
 
@@ -47,11 +49,11 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
                 else
                     $scope.periods = success.data;
 
+                $scope.loading = false;
+
             },
             function(error){
                 Notification.error("Error al obtener periodos: "+error.data);
-            })
-            .finally(function(){
                 $scope.loading = false;
             });
     };
@@ -95,7 +97,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         $scope.period.start = new Date(period.start);
         $scope.period.end = new Date(period.end);
 
-        $scope.showUpdateForm = true;
+        $scope.showUpdatePeriod = true;
     };
 
 
@@ -122,7 +124,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
                 Notification.error("Error: "+error.data);
             })
             .finally(function(){
-                $scope.showUpdateForm = false;
+                $scope.showUpdatePeriod = false;
             });
     };
 

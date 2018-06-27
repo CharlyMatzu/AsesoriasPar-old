@@ -522,7 +522,12 @@
     right: 0;
     left: 0;
     z-index: 999;
-    background-color: rgba(#fff, 1);
+    background-color: rgba(#212121, .7);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // overflow: auto;
 }
 
 .update-subjects-container{
@@ -564,12 +569,12 @@
 
 
 
-.fadeIn{
+.fade-animationIn{
     animation-duration: 1s;
     animation-name: fadeIn;
 }
 
-.fadeOut{
+.fade-animationOut{
     opacity: 0;
     animation-duration: .4s;
     animation-name: fadeOut;
@@ -605,4 +610,42 @@
 @keyframes assign {
     from {background-color: rgba(#28A745, 0);}
     to {background-color: rgba(#28A745, 1); color: #fff;}
+}
+
+
+//------------------Animations for angularjs
+//---- ng-show ng-hide template
+// .ng-show-remove,
+// .ng-show-add,
+// .ng-hide-remove,
+// .ng-hide-add {
+//     display:block!important;
+// }
+
+//---- ng-if template
+// .ng-enter,
+// .ng-enter-active,
+// .ng-leave,
+// .ng-leave-active {
+//     display:block!important;
+// }
+
+
+.fade-animation.ng-enter, .fade-animation.ng-add {
+    animation: 0.25s linear added;
+}
+
+.fade-animation.ng-leave, .fade-animation.ng-remove {
+    animation: 0.25s linear deleted;
+}
+
+
+@keyframes added {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+  
+@keyframes deleted {
+    from {opacity: 1;}
+    to {opacity: 2;}
 }

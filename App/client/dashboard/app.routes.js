@@ -4,7 +4,7 @@ angular.module("Dashboard")
         $routeProvider
             
             .when("/", {
-                // controller: "HomeController",
+                controller: "HomeController",
                 templateUrl: "app/components/home/homeView.html"
             })
 

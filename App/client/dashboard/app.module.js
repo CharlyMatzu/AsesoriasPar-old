@@ -21,10 +21,6 @@ angular.module("Dashboard")
             status: false,
             message: "",
         };
-        $rootScope.loading = {
-            status: false,
-            message: "",
-        };
         
         $rootScope.showUpdateForm = false;
         $rootScope.showCreateForm = false;

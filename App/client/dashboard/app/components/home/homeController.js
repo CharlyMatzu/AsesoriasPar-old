@@ -1,5 +1,6 @@
-angular.module("Dashboard").controller('HomeController', function($scope,  Notification, HomeService){
+angular.module("Dashboard")
+    .controller('HomeController', function($scope,  Notification, HomeService){
     
-    $scope.page.title = "INICIO";
+    $scope.page.title = "Dashboard";
 
 });
