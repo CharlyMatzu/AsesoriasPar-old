@@ -14,7 +14,13 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         plan: null
     }
 
-    //TODO: antes de obtener datos debe registrarse una carrera y un plan
+    $scope.showUpdateSubject = false;
+    $scope.loading = true;
+
+    $scope.goToNewSubject = function(){
+        $window.location = "#!/materias/nuevo";
+        return;
+    }
 
     
     /**
@@ -22,9 +28,8 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
      */
     $scope.getSubjects = function(){
 
-        $scope.showUpdateForm = false;
-        $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
+        $scope.showUpdateSubject = false;
+        $scope.loading = true;
 
         $scope.subjects = [];
 
@@ -32,27 +37,24 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT ){
                     //Notification.primary("no hay registros");
-                    $scope.loading.message = "No hay registros";
                     $scope.subjects = [];
                 }
                 else
                     $scope.subjects = success.data;
                     
-                $scope.loading.status = false;
+                $scope.loading = false;
                
             },
             function(error){
                 Notification.error("Error al obtener materias: "+error.data);
-                $scope.loading.status = false;
-                $scope.loading.message = "Error: "+error.data;
+                $scope.loading = false;
             }
         );
     }
 
     $scope.getSubject_Search = function(subject){
-        //$scope.showUpdateForm = false;
-        $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
+        //$scope.showUpdateSubject = false;
+        $scope.loading = true;
 
         $scope.subjects = [];
 
@@ -60,20 +62,18 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT ){
                     //Notification.primary("no hay registros");
-                    $scope.loading.message = "No hay registros";
                     $scope.subjects = [];
                 }
                 else
                     $scope.subjects = success.data;
                     
 
-                $scope.loading.status = false;
+                $scope.loading = false;
                 console.log($scope.subjects);
             },
             function(error){
                 Notification.error("No se encontraron materias "+error.data);
-                $scope.loading.status = false;
-                $scope.loading.message = "No se encontraron Materias";
+                $scope.loading = false;
             }
         );
     }
@@ -85,24 +85,22 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
             return;
 
         $scope.subjects = [];
-        $scope.loading.status = true;
-        $scope.loading.message = "Buscando materias con "+data;
+        $scope.loading = true;
 
         SubjectService.searchSubjects(data)
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT )
-                    $scope.loading.message = "No se encontraron materias";
+                    $scope.subjects = [];
                 else
                     $scope.subjects = success.data;
 
                 //Enabling refresh button
-                $scope.loading.status = false;
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener materias: " + error.data);
-                $scope.loading.message = "Ocurrio un error =(";
-                $scope.loading.status = false;
+                $scope.loading = false;
             }
         );
     }
@@ -143,7 +141,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
                         $scope.subject.career = subject.career_id;
 
                         //Se abre form
-                        $scope.showUpdateForm = true;
+                        $scope.showUpdateSubject = false;
                     },
                     function(error){
                         Notification.error("Error al cargar planes, se detuvo actualizacion");
@@ -189,6 +187,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
             function(error){
                 Notification.error("Error: "+error.data);
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+                $scope.showUpdateSubject = false;
             }
         );
     }

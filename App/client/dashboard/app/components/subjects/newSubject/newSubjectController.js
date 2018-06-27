@@ -11,6 +11,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         semester: null,
         plan: null
     };
+    $scope.loading = true;
 
 
 
@@ -19,51 +20,45 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
      * @param {*} user 
      */
     var loadData = function(user){
-        Notification("Cargando datos...");
+        $scope.loading = true;
         
         //Se obtienen Carreras
         NewSubjectService.getCareers()
-
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT ){
-                    Notification.warning("No hay carreras registradas, redireccionando...");
-                    //Si no hay, redirecciona
-                    $timeout(function(){
-                        $window.location.href = '#!/carreras';
-                    }, 2000);
+                    alert("No hay carreras registradas, redireccionando...");
+                    $scope.loading = false;
+                    $window.location.href = '#!/carreras';
+                    return;
                 }
                 else{
-                    Notification.success("Carreras cargadas");
                     $scope.careers = success.data;
+                    //Obteniendo promesa de planes
+                    return NewSubjectService.getPlans();
                 }
             },
             function(error){
                 Notification.error("Error al cargar carreras: "+error.data);
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-            }
-        );
+            })
 
-        //Obteniendo planes
-        //Se obtien planes
-        NewSubjectService.getPlans()
+            //Promesa de plan
             .then(function(success){
                 if( success.status === STATUS.NO_CONTENT ){
-                    Notification.warning("No hay planes registrados, redireccionando...");
-                    //Si no hay, redirecciona
-                    $timeout(function(){
-                        $window.location.href = '#!/planes';
-                    }, 2000);
+                    alert("No hay planes registrados, redireccionando...");
+                    $window.location.href = '#!/planes';
+                    return;
                 }
-                else{
-                    Notification.success("Planes cargados");
+                else
                     $scope.plans = success.data;
-                }
+
+                $scope.loading = false;
             },
             function(error){
                 Notification.error("Error al cargar planes: "+error.data);
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-            }
-        );
+                $scope.loading = false;
+            });
     };
 
 

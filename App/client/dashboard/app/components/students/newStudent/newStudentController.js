@@ -2,7 +2,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
     
     
     $scope.page.title = "Estudiantes > Nuevo";
-    $scope.loading.status = false;
+    $scope.loading = true;
     $scope.enabledCareers = [];
 
 
@@ -38,7 +38,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
         //Para quitar alerts actuales
         $scope.alert.type = '';
         //Se pone en cargando
-        $scope.loading.status = true;
+        $scope.loading = true;
 
         //Peticion
         NewStudentService.addStudent(student)
@@ -46,7 +46,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
                 Notification.success("Registrado");
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Se ha registrado estudiante correctamente"
-                $scope.loading.status = false;
+                $scope.loading = false;
                 $timeout(function(){
                     $window.location.reload();
                 }, 1000);
@@ -58,7 +58,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
                     $scope.alert.type = 'error';
 
                 $scope.alert.message = error.data;
-                $scope.loading.status = false;
+                $scope.loading = false;
                 
             }
         );
@@ -84,7 +84,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
 
                 if( success.status === STATUS.NO_CONTENT || 
                     $scope.enabledCareers.length == 0 ){
-                    Notification.warning("No hay carreras disponibles");
+                    alert("No hay carreras disponibles, se redireccionará");
                     //Redireccion a carreras
                     $window.location = "#!/carreras";
                 }

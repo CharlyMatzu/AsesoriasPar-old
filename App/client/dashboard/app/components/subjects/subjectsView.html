@@ -1,18 +1,23 @@
 <div class="container-fluid">
 
-        <div class="row">
-                <div class="col-lg-12">
-                    <div class="card card-outline-info">
-                        <!-- <div class="card-header">
-                            <h4 class="m-b-0 text-white">Opciones</h4>
-                        </div> -->
-                        <div class="card-body">
-                            <div class="form-inline">
+    <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline-info">
+                    
 
-                               <form action="" ng-submit="getSubject_Search(subject)">
+
+
+                    <div class="card-body">
+                        <div class="form-inline">
+
+                            <button ng-click="goToNewSubject()" class="btn btn-primary basic-right-margin">
+                                <i class="fa fa-plus"></i> Nueva Materia
+                            </button>
+
+                            <form action="" ng-submit="getSubject_Search(subject)">
 
                                 <select class=" btn btn-primary basic-right-margin" ng-model="subject.career" id="career">
-                                           <option value="0" selected>Carrera</option>
+                                            <option value="0" selected>Carrera</option>
                                             <option ng-repeat="c in careers" value="{{c.id}}">{{c.name}}</option>
                                             
                                 </select>
@@ -21,7 +26,7 @@
                                             <option ng-repeat="p in plans" value="{{p.id}}">{{p.year}}</option>
                                             
                                 </select>
-                             
+                                
                                 <select class="btn btn-primary basic-right-margin" ng-model="subject.semester" id="semester">
                                         <option value="0" selected>Semestre</option>
                                         <option value="1">1</option>
@@ -33,168 +38,145 @@
                                         <option value="7">7</option>
                                         <option value="8">8</option>
                                 </select>
-                                           
-                                    <button type="submit" class="btn btn-primary basic-right-margin">Buscar</button>
-                                    
-                                </form>
+                                        
+                                <button type="submit" class="btn btn-primary basic-right-margin">Buscar</button>
                                 
-                                <button ng-click="getSubjects()" ng-disabled="loading.status" class="btn btn-primary basic-right-margin">
-                                        <i class="fa fa-refresh"></i> Recargar
-                                </button>
-                                <!-- Search -->
-                                <div class="input-group input-group-default">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary">
-                                            <i class="ti-search"></i>
-                                        </button>
-                                    </span>
-                                    <input type="text" placeholder="Buscar" class="form-control" ng-model="subjectData" ng-change="searchSubjectByName(subjectData)">
-                                </div>
+                            </form>
+                            
+                            <button ng-click="getSubjects()" ng-disabled="loading.status" class="btn btn-primary basic-right-margin">
+                                    <i class="fa fa-refresh"></i> Recargar
+                            </button>
+                            <!-- Search -->
+                            <div class="input-group input-group-default">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary">
+                                        <i class="ti-search"></i>
+                                    </button>
+                                </span>
+                                <input type="text" placeholder="Buscar" class="form-control" ng-model="subjectData" ng-change="searchSubjectByName(subjectData)">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-        <!-- Update -->
-        <div class="row">
-            
-            <div class="col-lg-12" ng-show="showUpdateForm">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Actualizar Materia</h3>
-                        <form action="" ng-submit="updateSubject(subject)">
-                            
-                            <div class="form-group">
-                                <label for="name">Nombre:</label>
-                                <input type="text" id="name" class="form-control" ng-model="subject.name" required>
-                            </div>
-    
-                            <div class="form-group">
-                                <label for="short_name">Abreviacion:</label>
-                                <input type="text" id="short_name" class="form-control" ng-model="subject.short_name" >
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description">Descripcion:</label>
-                                <textarea name="" id="description" class="form-control" ng-model="subject.description"  rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="semester">Semestre:</label>
-                                <input type="number" id="semester" class="form-control" min="1" max="12" ng-model="subject.semester" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="plan">Plan:</label>
-                                <select  id="plan" class="form-control" ng-model="subject.plan">
-                                    <option ng-repeat="p in plans" value="{{p.id}}">{{p.year}}</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="career">Carrera:</label>
-                                <select  id="career" class="form-control" ng-model="subject.career">
-                                    <option ng-repeat="c in careers" value="{{c.id}}">{{c.name}}</option>
-                                </select>
-                            </div>
-    
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button class="btn btn-inverse" ng-click="showUpdateForm = false">Cancelar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
-        <!-- end update -->
+
 
     
 
-        
-        <!-- Tabla -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-outline-info">
-                    <div class="card-header">
-                        <h4 class="m-b-0 text-white">Materias registrados</h4>
-                       
-                    </div>
+
+
+    
+    <!-- Tabla -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-info">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white">Materias registrados</h4>
+                </div>
+
+                <div class="loader" ng-show="loading">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
+                
+                <div class="card-body" ng-show="!loading">
+                
+                    <!-- Messge -->
+                    <p ng-hide="subjects.length > 0">No se encontrarón registros</p>
                     
-                    <div class="card-body">
-                 
-                            <!--
-                        <div class="form-group">
-                            <input type="number" id="semester" class="form-control" min="1" max="12" ng-model="subject.semester" >
-                        </div>
-
-                        <div class="form-group">
-                                <label for="plan">Plan:</label>
-                                <select  id="plan" class="form-control" ng-model="subject.plan">
-                                    <option ng-repeat="p in plans" value="{{p.id}}">{{p.year}}</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="career">Carrera:</label>
-                                <select  id="career" class="form-control" ng-model="subject.career">
-                                    <option ng-repeat="c in careers" value="{{c.id}}">{{c.name}}</option>
-                                </select>
-                            </div>
-                            <button ng-click="" class="opt-subject-{s.id}} btn btn-primary">Filtrar</button>
-                            <hr>
-                        <div class="form-group">
-                            <input  type="text" ng-model="search" placeholder="Buscar">
-                        </div>
-                    -->
-                                  
-                        </div>
-                            
-                        <!-- Messge -->
-                        <p ng-hide="subjects.length > 0">{{loading.message}}</p>
-                        
-                        <!-- Table -->
-                        <div ng-show="subjects.length > 0" class="table-responsive">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Abreviacion</th>
-                                    <th>Descripcion</th>
-                                    <th>Semestre</th>
-                                    <th>Plan</th>
-                                    <th>Carrera</th>
-                                    <!-- <th>Fecha de registro</th> -->
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                <tr ng-repeat="s in subjects">
-                                    <td>{{s.id}}</td>
-                                    <td>{{s.name}}</td>
-                                    <td>{{s.short_name}}</td>
-                                    <td>{{s.description}}</td>
-                                    <!-- <td>{{s.date_register}}</td> -->
-                                    <td>{{s.semester}}</td>
-                                    <td>{{s.plan_year}}</td>
-                                    <td>{{s.career_name}}</td>
-                                    
-                                    <td>
-                                        <span ng-show="s.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
-                                        <span ng-show="s.status === 'ACTIVE'" class="badge badge-success">Activo</span>
-                                    </td>
-                                    <td>
-                                        <button ng-click="editSubject(s)" class="opt-subject-{s.id}} btn btn-primary">Editar</button>
-                                        <button ng-show="s.status === 'DISABLED'" ng-click="enableSubject(s.id)" class="opt-subject-{s.id}} btn btn-success">Habilitar</button>
-                                        <button ng-show="s.status === 'ACTIVE'" ng-click="disableSubject(s.id)" class="opt-subject-{s.id}} btn btn-warning">Deshabilitar</button>
-                                        <button ng-click="deleteSubject(s.id)" class="opt-subject-{s.id}} btn btn-danger">Eliminar</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                    <!-- Table -->
+                    <div ng-show="subjects.length > 0" class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Abreviacion</th>
+                                <th>Descripcion</th>
+                                <th>Semestre</th>
+                                <th>Plan</th>
+                                <th>Carrera</th>
+                                <!-- <th>Fecha de registro</th> -->
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="s in subjects">
+                                <td>{{s.id}}</td>
+                                <td>{{s.name}}</td>
+                                <td>{{s.short_name}}</td>
+                                <td>{{s.description}}</td>
+                                <!-- <td>{{s.date_register}}</td> -->
+                                <td>{{s.semester}}</td>
+                                <td>{{s.plan_year}}</td>
+                                <td>{{s.career_name}}</td>
+                                
+                                <td>
+                                    <span ng-show="s.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="s.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                </td>
+                                <td>
+                                    <button ng-click="editSubject(s)" class="opt-subject-{s.id}} btn btn-primary">Editar</button>
+                                    <button ng-show="s.status === 'DISABLED'" ng-click="enableSubject(s.id)" class="opt-subject-{s.id}} btn btn-success">Habilitar</button>
+                                    <button ng-show="s.status === 'ACTIVE'" ng-click="disableSubject(s.id)" class="opt-subject-{s.id}} btn btn-warning">Deshabilitar</button>
+                                    <button ng-click="deleteSubject(s.id)" class="opt-subject-{s.id}} btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
-            <!-- end table -->
         </div>
-    
+        <!-- end table -->
     </div>
+
+</div>
+
+
+<!-- Update -->
+<div class="modal-container" ng-show="showUpdateSubject">
+    <div class="col-lg-12" >
+        <div class="card">
+            <div class="card-body">
+                <h3>Actualizar Materia</h3>
+                <form action="" ng-submit="updateSubject(subject)">
+                    
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" class="form-control" ng-model="subject.name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_name">Abreviacion:</label>
+                        <input type="text" id="short_name" class="form-control" ng-model="subject.short_name" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripcion:</label>
+                        <textarea name="" id="description" class="form-control" ng-model="subject.description"  rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="semester">Semestre:</label>
+                        <input type="number" id="semester" class="form-control" min="1" max="12" ng-model="subject.semester" required>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="plan">Plan:</label> -->
+                        <select  id="plan" class="form-control" ng-model="subject.plan">
+                            <option ng-repeat="p in plans" value="{{p.id}}">{{p.year}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <!-- <label for="career">Carrera:</label> -->
+                        <select  id="career" class="form-control" ng-model="subject.career">
+                            <option ng-repeat="c in careers" value="{{c.id}}">{{c.name}}</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-inverse" ng-click="showUpdateSubject = false">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end update -->
