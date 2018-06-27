@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('UsersService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('UsersService', function( RequestFactory, AuthFactory){
     
     this.getUsers = function(successCallback, errorCallback){
         RequestFactory.makeTokenRequest(

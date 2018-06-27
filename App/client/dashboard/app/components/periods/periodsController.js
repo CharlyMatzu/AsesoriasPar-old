@@ -1,7 +1,10 @@
-angular.module("Dashboard").controller('PeriodsController', function($scope, $http, Notification, PeriodsService){
-    $scope.page.title = "Periodos";
+angular.module("Dashboard").controller('PeriodsController', function($scope,  Notification, PeriodsService, STATUS){
     
+    $scope.page.title = "Periodos";
+    $scope.showNewPeriod = false;
+    $scope.showUpdateForm = false;
     $scope.periods = [];
+    $scope.loading = true;
     $scope.period = {
         id: 0,
         start: null,
@@ -30,30 +33,27 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
     /**
      * Obtiene periodos registrados
      */
-    var getPeriods = function(){
+    $scope.getPeriods = function(){
 
-        $scope.periods = [];
         $scope.showUpdateForm = false;
-        $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
+        $scope.showNewPeriod = false;
+        $scope.loading = true;
 
         PeriodsService.getPeriods()
             .then(function(success){
-                if( success.status == NO_CONTENT ){
-                    //Notification.primary("no hay registros");
-                    $scope.loading.message = "No hay registros";
-                }
+
+                if( success.status == STATUS.NO_CONTENT )
+                    $scope.periods = [];
                 else
                     $scope.periods = success.data;
 
-                $scope.loading.status = false;
             },
             function(error){
                 Notification.error("Error al obtener periodos: "+error.data);
-                $scope.loading.status = false;
-                $scope.loading.message = "Error: "+error.data;
-            }
-        );
+            })
+            .finally(function(){
+                $scope.loading = false;
+            });
     };
 
     /**
@@ -77,12 +77,15 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         PeriodsService.addPeriod(period)
             .then(function(success){
                 Notification.success("Registrado con exito");
-                getPeriods();
+                $scope.getPeriods();
             },
             function(error){
                 Notification.error("Error: "+error.data);
-            }
-        );
+            })
+            .finally(function(){
+                $scope.showNewPeriod = false;
+            });
+            
     };
 
 
@@ -113,12 +116,14 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         PeriodsService.updatePeriod(period)
             .then(function(success){
                 Notification.success("Actualizado con exito");
-                getPeriods();
+                $scope.getPeriods();
             },
             function(error){
                 Notification.error("Error: "+error.data);
-            }
-        );
+            })
+            .finally(function(){
+                $scope.showUpdateForm = false;
+            });
     };
 
 
@@ -133,7 +138,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         PeriodsService.deletePeriod(period_id)
             .then(function(success){
                 Notification.success("Eliminado con exito");
-                getPeriods();
+                $scope.getPeriods();
             },
             function(error){
                 Notification.success("Error: "+error.data);
@@ -153,7 +158,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
         PeriodsService.changeStatus(period_id, DISABLED)
             .then(function(success){
                 Notification.success("Deshabilitado con exito");
-                getPeriods();
+                $scope.getPeriods();
             },
             function(error){
                 Notification.error("Error al Deshabilitar periodo: "+error.data);
@@ -184,7 +189,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope, $ht
 
     (function(){    
         //Obtiene todos por default
-        getPeriods();
+        $scope.getPeriods();
     })();
 
 });

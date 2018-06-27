@@ -296,7 +296,7 @@ class UsersPersistence extends Persistence{
      */
     public function deleteUsers_ByCareer($career_id)
     {
-        $query = "DELETE FROM user u
+        $query = "DELETE u.* FROM user u
                   INNER JOIN student s ON s.fk_user = u.user_id
                   WHERE s.fk_career = $career_id";
         return  self::executeQuery($query);

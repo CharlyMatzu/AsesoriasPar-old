@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('SubjectsController', function($scope, $http, $timeout, $window, Notification, SubjectService){
+angular.module("Dashboard").controller('SubjectsController', function($scope,  $timeout, $window, Notification, SubjectService, STATUS){
     $scope.page.title = "Materias > Registros";
     
     $scope.subjects = [];
@@ -30,7 +30,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
 
         SubjectService.getSubjects()
             .then(function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
                     $scope.subjects = [];
@@ -58,7 +58,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
 
         SubjectService.getSubject_Search(subject)
             .then(function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.loading.message = "No hay registros";
                     $scope.subjects = [];
@@ -90,7 +90,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
 
         SubjectService.searchSubjects(data)
             .then(function(success){
-                if( success.status == NO_CONTENT )
+                if( success.status == STATUS.NO_CONTENT )
                     $scope.loading.message = "No se encontraron materias";
                 else
                     $scope.subjects = success.data;
@@ -258,7 +258,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
     //     //Se obtien planes
     //     SubjectService.getPlans()
     //         .then(function(success){
-    //             if( success.status == NO_CONTENT ){
+    //             if( success.status == STATUS.NO_CONTENT ){
     //                 Notification.warning("No hay planes registrados, redireccionando...");
     //                 //Si no hay, redirecciona
     //                 $timeout(function(){
@@ -279,7 +279,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope, $h
     //     SubjectService.getCareers()
 
     //         .then(function(success){
-    //             if( success.status == NO_CONTENT ){
+    //             if( success.status == STATUS.NO_CONTENT ){
     //                 Notification.warning("No hay carreras registradas, redireccionando...");
     //                 //Si no hay, redirecciona
     //                 $timeout(function(){

@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('PlansService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('PlansService', function( RequestFactory, AuthFactory){
 
   
     this.getPlans = function(){

@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('NewSubjectController', function($scope, $window, $timeout, $http, NewSubjectService, Notification){
+angular.module("Dashboard").controller('NewSubjectController', function($scope, $window, $timeout,  NewSubjectService, Notification, STATUS){
     $scope.page.title = "Materias > Nuevo";
 
     $scope.plans = [];
@@ -10,7 +10,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         career: null,
         semester: null,
         plan: null
-    }
+    };
 
 
 
@@ -25,7 +25,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         NewSubjectService.getCareers()
 
             .then(function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     Notification.warning("No hay carreras registradas, redireccionando...");
                     //Si no hay, redirecciona
                     $timeout(function(){
@@ -47,7 +47,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         //Se obtien planes
         NewSubjectService.getPlans()
             .then(function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     Notification.warning("No hay planes registrados, redireccionando...");
                     //Si no hay, redirecciona
                     $timeout(function(){

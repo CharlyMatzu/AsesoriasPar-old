@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('StudentsController', function($scope, $http, $window, Notification, StudentsService){
+angular.module("Dashboard").controller('StudentsController', function($scope,  $window, Notification, StudentsService, STATUS){
     
     
     $scope.page.title = "Estudiantes > Detalle";
@@ -18,54 +18,52 @@ angular.module("Dashboard").controller('StudentsController', function($scope, $h
      * @param {String} data Informacion a buscar (correo)
      */
     $scope.searchStudent = function(data){
+        
+        //Validation
         if( data == null || data == "" ) 
             return;
 
-        $scope.users = [];
-        $scope.loading.status = true;
-        $scope.loading.message = "Buscando estudiantes con "+data;
-
+        $scope.loading = true;
+        
         StudentsService.searchStudent(data)
+
             .then(function(success){
-                if( success.status == NO_CONTENT )
-                    $scope.loading.message = "No se encontraron estudiantes";
+                if( success.status == STATUS.NO_CONTENT )
+                    $scope.students = [];
                 else
                     $scope.users = success.data;
 
                 //Enabling refresh button
-                $scope.loading.status = false;
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener estudiantes");
-                $scope.loading.message = "Ocurrio un error =(";
-                $scope.loading.status = false;
+                $scope.loading = false;
             }
         );
     }
 
 
     $scope.getStudents = function(){
-        $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
-
-        // $scope.students = [];
+        $scope.loading = true;
 
         StudentsService.getStudents()
             .then(function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     $scope.students = [];
-                    $scope.loading.message = "No se encontraron estudiantes";
                 }
                 else{
                     $scope.students = success.data;
                 }
+
                 //Enabling refresh button
-                $scope.loading.status = false;
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener estudiantes");
+                $scope.loading = false;
             }
         );
     }

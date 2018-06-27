@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('PeriodsService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('PeriodsService', function( RequestFactory, AuthFactory){
 
     this.getPeriods = function(){
         return RequestFactory.makeTokenRequest(

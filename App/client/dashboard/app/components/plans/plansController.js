@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('PlansController', function($scope, $http,Notification, PlansService){
+angular.module("Dashboard").controller('PlansController', function($scope, Notification, PlansService, STATUS){
     $scope.page.title = "Planes academicos"
     $scope.plans = [];
 
@@ -23,7 +23,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, $http
 
         PlansService.getPlans()
             .then(function(success){
-                if( success.status == NO_CONTENT )
+                if( success.status == STATUS.NO_CONTENT )
                     $scope.loading.message = "No se encontraron planes";
                 else
                     $scope.plans = success.data;

@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('HomeService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('HomeService', function( RequestFactory, AuthFactory){
 
 
     // this.changeStatus = function(user_id, status, successCallback, errorCallback){

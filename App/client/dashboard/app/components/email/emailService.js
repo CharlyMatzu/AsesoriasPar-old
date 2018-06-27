@@ -1,5 +1,5 @@
 angular.module('Dashboard')
-    .service('EmailService', function($scope, $http, AuthFactory, RequestFactory){
+    .service('EmailService', function($scope,  AuthFactory, RequestFactory){
 
 
         this.searchUsers = function(data){

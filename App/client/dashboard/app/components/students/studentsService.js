@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('StudentsService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('StudentsService', function( RequestFactory, AuthFactory){
 
     
     this.getStudents = function(){

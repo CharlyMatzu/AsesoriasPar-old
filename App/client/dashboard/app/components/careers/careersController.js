@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('CareersController', function($scope, $http, Notification, CareerService){
+angular.module("Dashboard").controller('CareersController', function($scope,  Notification, CareerService, STATUS){
     $scope.page.title = "Carreras";
     
     $scope.careers = [];
@@ -6,7 +6,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         id: null,
         name: null,
         short_name: null
-    }
+    };
 
     
     /**
@@ -19,7 +19,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
 
         CareerService.getCareers()
             .then(function(success){
-                if( success.status === NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.careers = [];
                 }
@@ -46,6 +46,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         CareerService.addCareer(career)
             .then(function(success){
                 Notification.success("Registrado con exito");
+                career = null;
                 $scope.getCareers();
             },
             function(error){
@@ -56,9 +57,9 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
 
 
     $scope.editCareer = function(career){
-        $scope.career = career
+        $scope.career = career;
         $scope.showUpdateForm = true;
-    }
+    };
 
 
     $scope.updateCareer = function(career){
@@ -73,7 +74,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
                 Notification.error("Error: "+error.data);
             }
         );
-    }
+    };
 
 
     
@@ -94,7 +95,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
                 $scope.disableButtons(false, '.opt-career-'+career_id);
             }
         );
-    }
+    };
 
     /**
      * 
@@ -114,7 +115,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
                 $scope.disableButtons(false, '.opt-career-'+career_id);
             }
         );
-    }
+    };
 
     /**
      * 
@@ -134,7 +135,7 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
                 $scope.disableButtons(false, '.opt-career-'+career_id);
             }
         );
-    }
+    };
 
 
     //Obtiene todos por default

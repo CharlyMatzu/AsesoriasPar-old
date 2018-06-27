@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('NewSubjectService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('NewSubjectService', function( RequestFactory, AuthFactory){
 
 
     this.getCareers = function(){

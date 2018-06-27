@@ -1,4 +1,4 @@
-angular.module("Dashboard").service('AdvisoriesService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('AdvisoriesService', function( RequestFactory, AuthFactory){
     
 
     this.getAdvisories = function(){

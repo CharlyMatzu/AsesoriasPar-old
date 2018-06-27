@@ -1,5 +1,5 @@
 angular.module("Dashboard")
-    .controller('EmailController', function($scope){
+    .controller('EmailController', function($scope, STATUS){
 
         $scope.page.title = "Email app";
 

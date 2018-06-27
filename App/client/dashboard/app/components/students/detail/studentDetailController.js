@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('StudentDetailController', function($scope, $http, $window, Notification, StudentDetailService, $routeParams){
+angular.module("Dashboard").controller('StudentDetailController', function($scope,  $window, Notification, StudentDetailService, $routeParams, STATUS){
     $scope.page.title = "Estudiante";
     
     $scope.student = [];
@@ -72,7 +72,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
 
         StudentDetailService.getStudentSchedule(student_id,
             function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     //Si no tiene un horario, se crea
                     // createSchedule(studen_id);
                     // TODO: mostrar mensaje de horario no creado
@@ -107,7 +107,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
 
             StudentDetailService.getStudent(id)
                 .then(function(success){
-                    if( success.status == NO_CONTENT ){
+                    if( success.status == STATUS.NO_CONTENT ){
                         Notification("No existe estudiante");
                         $window.location.href = "#!/estudiantes";
                     }

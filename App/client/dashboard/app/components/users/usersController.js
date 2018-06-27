@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('UsersController', function($scope, $http, $window, Notification, UsersService){
+angular.module("Dashboard").controller('UsersController', function($scope,  $window, Notification, UsersService){
     $scope.page.title = "Staff > Registrados";
     
     $scope.users = [];
@@ -25,7 +25,7 @@ angular.module("Dashboard").controller('UsersController', function($scope, $http
 
         UsersService.getUsers(
             function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status == STATUS.NO_CONTENT ){
                     $scope.loading.message = "No se encontraron usuarios";
                     $scope.users = [];
                 }
@@ -57,7 +57,7 @@ angular.module("Dashboard").controller('UsersController', function($scope, $http
 
         UsersService.searchUsers(data,
             function(success){
-                if( success.status == NO_CONTENT )
+                if( success.status == STATUS.NO_CONTENT )
                     $scope.loading.message = "No se encontraron usuarios";
                 else
                     $scope.users = success.data;

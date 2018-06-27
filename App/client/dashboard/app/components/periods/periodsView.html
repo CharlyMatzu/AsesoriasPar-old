@@ -1,107 +1,137 @@
 <div class="container-fluid">
 
-        <div class="row">
-            <!-- Nuevo -->
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Nuevo Periodo</h3>
-                        <form action="" ng-submit="addPeriod(newPeriod)">
-                            <div class="form-group">
-                                <label for="start">Fecha de inicio:</label>
-                                <!-- TODO: agregar un min para la fecha de inicio-->
-                                <input type="date" id="start" class="form-control" ng-model="newPeriod.start" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="end">Fecha de termino:</label>
-                                <!-- TODO: agregar un min para la fecha de cierre posterior a la de inicio-->
-                                <input type="date" id="end" class="form-control"  ng-model="newPeriod.end" required>
-                            </div>
-                            <button type="submit" class="btn btn-success">Registrar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- end nuevo -->
-
-
-            <!-- Update -->
-            <div class="col-lg-6" ng-show="showUpdateForm">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Actualizar Periodo</h3>
-                        <form action="" ng-submit="updatePeriod(period)">
-                            <div class="form-group">
-                                <label for="start">Fecha de inicio:</label>
-                                <!-- TODO: agregar un min para la fecha de inicio-->
-                                <input type="date" id="start" class="form-control" ng-model="period.start" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="end">Fecha de termino:</label>
-                                <!-- TODO: agregar un min para la fecha de cierre posterior a la de inicio-->
-                                <input type="date" id="end" class="form-control"  ng-model="period.end" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button type="reset" ng-click="showUpdateForm = false" class="btn btn-dark">Cancelar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- end update -->
-    
-    
-        </div>
-        <!-- end row -->
-    
-
-        
-        <!-- Tabla -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-outline-info">
-                    <div class="card-header">
-                        <h4 class="m-b-0 text-white">Periodos registrados</h4>
-                    </div>
-                    <div class="card-body">
-                        <!-- Messge -->
-                        <p ng-hide="periods.length > 0">{{loading.message}}</p>
+    <!-- options -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-info">
+                <div class="card-body">
+                    <div class="form-inline">
                         
-                        <!-- Table -->
-                        <div ng-show="periods.length > 0" class="table-responsive">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Fecha de inicio</th>
-                                    <th>Fecha de termino</th>
-                                    <th>Fecha de registro</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                <tr ng-repeat="p in periods">
-                                    <td>{{p.id}}</td>
-                                    <td>{{p.start}}</td>
-                                    <td>{{p.end}}</td>
-                                    <td>{{p.date_register}}</td>
-                                    <td>
-                                        <span ng-show="p.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
-                                        <span ng-show="p.status === 'ACTIVE'" class="badge badge-success">Activo</span>
-                                        <span ng-show="p.status == 3" class="badge badge-primary">Finalizado</span>
-                                    </td>
-                                    <td>
-                                        <button ng-click="editPeriod(p)" class="opt-period-{{p.id}} btn btn-primary">Editar</button>
-                                        <button ng-show="p.status === 'DISABLED'" ng-click="enablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-success">Habilitar</button>
-                                        <button ng-show="p.status === 'ACTIVE'" ng-click="disablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-warning">Deshabilitar</button>
-                                        <button ng-click="deletePeriod(p.id)" class="opt-period-{{p.id}} btn btn-danger">Eliminar</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <button ng-click="showNewPeriod = true" class="btn btn-primary basic-right-margin">
+                            <i class="fa fa-plus"></i> Nuevo Periodo
+                        </button>
+                        <button ng-click="getPeriods()" ng-disabled="loading" class="btn btn-primary basic-right-margin">
+                                <i class="fa fa-refresh"></i> Recargar
+                        </button>
+
                     </div>
                 </div>
             </div>
-            <!-- end table -->
         </div>
-    
     </div>
+    <!-- end options -->
+    
+    <!-- Tabla -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-info">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white">Periodos registrados</h4>
+                </div>
+
+                <div class="loader" ng-show="loading">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
+
+
+                <div class="card-body" ng-show="!loading">
+                    <!-- Messge -->
+                    <p ng-hide="periods.length > 0">No se encontrarón registros</p>
+                    
+                    <!-- Table -->
+                    <div ng-show="periods.length > 0" class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha de inicio</th>
+                                <th>Fecha de termino</th>
+                                <th>Fecha de registro</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="p in periods">
+                                <td>{{p.id}}</td>
+                                <td>{{p.start}}</td>
+                                <td>{{p.end}}</td>
+                                <td>{{p.date_register}}</td>
+                                <td>
+                                    <span ng-show="p.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="p.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                    <span ng-show="p.status == 3" class="badge badge-primary">Finalizado</span>
+                                </td>
+                                <td>
+                                    <button ng-click="editPeriod(p)" class="opt-period-{{p.id}} btn btn-primary">Editar</button>
+                                    <button ng-show="p.status === 'DISABLED'" ng-click="enablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-success">Habilitar</button>
+                                    <button ng-show="p.status === 'ACTIVE'" ng-click="disablePeriod(p.id)" class="opt-period-{{p.id}} btn btn-warning">Deshabilitar</button>
+                                    <button ng-click="deletePeriod(p.id)" class="opt-period-{{p.id}} btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end table -->
+    </div>
+
+</div>
+
+
+
+
+
+<!-- Nuevo -->
+<div class="modal-container modal-period-new" ng-show="showNewPeriod">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h3>Nuevo Periodo</h3>
+                <form action="" ng-submit="addPeriod(newPeriod)">
+                    <div class="form-group">
+                        <label for="start">Fecha de inicio:</label>
+                        <!-- TODO: agregar un min para la fecha de inicio-->
+                        <input type="date" id="start" class="form-control" ng-model="newPeriod.start" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="end">Fecha de termino:</label>
+                        <!-- TODO: agregar un min para la fecha de cierre posterior a la de inicio-->
+                        <input type="date" id="end" class="form-control"  ng-model="newPeriod.end" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Registrar</button>
+                    <button ng-click="showNewPeriod = false" type="reset" class="btn btn-outline-danger">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end nuevo -->
+
+
+
+<!-- Update -->
+<div class="modal-container modal-period-update fade animate" ng-show="showUpdateForm">
+    <div class="col-lg-6" >
+        <div class="card">
+            <div class="card-body">
+                <h3>Actualizar Periodo</h3>
+                <form action="" ng-submit="updatePeriod(period)">
+                    <div class="form-group">
+                        <label for="start">Fecha de inicio:</label>
+                        <!-- TODO: agregar un min para la fecha de inicio-->
+                        <input type="date" id="start" class="form-control" ng-model="period.start" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="end">Fecha de termino:</label>
+                        <!-- TODO: agregar un min para la fecha de cierre posterior a la de inicio-->
+                        <input type="date" id="end" class="form-control"  ng-model="period.end" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button ng-click="showUpdateForm = false" type="reset" class="btn btn-outline-danger">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end update -->

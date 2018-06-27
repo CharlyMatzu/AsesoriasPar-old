@@ -13,7 +13,7 @@ angular.module("Dashboard")
         };
 
         //User
-        $rootScope.session = {},
+        $rootScope.session = {};
 
         //-STATUS VARIABLES
         $rootScope.alert = {

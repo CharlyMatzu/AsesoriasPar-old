@@ -9,7 +9,7 @@
                         <button ng-click="goToNewStudent()" class="btn btn-primary basic-right-margin">
                             <i class="fa fa-plus"></i> Nuevo estudiante
                         </button>
-                        <button ng-click="getStudents()" ng-disabled="loading.status" class="btn btn-primary basic-right-margin">
+                        <button ng-click="getStudents()" ng-disabled="loading" class="btn btn-primary basic-right-margin">
                                 <i class="fa fa-refresh"></i> Recargar
                         </button>
                         <!-- Search -->
@@ -19,17 +19,17 @@
                                     <i class="ti-search"></i>
                                 </button>
                             </span>
-                            <input type="text" placeholder="Buscar" class="form-control" ng-model="studentDataSearch" ng-change="searchStudent(studentDataSearch)">
+                            <input type="text" placeholder="Buscar" class="form-control" ng-model="studentDataSearch" ng-change="searchStudents(studentDataSearch)">
                         </div>
                         <!-- Filtros -->
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="career">Filtrar por carrera:</label>
                             <select ng-model="filterCareer" id="career" class="btn btn-primary">
                                 <option value="0" selected="selected">0</option>
                                 <option value="1" selected="selected">1</option>
                                 <option value="2" selected="selected">2</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -45,8 +45,15 @@
                     <h4 class="m-b-0 text-white">Estudiantes registrados</h4>
                 </div>
 
-                <div class="card-body">
-                    <p ng-hide="students.length > 0">{{loading.message}}</p>
+                <!-- loader -->
+                <div class="loader" ng-show="loading">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
+
+
+                <div class="card-body" ng-if="!loading">
+                    <p ng-hide="students.length > 0">No se encontrarón registros</p>
+
                     <div class="table-responsive">
                         <table ng-show="students.length > 0" class="table table-bordered">
                             <tr>
