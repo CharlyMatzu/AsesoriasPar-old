@@ -66,13 +66,13 @@ class StudentController
     }
 
 
-
     /**
      * @param $req Request
      * @param $res Response
      * @param $params array
      *
      * @return Response
+     * @throws \App\Exceptions\Persistence\TransactionException
      */
     public function updateStudent($req, $res, $params)
     {
@@ -81,7 +81,10 @@ class StudentController
             /* @var $student StudentModel */
             $student = $req->getAttribute('student_data');
             $student->setId( $params['id'] );
-            $studentService->updateStudent( $student );
+
+            $email = $req->getAttribute('email_data');
+
+            $studentService->updateStudent( $email, $student );
             return Utils::makeMessageResponse($res, Utils::$OK, "Estudiante actualizado con éxito");
 
         }catch (RequestException $e){

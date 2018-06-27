@@ -335,8 +335,9 @@ $app->get('/students/search/{search}', 'StudentController:searchStudents')
 //TODO: VALIDAR AUTH
 //Actualiza datos de usuario
 $app->put('/students/{id}', 'StudentController:updateStudent')
-    ->add('InputMiddleware:checkData_Student')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkData_Student')
+        ->add('InputMiddleware:checkData_Email')
+        ->add('InputMiddleware:checkParam_Id');
 
 
 //--------------------------

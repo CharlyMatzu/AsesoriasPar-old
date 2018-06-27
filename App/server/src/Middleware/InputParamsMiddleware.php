@@ -238,8 +238,9 @@ class InputParamsMiddleware extends Middleware
                 return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Teléfono no es valido");
         }
 
+
         if( !empty($params['facebook']) ){
-            if( !preg_match(Utils::EXPREG_PHONE, $params['facebook']) )
+            if( !preg_match(Utils::EXPREG_FACE_URL, $params['facebook']) )
                 return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Facebook no es valido");
         }
 
@@ -249,6 +250,7 @@ class InputParamsMiddleware extends Middleware
         $last = $params['last_name'];
         $itson = $params['itson_id'];
         $phone = $params['phone'];
+        $facebook = $params['facebook'];
         $career = $params['career'];
 
 
@@ -260,6 +262,7 @@ class InputParamsMiddleware extends Middleware
         $student->setItsonId($itson);
         $student->setPhone($phone);
         $student->setCareer($career);
+        $student->setFacebook($facebook);
 
 
         //Se envían los Parámetros mediante el request ya validados

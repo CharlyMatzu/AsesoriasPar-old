@@ -64,12 +64,16 @@ SINGIN
 	"password": "123456"
 }
 
-SIGNUP/UPDATE
+UPDATE EMAIL
 {
 	"email": "carlosrozumaa@gmail.com",
-	"password": "123456",
-	// "role": "moderator"
-	"role": "administrator"
+	// "role": "administrator"
+}
+
+UPDATE PASSWORD
+{
+	"old": "123456",
+	"new": "123"
 }
 
 
@@ -88,6 +92,7 @@ SINGUP
 	"first_name": "carlos",
 	"last_name": "Zuñiga",
 	"itson_id": "162156",
+	"facebook": "",
 	"phone": "4182747"
 }
 
@@ -97,7 +102,9 @@ UPDATE
 	"first_name": "carlos",
 	"last_name": "Zuñiga",
 	"itson_id": "162156",
-	"phone": "4182747"
+	"phone": "4182747",
+	"facebook": "",
+	"email": "carlosrozuma@gmail.com"
 }
 
 

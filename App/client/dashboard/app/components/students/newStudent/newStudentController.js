@@ -47,9 +47,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Se ha registrado estudiante correctamente"
                 $scope.loading = false;
-                $timeout(function(){
-                    $window.location.reload();
-                }, 1000);
+                $window.location = "#!/estudiantes";
             },
             function (error){
                 if( error.status === STATUS.CONFLICT )
@@ -87,9 +85,10 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
                     alert("No hay carreras disponibles, se redireccionará");
                     //Redireccion a carreras
                     $window.location = "#!/carreras";
+                    return;
                 }
 
-                // $scope.loading = false;
+                $scope.loading = false;
 
             }, function(error){
                 Notification.error("Ocurrio un error al cargar carreras: "+error.data);

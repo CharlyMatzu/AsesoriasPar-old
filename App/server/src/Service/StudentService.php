@@ -8,6 +8,7 @@ use App\Exceptions\Request\NotFoundException;
 use App\Exceptions\Request\RequestException;
 use App\Model\AdvisoryModel;
 use App\Model\ScheduleModel;
+use App\Persistence\Persistence;
 use App\Persistence\StudentsPersistence;
 use App\Model\StudentModel;
 use App\Utils;
@@ -115,13 +116,27 @@ class StudentService{
 
 
     /**
+     * @param $email String
      * @param $student StudentModel
      *
-     * @throws InternalErrorException
-     * @throws NotFoundException
      * @throws ConflictException
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
+     * @throws \App\Exceptions\Persistence\TransactionException
      */
-    public function updateStudent( $student ){
+    public function updateStudent( $email, $student ){
+
+        //Comprueba que exista email
+        $userServ = new UserService();
+        $user = $userServ->getUser_ByEmail( $email );
+
+        Persistence::initTransaction();
+        try{
+            $userServ->updateUserEmail( UserService::makeUserModel($user) );
+        }catch (RequestException $e){
+            Persistence::rollbackTransaction();
+        }
 
         //Verificar si estudiante existe
         $student_aux = $this->getStudent_ById( $student->getId() );
@@ -129,10 +144,14 @@ class StudentService{
         //Verificamos si cambio el ID de itson
         if( $student_aux['itson_id'] != $student->getItsonId() ){
             $result = $this->isItsonIdExist( $student->getItsonId() );
-            if( Utils::isError( $result->getOperation() ) )
-                throw new InternalErrorException( "updateStudent","Ocurrió un error al verificar id ITSON", $result->getErrorMessage());
-            else if( $result->getOperation() == true )
-                throw new ConflictException( "ITSON id ya existe" );
+            if( Utils::isError( $result->getOperation() ) ) {
+                Persistence::rollbackTransaction();
+                throw new InternalErrorException("updateStudent", "Ocurrió un error al verificar id ITSON", $result->getErrorMessage());
+            }
+            else if( $result->getOperation() == true ) {
+                Persistence::rollbackTransaction();
+                throw new ConflictException("ITSON id ya existe");
+            }
         }
 
         //Verificamos si cambio carrera
@@ -143,8 +162,12 @@ class StudentService{
 
         //Se actualizan datos de alumno
         $result = $this->perStudents->updateStudent( $student );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "updateStudent","Ocurrió un error al actualizar estudiante", $result->getErrorMessage());
+        if( Utils::isError( $result->getOperation() ) ) {
+            Persistence::rollbackTransaction();
+            throw new InternalErrorException("updateStudent", "Ocurrió un error al actualizar estudiante", $result->getErrorMessage());
+        }
+
+        Persistence::commitTransaction();
     }
 
 

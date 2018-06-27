@@ -109,79 +109,6 @@ class StudentsPersistence extends Persistence{
         return $this->executeQuery($query);
     }
 
-//    /**
-//     * @param $id int
-//     * @return \App\Model\DataResult
-//     */
-//    public function getStudent_ByUserId( $id ){
-//        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.career_id = s.fk_career
-//                        WHERE s.fk_user =".$id;
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-//    /**
-//     * @param $name String
-//     * @return \Objects\DataResult
-//     */
-//    public function getStudent_LikeName($name ){
-//        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.career_id = s.fk_career
-//                        WHERE s.first_name LIKE '%$name%' OR s.last_name LIKE '%$name%' ";
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-//    public function ifExistCareer( $career ){
-//        $query = " SELECT c.name FROM career c
-//                   WHERE c.career_id =".$career;
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-
-//    public function ifUserExist( $student ){
-//        $query = " SELECT s.student_id FROM student s
-//                   WHERE s.fk_user =".$student->getUser();
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-
-//    public function getStudent_byCareer ( $career ){
-//        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.career_id = s.fk_career
-//                        WHERE c.name LIKE '%$career%'";
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-
-//    public function getStudent_bySubject ( $subject ){
-//        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.career_id = s.fk_career
-//                        INNER JOIN subject s ON c.career_id = s.fk_career
-//                        WHERE s.name LIKE '%$subject%'";
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-//    public function getStudent_byItsonId( $itsonId ){
-//        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.career_id = s.fk_career
-//                        WHERE s.itson_id LIKE '%$itsonId%'";
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
-
-//    public function getStudent_byAdvisor( $advisor ){
-//        $query = $this->SELECT."
-//                        INNER JOIN career c ON c.career_id = s.fk_career
-//                        WHERE s.itson_id LIKE '%$advisor%'";
-//        //Obteniendo resultados
-//        return $this->executeQuery($query);
-//    }
 
     //------------------REGISTROS
 
@@ -193,12 +120,13 @@ class StudentsPersistence extends Persistence{
      * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function insertStudent( $student ){
-        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, fk_user , fk_career)
+        $query = "INSERT INTO student(itson_id, first_name, last_name, phone, facebook, fk_user , fk_career)
                   VALUES(
                       '".$student->getItsonId()."',
                       '".$student->getFirstName()."', 
                       '".$student->getLastname()."',
-                      '".$student->getPhone()."', 
+                      '".$student->getPhone()."',
+                      '".$student->getFacebook()."', 
                       ".$student->getUser()->getId().", 
                       ".$student->getCareer()->getId().")";
         return  self::executeQuery($query);

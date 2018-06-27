@@ -1,1 +1,15 @@
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita inventore possimus dolorum consequatur, a sunt voluptates distinctio quod itaque tempora hic doloremque ducimus illo. Non, tenetur! Sunt doloremque possimus laboriosam?</p>
+<div class="container-fluid">
+
+    <div class="card">
+        <!-- loader -->
+        <div class="loader" ng-show="loading">
+            <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+        </div>
+        
+        <div class="card-body" ng-show="!loading">
+            <p ng-hide="advisories.length > 0">No hay asesorías registradas</p>
+
+        </div>
+    </div>
+
+</div>
