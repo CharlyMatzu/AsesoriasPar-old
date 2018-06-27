@@ -8,14 +8,18 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
         short_name: null
     };
 
+    $scope.showNewCareer = false;
+    $scope.showUpdateCareer = false;
+    $scope.loading = true;
+
     
     /**
      * Obtiene carreras registrados
      */
     $scope.getCareers = function(){
 
-        $scope.showUpdateForm = false;
-        $scope.loading.status = true;
+        $scope.showUpdateCareer = false;
+        $scope.loading = true;
 
         CareerService.getCareers()
             .then(function(success){
@@ -26,12 +30,12 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
                 else
                     $scope.careers = success.data;
 
-                $scope.loading.status = false;
+                $scope.loading = false;
             },
             function(error){
                 Notification.error("Error al obtener carreras: "+error.data);
                 $scope.careers = [];
-                $scope.loading.status = false;
+                $scope.loading = false;
             }
         );
     }
@@ -58,7 +62,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
 
     $scope.editCareer = function(career){
         $scope.career = career;
-        $scope.showUpdateForm = true;
+        $scope.showUpdateCareer = true;
     };
 
 
@@ -72,6 +76,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
             },
             function(error){
                 Notification.error("Error: "+error.data);
+                $scope.showUpdateCareer = false;
             }
         );
     };

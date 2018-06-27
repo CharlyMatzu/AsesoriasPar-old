@@ -1,103 +1,130 @@
 <div class="container-fluid">
 
-        <div class="row">
-            <!-- Nuevo -->
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Nuevo Carrera</h3>
-                        <form action="" ng-submit="addCareer(newCareer)">
-                            <div class="form-group">
-                                <label for="name">Nombre:</label>
-                                <input type="text" id="name" class="form-control" ng-model="newCareer.name" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="short_name">Abreviacion:</label>
-                                <input type="text" id="short_name" class="form-control" ng-model="newCareer.short_name" required>
-                            </div>
-
-                            <button type="submit" class="btn btn-success">Registrar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- end nuevo -->
-
-
-            <!-- Update -->
-            <div class="col-lg-6" ng-show="showUpdateForm">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Actualizar Carrera</h3>
-                        <form action="" ng-submit="updateCareer(career)">
-                            <div class="form-group">
-                                <label for="name">Nombre:</label>
-                                <input type="text" id="name" class="form-control" ng-model="career.name" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="short_name">Abreviacion:</label>
-                                <input type="text" id="short_name" class="form-control" ng-model="career.short_name" required>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- end update -->
-    
-    
-        </div>
-        <!-- end row -->
-    
-
-        
-        <!-- Tabla -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-outline-info">
-                    <div class="card-header">
-                        <h4 class="m-b-0 text-white">Carreras registrados</h4>
-                    </div>
-                    <div class="card-body">
-                        <!-- Messge -->
-                        <p ng-hide="careers.length > 0">{{loading.message}}</p>
+    <!-- options -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-info">
+                <div class="card-body">
+                    <div class="form-inline">
                         
-                        <!-- Table -->
-                        <div ng-show="careers.length > 0" class="table-responsive">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nombre</th>
-                                    <th>Abreviacion</th>
-                                    <th>Fecha de registro</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                                <tr ng-repeat="c in careers">
-                                    <td>{{c.id}}</td>
-                                    <td>{{c.name}}</td>
-                                    <td>{{c.short_name}}</td>
-                                    <td>{{c.date_register}}</td>
-                                    <td>
-                                        <span ng-show="c.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
-                                        <span ng-show="c.status === 'ACTIVE'" class="badge badge-success">Activo</span>
-                                    </td>
-                                    <td>
-                                        <button ng-click="editCareer(c)" class="opt-career-{c.id}} btn btn-primary">Editar</button>
-                                        <button ng-show="c.status === 'DISABLED'" ng-click="enableCareer(c.id)" class="opt-career-{c.id}} btn btn-success">Habilitar</button>
-                                        <button ng-show="c.status === 'ACTIVE'" ng-click="disableCareer(c.id)" class="opt-career-{c.id}} btn btn-warning">Deshabilitar</button>
-                                        <button ng-click="deleteCareer(c.id)" class="opt-career-{c.id}} btn btn-danger">Eliminar</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <button ng-click="showNewCareer = true" class="btn btn-primary basic-right-margin">
+                            <i class="fa fa-plus"></i> Nuevo Career
+                        </button>
+                        <button ng-click="getCareers()" ng-disabled="loading" class="btn btn-primary basic-right-margin">
+                                <i class="fa fa-refresh"></i> Recargar
+                        </button>
+
                     </div>
                 </div>
             </div>
-            <!-- end table -->
         </div>
-    
     </div>
+    <!-- end options -->
+
+    
+    <!-- Tabla -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline-info">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white">Carreras registrados</h4>
+                </div>
+
+                <div class="loader" ng-show="loading">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
+
+                <div class="card-body" ng-show="!loading">
+                    <!-- Messge -->
+                    <p ng-hide="careers.length > 0">No se encontrarón registros</p>
+                    
+                    <!-- Table -->
+                    <div ng-show="careers.length > 0" class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Abreviacion</th>
+                                <th>Fecha de registro</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="c in careers">
+                                <td>{{c.id}}</td>
+                                <td>{{c.name}}</td>
+                                <td>{{c.short_name}}</td>
+                                <td>{{c.date_register}}</td>
+                                <td>
+                                    <span ng-show="c.status === 'DISABLED'" class="badge badge-danger">Deshabilitado</span>
+                                    <span ng-show="c.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                </td>
+                                <td>
+                                    <button ng-click="editCareer(c)" class="opt-career-{c.id}} btn btn-primary">Editar</button>
+                                    <button ng-show="c.status === 'DISABLED'" ng-click="enableCareer(c.id)" class="opt-career-{c.id}} btn btn-success">Habilitar</button>
+                                    <button ng-show="c.status === 'ACTIVE'" ng-click="disableCareer(c.id)" class="opt-career-{c.id}} btn btn-warning">Deshabilitar</button>
+                                    <button ng-click="deleteCareer(c.id)" class="opt-career-{c.id}} btn btn-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end table -->
+    </div>
+
+</div>
+
+
+<!-- Nuevo -->
+<div class="modal-container" ng-show="showNewCareer">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h3>Nuevo Carrera</h3>
+                <form action="" ng-submit="addCareer(newCareer)">
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" class="form-control" ng-model="newCareer.name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_name">Abreviacion:</label>
+                        <input type="text" id="short_name" class="form-control" ng-model="newCareer.short_name" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Registrar</button>
+                    <button type="button" ng-click="showNewCareer = false" class="btn btn-outline-danger">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end nuevo -->
+
+
+<!-- Update -->
+<div class="modal-container" ng-show="showUpdateCareer">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h3>Actualizar Carrera</h3>
+                <form action="" ng-submit="updateCareer(career)">
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" class="form-control" ng-model="career.name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_name">Abreviacion:</label>
+                        <input type="text" id="short_name" class="form-control" ng-model="career.short_name" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" ng-click="showUpdateCareer = false" class="btn btn-outline-danger">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end update -->
