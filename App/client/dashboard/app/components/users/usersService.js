@@ -1,29 +1,25 @@
-angular.module("Dashboard").service('UsersService', function( RequestFactory, AuthFactory){
+angular.module("Dashboard").service('UsersService', function( RequestFactory, AuthFactory ){
     
-    this.getUsers = function(successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.getUsers = function(){
+        return RequestFactory.makeTokenRequest(
             'GET',
             '/users/staff',
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.searchUsers = function(data,successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.searchUsers = function(data){
+        return RequestFactory.makeTokenRequest(
             'GET',
             '/users/search/'+data+'/staff',
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.updateUser = function(user, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.updateUser = function(user){
+        return RequestFactory.makeTokenRequest(
             'POST',
             "/users/"+user.id,
             data = {
@@ -31,31 +27,25 @@ angular.module("Dashboard").service('UsersService', function( RequestFactory, Au
                 password: user.pass,
                 role: user.role
             },
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
 
-    this.changeStatus = function(user_id, status, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.changeStatus = function(user_id, status){
+        return RequestFactory.makeTokenRequest(
             'PATCH',
             "/users/"+user_id+"/status/"+status,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     
-    this.deleteUser = function(user_id, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.deleteUser = function(user_id){
+        return RequestFactory.makeTokenRequest(
             'DELETE',
             "/users/"+user_id,
             null,
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     

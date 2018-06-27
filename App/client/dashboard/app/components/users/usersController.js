@@ -1,4 +1,6 @@
-angular.module("Dashboard").controller('UsersController', function($scope,  $window, Notification, UsersService){
+angular.module("Dashboard").controller('UsersController', function($scope,  $window, Notification, UsersService, STATUS){
+    
+    
     $scope.page.title = "Staff > Registrados";
     
     $scope.users = [];
@@ -9,38 +11,37 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         role: ""
     };
 
+    $scope.showUpdateUser = false;
+    $scope.loading = true;
+
     /**
      * redirect
      */
     $scope.goToNewUser = function(){
         $window.location.href = '#!/usuarios/nuevo';
+        return;
     }
 
 
     $scope.getUsers = function(){
-        $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
+        $scope.loading = true;
 
-        $scope.users = [];
-
-        UsersService.getUsers(
-            function(success){
-                if( success.status == STATUS.NO_CONTENT ){
-                    $scope.loading.message = "No se encontraron usuarios";
+        UsersService.getUsers()
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT )
                     $scope.users = [];
-                }
-                else{
+                else
                     $scope.users = success.data;
-                }
+
                 //Enabling refresh button
-                $scope.loading.status = false;
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data);
-            }
-        );
-    }
+                $scope.loading = false;
+            });
+    };
 
 
     /**
@@ -52,24 +53,22 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
             return;
 
         $scope.users = [];
-        $scope.loading.status = true;
-        $scope.loading.message = "Buscando usuarios con "+data;
+        $scope.loading = true;
 
-        UsersService.searchUsers(data,
-            function(success){
+        UsersService.searchUsers(data)
+            .then(function(success){
                 if( success.status == STATUS.NO_CONTENT )
-                    $scope.loading.message = "No se encontraron usuarios";
+                    $scope.users = [];
                 else
                     $scope.users = success.data;
 
                 //Enabling refresh button
-                $scope.loading.status = false;
+                $scope.loading = false;
                     
             },
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data);
-                $scope.loading.message = "Ocurrio un error =(";
-                $scope.loading.status = false;
+                $scope.loading = false;
             }
         );
     }
@@ -114,42 +113,32 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         $scope.user.pass = user.pass;
         $scope.user.role = user.role;
         //Open update form
-        $scope.showUpdateForm = true;
+        $scope.showUpdateUser = true;
     }
 
     $scope.updateUser = function(user){
         if( !validate(user) )
             return;
 
-        $scope.showUpdateForm = false;
-        
-        $scope.loading.status = true;
-        $scope.loading.message = "Cargando registros";
+        $scope.showUpdateUser = false;
+        $scope.loading = true;
 
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-user-'+user.id);
 
-        UsersService.updateUser(user,
-            function(success){
+        UsersService.updateUser(user)
+            .then(function(success){
                 Notification.success("Actualizado con exito");
+                $scope.showUpdateUser = false;
                 $scope.getUsers();
             },
             function(error){
                 Notification.error("Error: "+error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user.id);
-            }
-
-        );
-        
-        
-        //Close form
-        $scope.updateForm = false;
-        //Clean value
-        $scope.user.id = 0;
-        $scope.user.email = "";
-        $scope.user.pass = "";
-        $scope.user.role = "";
+                $scope.loading = false;
+                $scope.showUpdateUser = false;
+            });
     }
 
 
@@ -161,8 +150,8 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-user-'+user_id);
 
-        UsersService.deleteUser(user_id,
-            function(success){
+        UsersService.deleteUser(user_id)
+            .then(function(success){
                 Notification.success("Usuario eliminado con exito");
                 $scope.getUsers();
             },
@@ -170,8 +159,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
                 Notification.error("Error al eliminar usuarios: " + error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
-            }
-        );
+            });
     }
 
     /**
@@ -183,8 +171,8 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         $scope.disableButtons(true, '.opt-user-'+user_id);
 
         Notification('Procesando...');
-        UsersService.changeStatus(user_id, ACTIVE,
-            function(success){
+        UsersService.changeStatus(user_id, ACTIVE)
+            .then(function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getUsers();
@@ -193,8 +181,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
                 Notification.error("Error al Habilitar usuario: " + error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
-            }
-        );
+            });
     }
 
 
@@ -207,8 +194,8 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         $scope.disableButtons(true, '.opt-user-'+user_id);
 
         Notification('Procesando...');
-        UsersService.changeStatus(user_id, DISABLED, 
-            function(success){
+        UsersService.changeStatus(user_id, DISABLED)
+            .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 $scope.getUsers();
             },
@@ -216,8 +203,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
                 Notification.error("Error al deshabilitar usuario: " + error.data);
                 //Habilita botones
                 $scope.disableButtons(false, '.opt-user-'+user_id);
-            }
-        );
+            });
     }
 
 

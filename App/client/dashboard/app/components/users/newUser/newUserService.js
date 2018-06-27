@@ -18,8 +18,8 @@ angular.module("Dashboard").service('NewUserService', function( RequestFactory, 
     // }
 
 
-    this.addUser = function(user, successCallback, errorCallback){
-        RequestFactory.makeTokenRequest(
+    this.addUser = function(user){
+        return RequestFactory.makeTokenRequest(
             'POST',
             '/users',
             data = {
@@ -27,9 +27,7 @@ angular.module("Dashboard").service('NewUserService', function( RequestFactory, 
                 password: user.pass,
                 role: user.role
             },
-            AuthFactory.getToken(),
-            successCallback,
-            errorCallback
+            AuthFactory.getToken()
         );
     }
     

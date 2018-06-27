@@ -3,9 +3,6 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-info">
-                <!-- <div class="card-header">
-                    <h4 class="m-b-0 text-white">Opciones</h4>
-                </div> -->
                 <div class="card-body">
                     <div class="form-inline">
                         <button ng-click="goToNewUser()" class="btn btn-primary basic-right-margin">
@@ -31,54 +28,6 @@
     <!-- end options -->
 
 
-    <!-- Update form -->
-    <div class="row" ng-show="showUpdateForm">
-        <div class="col-lg-12">
-            <div class="card card-outline-info">
-                <div class="card-header">
-                    <h4 class="m-b-0 text-white">Actualizar usuario</h4>
-                </div>
-                <div class="card-body">
-                    <!-- _______Form________ -->
-                    <form ng-submit="updateUser(user)">
-                        <!-- hidden input id -->
-                        <input type="hidden" ng-model="user.id">
-
-                        <div class="form-group">
-                            <label for="email">Correo electronico</label>
-                            <input type="email" id="email" ng-model="user.email" class="form-control" placeholder="Correo electronico" required>
-                        </div>
-    
-                        <div class="form-group">
-                            <label for="pass">Contraseña</label>    
-                            <input type="password" id="pass" ng-model="user.pass" class="form-control" placeholder="Contraseña" required>
-                        </div>
-    
-                        <div class="form-group">
-                            <label for="pass2">Re-ingresar Contraseña</label>    
-                            <input type="password" id="pass2" ng-model="user.pass2" class="form-control" placeholder="Contraseña" required>
-                        </div>
-    
-                        <div class="form-group">
-                            <label for="role">Rol de usuario</label>    
-                            <select id="role" ng-model="user.role" class="form-control" required>
-                                <option value="moderator" selected>Moderador</option>
-                                <option value="administrator">Administrador</option>
-                            </select>
-                        </div>
-    
-                        <div class="form-actions">
-                            <button type="submit" ng-disabled="loading.status" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
-                            <button type="reset" class="btn btn-inverse">Limpiar</button>
-                            <button type="button" ng-click="showUpdateForm = false" class="btn btn-default">Cancelar</button>
-                            <span ng-show="loading.status"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end update form -->
     
     <div class="row">
         <div class="col-lg-12">
@@ -87,8 +36,15 @@
                     <h4 class="m-b-0 text-white">Usuarios registrados</h4>
                 </div>
 
-                <div class="card-body">
-                    <p ng-hide="users.length > 0">{{loading.message}}</p>
+                <!-- loader -->
+                <div class="loader" ng-show="loading">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
+
+                <div class="card-body" ng-show="!loading">
+                    
+                    <p ng-hide="users.length > 0">No se encontrarón registros</p>
+
                     <div class="table-responsive">
                         <table ng-show="users.length > 0" class="table table-bordered">
                             <tr>
@@ -128,3 +84,55 @@
     <!-- end users table -->
 
 </div>
+
+
+
+
+<!-- Update form -->
+<div class="modal-container" ng-show="showUpdateUser">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-header">
+                <h4 class="m-b-0 text-white">Actualizar usuario</h4>
+            </div>
+            <div class="card-body">
+                <!-- _______Form________ -->
+                <form ng-submit="updateUser(user)">
+                    <!-- hidden input id -->
+                    <input type="hidden" ng-model="user.id">
+
+                    <div class="form-group">
+                        <label for="email">Correo electronico</label>
+                        <input type="email" id="email" ng-model="user.email" class="form-control" placeholder="Correo electronico" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pass">Contraseña</label>    
+                        <input type="password" id="pass" ng-model="user.pass" class="form-control" placeholder="Contraseña" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pass2">Re-ingresar Contraseña</label>    
+                        <input type="password" id="pass2" ng-model="user.pass2" class="form-control" placeholder="Contraseña" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Rol de usuario</label>    
+                        <select id="role" ng-model="user.role" class="form-control" required>
+                            <option value="moderator" selected>Moderador</option>
+                            <option value="administrator">Administrador</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" ng-disabled="loading.status" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
+                        <button type="reset" class="btn btn-inverse">Limpiar</button>
+                        <button type="button" ng-click="showUpdateUser = false" class="btn btn-default">Cancelar</button>
+                        <span ng-show="loading.status"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end update form -->
