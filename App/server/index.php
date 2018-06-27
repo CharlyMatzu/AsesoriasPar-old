@@ -71,8 +71,6 @@ $app->post('/auth/signup', 'AuthController:signup')
         ->add('InputMiddleware:checkData_Password')
         ->add('InputMiddleware:checkData_Email');
 
-//TODO: ruta para actualizar password
-
 //Para verificar usuario y activar
 $app->get('/auth/confirm/{token}', 'AuthController:confirm');
 

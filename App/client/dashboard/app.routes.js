@@ -67,7 +67,7 @@ angular.module("Dashboard")
 
             //----------------APP
             .when("/correo", {
-                // controller: "EmailController",
+                controller: "EmailController",
                 templateUrl: "app/components/email/emailView.html"
             })
 

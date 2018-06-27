@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('AdvisoriesController', function($scope, $http, Notification, AdvisoriesService, RequestFactory, STATUS){
+angular.module("Dashboard").controller('AdvisoriesController', function($scope, Notification, AdvisoriesService, STATUS){
     
     $scope.page.title = "Asesorias";
     $scope.advisories = [];
