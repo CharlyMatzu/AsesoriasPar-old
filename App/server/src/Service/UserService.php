@@ -564,6 +564,19 @@ class UserService{
     }
 
 
+    /**
+     * @param $career_id int
+     * @throws InternalErrorException
+     */
+    public function deleteUsers_ByStudentCareer($career_id)
+    {
+        //Eliminando usuario (cambiando status)
+        $result = $this->userPer->deleteUsers_ByCareer( $career_id );
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException( "deleteUsers_ByStudentCareer","Error al eliminar usuarios por carrera", $result->getErrorMessage());
+    }
+
+
 
 
     //-----------------------

@@ -1,7 +1,9 @@
-angular.module("Dashboard").controller('NewStudentController', function($scope, $http, $timeout, NewStudentService, Notification){
+angular.module("Dashboard").controller('NewStudentController', function($scope, NewStudentService, CareerService, Notification, STATUS, $window){
+    
     
     $scope.page.title = "Estudiantes > Nuevo";
-    $scope.loading = false;
+    $scope.loading.status = false;
+    $scope.enabledCareers = [];
 
 
     /**
@@ -10,6 +12,12 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
      * @return bool
      */
     var validate = function(student){
+
+        if( student.career == null ){
+            Notification.warning('Debe seleccionar una carrera');
+            return false;
+        }
+
         if( student.pass != student.pass2 ){
             Notification.warning('Contraseñas no coinciden');
             return false;
@@ -33,14 +41,18 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
         $scope.loading.status = true;
 
         //Peticion
-        NewUserService.addStudent(student,
-            function(success){
+        NewStudentService.addStudent(student)
+            .then(function(success){
+                Notification.success("Registrado");
                 $scope.alert.type = 'success';
                 $scope.alert.message = "Se ha registrado estudiante correctamente"
                 $scope.loading.status = false;
+                $timeout(function(){
+                    $window.location.reload();
+                }, 1000);
             },
             function (error){
-                if( error.status == CONFLICT )
+                if( error.status === STATUS.CONFLICT )
                     $scope.alert.type = 'warning';
                 else
                     $scope.alert.type = 'error';
@@ -52,8 +64,37 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
         );
     };
 
+
     (function(){
-        // alert("Si llega");
+        // $scope.loading = true;
+        //Se cargan carreras
+        CareerService.getCareers()
+            .then(function(success){
+
+                //Si hay carreras
+                if( success.status === STATUS.OK ){
+                    var elementos = success.data;
+                    //Se buscan las carreras activas
+                    elementos.forEach(carrera => {
+                        //Si la carrera esta activa se agrega a arreglo
+                        if( carrera.status === 'ACTIVE' )
+                            $scope.enabledCareers.push( carrera );
+                    });
+                }
+
+                if( success.status === STATUS.NO_CONTENT || 
+                    $scope.enabledCareers.length == 0 ){
+                    Notification.warning("No hay carreras disponibles");
+                    //Redireccion a carreras
+                    $window.location = "#!/carreras";
+                }
+
+                // $scope.loading = false;
+
+            }, function(error){
+                Notification.error("Ocurrio un error al cargar carreras: "+error.data);
+                // $scope.loading = false;
+            }); 
     })();
 
 

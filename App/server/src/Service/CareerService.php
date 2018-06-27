@@ -209,6 +209,12 @@ class CareerService{
         //Se verifica si carrera existe
         $this->getCareer_ById( $career_id );
 
+        //eliminar a los usuarios donde sus estudiantes estén relacionados a dicha carrera para que no haya problemas
+        //en registros posteriores
+        $userServ = new UserService();
+        $userServ->deleteUsers_ByStudentCareer( $career_id );
+
+        //Elimina carreras
         $result = $this->perCareers->deleteCareer( $career_id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("deleteCareer", "No se pudo eliminar carrera", $result->getErrorMessage());

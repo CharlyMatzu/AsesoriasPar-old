@@ -1,10 +1,10 @@
-angular.module("Dashboard").service('NewStudentService', function($http, RequestFactory, AuthFactory){
+angular.module("Dashboard").service('NewStudentService', function(RequestFactory, AuthFactory){
 
     
     this.addStudent = function(student){
         return RequestFactory.makeTokenRequest(
             'POST',
-            "/auth/signUp",
+            "/auth/signup",
             data = {
                 email: student.email,
                 password: student.pass,
@@ -15,8 +15,7 @@ angular.module("Dashboard").service('NewStudentService', function($http, Request
                 phone: student.phone,
                 facebook: student.facebook,
                 career: student.career,
-            },
-            AuthFactory.getToken(),
+            }
         );
     }
     

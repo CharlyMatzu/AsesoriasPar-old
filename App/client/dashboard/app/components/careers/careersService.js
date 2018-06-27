@@ -25,7 +25,7 @@ angular.module("Dashboard").service('CareerService', function($http, RequestFact
     this.updateCareer = function(career){
         return RequestFactory.makeTokenRequest(
             'PUT',
-            "/careers"+career.id,
+            "/careers/"+career.id,
             data = {
                 name: career.name,
                 short_name: career.short_name

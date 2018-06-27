@@ -223,15 +223,27 @@ class InputParamsMiddleware extends Middleware
     {
         $params = $req->getParsedBody();
         if( !isset($params['first_name']) || !isset($params['last_name']) ||
-            !isset($params['itson_id']) || !isset($params['phone']) ||
-            !isset($params['career']))
+            !isset($params['itson_id']) || !isset($params['career'] ) ||
+            !isset($params['facebook']) || !isset($params['phone']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Faltan Parámetros: Se requiere: first_name, last_name, itson_id, phone");
+                "Faltan Parámetros: Se requiere: first_name, last_name, itson_id, carrer, facebook");
 
         if( empty($params['first_name']) || empty($params['last_name']) ||
-            empty($params['itson_id']) || empty($params['phone']) ||
-            empty($params['career']))
+            empty($params['itson_id']) || empty($params['career']))
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
+
+
+        if( !empty($params['phone']) ){
+            if( !preg_match(Utils::EXPREG_PHONE, $params['phone']) )
+                return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Teléfono no es valido");
+        }
+
+        if( !empty($params['facebook']) ){
+            if( !preg_match(Utils::EXPREG_PHONE, $params['facebook']) )
+                return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST, "Facebook no es valido");
+        }
+
+
 
         $first = $params['first_name'];
         $last = $params['last_name'];

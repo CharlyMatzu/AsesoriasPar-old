@@ -16,13 +16,12 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
 
         $scope.showUpdateForm = false;
         $scope.loading.status = true;
-        $scope.loading.message = "Obteniendo registros";
 
         CareerService.getCareers()
             .then(function(success){
-                if( success.status == NO_CONTENT ){
+                if( success.status === NO_CONTENT ){
                     //Notification.primary("no hay registros");
-                    $scope.loading.message = "No hay registros";
+                    $scope.careers = [];
                 }
                 else
                     $scope.careers = success.data;
@@ -31,8 +30,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
             },
             function(error){
                 Notification.error("Error al obtener carreras: "+error.data);
+                $scope.careers = [];
                 $scope.loading.status = false;
-                $scope.loading.message = "Error: "+error.data;
             }
         );
     }
@@ -125,8 +124,8 @@ angular.module("Dashboard").controller('CareersController', function($scope, $ht
         $scope.disableButtons(true, '.opt-career-'+career_id);
         Notification("Procesando...");
 
-        CareerService.changeStatus(career_id, ACTIVE,
-            function(success){
+        CareerService.changeStatus(career_id, ACTIVE)
+            .then(function(success){
                 Notification.success("habilitado con exito");
                 $scope.getCareers();
             },

@@ -61,18 +61,18 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="first_name">Nombre</label>
-                                    <input type="text" id="first_name" class="form-control" ng-model="student.first_name">
+                                    <input type="text" id="first_name" class="form-control" ng-model="student.first_name" required>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="last_name">Apellido</label>
-                                    <input type="text" id="last_name" class="form-control" ng-model="student.last_name">
+                                    <input type="text" id="last_name" class="form-control" ng-model="student.last_name" required>
                                 </div>
                                 
                                 
                                 <div class="form-group">
                                     <label for="itson_id">ID</label>
-                                    <input type="text" id="itson_id" class="form-control" ng-model="student.itson_id">
+                                    <input type="text" id="itson_id" class="form-control" ng-model="student.itson_id" required>
                                 </div>
                             </div>
 
@@ -90,7 +90,7 @@
                                 
                                 <div class="form-group">
                                     <label for="career">Carrera</label>
-                                    <select id="career" class="form-control" ng-model="student.career_id">
+                                    <select id="career" class="form-control" ng-model="student.career_id" required>
                                         <!-- TODO: add careers and select career -->
                                     </select>
                                 </div>

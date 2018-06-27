@@ -1,6 +1,8 @@
 angular.module("Dashboard").controller('NewUserController', function($scope, $http, $timeout, NewUserService, Notification){
+    
+    
     $scope.page.title = "Staff > Nuevo";
-    $scope.loading = false;
+    $scope.loading.status = false;
 
 
     /**

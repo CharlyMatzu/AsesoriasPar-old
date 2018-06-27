@@ -36,7 +36,8 @@ class Utils
     const EXPREG_NAME = "/[a-zA-Z\sñÑáéíóúÁÉÍÓÚ]/";
     const EXPREG_SEARCH = "/[a-zA-Z0-9_!@ñÑáéíóúÁÉÍÓÚ\s]/";
     const EXPREG_ITSON_ID = "/\d/";
-//    const EXPREG_PHONE = "//";
+    const EXPREG_PHONE = "/\d{7,10}/";
+    const EXPREG_FACE_URL = "/https:\/\/www.facebook.com\/[a-zA-Z0-9_-]+/";
 
 
 

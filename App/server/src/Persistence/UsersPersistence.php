@@ -288,7 +288,19 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-
+    /**
+     * @param $career_id int
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function deleteUsers_ByCareer($career_id)
+    {
+        $query = "DELETE FROM user u
+                  INNER JOIN student s ON s.fk_user = u.user_id
+                  WHERE s.fk_career = $career_id";
+        return  self::executeQuery($query);
+    }
 
 
 }
