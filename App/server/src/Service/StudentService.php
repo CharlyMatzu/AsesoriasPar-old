@@ -123,6 +123,7 @@ class StudentService{
      * @throws InternalErrorException
      * @throws NotFoundException
      * @throws \App\Exceptions\Persistence\TransactionException
+     * @throws RequestException
      */
     public function updateStudent( $email, $student ){
 
@@ -133,23 +134,24 @@ class StudentService{
         $userServ = new UserService();
         $user = $userServ->getUser_ByStudentId( $student->getId() );
 
-        Persistence::initTransaction();
+        StudentsPersistence::initTransaction();
 
         try{
             $userServ->updateUserEmail( $user['id'], $email );
         }catch (RequestException $e){
-            Persistence::rollbackTransaction();
+            StudentsPersistence::rollbackTransaction();
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
         }
 
         //Verificamos si cambio el ID de itson
         if( $student_aux['itson_id'] != $student->getItsonId() ){
             $result = $this->isItsonIdExist( $student->getItsonId() );
             if( Utils::isError( $result->getOperation() ) ) {
-                Persistence::rollbackTransaction();
+                StudentsPersistence::rollbackTransaction();
                 throw new InternalErrorException("updateStudent", "Ocurrió un error al verificar id ITSON", $result->getErrorMessage());
             }
             else if( $result->getOperation() == true ) {
-                Persistence::rollbackTransaction();
+                StudentsPersistence::rollbackTransaction();
                 throw new ConflictException("ITSON id ya existe");
             }
         }
@@ -163,11 +165,11 @@ class StudentService{
         //Se actualizan datos de alumno
         $result = $this->perStudents->updateStudent( $student );
         if( Utils::isError( $result->getOperation() ) ) {
-            Persistence::rollbackTransaction();
+            StudentsPersistence::rollbackTransaction();
             throw new InternalErrorException("updateStudent", "Ocurrió un error al actualizar estudiante", $result->getErrorMessage());
         }
 
-        Persistence::commitTransaction();
+        StudentsPersistence::commitTransaction();
     }
 
 

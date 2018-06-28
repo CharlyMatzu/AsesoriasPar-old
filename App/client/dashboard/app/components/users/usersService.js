@@ -39,6 +39,17 @@ angular.module("Dashboard").service('UsersService', function( RequestFactory, Au
             AuthFactory.getToken()
         );
     }
+
+    this.updateUserPassword = function(user_id, pass){
+        return RequestFactory.makeTokenRequest(
+            'PUT',
+            "/users/"+user_id+"/password",
+            data = {
+                password: pass
+            },
+            AuthFactory.getToken()
+        );
+    }
     
     this.deleteUser = function(user_id){
         return RequestFactory.makeTokenRequest(

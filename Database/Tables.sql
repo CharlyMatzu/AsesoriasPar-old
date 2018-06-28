@@ -96,7 +96,7 @@ CREATE TABLE subject_similary(
 
 CREATE TABLE student(
 	student_id 				BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	itson_id 			VARCHAR(10) NOT NULL,
+	itson_id 			VARCHAR(11) NOT NULL,
 	first_name 			VARCHAR(100) NOT NULL,
 	last_name 			VARCHAR(100) NOT NULL,
 	phone 				VARCHAR(15) NULL,

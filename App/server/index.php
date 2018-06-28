@@ -143,8 +143,8 @@ $app->patch('/users/{id}/status/{status}', 'UserController:changeStatusUser')
 
 //Elimina a un usuario
 $app->delete('/users/{id}', 'UserController:deleteUser')
-        ->add('InputMiddleware:checkParam_Id');
-//        ->add('AuthMiddleware:requireAdmin');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireAdmin');
 
 
 

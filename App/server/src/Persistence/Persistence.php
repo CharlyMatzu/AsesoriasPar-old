@@ -9,8 +9,8 @@ use App\Utils;
 
 abstract class Persistence{
 
-    private static $TRANSACTION_NONE = 0;
-    private static $TRANSACTION_INIT = 1;
+    private static $TRANSACTION_NONE = false;
+    private static $TRANSACTION_INIT = true;
 //    private static $TRANSACTION_PROGRESS = 2;
 //    private static $TRANSACTION_COMMIT = 3;
 //    private static $TRANSACTION_ROLLBACK = 4;
@@ -129,7 +129,7 @@ abstract class Persistence{
 
         //Inicia transacción (correcto)
         if( self::$mysql->iniTransaction() ){
-            self::$transactionON = self::$TRANSACTION_INIT;
+            self::$transactionON = true;
         }
         else
             throw new TransactionException("No se pudo iniciar transacción");
@@ -143,11 +143,11 @@ abstract class Persistence{
      * @throws InternalErrorException
      */
     public static function commitTransaction(){
-        if( self::isTransactionON() ){
+        if( self::$transactionON ){
             //Se realiza el commit
             if( self::$mysql->doCommit() ){
                 //Se cambian los estados
-                self::$transactionON = self::$TRANSACTION_NONE;
+                self::$transactionON = false;
                 //Cierra conexión
                 self::closeConnection();
             }

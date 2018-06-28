@@ -143,7 +143,8 @@ class StudentsPersistence extends Persistence{
                       SET s.itson_id = '".$student->getItsonId()."',
                       s.first_name = '".$student->getFirstName()."', 
                       s.last_name = '".$student->getLastName()."',
-                      s.phone = '".$student->getPhone()."', 
+                      s.phone = '".$student->getPhone()."',
+                      s.facebook = '".$student->getFacebook()."', 
                       s.fk_career = '".$student->getCareer()."'
                   WHERE s.student_id = ".$student->getId();
         return  self::executeQuery($query);

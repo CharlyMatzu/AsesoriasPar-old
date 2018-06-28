@@ -227,7 +227,7 @@ class UserController
     {
         try {
             $user = new UserModel();
-            $pass = $req->getAttribute('password_update');
+            $pass = $req->getAttribute('password_data');
 
             $userServ = new UserService();
             $userServ->updateUserPassword( $params['id'], $pass  );

@@ -480,7 +480,7 @@ class UserService{
         //TODO: Cuando se haga update del correo, debe cambiarse status para confirmar
         //TODO: no debe eliminarse usuario con cron
         //Si cambio el email
-        if( $user_db !== $email ){
+        if( $user_db->getEmail() !== $email ){
             //Se obtiene
             $result = $this->isEmailUsed( $email );
             //Operación
@@ -488,13 +488,12 @@ class UserService{
                 throw new InternalErrorException( "updateUserEmail","Ocurrió un error al verificar email de usuario", $result->getErrorMessage());
             else if( $result->getOperation() == true )
                 throw new ConflictException( "Email ya existe" );
+
+            //Se actualiza usuario
+            $result = $this->userPer->updateUserEmail( $user_id, $email );
+            if( Utils::isError( $result->getOperation() ) )
+                throw new InternalErrorException( "updateUser","Ocurrió un error al actualizar email", $result->getErrorMessage());
         }
-
-        //Se actualiza usuario
-        $result = $this->userPer->updateUserEmail( $user_id, $email );
-        if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException( "updateUser","Ocurrió un error al actualizar email", $result->getErrorMessage());
-
     }
 
     /**

@@ -256,7 +256,7 @@ class InputParamsMiddleware extends Middleware
             !isset($params['itson_id']) || !isset($params['career'] ) ||
             !isset($params['facebook']) || !isset($params['phone']) )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
-                "Faltan Parámetros: Se requiere: first_name, last_name, itson_id, carrer, facebook");
+                "Faltan Parámetros: Se requiere: first_name, last_name, itson_id, carrer, facebook, phone");
 
         if( empty($params['first_name']) || empty($params['last_name']) ||
             empty($params['itson_id']) || empty($params['career']))

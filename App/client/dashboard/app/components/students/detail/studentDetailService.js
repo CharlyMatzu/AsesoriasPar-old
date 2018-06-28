@@ -50,18 +50,19 @@ angular.module("Dashboard").service('StudentDetailService', function( RequestFac
         );
     }
 
+
     this.updateStudent = function(student){
         return RequestFactory.makeTokenRequest(
             'PUT',
-            "/students/"+user_id,
+            "/students/"+student.id,
             data = {
-                career: student.career,
-                first_name: status.first_name,
+                career: student.career_id,
+                first_name: student.first_name,
                 last_name: student.last_name,
                 itson_id: student.itson_id,
-                phone: status.phone,
-                facebook: status.facebook,
-                email: status.email
+                phone: student.phone,
+                facebook: student.facebook,
+                email: student.user_email
             },
             AuthFactory.getToken()
         );

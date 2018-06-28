@@ -1,4 +1,4 @@
-angular.module("Dashboard").controller('StudentDetailController', function($scope,  $window, Notification, StudentDetailService, CareerService, $routeParams, STATUS){
+angular.module("Dashboard").controller('StudentDetailController', function($scope,  $window, Notification, StudentDetailService, CareerService, UsersService, $routeParams, STATUS){
 
     $scope.page.title = "Estudiante > Detalle";
     
@@ -91,8 +91,6 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
                     $scope.student = success.data;
                     //Se obtienen horario
                     return StudentDetailService.getStudentSchedule( id );
-
-                    
                 })
                 
                 //Promesa horario
@@ -143,7 +141,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
             .then(function(success){
                 Notification.success("Habilitado con exito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
-                $scope.getStudent();
+                $scope.loadData();
             },
             function(error){
                 Notification.error("Error al Habilitar Estudiante");
@@ -166,7 +164,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         StudentDetailService.changeStatus(user_id, DISABLED) 
             .then(function(success){
                 Notification.success("Deshabilitado con exito");
-                $scope.getStudent();
+                $scope.loadData();
             },
             function(error){
                 Notification.error("Error al deshabilitar Estudiante: "+ error.data);
@@ -182,34 +180,51 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         StudentDetailService.updateStudent(student)
             .then(function(success){
                 Notification.success("Actualizado con éxito");
-                $scope.getStudent();
+                $scope.loadData();
             }, function(error){
                 Notification.error("Ocurrio un error al actualizar: "+error.data);
                 $scope.loading = false;
             });        
     }
 
+    $scope.updateUserPassword = function(pass){
 
-    // /**
-    //  * 
-    //  * @param {int} user_id ID del Estudiante
-    //  */
-    // $scope.deleteStudent = function(user_id){
-    //     //Deshabilita botones
-    //     $scope.disableButtons(true, '.opt-student-'+user_id);
+        if( pass.first !== pass.last ){
+            Notification.warning("No coinciden contraseñas");
+            return;
+        }
 
-    //     StudentDetailService.deleteStudent(user_id)
-    //         .then(function(success){
-    //             Notification.success("Estudiante eliminado con exito");
-    //             $scope.getStudent();
-    //         },
-    //         function(error){
-    //             Notification.error("Error al eliminar Estudiante");
-    //             //Habilita botones
-    //             $scope.disableButtons(false, '.opt-student-'+user_id);
-    //         }
-    //     );
-    // }
+        UsersService.updateUserPassword($scope.student.user_id, pass.last)
+            .then(function(success){
+                Notification.success("Contraseña actualizada");
+                $scope.loadData();
+                //Limpiando
+                pass.first = "";
+                pass.last = "";
+            }, function(error){
+                Notification.error("Ocurrio un error: "+error.data);
+            });
+    };
+
+
+    /**
+     * 
+     * @param {int} user_id ID del Estudiante
+     */
+    $scope.deleteStudent = function(user_id){
+        //Deshabilita botones
+        $scope.disableButtons(true, '.opt-student-'+user_id);
+
+        StudentDetailService.deleteStudent(user_id)
+            .then(function(success){
+                Notification.success("Estudiante eliminado con exito");
+                $window.location = "#!/estudiantes";
+            },
+            function(error){
+                Notification.error("Error al eliminar Estudiante");
+            }
+        );
+    }
 
 
     //Se carguen datos al iniciar pagina

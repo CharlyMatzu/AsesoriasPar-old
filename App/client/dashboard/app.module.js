@@ -64,21 +64,17 @@ angular.module("Dashboard")
     })
 
     .factory('UtilsFactory', function(AuthFactory, $window){
-
-        var work = false;
         
         return {
             isAdmin: function(){
-                return AuthFactory.getUser().role === 'administrator';
+                // return AuthFactory.getUser().role === 'administrator';
+                return true;
             },
 
             //Si no es administrador, redirecciona (utilizado en routes)
             onlyAdmin_Redirect: function(){
-                if( work ){
-                    if( !this.isAdmin() )
-                        $window.location = "#!/";
-                }
-                return true;
+                if( !this.isAdmin() )
+                    $window.location = "#!/";
                 
             }
         };            

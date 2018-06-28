@@ -52,7 +52,7 @@
 
                             <button ng-show="student.status === 'ACTIVE'" class="btn btn-warning" ng-click="disable(student.user_id)">Deshabilitar</button>
                             
-                            <button class="btn btn-danger">Eliminar</button>
+                            <button ng-click="deleteStudent(student.user_id)" class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="phone">Teléfono</label>
-                                    <input type="text" id="phone" class="form-control" ng-model="student.phone">
+                                    <input type="text" id="phone" minlength="7" maxlength="10" class="form-control" ng-model="student.phone">
                                 </div>
                                 
                                 
@@ -112,7 +112,7 @@
                                 <div class="form-group">
                                     <label for="career">Carrera</label>
                                     <select id="career" class="form-control" ng-model="student.career_id" required>
-                                        <option ng-repeat="c in careers" value="{{c.id}}"{{c.name}}></option>
+                                        <option ng-repeat="c in careers" value="{{c.id}}"> {{c.name}} </option>
                                     </select>
                                 </div>
                             </div>
@@ -140,20 +140,20 @@
                 </div>
                 <div class="card-body">
                     <!-- password -->
-                    <form>
+                    <form ng-submit="updateUserPassword(pass)">
                         <div class="form-group">
                             <label for="pass">Contraseña</label>
-                            <input type="password" id="pass" class="form-control">
+                            <input type="password" id="pass" class="form-control" required ng-model="pass.first">
                         </div>
 
 
                         <div class="form-group">
                             <label for="pass2">Re-ingresar Contraseña</label>
-                            <input type="password" id="pass2" class="form-control">
+                            <input type="password" id="pass2" class="form-control" required ng-model="pass.last">
                         </div>
 
                         <div class="options">
-                            <button class="btn btn-success">Guardar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
                     </form>
                     <!-- end password -->
