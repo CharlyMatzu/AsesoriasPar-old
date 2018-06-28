@@ -102,6 +102,10 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
      * @param {int} user_id ID del Estudiante
      */
     $scope.deleteStudent = function(user_id){
+        var message = "Se eliminará el estudiante ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
@@ -124,11 +128,38 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
      * @param {int} user_id ID del Estudiante
      */
     $scope.disableStudent = function(user_id){
+        var message = "Se desactivará acceso y aparición del estudiante ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
         Notification('Procesando...');
         StudentsService.changeStatus(user_id, DISABLED)
+            .then(function(success){
+                Notification.success("Deshabilitado con exito");
+                $scope.getStudents();
+            },
+            function(error){
+                Notification.error("Error al deshabilitar Estudiante");
+                //Habilita botones
+                $scope.disableButtons(false, '.opt-student-'+user_id);
+            }
+        );
+    };
+
+    /**
+     * 
+     * @param {int} user_id ID del Estudiante
+     */
+    $scope.enableStudent = function(user_id){
+
+        //Deshabilita botones
+        $scope.disableButtons(true, '.opt-student-'+user_id);
+
+        Notification('Procesando...');
+        StudentsService.changeStatus(user_id, ACTIVE)
             .then(function(success){
                 Notification.success("Deshabilitado con exito");
                 $scope.getStudents();

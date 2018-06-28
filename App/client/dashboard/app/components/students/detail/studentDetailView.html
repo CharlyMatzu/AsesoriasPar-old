@@ -52,7 +52,7 @@
 
                             <button ng-show="student.status === 'ACTIVE'" class="btn btn-warning" ng-click="disable(student.user_id)">Deshabilitar</button>
                             
-                            <button ng-click="deleteStudent(student.user_id)" class="btn btn-danger">Eliminar</button>
+                            <button ng-if="isAdmin()" ng-click="deleteStudent(student.user_id)" class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>
                 </div>

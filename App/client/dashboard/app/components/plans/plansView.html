@@ -59,7 +59,7 @@
                                     <button ng-click="editPlan(p)" class="opt-plan-{{p.id}} btn btn-primary">Editar</button>
                                     <button ng-show="p.status === 'DISABLED'" ng-click="enablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-success">Habilitar</button>
                                     <button ng-show="p.status === 'ACTIVE'" ng-click="disablePlan(p.id)" class="opt-plan-{{p.id}} btn btn-warning">Deshabilitar</button>
-                                    <button ng-click="deletePlan(p.id)" class="opt-plan-{{p.id}} btn btn-danger">Eliminar</button>
+                                    <button ng-if="isAdmin()" ng-click="deletePlan(p.id)" class="opt-plan-{{p.id}} btn btn-danger">Eliminar</button>
                                 </td>
                             </tr>
                         </table>

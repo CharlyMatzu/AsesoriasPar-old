@@ -69,6 +69,11 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
 
 
     $scope.updateCareer = function(career){
+
+        var message = "Se actualizará Carrera ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         Notification("Procesando...");
         
         CareerService.updateCareer(career)
@@ -87,6 +92,10 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
     
 
     $scope.deleteCareer = function(career_id){
+
+        var message = "Se eliminarán todos los alumnos y materias asociados a dicha carrera ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
 
         Notification("Procesando...");
         //Deshabilita botones
@@ -109,6 +118,10 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
      * @param {*} career_id 
      */
     $scope.disableCareer = function(career_id){
+        var message = "No estará disponible para su uso ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         $scope.disableButtons(true, '.opt-career-'+career_id);
         Notification("Procesando...");
 

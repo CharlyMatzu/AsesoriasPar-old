@@ -104,6 +104,10 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
 
     $scope.updatePeriod = function(period){
 
+        var message = "¿Seguro que desea actualizar el periodo?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Validacion
         if( period.end <= period.start ){
             Notification.warning("Fecha de termino debe ser posterior a la de inicio");
@@ -134,6 +138,11 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
 
     $scope.deletePeriod = function(period_id){
 
+        var message = "Todos los horarios y asesorías registrasdas en dicho periodo serán eliminados ¿Desea continuar?";
+
+        if( !$scope.confirm(message) )
+            return;
+
         Notification("Procesando...");
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-period-'+period_id);
@@ -155,6 +164,11 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
      * @param {*} period_id 
      */
     $scope.disablePeriod = function(period_id){
+
+        var message = "No se podran solicitar asesorías en dicho periodo ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         $scope.disableButtons(true, '.opt-period-'+period_id);
         Notification("Procesando...");
 

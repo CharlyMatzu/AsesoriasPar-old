@@ -8,7 +8,7 @@
                         <button ng-click="goToNewUser()" class="btn btn-primary basic-right-margin">
                             <i class="fa fa-plus"></i> Nuevo usuario
                         </button>
-                        <button ng-click="getUsers()" ng-disabled="loading.status" class="btn btn-primary basic-right-margin">
+                        <button ng-click="getUsers()" ng-disabled="loading" class="btn btn-primary basic-right-margin">
                                 <i class="fa fa-refresh"></i> Recargar
                         </button>
                         <!-- Search -->
@@ -97,6 +97,7 @@
                     <h4 class="m-b-0 text-white">Actualizar usuario</h4>
                 </div>
                 <div class="card-body">
+                    
                     <!-- _______Form________ -->
                     <form ng-submit="updateUser(user)">
                         <!-- hidden input id -->
@@ -106,17 +107,7 @@
                             <label for="email">Correo electronico</label>
                             <input type="email" id="email" ng-model="user.email" class="form-control" placeholder="Correo electronico" required>
                         </div>
-    
-                        <div class="form-group">
-                            <label for="pass">Contraseña</label>    
-                            <input type="password" id="pass" ng-model="user.pass" class="form-control" placeholder="Contraseña" required>
-                        </div>
-    
-                        <div class="form-group">
-                            <label for="pass2">Re-ingresar Contraseña</label>    
-                            <input type="password" id="pass2" ng-model="user.pass2" class="form-control" placeholder="Contraseña" required>
-                        </div>
-    
+
                         <div class="form-group">
                             <label for="role">Rol de usuario</label>    
                             <select id="role" ng-model="user.role" class="form-control" required>
@@ -124,12 +115,30 @@
                                 <option value="administrator">Administrador</option>
                             </select>
                         </div>
-    
+
                         <div class="form-actions">
-                            <button type="submit" ng-disabled="loading.status" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
+                            <button type="submit" ng-disabled="loading" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
                             <button type="reset" class="btn btn-inverse">Limpiar</button>
-                            <button type="button" ng-click="showUpdateUser = false" class="btn btn-default">Cancelar</button>
-                            <span ng-show="loading.status"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
+                        </div>
+                    </form>
+    
+                    <!-- password -->
+                    <formn ng-submit="updatePass(pass)">
+                        <div class="form-group">
+                            <label for="pass">Contraseña</label>    
+                            <input type="password" id="pass" ng-model="pass.pass" class="form-control" placeholder="Contraseña" required>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="pass2">Re-ingresar Contraseña</label>    
+                            <input type="password" id="pass2" ng-model="pass.pass2" class="form-control" placeholder="Contraseña" required>
+                        </div>
+
+                        <div class="form-actions" >
+                            <button type="submit" ng-disabled="loading" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
+                            <button type="reset" class="btn btn-inverse">Limpiar</button>
+                            <button type="button" ng-click="showUpdateUser = false" class="btn btn-outline-danger">Cancelar</button>
+                            <span ng-show="loading"><i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></span>
                         </div>
                     </form>
                 </div>

@@ -59,10 +59,12 @@
                                     <span ng-show="c.status === 'ACTIVE'" class="badge badge-success">Activo</span>
                                 </td>
                                 <td>
-                                    <button ng-click="editCareer(c)" class="opt-career-{c.id}} btn btn-primary">Editar</button>
-                                    <button ng-show="c.status === 'DISABLED'" ng-click="enableCareer(c.id)" class="opt-career-{c.id}} btn btn-success">Habilitar</button>
-                                    <button ng-show="c.status === 'ACTIVE'" ng-click="disableCareer(c.id)" class="opt-career-{c.id}} btn btn-warning">Deshabilitar</button>
-                                    <button ng-click="deleteCareer(c.id)" class="opt-career-{c.id}} btn btn-danger">Eliminar</button>
+                                    <div class="options" ng-if="isAdmin()">
+                                        <button ng-click="editCareer(c)" class="opt-career-{c.id}} btn btn-primary">Editar</button>
+                                        <button ng-show="c.status === 'DISABLED'" ng-click="enableCareer(c.id)" class="opt-career-{c.id}} btn btn-success">Habilitar</button>
+                                        <button ng-show="c.status === 'ACTIVE'" ng-click="disableCareer(c.id)" class="opt-career-{c.id}} btn btn-warning">Deshabilitar</button>
+                                        <button ng-if="isAdmin()" ng-click="deleteCareer(c.id)" class="opt-career-{c.id}} btn btn-danger">Eliminar</button>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

@@ -120,7 +120,7 @@
                             <button ng-click="editSubject(s)" class="opt-subject-{s.id}} btn btn-primary">Editar</button>
                             <button ng-show="s.status === 'DISABLED'" ng-click="enableSubject(s.id)" class="opt-subject-{s.id}} btn btn-success">Habilitar</button>
                             <button ng-show="s.status === 'ACTIVE'" ng-click="disableSubject(s.id)" class="opt-subject-{s.id}} btn btn-warning">Deshabilitar</button>
-                            <button ng-click="deleteSubject(s.id)" class="opt-subject-{s.id}} btn btn-danger">Eliminar</button>
+                            <button ng-if="isAdmin()" ng-click="deleteSubject(s.id)" class="opt-subject-{s.id}} btn btn-danger">Eliminar</button>
                         </td>
                     </tr>
                 </table>

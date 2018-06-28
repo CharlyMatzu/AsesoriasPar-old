@@ -166,6 +166,10 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
     $scope.updateSubject = function(subject){
 
+        var message = "Se actualizará materia ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         Notification("Procesando...");
 
         if( !subject.career_id ){
@@ -201,6 +205,9 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
     
 
     $scope.deleteSubject = function(subject_id){
+        var message = "Se eliminarán todas las asesorías y horarios asociadas a dicha materia ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
 
         Notification("Procesando...");
         //Deshabilita botones
@@ -223,6 +230,10 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
      * @param {*} subject_id 
      */
     $scope.disableSubject = function(subject_id){
+        var message = "No estará disponible para su usof ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         $scope.disableButtons(true, '.opt-subject-'+subject_id);
         Notification("Procesando...");
 

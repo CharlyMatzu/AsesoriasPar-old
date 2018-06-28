@@ -302,7 +302,9 @@
       flex: 1;
       border: 1px solid #212121;
       cursor: pointer;
-      background-color: #f8f8f8; }
+      background-color: #f8f8f8;
+      max-height: 500px;
+      overflow-y: scroll; }
       .email-container .mail-search .result .item {
         padding: 5px 10px;
         border-bottom: 1px solid #c5c5c5; }

@@ -1,6 +1,5 @@
 {
   "mode": "develop",
-  "nota": "para cambiar la conexión, debes cambiar el MODE por el nombre del objeto de conexión de alguno de abajo",
   "connection": {
     "production": {
       "host": "localhost",

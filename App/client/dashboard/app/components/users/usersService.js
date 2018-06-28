@@ -20,12 +20,22 @@ angular.module("Dashboard").service('UsersService', function( RequestFactory, Au
 
     this.updateUser = function(user){
         return RequestFactory.makeTokenRequest(
-            'POST',
+            'PUT',
             "/users/"+user.id,
             data = {
                 email: user.email,
-                password: user.pass,
                 role: user.role
+            },
+            AuthFactory.getToken()
+        );
+    }
+
+    this.updatePassword = function(pass){
+        return RequestFactory.makeTokenRequest(
+            'PUT',
+            "/users/"+user.id+"/password",
+            data = {
+                password: pass,
             },
             AuthFactory.getToken()
         );

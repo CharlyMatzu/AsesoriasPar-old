@@ -250,15 +250,16 @@ class UsersPersistence extends Persistence{
     }
 
     /**
-     * @param $user UserModel objeto tipo User con la información de registro
+     * @param $id int
+     * @param $role String
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function updateUserRole( $user ){
+    public function updateUserRole( $id, $role ){
         $query = "UPDATE user u
-                         SET    u.fk_role = '".$user->getRole()."'   
-                         WHERE  u.user_id = ".$user->getId();
+                         SET    u.fk_role = '$role'   
+                         WHERE  u.user_id = $id";
         return  self::executeQuery($query);
     }
 

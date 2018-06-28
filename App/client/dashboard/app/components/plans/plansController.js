@@ -45,11 +45,11 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
      * @param {String} plan 
      */
     var validatePlan = function(plan){
-        if( plan.length != 4 )
-            return "deben ser 4 digitos";
+        // if( plan.length != 4 )
+        //     return "deben ser 4 digitos";
 
-        if( !Number.isInteger(plan) )
-            return "Debe ser numerico entero";
+        // if( !Number.isInteger(plan) )
+        //     return "Debe ser numerico entero";
 
         return null;
     }
@@ -89,6 +89,10 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
 
     $scope.updatePlan = function(plan){
+        var message = "Se actualizará plan ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         if( validatePlan(plan) ){
             Notification.error( validatePlan(plan) );
             return;
@@ -108,6 +112,9 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
 
     $scope.deletePlan = function(plan_id){
+        var message = "Las materias asociadas a dicho periodo serán eliminadas ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
 
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-plan-'+plan_id);
@@ -153,6 +160,11 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
      * @param {int} plan_id ID del plan
      */
     $scope.disablePlan = function(plan_id){
+
+        var message = "Las materias asociadas a dicho periodo no estaran disponibles ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-plan-'+plan_id);
 

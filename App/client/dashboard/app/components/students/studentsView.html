@@ -82,7 +82,7 @@
                                     <button ng-show="s.status === 'DISABLED'" ng-click="enableStudent(s.user_id)" class="opt-student-{{s.user_id}} btn btn-success">Habilitar</button>
                                     <!-- <button ng-show="s.status === 'PENDING'" ng-click="" class="opt-student-{{s.user_id}} btn btn-primary">Reenviar</button> -->
                                     <button ng-show="s.status === 'ACTIVE'" ng-click="disableStudent(s.user_id)" class="opt-student-{{s.user_id}} btn btn-warning">Deshabilitar</button>
-                                    <button ng-click="deleteStudent(s.user_id)" class="opt-student-{{s.user_id}} btn btn-danger">Eliminar</button>
+                                    <button nf-if="isAdmin()" ng-click="deleteStudent(s.user_id)" class="opt-student-{{s.user_id}} btn btn-danger">Eliminar</button>
                                 </td>
                             </tr>
                         </table>

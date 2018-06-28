@@ -20,12 +20,7 @@ angular.module("Dashboard")
 
             .when("/carreras", {
                 controller: "CareersController",
-                templateUrl: "app/components/careers/careersView.html",
-                resolve: {
-                    check: function(UtilsFactory){
-                        UtilsFactory.onlyAdmin_Redirect();
-                    }
-                }
+                templateUrl: "app/components/careers/careersView.html"
             })
 
             //--------- MATERIAS

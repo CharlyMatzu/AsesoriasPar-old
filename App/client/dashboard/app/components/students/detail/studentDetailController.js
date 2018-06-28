@@ -157,6 +157,10 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
      * @param {int} user_id ID del Estudiante
      */
     $scope.disable = function(user_id){
+        var message = "Se deshabilitará el estudiante ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-student-'+user_id);
 
@@ -175,6 +179,15 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     }
 
     $scope.updateStudentData = function(student){
+        var message = "Se actualizarán los datos del estudiante ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
+        if( !student.facebook )
+            student.facebook = "";
+        if( !student.phone )
+            student.phone = "";
+
         $scope.loading = true;
 
         StudentDetailService.updateStudent(student)
@@ -188,6 +201,9 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
     }
 
     $scope.updateUserPassword = function(pass){
+        var message = "Se actualizará contraseña ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
 
         if( pass.first !== pass.last ){
             Notification.warning("No coinciden contraseñas");
@@ -212,6 +228,10 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
      * @param {int} user_id ID del Estudiante
      */
     $scope.deleteStudent = function(user_id){
+        var message = "Se eliminará el estudiante ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-student-'+user_id);
 

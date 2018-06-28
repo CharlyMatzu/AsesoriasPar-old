@@ -109,7 +109,7 @@ $app->post('/users', 'UserController:createUser')
 
 
 //TODO: VALIDAR AUTH
-//TODO: cambiar por solo cambio de password y de email separados
+//TODO: mover a authController
 //Actualiza datos de usuario
 $app->put('/users/{id}/email', 'UserController:updateUserEmail')
         ->add('InputMiddleware:checkData_Email')
@@ -124,13 +124,24 @@ $app->put('/users/{id}/password', 'UserController:updateUserPassword')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireStaff');
 
-
 //TODO: VALIDAR AUTH
-//Se actualiza rol
-$app->put('/users/{id}/role', 'UserController:updateUserRole')
+//Actualiza usuario
+$app->put('/users/{id}', 'UserController:updateUser')
+        ->add('InputMiddleware:checkData_Email')
         ->add('InputMiddleware:checkData_Role')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireStaff');
+
+
+
+
+
+//TODO: VALIDAR AUTH
+//Se actualiza rol
+//$app->put('/users/{id}/role', 'UserController:updateUserRole')
+//        ->add('InputMiddleware:checkData_Role')
+//        ->add('InputMiddleware:checkParam_Id')
+//        ->add('AuthMiddleware:requireStaff');
 
 
 

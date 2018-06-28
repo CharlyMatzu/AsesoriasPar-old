@@ -120,7 +120,10 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         if( !validate(user) )
             return;
 
-        $scope.showUpdateUser = false;
+        var message = "Se actualizarán datos de acceso ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         $scope.loading = true;
 
         //Deshabilita botones
@@ -141,12 +144,46 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
             });
     }
 
+    $scope.updatePass = function(pass){
+        if( pass.pass !== pass.pass2 ){
+            Notification.warning("Contraseñas no coinciden")
+            return;
+        }
+
+        var message = "Se actualizará contraseña ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
+        $scope.loading = true;
+
+        //Deshabilita botones
+        $scope.disableButtons(true, '.opt-user-'+user.id);
+
+        UsersService.updatePassword(pass.pass)
+            .then(function(success){
+                Notification.success("Actualizado con exito");
+                $scope.showUpdateUser = false;
+                $scope.getUsers();
+            },
+            function(error){
+                Notification.error("Error: "+error.data);
+                //Habilita botones
+                $scope.disableButtons(false, '.opt-user-'+user.id);
+                $scope.loading = false;
+                $scope.showUpdateUser = false;
+            });
+    }
+
 
     /**
      * 
      * @param {int} user_id ID del usuario
      */
     $scope.deleteUser = function(user_id){
+        var message = "Se eliminará usuario ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-user-'+user_id);
 
@@ -190,6 +227,10 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
      * @param {int} user_id ID del usuario
      */
     $scope.disableUser = function(user_id){
+        var message = "Se deshabilitará usuario ¿Desea continuar?";
+        if( !$scope.confirm(message) )
+            return;
+
         //Deshabilita botones
         $scope.disableButtons(true, '.opt-user-'+user_id);
 

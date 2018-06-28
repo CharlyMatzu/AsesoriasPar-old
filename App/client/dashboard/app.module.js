@@ -19,6 +19,10 @@ angular.module("Dashboard")
             message: "",
         };
 
+        $rootScope.confirm = function(message){
+            return confirm(message);
+        }
+
 
         //-----------FUNCIONES GLOBALES
         /**

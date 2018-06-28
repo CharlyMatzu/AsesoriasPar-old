@@ -9,6 +9,7 @@ use App\Exceptions\Request\NoContentException;
 use App\Exceptions\Request\NotFoundException;
 use App\Exceptions\Request\RequestException;
 use App\Model\StudentModel;
+use App\Persistence\Persistence;
 use App\Persistence\StudentsPersistence;
 use App\Persistence\UsersPersistence;
 use App\Model\UserModel;
@@ -538,26 +539,56 @@ class UserService{
 
 
     /**
+     * @param $id int
      * @param $user UserModel
      *
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws TransactionException
+     * @throws RequestException
+     */
+    public function updateUser($id, $user)
+    {
+        //Comprobando que existe
+        $this->getUser_ById( $id );
+
+        Persistence::initTransaction();
+
+        try{
+            $this->updateUserEmail( $id, $user->getEmail() );
+
+            $this->updateUserRole( $id, $user->getRole() );
+        }catch (RequestException $e){
+            Persistence::rollbackTransaction();
+            throw new RequestException( $e->getMessage(), $e->getStatusCode() );
+        }
+
+        Persistence::commitTransaction();
+
+    }
+
+
+    /**
+     * @param $id int
+     * @param $role String
+     * @throws InternalErrorException
+     * @throws NotFoundException
      * @throws ConflictException
      */
-    public function updateUserRole($user){
+    public function updateUserRole( $id, $role ){
 
-        $result = $this->getUser_ById( $user->getId() );
+        $result = $this->getUser_ById( $id );
         $user_db = self::makeUserModel( $result );
 
         //Si cambio el rol
-        if( $user_db !== $user->getRole() ){
+        if( $user_db !== $role ){
 
             //Si es estudiante
             if( Auth::isRoleBasic( $user_db->getRole() ) )
                 throw new ConflictException("No puede cambiarse rol de estudiante");
 
             //Se verifica rol
-            $result = $this->isRoleExists( $user->getRole() );
+            $result = $this->isRoleExists( $role );
             if( Utils::isError( $result->getOperation() ) )
                 throw new InternalErrorException( "updateUserRole","Ocurrió un error al verificar rol", $result->getErrorMessage());
             else if( $result->getOperation() == false )
@@ -565,7 +596,7 @@ class UserService{
         }
 
         //Se actualiza usuario
-        $result = $this->userPer->updateUserRole( $user );
+        $result = $this->userPer->updateUserRole( $id, $role );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "updateUserRole","Ocurrió un error al actualizar rol", $result->getErrorMessage());
     }
