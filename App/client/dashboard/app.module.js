@@ -1,4 +1,4 @@
-angular.module("Dashboard", ['ngRoute', 'ui-notification', 'LocalStorageModule', 'HostModule', 'AuthModule', 'angularTrix']);
+angular.module("Dashboard", ['ngRoute', 'ui-notification', 'LocalStorageModule', 'HostModule', 'AuthModule']);
 
 angular.module("Dashboard")
     //Cuando iniciar el modulo

@@ -687,7 +687,8 @@ li {
 }
 p {
   font-family: 'Poppins', sans-serif;
-  color: #99abb4;
+  /* color: #99abb4; */
+  color: #000;
 }
 .h2,
 .h3,
@@ -1572,24 +1573,24 @@ textarea {
   list-style: none;
 }
 .sidebar-nav ul li a {
-  color: #607d8b;
+  color: #212121;
   padding: 7px 35px 7px 15px;
   display: block;
   font-size: 14px;
   white-space: nowrap;
 }
 .sidebar-nav ul li a:hover {
-  color: #1976d2;
+  color: #1c67b3;
 }
 .sidebar-nav ul li a:hover i {
-  color: #1976d2;
+  color: #1c67b3;
 }
 .sidebar-nav ul li a.active {
-  color: #1976d2;
+  color: #1c67b3;
   font-weight: 500;
 }
 .sidebar-nav ul li a.active i {
-  color: #1976d2;
+  color: #1c67b3;
 }
 .sidebar-nav ul li ul {
   padding-left: 28px;
@@ -4114,10 +4115,10 @@ table.dataTable thead .sorting::after {
   font-size: 20px;
   color: #ffffff;
 }
-[contenteditable]:hover,
+/* [contenteditable]:hover,
 [contenteditable]:focus {
   background: #93b5ff;
-}
+} */
 .control-bar {
   position: relative;
   z-index: 100;

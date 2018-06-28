@@ -1,8 +1,70 @@
 <div class="container-fluid">
     <div class="card col-lg-12">
+            
+        <!-- editor container -->
+        <div class="email-container">
 
-            <trix-editor ng-model="trix" angular-trix trix-initialize="trixInitialize(e, editor);" trix-change="trixChange(e, editor);" trix-selection-change="trixSelectionChange(e, editor);" trix-focus="trixFocus(e, editor);" trix-blur="trixBlur(e, editor);" trix-file-accept="trixFileAccept(e, editor);" trix-attachment-add="trixAttachmentAdd(e, editor);" trix-attachment-remove="trixAttachmentRemove(e, editor);"></trix-editor>
+            <!-- search -->
+            <div class="mail-search col-xs-12 col-md-5 col-lg-3">
+                <h3>Emails</h3>
+                <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><span class="fa fa-search"></span></div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Buscar" ng-model="search">
+                </div>
+                
+                <div class="result">
+                    <div class="item">
+                        <span class="email">c_01_12@hotmail.com</span>
+                        <span class="student-name">Carlos Zuñiga</span>
+                        <span class="role">Basic</span>
+                    </div>
 
+                    <div class="item">
+                        <span class="email">c_01_12@hotmail.com</span>
+                        <span class="role">Admin</span>
+                    </div>
+                </div>
+            </div>
+            <!-- end search -->
+            
+            <div class="mail-form col-xs-12 col-md-7 col-lg-9">
+                <form ng-submit="sendEmail()">
+        
+                    <label for="">Asunto:</label>
+                    <input type="text" class="form-control" ng-model="mail.subject">
+                    <br>
+        
+                    <label for="">Correos, separados por una coma</label>
+                    <input type="text" class="form-control" ng-model="mail.emails">
+                    <br>
+                    
+                    <div id="editor-container">
+                        <p><br></p>
+                    </div>
+                    <br>
+        
+                    <button type="submit" class="btn btn-success">
+                        <span class="fa fa-send"></span> Enviar
+                    </button>
+                    <button type="reset" class="btn btn-dark">
+                        <span class="fa fa-trash"></span> Limpiar
+                    </button>
+                </form>
+            </div>
+        </div>
 
     </div>
 </div>
+
+
+<style>
+    /* #editor-container{
+        min-height: 300px;
+    } */
+
+    #editor-container .ql-editor{
+        height: 300px;
+    }
+</style>
