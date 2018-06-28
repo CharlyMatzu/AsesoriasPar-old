@@ -40,7 +40,7 @@ class ScheduleService{
 
     /**
      * @param $studentId int
-     *
+     * Obtiene horario actual de estudiante por id
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NoContentException
@@ -126,8 +126,6 @@ class ScheduleService{
         return $this->formatSchedule($result->getData());
     }
 
-
-
     /**
      * @param $id
      * @return \mysqli_result|null
@@ -164,10 +162,9 @@ class ScheduleService{
         return $result->getData();
     }
 
-
     /**
      * @param $subject_id int
-     *
+     * Obtiene asesores por materia ID
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
@@ -191,7 +188,7 @@ class ScheduleService{
 
     /**
      * @param $studentId int
-     *
+     * Agrega un nuevo horario
      * @throws RequestException
      */
     public function insertSchedule($studentId)
@@ -249,7 +246,7 @@ class ScheduleService{
     /**
      * @param $scheduleid int
      * @param $newHours array
-     *
+     * Agrega horas de horario
      * @throws InternalErrorException
      */
     public function insertScheduleHours($scheduleid, $newHours){
@@ -367,7 +364,11 @@ class ScheduleService{
         return $schedule;
     }
 
-
+    /**
+     * Crea arreglo de dias y horas
+     * @param $hd
+     * @return Schedule
+     */
     public static function makeHoursAndDaysArray($hd){
         $hoursAndDays = [
             'id'  => $hd['id'],
@@ -380,7 +381,7 @@ class ScheduleService{
     /**
      * @param $scheduleId int
      * @param $newHours array
-     *
+     * Actualiza horas de horario 
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -446,7 +447,7 @@ class ScheduleService{
     /**
      * @param $scheduleId int
      * @param $status int
-     *
+     * Cambia status de horario
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -472,7 +473,7 @@ class ScheduleService{
     /**
      * @param $scheduleId int
      * @param $newSubjects array
-     *
+     * Actualiza materias de horario
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -545,7 +546,7 @@ class ScheduleService{
 
     /**
      * @param $hourId int
-     *
+     * Deshabilita hora
      * @throws InternalErrorException
      */
     private function disableHour($hourId)
@@ -560,7 +561,7 @@ class ScheduleService{
 
     /**
      * @param $hourId INT
-     *
+     * Habilita hora
      * @throws InternalErrorException
      */
     private function enableHour($hourId)
@@ -576,7 +577,7 @@ class ScheduleService{
 
     /**
      * @param $subId int
-     *
+     * Deshabilita materia
      * @throws InternalErrorException
      */
     private function disableSubjec($subId)
@@ -591,7 +592,7 @@ class ScheduleService{
 
     /**
      * @param $subId INT
-     *
+     * Habilita materia
      * @throws InternalErrorException
      */
     private function enableSubject($subId)
@@ -605,7 +606,7 @@ class ScheduleService{
     /**
      * @param $subject_id int
      * @param $subjects array|\mysqli_result
-     *
+     * Verifica si arreglo contiene a la materia
      * @return bool
      */
     private function isSubjectInArray($subject_id, $subjects)
@@ -622,7 +623,7 @@ class ScheduleService{
     /**
      * @param $hour_id int
      * @param $hours array
-     *
+     * Verifica si hora ya existe en el horario
      * @return bool
      */
     private function isHoursInArray($hour_id, $hours)
@@ -638,6 +639,7 @@ class ScheduleService{
     }
 
     /**
+     * Formato de horario
      * @param $schedule array|\mysqli_result
      * @return array
      */
@@ -687,8 +689,4 @@ class ScheduleService{
         }
         return $formatedSchedule;
     }
-
-
-
-
 }

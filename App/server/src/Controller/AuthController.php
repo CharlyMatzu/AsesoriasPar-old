@@ -11,9 +11,9 @@ class AuthController
 {
     /**
      * @param $req Request
-     * @param $res Response
-     *
+     * @param $res Response     
      * @return mixed|Response
+     * Auth to user with the email and passwrod of parameter
      */
     public function authenticate($req, $res)
     {

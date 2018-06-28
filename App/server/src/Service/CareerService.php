@@ -112,6 +112,7 @@ class CareerService{
      * @param $short_name
      * @throws ConflictException
      * @throws InternalErrorException
+     * Agrega una carrera
      */
     public function insertCareers( $name, $short_name ){
 
@@ -196,7 +197,7 @@ class CareerService{
     }
 
     /**
-     * Meotodo para eliminar una carrera mediante el ID
+     * Meotodo para deshabilitar una carrera mediante el ID
      * @param $careerID
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -212,7 +213,7 @@ class CareerService{
 
 
     /**
-     * Meotodo para eliminar una carrera mediante el ID
+     * Metodo para habilitar una carrera mediante el ID
      *
      * @param $careerID
      *

@@ -18,6 +18,7 @@ class PlanService{
     }
 
     /**
+     * Obtiene todos los planes registrados
      * @throws InternalErrorException
      * @throws NoContentException
      * @return \mysqli_result
@@ -37,6 +38,7 @@ class PlanService{
 
 
     /**
+     * Obtiene plan por ID
      * @param $planId int
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -56,6 +58,7 @@ class PlanService{
     }
 
     /**
+     * Crea un nuevo plan
      * @param $year string
      * @throws InternalErrorException
      * @throws ConflictException
@@ -76,6 +79,7 @@ class PlanService{
     }
 
     /**
+     * actualiza plan
      * @param $planId int
      * @param $year string
      *
@@ -103,7 +107,7 @@ class PlanService{
     /**
      * @param $planId int
      * @param $status
-     *
+     * Cambia status de plan
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -126,6 +130,7 @@ class PlanService{
 
 
     /**
+     * Elimina plan
      * @param $planId int
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -142,8 +147,8 @@ class PlanService{
             throw new InternalErrorException(static::class.":deletePlan","Error al eliminar plan", $result->getErrorMessage());
     }
 
-
     /**
+     * Verifica si plan existe por año
      * @param $year
      * @return DataResult
      */
@@ -158,6 +163,11 @@ class PlanService{
         return $result;
     }
 
+    /**
+     * Verifica si plan existe por ID
+     * @param $year
+     * @return DataResult
+     */    
     private function isPlanExist_ById($planId){
         $result = $this->perPlans->getPlan_ById($planId);
         if( Utils::isSuccessWithResult( $result->getOperation() ) )

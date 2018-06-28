@@ -111,7 +111,7 @@ class CareersPersistence extends Persistence {
     }
 
     /**
-     * Metodo para eliminar la carrera
+     * Metodo para cambiar status de la carrera a eliminada
      * @param $careerID
      * @return DataResult
      */
@@ -124,7 +124,7 @@ class CareersPersistence extends Persistence {
 
 
     /**
-     * Metodo para eliminar la carrera
+     * Metodo para habilitar la carrera
      *
      * @param $careerID
      *
@@ -137,6 +137,13 @@ class CareersPersistence extends Persistence {
         return  self::executeQuery($query);
     }
 
+    /**
+     * Metodo para eliminar la carrera
+     *
+     * @param $id
+     *
+     * @return DataResult
+     */
     public function deleteCareer($id)
     {
         $query = "DELETE FROM career 

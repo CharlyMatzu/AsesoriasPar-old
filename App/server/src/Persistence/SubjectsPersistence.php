@@ -21,6 +21,7 @@ class SubjectsPersistence extends Persistence{
                         FROM subject s";
 
     /**
+     * Obtiene todas la materias
      * @return \App\Model\DataResult
      */
     public function getSubjects(){
@@ -34,7 +35,7 @@ class SubjectsPersistence extends Persistence{
 
     /**
      * @param $status int
-     *
+     * Obtiene todas la materias por status
      * @return \App\Model\DataResult
      */
     public function getSubjects_ByStatus($status)
@@ -49,6 +50,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene carreras por ID
      * @param $subjectID
      * @return \App\Model\DataResult
      */
@@ -65,7 +67,7 @@ class SubjectsPersistence extends Persistence{
      * @param $subject_career
      * @param $subject_semester
      * @param $subject_plan
-     *
+     * Obtiene materias por filtro
      * @return \App\Model\DataResult
      */
     public function getSubject_SearchFilter($subject_career, $subject_semester, $subject_plan){
@@ -139,6 +141,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $name
      * @return \App\Model\DataResult
+     * Obtiene materias por nombre 
      */
     public function getSubject_ByName($name){
         $query = $this->campos."
@@ -150,6 +153,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene materias por abreviatura
      * @param $shortName
      * @return \App\Model\DataResult
      */
@@ -164,6 +168,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Busca materias por nombre
      * @param $name
      * @return \App\Model\DataResult
      */
@@ -180,7 +185,7 @@ class SubjectsPersistence extends Persistence{
      * @param $name String
      * @param $plan int
      * @param $career int
-     *
+     * Obtiene materias por nombre o abreviatura
      * @return \App\Model\DataResult
      */
     public function getSubject_ByName_ShortName($name, $plan, $career, $subject_id = null){
@@ -203,6 +208,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $semester int
      * @return \App\Model\DataResult
+     * Obtiene materias por semestre
      */
     public function getSubjects_BySemester( $semester )
     {
@@ -214,6 +220,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene materias por plan
      * @param $planID int
      * @return \App\Model\DataResult
      */
@@ -229,6 +236,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $careerID
      * @return \App\Model\DataResult
+     * Obtiene materias por carrera
      */
     public function getSubjects_ByCareer($careerID )
     {
@@ -243,6 +251,7 @@ class SubjectsPersistence extends Persistence{
 
 
     /**
+     * Obtiene materias por nombre de la carrera
      * @param $name string nombre de la materia
      * @param $careerID int Career ID
      * @return \App\Model\DataResult
@@ -257,6 +266,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene materias por nombre, carrera o plan 
      * @param $name string nombre de la materia
      * @param $careerID int Career ID
      * @param $planID int plan ID
@@ -272,6 +282,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene materias por nombre de carrera y plan
      * @param $careerID int Career ID
      * @param $planID int plan ID
      * @return \App\Model\DataResult
@@ -297,6 +308,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $subject Subject
      * @return \App\Model\DataResult
+     * Agrega una materias por nombre
      */
     public function insertSubject( $subject )
     {
@@ -308,6 +320,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $subject Subject
      * @return \App\Model\DataResult
+     * Actualiza materia
      */
     public function updateSubject($subject)
     {
@@ -318,6 +331,7 @@ class SubjectsPersistence extends Persistence{
     }
 
     /**
+     * Cambia status a eliminado
      * @param $subjectID
      * @return \App\Model\DataResult
      */
@@ -331,6 +345,7 @@ class SubjectsPersistence extends Persistence{
     /**
      * @param $subjectID
      * @return \App\Model\DataResult
+     * Cambia status a habilitado
      */
     public function changeStatusToEnable($subjectID ){
         $query = "UPDATE subject

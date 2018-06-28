@@ -83,19 +83,19 @@ abstract class Persistence{
     //----------------
     //  CONEXION
     //----------------
-    /**
-     *
-     */
+    //Abre la conexión
     public static function newConnection(){
         self::$mysql = new MySQLConexion();
         self::$connectionState = true;
     }
 
+    //Cierra la conexion
     public static function closeConnection(){
         self::$mysql->closeConnection();
         self::$connectionState = false;
     }
 
+    //Verifica si la conexion esta abierta
     public static function isConnectionON(){
         if( self::$connectionState == true )
             return true;

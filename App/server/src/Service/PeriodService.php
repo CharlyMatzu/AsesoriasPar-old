@@ -20,6 +20,7 @@ class PeriodService{
     }
 
     /**
+     * Obtiene todos los periodos
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NoContentException
@@ -36,6 +37,7 @@ class PeriodService{
     }
 
     /**
+     * Obtiene periodo por ID
      * @param $periodId
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -53,6 +55,7 @@ class PeriodService{
     }
 
     /**
+     * Obtiene periodo por rango 
      * @param $date_start
      * @param $date_end
      * @return \mysqli_result
@@ -72,6 +75,7 @@ class PeriodService{
 
 
     /**
+     * Obtiene periodo actual
      * @return array
      * @throws InternalErrorException
      * @throws NoContentException
@@ -105,6 +109,7 @@ class PeriodService{
 //    }
 
     /**
+     * Agrega un nuevo periodo
      * @param $start
      * @param $end
      * @throws ConflictException
@@ -146,7 +151,7 @@ class PeriodService{
 
     /**
      * @param $period Period
-     *
+     * Actualiza periodo
      * @throws InternalErrorException
      * @throws RequestException
      */
@@ -173,7 +178,7 @@ class PeriodService{
     /**
      * @param $periodId
      * @param $status
-     *
+     * Cambia status de periodo
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -201,7 +206,7 @@ class PeriodService{
 
     /**
      * @param $id
-     *
+     * Elimina periodo por ID
      * @throws InternalErrorException
      * @throws NotFoundException
      */
@@ -225,6 +230,7 @@ class PeriodService{
 
     /**
      * @param $periodId
+     * Verifica si perido existe por ID
      * @return \App\Model\DataResult
      */
     public function isPeriodExist_ById( $periodId ){
@@ -240,6 +246,7 @@ class PeriodService{
 
     /**
      * @param $date
+     * Verifica si el perido se empalma
      * @return \App\Model\DataResult
      */
     public function isPeriodBetweenOther( $date ){

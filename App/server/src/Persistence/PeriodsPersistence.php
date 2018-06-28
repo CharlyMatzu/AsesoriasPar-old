@@ -20,6 +20,7 @@ class PeriodsPersistence extends Persistence{
     //TODO: Los metodos que obtiene deben tomar en cuenta el status
 
     /**
+     * Obtiene todos los periodos registrados
      * @return \App\Model\DataResult
      */
     public function getPeriods(){
@@ -29,6 +30,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene el periodo actual
      * @return \App\Model\DataResult
      */
     public function getCurrentPeriod(){
@@ -39,6 +41,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene el periodo por ID
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -50,6 +53,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene todos los periodos registrados entre el rango del parametro
      * @param $start
      * @param $end
      * @return \App\Model\DataResult
@@ -63,6 +67,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene periodos por fecha
      * @param $date
      * @return \App\Model\DataResult
      */
@@ -74,6 +79,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene el ultimo periodo registrado
      * @return \App\Model\DataResult
      */
     public function getLastPeriod(){
@@ -102,6 +108,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene periodo registrado por horario ID
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -114,6 +121,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Agrega un nuevo periodo
      * @param $start string fecha de inicio
      * @param $end string fecha de termino
      * @return \App\Model\DataResult
@@ -125,6 +133,7 @@ class PeriodsPersistence extends Persistence{
     }
 
     /**
+     * Actualiza el periodo 
      * @param $period Period
      * @return \App\Model\DataResult
      */
@@ -161,7 +170,7 @@ class PeriodsPersistence extends Persistence{
 
     /**
      * @param $id
-     *
+     ** Elimina el periodo
      * @return \App\Model\DataResult
      */
     public function deletePeriod($id)

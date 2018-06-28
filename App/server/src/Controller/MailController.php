@@ -15,6 +15,7 @@ class MailController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Send email
      */
     public function sendMail($req, $res){
         try {

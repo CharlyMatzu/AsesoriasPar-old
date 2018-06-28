@@ -30,6 +30,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+    * Método que regresa a staff user
      * @return \App\Model\DataResult
      */
     public function getStaffUsers()
@@ -40,6 +41,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Método que habilita a usuario
      * @return \App\Model\DataResult
      */
     public function getEnableUsers()
@@ -50,6 +52,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Método que deshabilita usuario
      * @return \App\Model\DataResult
      */
     public function getDisabledUsers()
@@ -59,7 +62,7 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-    /**
+    /**    
      * @return \App\Model\DataResult
      */
     public function getNoconfirmUsers()
@@ -88,6 +91,7 @@ class UsersPersistence extends Persistence{
     /**
      * @param $id int
      * @return \App\Model\DataResult
+     * Método que regresa usuario por token id
      */
     public function getUserByTokenAuth($id)
     {
@@ -108,6 +112,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Método que regresa rol de usuario
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -119,7 +124,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $email
-     *
+     * Método que regresa usuario por email
      * @return \App\Model\DataResult
      */
     public function searchUsers_ByEmail($email)
@@ -131,7 +136,7 @@ class UsersPersistence extends Persistence{
 
     /**
      * @param $email
-     *
+     * Método que regresa busca usuario por email
      * @return \App\Model\DataResult
      */
     public function searchStaffUsers_ByEmail($email)
@@ -144,6 +149,7 @@ class UsersPersistence extends Persistence{
 
 
     /**
+     * Método que regresa al ultimo usuario registrado
      * @return \App\Model\DataResult
      */
     public function getUser_Last(){
@@ -153,6 +159,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Método que regresa usuario por email
      * @param $email String
      * @return \App\Model\DataResult
      */
@@ -163,6 +170,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Agrega un usuario
      * @param $user User objeto tipo User con la informacion de registro
      * @return \App\Model\DataResult
      */
@@ -174,6 +182,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Actualiza usuario
      * @param $user User objeto tipo User con la informacion de registro
      * @return \App\Model\DataResult
      */
@@ -196,6 +205,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Método que cambia status a deshabilitado
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -209,6 +219,7 @@ class UsersPersistence extends Persistence{
     /**
      * @param $id
      * @return \App\Model\DataResult
+     * Método que cambia status a habilitado
      */
     public function changeStatusToEnable($id ){
         $query = "UPDATE user u
@@ -218,6 +229,7 @@ class UsersPersistence extends Persistence{
     }
 
     /**
+     * Método que regresa rol de usuario por nombre
      * @param $roleName String
      * @return \App\Model\DataResult
      */
@@ -227,11 +239,10 @@ class UsersPersistence extends Persistence{
         return  self::executeQuery($query);
     }
 
-
-
     /**
      * @param $id int
      * @return \App\Model\DataResult
+     * Método que elimina usuario por ID
      */
     public function deleteUser_ById($id)
     {

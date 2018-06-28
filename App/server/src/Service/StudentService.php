@@ -20,6 +20,7 @@ class StudentService{
     }
 
     /**
+     * Obtiene estudiante por id
      * @param $id
      * @return array|bool|null|string
      * @throws InternalErrorException
@@ -37,6 +38,7 @@ class StudentService{
     }
 
     /**
+     * Obtiene estudiantes
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
@@ -54,7 +56,7 @@ class StudentService{
 
     /**
      * @param $student_data string
-     *
+     * Obtiene estudiantes por dato de parametro
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
@@ -72,6 +74,7 @@ class StudentService{
     }
 
     /**
+     * Verifica si itson id existe
      * @param $itsonId String
      * @return \App\Model\DataResult
      */
@@ -91,7 +94,7 @@ class StudentService{
 
     /**
      * @param $student Student
-     *
+     * Agrega nuevo estudiante
      * @throws ConflictException
      * @throws InternalErrorException
      */
@@ -113,7 +116,7 @@ class StudentService{
 
     /**
      * @param $student Student
-     *
+     * Actualiza estudiante
      * @throws InternalErrorException
      * @throws NotFoundException
      * @throws ConflictException
@@ -217,7 +220,7 @@ class StudentService{
     /**
      * @param $student_id int
      * @param $subject int
-     *
+     * Crea asesoria para el perido actual
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NoContentException
@@ -235,7 +238,7 @@ class StudentService{
 
     /**
      * @param $student_id int
-     *
+     * Obtiene asesoria actual por id studiante
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NotFoundException

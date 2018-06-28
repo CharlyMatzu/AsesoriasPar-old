@@ -39,7 +39,7 @@ class AdvisoriesPersistence extends Persistence{
 
     /**
      * @param $periodId int
-     *
+     * Obtiene todas las asesorias del periodo actual
      * @return \App\Model\DataResult
      */
     public function getAdvisories_ByPeriod($periodId){
@@ -50,7 +50,7 @@ class AdvisoriesPersistence extends Persistence{
 
     /**
      * @param $id int
-     *
+     * Obtiene asesoría por ID
      * @return \App\Model\DataResult
      */
     public function getAdvisory_ById($id){
@@ -62,7 +62,7 @@ class AdvisoriesPersistence extends Persistence{
 
     /**
      * @param $advisoryId int
-     *
+     * Obtiene horas de asesoria por ID
      * @return \App\Model\DataResult
      */
     public function getAdvisoryHours_ById($advisoryId){
@@ -117,19 +117,36 @@ class AdvisoriesPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
-
+    /**
+     * Obtiene asesorias que esten activas y sean del periodo del parametro
+     * @param $period int
+     *
+     * @return \App\Model\DataResult
+     */
     public function getActiveAdvisories_ByPeriod($period){
         $query = $this->SELECT
                     ."";
         return self::executeQuery($query);
     }
 
+    /**
+     * Obtiene asesorias finalizadas por el periodo del parametro
+     * @param $period int
+     *
+     * @return \App\Model\DataResult
+     */
     public function getFinalizedAdvisories_ByPeriod($period){
         $query = $this->SELECT
                     ."";
         return self::executeQuery($query);
     }
 
+    /**
+     * Obtiene asesorias pendientes de realizar y sean del periodo del parametro
+     * @param $period int
+     *
+     * @return \App\Model\DataResult
+     */
     public function getPendingdAdvisories_ByPeriod($period){
         $query = $this->SELECT
                     ."";
@@ -140,7 +157,7 @@ class AdvisoriesPersistence extends Persistence{
      * @param $student_id int
      * @param $subject_id int
      * @param $period_id int
-     *
+     * Obtiene asesorias que sea igual a estudiante ID, materia ID y periodo ID de los parametros
      * @return \App\Model\DataResult
      */
     public function getAdvisories_ByStudent_BySubject_ByPeriod( $student_id, $subject_id, $period_id )
@@ -152,11 +169,10 @@ class AdvisoriesPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
-
     /**
      * @param $advisory AdvisoryModel
      * @param $period_id int
-     *
+     * Add a new advisory
      * @return \App\Model\DataResult
      */
     public function insertAdvisory($advisory, $period_id)

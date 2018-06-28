@@ -8,7 +8,7 @@ class MailService
 
     /**
      * @param $mail MailModel
-     *
+     * Envia email
      * @throws InternalErrorException
      */
     public function sendMail($mail){

@@ -13,6 +13,7 @@ class PeriodController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all periods
      */
     public function getPeriods($req, $res){
         try {
@@ -28,6 +29,7 @@ class PeriodController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get current periods
      */
     public function getCurrentPeriod($req, $res){
         try {
@@ -44,6 +46,7 @@ class PeriodController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get period by ID
      */
     public function getPeriod_ById($req, $res, $params){
         try {
@@ -60,6 +63,7 @@ class PeriodController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Add new period
      */
     public function createPeriod($req, $res){
         try {
@@ -79,6 +83,7 @@ class PeriodController
      * @param $res Response
      * @param $params
      * @return Response
+     * Update period
      */
     public function updatePeriod($req, $res, $params){
         try {
@@ -98,12 +103,13 @@ class PeriodController
      * @param $res Response
      * @param $params
      * @return Response
+     * Change Status of periods
      */
     public function changeStatus($req, $res, $params){
         try {
             $periodService = new PeriodService();
             $periodService->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Modificado status de periodo con éxito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status de periodo modificado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -118,6 +124,7 @@ class PeriodController
      * @param $res Response
      * @param $params
      * @return Response
+     * Delete period by ID
      */
     public function deletePeriod($req, $res, $params){
         try {
@@ -128,6 +135,4 @@ class PeriodController
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
-
-
 }

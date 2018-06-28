@@ -21,7 +21,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $id int
-     *
+     * Obtiene horario por ID
      * @return \App\Model\DataResult
      */
     public function getSchedule_Byid($id){
@@ -31,6 +31,7 @@ class SchedulesPersistence extends Persistence{
     }
 
     /**
+     * Obtiene horario por Id de estuduante y periodo 
      * @param $studentId int
      * @param $period int
      * @return \App\Model\DataResult
@@ -43,6 +44,7 @@ class SchedulesPersistence extends Persistence{
 
 
     /**
+     * Obtiene el ultimo horario registrado
      * @return \App\Model\DataResult
      */
     public function getSchedule_Last(){
@@ -50,8 +52,6 @@ class SchedulesPersistence extends Persistence{
                   ORDER BY s.schedule_id DESC LIMIT 1";
         return  self::executeQuery($query);
     }
-
-
 
     const ORDER_BY_HOUR = "dh.hour, dh.day_number";
     const ORDER_BY_DAY = "dh.day_number, dh.hour";
@@ -80,6 +80,7 @@ class SchedulesPersistence extends Persistence{
     }
 
     /**
+     * Obtiene las horas del horario por id con el orden especificado 
      * @param int $scheduleid
      * @param String $orderType
      *
@@ -103,6 +104,7 @@ class SchedulesPersistence extends Persistence{
     }
 
     /**
+     * Obtiene el horario por id de la materia
      * @param int $scheduleid
      * @return \App\Model\DataResult
      * TODO: solo materias habilitadas
@@ -149,7 +151,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $studentId int
      * @param $periodId int
-     *
+     * Agrega un nuevo horario
      * @return \App\Model\DataResult
      */
     public function insertSchedule($studentId, $periodId ){
@@ -161,6 +163,7 @@ class SchedulesPersistence extends Persistence{
 
 
     /**
+     * Agrega horas de horario
      * @param $scheduleId
      * @param $hour
      * @return \App\Model\DataResult
@@ -176,7 +179,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $scheduleId int correspondiente al estudiante
      * @param $subject array de materias
-     *
+     * Agrega materias al horario
      * @return \App\Model\DataResult
      * TODO: status debe ser 1 para confirmar por admin
      */
@@ -228,7 +231,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $scheduleId int
-     *
+     * Deshabilita el horario por ID
      * @return \App\Model\DataResult
      */
     public function disableSchedule($scheduleId)
@@ -241,7 +244,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $scheduleId int
-     *
+     * Habilita el horario
      * @return \App\Model\DataResult
      */
     public function enableSchedule($scheduleId)
@@ -255,7 +258,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $hdId int
-     *
+     * Deshabilita hora de horario
      * @return \App\Model\DataResult
      */
     public function disableScheduleHour($hdId)
@@ -268,7 +271,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $hdId int
-     *
+     * habilita hora de horario
      * @return \App\Model\DataResult
      */
     public function enableScheduleHour($hdId)
@@ -282,7 +285,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $subjectId
-     *
+     * Deshabilita materia de horario
      * @return \App\Model\DataResult
      */
     public function disableScheduleSubject($subjectId)
@@ -295,7 +298,7 @@ class SchedulesPersistence extends Persistence{
 
     /**
      * @param $subjectId int
-     *
+     * Habilita materia de horario
      * @return \App\Model\DataResult
      */
     public function enableScheduleSubject($subjectId)
@@ -309,7 +312,7 @@ class SchedulesPersistence extends Persistence{
     /**
      * @param $subject_id int
      * @param $period_id int
-     *
+     * Obtiene asesoria por materia ID y periodo ID
      * @return \App\Model\DataResult
      */
     public function getAdvisers_BySubject_ByPeriod($subject_id, $period_id)
@@ -332,13 +335,6 @@ class SchedulesPersistence extends Persistence{
                         s.fk_period = $period_id";
         return  self::executeQuery($query);
     }
-
-
-
-
-
-
-
 
 
 //    /**

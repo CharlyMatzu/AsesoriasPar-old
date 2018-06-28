@@ -21,8 +21,6 @@ class InputParamsMiddelware extends Middelware
     //Cuando es un valor por GET, el método debe llamarse checkParam_NombreParametro[s]
     //Cuando es un valor mediante POST o similar, el método debe llamarse checkData_Nombre
 
-
-
     /**
      * Verifica que el parametro enviado sea un valor valido
      * @param $req Request

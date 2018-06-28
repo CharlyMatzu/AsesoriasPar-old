@@ -13,6 +13,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all subjects
      */
     public function getSubjects($req, $res){
         try {
@@ -29,6 +30,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all subjects enable
      */
     public function getEnabledSubjects($req, $res){
         try {
@@ -45,7 +47,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Get subject by ID
      * @return Response
      */
     public function getSubject_ById($req, $res, $params){
@@ -62,7 +64,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Search subjects by career, semester, plan
      * @return Response
      */
     public function getSubject_Search($req, $res, $params){
@@ -80,7 +82,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Search subjects by Name
      * @return Response
      */
     public function searchSubjects_ByName($req, $res, $params){
@@ -99,7 +101,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Get current advisory by subject id
      * @return Response
      */
     public function getCurrentAdvisers_BySubject($req, $res, $params){
@@ -118,6 +120,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Add new subject
      */
     public function createSubject($req, $res){
         try {
@@ -136,7 +139,7 @@ class SubjectController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Update subjects by ID
      * @return Response
      */
     public function updateSubject($req, $res, $params){
@@ -160,6 +163,7 @@ class SubjectController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Delete subjects by ID
      */
     public function deleteSubject($req, $res, $params){
         try {
@@ -177,6 +181,7 @@ class SubjectController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Change status subjects
      */
     public function changeStatus($req, $res, $params){
         try {

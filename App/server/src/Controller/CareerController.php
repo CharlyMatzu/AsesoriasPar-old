@@ -13,6 +13,7 @@ class CareerController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all careers 
      */
     public function getCareers($req, $res)
     {
@@ -30,8 +31,8 @@ class CareerController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
      * @return Response
+     * Get career by Id
      */
     public function getCareer_ById($req, $res, $params){
         try {
@@ -49,7 +50,7 @@ class CareerController
      * @param $req Request
      * @param $res Response
      * @return Response
-
+     * Add new Career
      */
     public function createCareer($req, $res){
         try {
@@ -69,7 +70,7 @@ class CareerController
      * @param $req Request
      * @param $res Response
      * @param $params
-     *
+     * Update a career with the ID of parameter
      * @return Response
      */
     public function updateCareer($req, $res, $params){
@@ -92,6 +93,7 @@ class CareerController
      * @param $res Response
      * @param $params
      * @return Response
+     * Change status of career with the ID of Parameter
      */
     public function changeStatus($req, $res, $params){
         try {
@@ -116,6 +118,7 @@ class CareerController
      * @param $res Response
      * @param $params
      * @return Response
+     * Delete career with the ID of parameter
      */
     public function deleteCareer($req, $res, $params){
         try {
@@ -127,6 +130,4 @@ class CareerController
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
-
-
 }

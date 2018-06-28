@@ -25,6 +25,7 @@ class AdvisoryService
      * @throws InternalErrorException
      * @throws \App\Exceptions\NoContentException
      * @return \mysqli_result
+     * Obtiene asesorias actuales en curso
      */
     public function getCurrentAdvisories()
     {
@@ -43,7 +44,7 @@ class AdvisoryService
 
     /**
      * @param $student_id int
-     *
+     * Obtiene asesorias actuales en curso por id de estudiante
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NoContentException
@@ -71,6 +72,7 @@ class AdvisoryService
      * @return mixed
      * @throws InternalErrorException
      * @throws NotFoundException
+     * Obtiene asesorias por ID
      */
     public function getAdvisory_ById($id){
         $result = $this->perAsesorias->getAdvisory_ById($id);
@@ -87,7 +89,7 @@ class AdvisoryService
 
     /**
      * @param $id int
-     *
+     * Obtiene horas de asesoria por ID
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -105,10 +107,9 @@ class AdvisoryService
 
     }
 
-
     /**
      * @param $advisory AdvisoryModel
-     *
+     * Agrega asesoria al periodo actual
      * @throws ConflictException
      * @throws InternalErrorException
      * @throws NoContentException
@@ -148,6 +149,7 @@ class AdvisoryService
 
     /**
      * @param $advisories array|\mysqli_result
+     * Verifica redundancia en la asesoria, (si ya existe)
      * @return void
      * @throws ConflictException
      */
@@ -161,9 +163,9 @@ class AdvisoryService
             //Si se encuentra una asesorías activa de la misma materia
             // en estado activa o pendiente, entonces es redundante
             if( $ad['status'] == Utils::$STATUS_ACTIVE )
-                throw new ConflictException("Ya existe asesorías con dicha materia activa");
+                throw new ConflictException("Ya existe asesoría con dicha materia activa");
             else if( $ad['status'] == Utils::$STATUS_PENDING )
-                throw new ConflictException("Ya existe asesorías con dicha materia pendiente");
+                throw new ConflictException("Ya existe asesoría con dicha materia pendiente");
         }
     }
 

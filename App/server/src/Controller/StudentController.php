@@ -13,6 +13,7 @@ class StudentController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all students
      */
     public function getStudents($req, $res)
     {
@@ -31,6 +32,7 @@ class StudentController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get student by ID
      */
     public function getStudent_ById($req, $res, $params)
     {
@@ -50,6 +52,7 @@ class StudentController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Search student by any text student name content
      */
     public function searchStudents($req, $res, $params)
     {
@@ -69,7 +72,7 @@ class StudentController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Update students by ID
      * @return Response
      */
     public function updateStudent($req, $res, $params)
@@ -103,6 +106,7 @@ class StudentController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get current schedule by student ID
      */
     public function getCurrentSchedule_ByStudentId($req, $res, $params)
     {
@@ -122,6 +126,7 @@ class StudentController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Add a new schedule of student
      */
     public function createSchedule($req, $res, $params)
     {
@@ -146,6 +151,7 @@ class StudentController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get current advisaries by student ID
      */
     public function getCurrentAdvisories_ByStudentId($req, $res, $params)
     {
@@ -165,6 +171,7 @@ class StudentController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Add new advisory in current period
      */
     public function createStudentAdvisory_CurrentPeriod($req, $res, $params)
     {
@@ -179,7 +186,4 @@ class StudentController
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
-
-
-
 }

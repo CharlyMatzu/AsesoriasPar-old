@@ -20,6 +20,11 @@ class PlansPeristence extends Persistence{
         return self::executeQuery($query);
     }
 
+    /**
+     * Obtiene el ultimo plan registrado
+     * @param $year
+     * @return \App\Model\DataResult
+     */
     public function getLastPlan(){
         $query = $this->campos.
                     "ORDER BY plan_id DESC LIMIT 1";
@@ -27,6 +32,11 @@ class PlansPeristence extends Persistence{
         return self::executeQuery($query);
     }
 
+    /**
+     * Obtiene el plan por id
+     * @param $year
+     * @return \App\Model\DataResult
+     */
     public function getPlan_ById($planId){
         $query = $this->campos.
             "WHERE plan_id = $planId";
@@ -71,7 +81,7 @@ class PlansPeristence extends Persistence{
     /**
      * @param $planID int
      * @param $year string
-     *
+     * Actualiza el plan 
      * @return \App\Model\DataResult
      */
     public function updatePlan( $planID, $year ){
@@ -81,6 +91,7 @@ class PlansPeristence extends Persistence{
     }
 
     /**
+     * Cambia status de plan a deshabilitado
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -92,6 +103,7 @@ class PlansPeristence extends Persistence{
     }
 
     /**
+     * Cambia status de plan a habilitado 
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -104,6 +116,7 @@ class PlansPeristence extends Persistence{
 
 
     /**
+     * Elimina plan por id 
      * @param $id
      * @return \App\Model\DataResult
      */

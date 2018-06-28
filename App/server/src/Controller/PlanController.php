@@ -12,6 +12,7 @@ class PlanController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all plans
      */
     public function getPlans($req, $res){
         try {
@@ -29,6 +30,7 @@ class PlanController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get plan by ID
      */
     public function getPlan_ById($req, $res, $params){
         try {
@@ -46,6 +48,7 @@ class PlanController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Add new Plan 
      */
     public function createPlan($req, $res){
         try {
@@ -65,7 +68,7 @@ class PlanController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Update plab by ID
      * @return Response
      */
     public function updatePlan($req, $res, $params){
@@ -86,7 +89,7 @@ class PlanController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Delete plan by ID
      * @return Response
      */
     public function deletePlan($req, $res, $params){
@@ -104,7 +107,7 @@ class PlanController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Change status plan by ID
      * @return Response
      */
     public function changeStatus($req, $res, $params){

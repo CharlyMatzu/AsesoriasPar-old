@@ -18,6 +18,7 @@ class SubjectService{
     }
 
     /**
+     * Obtiene materias
      * @return array|null|string
      * @throws NoContentException
      * @throws InternalErrorException
@@ -34,6 +35,7 @@ class SubjectService{
     }
 
     /**
+     * Obtiene materias habilitadas
      * @return array|null|string
      * @throws NoContentException
      * @throws InternalErrorException
@@ -52,6 +54,7 @@ class SubjectService{
     }
 
     /**
+     * Obtiene materias por id
      * @param $subject_id
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -72,7 +75,7 @@ class SubjectService{
      * @param $subject_career
      * @param $subject_semester
      * @param $subject_plan
-     *
+     * Obtiene materias por coincidencia en el filtro
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NoContentException
@@ -89,6 +92,7 @@ class SubjectService{
     }
 
     /**
+     * Busca materias por nombre
      * @param $name
      * @return array|bool|string
      * @throws NoContentException
@@ -108,6 +112,7 @@ class SubjectService{
     }
 
     /**
+     * Obtiene materias por id carrera
      * @param $careerID
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -126,6 +131,7 @@ class SubjectService{
 
 
     /**
+     * Obtiene materias por plan
      * @param $plan
      * @return \mysqli_result
      * @throws NoContentException
@@ -145,6 +151,7 @@ class SubjectService{
     }
 
     /**
+     * Obtiene materias por semestre
      * @param $semester
      * @return \mysqli_result
      * @throws InternalErrorException
@@ -223,7 +230,7 @@ class SubjectService{
      * @param $plan_id int
      * @param $career_od int
      * @param null $subject_id
-     *
+     * Verifica si existe nombre de materia o abreviacion
      * @throws ConflictException
      * @throws InternalErrorException
      */
@@ -238,6 +245,7 @@ class SubjectService{
     }
 
     /**
+     * Agrega nueva materia
      * @param $subject Subject objeto de materia
      * @throws InternalErrorException
      * @throws RequestException
@@ -271,6 +279,7 @@ class SubjectService{
     /**
      * @param $subject Subject
      * @throws RequestException
+     * Actualiza materia
      */
     public function updateSubject( $subject ){
 
@@ -316,7 +325,7 @@ class SubjectService{
     /**
      * @param $subjectID
      * @param $new_status
-     *
+     * Cambia status de materia
      * @return void
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -341,6 +350,7 @@ class SubjectService{
     }
 
     /**
+     * Elimina materia
      * @param $subjectID
      * @throws InternalErrorException
      * @throws NotFoundException
@@ -361,7 +371,7 @@ class SubjectService{
      * @param $plan int Plan Id
      * @param $career int Career id
      * @param null $subject_id
-     *
+     * Obtiene materias por nombre o short_name
      * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
@@ -382,6 +392,7 @@ class SubjectService{
 
 
     /**
+     * Verifica si materias por id
      * @param $id
      * @return \App\Model\DataResult
      */
@@ -399,7 +410,7 @@ class SubjectService{
 
     /**
      * @param $subject_id int
-     *
+     * Obtiene asesoria actual por materia id
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NotFoundException

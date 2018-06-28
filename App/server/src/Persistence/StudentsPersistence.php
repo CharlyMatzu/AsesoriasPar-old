@@ -26,7 +26,7 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @param $id int
-     *
+     * Obtiene estudiante por ID 
      * @return \App\Model\DataResult
      */
     public function getStudent_ById($id){
@@ -38,6 +38,7 @@ class StudentsPersistence extends Persistence{
     }
 
     /**
+     * Obtiene todos los estudiantes 
      * @return \App\Model\DataResult
      */
     public function getStudents(){
@@ -47,6 +48,10 @@ class StudentsPersistence extends Persistence{
         return $this->executeQuery($query);
     }
 
+    /** 
+     * Obtiene estudiante por usuario ID
+     * @return \App\Model\DataResult
+     */
     public function getStudent_ByUserId($id)
     {
         $query =    $this->SELECT."
@@ -57,6 +62,7 @@ class StudentsPersistence extends Persistence{
     }
 
     /**
+     * Busca estudiante por datos de estudiante que contengan el dato del paramtro
      * @param $data string
      * @return \App\Model\DataResult
      */
@@ -74,7 +80,7 @@ class StudentsPersistence extends Persistence{
 
     /**
      * @param $itsonId
-     *
+     * Obtiene estudiante por itson Id
      * @return \App\Model\DataResult
      */
     public function getStudent_ByItsonId($itsonId){
@@ -163,6 +169,7 @@ class StudentsPersistence extends Persistence{
 
 
     /**
+     * Agrega estudiante 
      * @param $student Student
      * @return \App\Model\DataResult
      */
@@ -180,6 +187,7 @@ class StudentsPersistence extends Persistence{
     }
 
     /**
+     * Actualiza estudiante
      * @param $student Student
      * @return \App\Model\DataResult
      */
@@ -195,6 +203,7 @@ class StudentsPersistence extends Persistence{
     }
 
     /**
+     * Cambia status a eliminado
      * @param $idStudent
      * @return \App\Model\DataResult
      */

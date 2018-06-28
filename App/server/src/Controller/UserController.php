@@ -15,6 +15,7 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get all users
      */
     public function getUsers($req, $res)
     {
@@ -32,6 +33,7 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Get staff user
      */
     public function getStaffUsers($req, $res)
     {
@@ -50,6 +52,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get user by ID
      */
     public function getUser_ById($req, $res, $params)
     {
@@ -68,6 +71,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get users by status
      */
     public function getUsersByStatus($req, $res, $params)
     {
@@ -86,6 +90,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Search users by Email
      */
     public function searchUsersByEmail($req, $res, $params)
     {
@@ -105,6 +110,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Search staff users by Email
      */
     public function searchStaffUsersByEmail($req, $res, $params)
     {
@@ -123,6 +129,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get students by user id
      */
     public function getStudent_ByUserId($req, $res, $params)
     {
@@ -143,6 +150,7 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Add users 
      */
     public function createUser($req, $res)
     {
@@ -167,6 +175,7 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @return Response
+     * Sign up of student
      */
     public function studentSignup($req, $res)
     {
@@ -193,7 +202,7 @@ class UserController
      * @param $req Request
      * @param $res Response
      * @param $params
-     *
+     * Update users 
      * @return Response
      */
     public function updateUser($req, $res, $params)
@@ -220,6 +229,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Change status user
      */
     public function changeStatusUser($req, $res, $params)
     {
@@ -238,6 +248,7 @@ class UserController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Delete user by ID
      */
     public function deleteUser($req, $res, $params)
     {

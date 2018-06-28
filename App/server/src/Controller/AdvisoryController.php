@@ -12,9 +12,9 @@ class AdvisoryController
 {
     /**
      * @param $req Request
-     * @param $res Response
-     *
+     * @param $res Response     
      * @return Response
+     * Get all advisories 
      */
     public function getCurrentAdvisories($req, $res)
     {
@@ -31,9 +31,9 @@ class AdvisoryController
     /**
      * @param $req Request
      * @param $res Response
-     * @param $params array
-     *
+     * @param $params array     
      * @return mixed|Response
+     * Get advisory with the ID of parameter 
      */
     public function getAdvisory_ById($req, $res, $params){
         try {
@@ -50,9 +50,9 @@ class AdvisoryController
     /**
      * @param $req Request
      * @param $res Response
-     * @param $params array
-     *
+     * @param $params array     
      * @return mixed|Response
+     * Get Hours Advisory by Id
      */
     public function getAdvisoryHours_ById($req, $res, $params){
         try {
@@ -71,6 +71,7 @@ class AdvisoryController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Add an advisory to the student of parameter
      */
     public function createStudentAdvisory($req, $res, $params)
     {

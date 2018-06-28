@@ -13,6 +13,7 @@ class ScheduleController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Get schedule by ID
      */
     public function getSchedule_ById($req, $res, $params){
         try {
@@ -28,7 +29,7 @@ class ScheduleController
     /**
      * @param $req
      * @param $res
-     *
+     * Get Days and Hours od Schedule by ID
      * @return Response
      */
     public function getHoursAndDays($req, $res){
@@ -69,6 +70,7 @@ class ScheduleController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Update hours schedule by ID
      */
     public function updateScheduleHours($req, $res, $params)
     {
@@ -88,6 +90,7 @@ class ScheduleController
      * @param $res Response
      * @param $params array
      * @return Response
+     * Update subjects schedule by ID
      */
     public function updateScheduleSubjects($req, $res, $params)
     {
@@ -108,7 +111,7 @@ class ScheduleController
      * @param $req Request
      * @param $res Response
      * @param $params array
-     *
+     * Change status schedule by ID
      * @return Response
      */
     public function changeScheduleStatus($req, $res, $params){
