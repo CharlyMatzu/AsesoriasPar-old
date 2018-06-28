@@ -12,6 +12,9 @@ angular.module("Desktop").controller('ProfileController', function($scope, Profi
     $scope.updateStudentData = function(student){
         $scope.loadingData = true;
 
+        if( !student.facebook )
+            student.facebook = "";
+
         ProfileService.updateStudent(student)
             .then(function(success){
                 Notification.success("Actualizado con éxito");

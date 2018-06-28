@@ -143,7 +143,7 @@
                         <li class="nav-label">USUARIOS</li>
                         
                         <!-- TODO: solo para admin -->
-                        <li>
+                        <li ng-if="isAdmin()">
                             <a href="#!/usuarios">
                                 <i class="fa fa-users"></i><span>Usuarios</span>
                             </a>

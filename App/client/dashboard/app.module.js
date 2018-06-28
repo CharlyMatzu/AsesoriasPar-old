@@ -67,8 +67,7 @@ angular.module("Dashboard")
         
         return {
             isAdmin: function(){
-                // return AuthFactory.getUser().role === 'administrator';
-                return true;
+                return AuthFactory.getUser().role === 'administrator';
             },
 
             //Si no es administrador, redirecciona (utilizado en routes)

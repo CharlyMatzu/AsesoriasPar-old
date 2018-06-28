@@ -611,7 +611,7 @@ class InputParamsMiddleware extends Middleware
             $status !== Utils::$STATUS_LOCKED )
             return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
                 "Status debe ser ".Utils::$STATUS_VALIDATED." o ".Utils::$STATUS_LOCKED);
-        
+
         $res = $next($req, $res);
         return $res;
     }

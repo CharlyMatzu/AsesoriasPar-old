@@ -119,9 +119,14 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                 //Promesa de usuario
                 .then(function(success){ 
 
+                        //TODO: verificar que esta activo
                         var user = success.data;
-                        $scope.setUser(user);
-                        return $scope.getStudent( user.id );
+                        if( user.status === 'ACTIVE' ){
+                            $scope.setUser(user);
+                            return $scope.getStudent( user.id );
+                        }
+                        else
+                            $scope.signOut();
 
                     }, function(error){
                 })
@@ -136,6 +141,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                     console.log(error);
                     alert("No existe estudiante asociado");
                     $scope.signOut();
+                    
                 })
                 .finally(function(){
                     $window.location = "#!/escritorio";

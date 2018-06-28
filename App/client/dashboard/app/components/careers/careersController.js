@@ -50,8 +50,10 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
         CareerService.addCareer(career)
             .then(function(success){
                 Notification.success("Registrado con exito");
-                career = null;
+                career.name = "";
+                career.short_name = "";
                 $scope.getCareers();
+                $scope.showNewCareer = false;
             },
             function(error){
                 Notification.error("Error: "+error.data);

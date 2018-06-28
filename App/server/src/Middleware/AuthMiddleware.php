@@ -1,5 +1,6 @@
 <?php namespace App\Middleware;
 
+use App\AppLogger;
 use App\Auth;
 use App\Exceptions\Auth\TokenException;
 use App\Exceptions\Request\ForbiddenException;
@@ -22,7 +23,7 @@ class AuthMiddleware extends Middleware
 
     /**
      * @param $req Request
-     * @return string[]
+     * @return string
      */
     private function getAuthorizationHeader($req){
         $header = $req->getHeader('Authorization');
@@ -45,7 +46,7 @@ class AuthMiddleware extends Middleware
         $headers = $this->getAuthorizationHeader($req);
         $token = null;
         // HEADER: Get the access token from the header
-        if (!empty($headers)) {
+        if ( !empty($headers) ) {
             //Se verifica el token con una expresión regular y se separa
             //http://php.net/manual/es/function.preg-match.php
             if ( preg_match('/Bearer\s(\S+)/', $headers, $matches) ) {
@@ -53,7 +54,7 @@ class AuthMiddleware extends Middleware
                 $token =  $matches[1];
             }
             else
-                throw new TokenException("Authorization header invalido");
+                throw new TokenException("Authorization header invalido: ");
 
 
             try{
@@ -65,7 +66,7 @@ class AuthMiddleware extends Middleware
                 throw new UnauthorizedException( $e->getMessage() );
             }
         }
-            throw new TokenException("Authorization header invalido");
+            throw new TokenException("Authorization header incompleto: ");
 
     }
 

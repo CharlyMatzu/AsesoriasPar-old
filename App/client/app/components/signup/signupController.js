@@ -33,10 +33,13 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
 
     $scope.signup = function(student){
 
-        // if( student.pass != status.pass2 ){
-        //     Notification.warning("Contraseñas no coinciden");
-        //     return;
-        // }
+        if( student.pass !== student.pass2 ){
+            Notification.warning("Contraseñas no coinciden");
+            return;
+        }
+
+        if( !student.facebook )
+            student.facebook = "";
 
         $scope.loading = true;
 
