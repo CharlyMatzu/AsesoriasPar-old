@@ -30,10 +30,10 @@ angular.module("Dashboard").service('UsersService', function( RequestFactory, Au
         );
     }
 
-    this.updatePassword = function(pass){
+    this.updatePassword = function(user_id, pass){
         return RequestFactory.makeTokenRequest(
             'PUT',
-            "/users/"+user.id+"/password",
+            "/users/"+user_id+"/password",
             data = {
                 password: pass,
             },

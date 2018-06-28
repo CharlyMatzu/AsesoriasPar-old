@@ -142,9 +142,11 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
                 $scope.loading = false;
                 $scope.showUpdateUser = false;
             });
-    }
+    };
 
-    $scope.updatePass = function(pass){
+
+
+    $scope.updatePass = function(user_id, pass){
         if( pass.pass !== pass.pass2 ){
             Notification.warning("Contraseñas no coinciden")
             return;
@@ -157,9 +159,8 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         $scope.loading = true;
 
         //Deshabilita botones
-        $scope.disableButtons(true, '.opt-user-'+user.id);
 
-        UsersService.updatePassword(pass.pass)
+        UsersService.updatePassword(user_id, pass.pass)
             .then(function(success){
                 Notification.success("Actualizado con exito");
                 $scope.showUpdateUser = false;
@@ -168,11 +169,10 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
             function(error){
                 Notification.error("Error: "+error.data);
                 //Habilita botones
-                $scope.disableButtons(false, '.opt-user-'+user.id);
                 $scope.loading = false;
                 $scope.showUpdateUser = false;
             });
-    }
+    };
 
 
     /**
