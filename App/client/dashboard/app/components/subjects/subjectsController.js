@@ -17,9 +17,19 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
     $scope.showUpdateSubject = false;
     $scope.loading = true;
 
+    $scope.closeUpdate = function(){
+        $scope.showUpdateSubject = false;
+    }
+
     $scope.goToNewSubject = function(){
         $window.location = "#!/materias/nuevo";
         return;
+    }
+
+    $scope.editSubject = function(subject){
+        $scope.showUpdateSubject = true;
+        $scope.subject = subject;
+        $scope.subject.semester = Number.parseInt(subject.semester);
     }
 
     
@@ -109,19 +119,23 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
      * 
      * @param {*} subject 
      */
-    $scope.editSubject = function(subject){
-        Notification("Cargando datos...");
-        $scope.disableButtons(true, '.opt-subjects-'+subject.id);
+    $scope.loadData = function(subject){
+        $scope.loading = true;
         
         //Se obtienen Carreras
         SubjectService.getCareers()
             //Carreras
             .then(function(success){
-                Notification.success("Carreras cargadas");
-                $scope.careers = success.data;
-                //Se obtien planes
-                return SubjectService.getPlans();
-                    
+                if( success.status == STATUS.NO_CONTENT ){
+                    $scope.careers = [];
+                    alert("No hay carreras registradas, se redireccionará");
+                    $window.location = "#!/carreras";
+                }
+                else{
+                    $scope.careers = success.data;
+                    //Se obtien planes
+                    return SubjectService.getPlans();
+                }
             },
             function(error){
                 Notification.error("Error al cargar carreras, se detuvo actualizacion");
@@ -129,25 +143,22 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
             })
             //Planes
             .then(function(success){
-                Notification.success("Planes cargados");
-                $scope.plans = success.data;
+                if( success.status == STATUS.NO_CONTENT ){
+                    $scope.plans = [];
+                    alert("No hay planes registrados, se redireccionará");
+                    $window.location = "#!/carreras";
+                }
+                else{
+                    $scope.plans = success.data;
+                    $scope.loading = false;
+                    //Se cargan materias aparte
+                    $scope.getSubjects();
+                }
 
-                //Se agregan igualan campos
-                // y Asignando valores
-                $scope.subject.id = subject.id;
-                $scope.subject.name = subject.name;
-                $scope.subject.short_name = subject.short_name;
-                $scope.subject.description = subject.description;
-                //++ para que funcione al ser input number
-                $scope.subject.semester = ++subject.semester;
-                $scope.subject.plan = subject.plan_id;
-                $scope.subject.career = subject.career_id;
-
-                //Se abre form
-                $scope.showUpdateSubject = true;
             },
             function(error){
                 Notification.error("Error al cargar planes, se detuvo actualizacion");
+                $scope.loading = false;
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
             });
     }
@@ -157,31 +168,29 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
         Notification("Procesando...");
 
-        if( subject.career == null || subject.career == "" ){
+        if( !subject.career_id ){
             Notification.warning("Debe seleccionar una carrera");
             return;
         }
-        if( subject.plan == null || subject.plan == "" ){
+        if( !subject.plan_id ){
             Notification.warning("Debe seleccionar una Plan");
             return;
         }
-        if( subject.semester == null || subject.semester == "" || 
-            subject.semester < 1 || subject.semester > 12 ){
+        if( !subject.semester || subject.semester < 1 || subject.semester > 12 ){
             Notification.warning("Semestre debe ser numerico y debe estar entre 1 y 12");
             return;
         }
 
-
-        
         $scope.disableButtons(true, '.opt-subjects-'+subject.id);
         
         SubjectService.updateSubject(subject)
             .then(function(success){
                 Notification.success("Actualizado con exito");
                 $scope.getSubjects();
+                $scope.showUpdateSubject = false;
             },
             function(error){
-                Notification.error("Error: "+error.data);
+                Notification.error("Error: "+ error.data);
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
                 $scope.showUpdateSubject = false;
             }
@@ -249,50 +258,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         );
     }
 
-    // //Obteniendo planes
-    //     //Se obtien planes
-    //     SubjectService.getPlans()
-    //         .then(function(success){
-    //             if( success.status == STATUS.NO_CONTENT ){
-    //                 Notification.warning("No hay planes registrados, redireccionando...");
-    //                 //Si no hay, redirecciona
-    //                 $timeout(function(){
-    //                     $window.location.href = '#!/planes';
-    //                 }, 2000);
-    //             }
-    //             else{
-    //                 Notification.success("Planes cargados");
-    //                 $scope.plans = success.data;
-    //             }
-    //         },
-    //         function(error){
-    //             Notification.error("Error al cargar planes: "+error.data);
-    //             $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-    //         }
-    //     );
-    //     //Se obtienen Carreras
-    //     SubjectService.getCareers()
-
-    //         .then(function(success){
-    //             if( success.status == STATUS.NO_CONTENT ){
-    //                 Notification.warning("No hay carreras registradas, redireccionando...");
-    //                 //Si no hay, redirecciona
-    //                 $timeout(function(){
-    //                     $window.location.href = '#!/carreras';
-    //                 }, 2000);
-    //             }
-    //             else{
-    //                 Notification.success("Carreras cargadas");
-    //                 $scope.careers = success.data;
-    //             }
-    //         },
-    //         function(error){
-    //             Notification.error("Error al cargar carreras: "+error.data);
-    //             $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-    //         }
-    //     );
-
     //Obtiene todos por default
-    $scope.getSubjects();
+    $scope.loadData();
 
 });

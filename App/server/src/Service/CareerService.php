@@ -2,6 +2,7 @@
 
 
 
+use App\Auth;
 use App\Exceptions\Request\ConflictException;
 use App\Exceptions\Request\InternalErrorException;
 use App\Exceptions\Request\NoContentException;
@@ -27,7 +28,10 @@ class CareerService{
      */
     public function getCareers(){
 
-        $result = $this->perCareers->getCareers();
+        if( Auth::$isSessionON )
+            $result = $this->perCareers->getCareers();
+        else
+            $result = $this->perCareers->getEnabledCareers();
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCareers", "Ocurrió un error al obtener careras", $result->getErrorMessage());

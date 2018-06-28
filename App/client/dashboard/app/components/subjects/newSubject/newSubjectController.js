@@ -85,8 +85,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         NewSubjectService.addSubject(subject)
             .then(function(success){
                 Notification.success("Registrado con exito");
-                //TODO: Limpiar campo
-                // $scope.subject = {};
+                $window.location.href = '#!/materias';
             },
             function(error){
                 Notification.error("Error: "+error.data);

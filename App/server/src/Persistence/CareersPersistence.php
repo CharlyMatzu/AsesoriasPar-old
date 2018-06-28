@@ -43,6 +43,18 @@ class CareersPersistence extends Persistence {
         return self::executeQuery($query);
     }
 
+    /**
+     * Se obtiene todas las carreras registradas QUE ESTÁN ACTIVAS
+     * @return DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getEnabledCareers()
+    {
+        $query = $this->campos." WHERE c.status = '".Utils::$STATUS_ACTIVE."'";
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
     /** ---------------------------- Nuevo --------------------------------- */
 
     /**
@@ -157,5 +169,7 @@ class CareersPersistence extends Persistence {
                   WHERE career_id = $id";
         return  self::executeQuery($query);
     }
+
+
 
 }

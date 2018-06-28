@@ -30,7 +30,7 @@ angular.module("HostModule", [])
 
         var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
         var PRODUCTION = "http://api.ronintopics.com";
-        var DEVELOP_MODE = false;
+        var DEVELOP_MODE = true;
             
             
         var getServerURL = function(){

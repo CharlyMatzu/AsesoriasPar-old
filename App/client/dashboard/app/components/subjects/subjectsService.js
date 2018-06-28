@@ -51,14 +51,14 @@ angular.module("Dashboard").service('SubjectService', function( RequestFactory, 
     this.updateSubject = function(subject){
         return RequestFactory.makeTokenRequest(
             'PUT',
-            "/subjects",
+            "/subjects/"+subject.id,
             data = {
                 name: subject.name,
                 short_name: subject.short_name,
                 description: subject.description,
                 career: subject.career_id,
                 semester: subject.semester,
-                plan: subject.plan
+                plan: subject.plan_id
             },
             AuthFactory.getToken()
         );

@@ -12,9 +12,9 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
         SignupService.getCareers()
             .then(function(success){
                 if( success.status == NO_CONTENT ){
-                    // Notification.warning("No hay carreras disponibles por lo que no será posible continuar con el registro");
-                    $scope.alert.type = 'warning';
-                    $scope.alert.message = "No se encontraron carreras disponibles";
+                    alert("No hay carreras disponibles por lo que no será posible continuar con el registro");
+                    // $scope.alert.type = 'warning';
+                    // $scope.alert.message = "No se encontraron carreras disponibles";
                 }   
                 else
                     $scope.careers = success.data;
@@ -27,9 +27,7 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
                 $scope.alert.message = "Error al cargar carreras";
                 $scope.loading = false;
             });
-    }
-
-    $scope.loadCareers();
+    };
 
     $scope.signup = function(student){
 
@@ -40,6 +38,9 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
 
         if( !student.facebook )
             student.facebook = "";
+
+        if( !student.phone )
+            student.phone = "";
 
         $scope.loading = true;
 
@@ -68,6 +69,8 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
                 $scope.loading = false;
             }
         );
-    }
+    };
+
+    $scope.loadCareers();
 
 });

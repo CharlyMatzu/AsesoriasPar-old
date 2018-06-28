@@ -194,6 +194,29 @@ class AuthMiddleware extends Middleware
     }
 
 
+    /**
+     * Verifica si hay un toquen para utilizar en caso de haber, si no, lo omite
+     *
+     * @param $req Request
+     * @param $res Response
+     * @param $next callable
+     *
+     * @return Response
+     */
+    public function optionalAuth($req, $res, $next){
+
+        try{
+            //Verifica auth general
+            self::requireAuth($req);
+            //Si lanza un error, entonces no pasa nada
+        }catch (RequestException $e){}
+
+        $res = $next($req, $res);
+        Auth::sessionDestroy();
+        return $res;
+    }
+
+
     //--------------------------
     // Chequeo de autorización para modificación de registros
     //---------------------------

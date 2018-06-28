@@ -2,9 +2,16 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-8">
+                
                 <div class="login-content card">
 
-                    <div class="login-form">
+                    <!-- loader -->
+                    <div class="loader" ng-show="loading">
+                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                    </div>
+
+                    <!-- form -->
+                    <div class="login-form" ng-show="!loading">
                         <h1>Registro de usuario</h1>
                         <form ng-submit="signup(student)">
                             <!-- _______Alerts_______ -->
@@ -95,6 +102,7 @@
                             </div>
                         </form>
                     </div>
+                    <!-- end form -->
                     
                 </div>
             </div>

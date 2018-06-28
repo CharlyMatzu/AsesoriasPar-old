@@ -192,7 +192,8 @@ $app->get('/users/{id}/student', 'UserController:getStudent_ByUserId')
 
 //TODO: VALIDAR AUTH
 //Obtiene carreras
-$app->get('/careers', 'CareerController:getCareers');
+$app->get('/careers', 'CareerController:getCareers')
+        ->add('AuthMiddleware:optionalAuth');
 
 //TODO: VALIDAR AUTH
 //Obtiene carrera por Id
@@ -203,7 +204,7 @@ $app->get('/careers/{id}', 'CareerController:getCareer_ById')
 //TODO: VALIDAR AUTH
 //Obtiene materias de carrera
 $app->get('/career/{id}/subjects', 'CareerController:getCareerSubjects')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id');
 
 
 //TODO: VALIDAR AUTH

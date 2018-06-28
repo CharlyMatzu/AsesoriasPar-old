@@ -24,7 +24,7 @@ abstract class Auth
     /**@var $USER_SESSION UserModel*/
     private static $USER_SESSION = null;
     private static $TOKEN_SESSION = null;
-    public static $isAuthRequired = false;
+    public static $isSessionON = false;
 
 
     //--------------------------------
@@ -240,7 +240,7 @@ abstract class Auth
     public static function setSession($user, $token){
         self::$USER_SESSION = $user;
         self::$TOKEN_SESSION = $token;
-        self::$isAuthRequired = true;
+        self::$isSessionON = true;
     }
 
     /**
@@ -281,7 +281,7 @@ abstract class Auth
     {
         self::$USER_SESSION = null;
         self::$TOKEN_SESSION = null;
-        self::$isAuthRequired = false;
+        self::$isSessionON = false;
     }
 
 
