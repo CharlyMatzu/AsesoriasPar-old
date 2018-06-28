@@ -139,8 +139,9 @@ class UsersPersistence extends Persistence{
      * @throws \App\Exceptions\Request\InternalErrorException
      */
     public function getUser_ById_ByPassword($id, $pass){
+        $ePass = self::crypt( $pass );
         $query = $this->SELECT."
-                WHERE u.user_id = $id AND u.password = '$pass' LIMIT 1";
+                WHERE u.user_id = $id AND u.password = '$ePass' LIMIT 1";
         return  self::executeQuery($query);
     }
 

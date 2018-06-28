@@ -2,22 +2,22 @@
 <div class="content-wrapper">
 
     <div class="container">
-        <div class="form-section col-lg-6 offset-lg-3">
+        <div class="form-section col-lg-12">
             <div class="header text-center">
                 <h2>Editar perfil</h2>
             </div>
             <br><br>
 
             <!-- spinner -->
-            <div class="spinner-container" ng-if="loading">
+            <div class="spinner-container" ng-if="loadingData">
                 <div class="spinner"></div>
             </div>
             
             
-            <div class="profile-form" ng-if="!loading">
+            <div class="profile-form">
                 <!-- estudiante -->
                 <h5>Información de estudiante</h5>
-                <form class="profile-form">
+                <form class="profile-form" ng-submit="updateStudentData(student)">
                     <div class="form-group">
                         <label for="">Correo electronico:</label>
                         <input type="text" class="form-control" ng-model="student.user_email" required>
@@ -54,10 +54,15 @@
                 </form>
                 <!-- end estudiante -->
                 <br><br><br>
+
+                <!-- spinner -->
+                <div class="spinner-container" ng-if="loadingPass">
+                    <div class="spinner"></div>
+                </div>
         
                 <!-- password -->
                 <h5>Cambiar contraseña</h5>
-                <form class="profile-form">
+                <form class="profile-form" ng-submit="updateUserPassword(pass)">
                     <div class="form-group">
                         <label for="">Contraseña vieja:</label>
                         <input type="text" class="form-control" ng-model="pass.old" required>
