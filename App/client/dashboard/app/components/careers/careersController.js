@@ -46,7 +46,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
         
         CareerService.addCareer(career, 
             function(success){
-                Notification.success("Registrado con exito");
+                Notification.success("Registrado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -68,7 +68,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
         
         CareerService.updateCareer(career, 
             function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -88,7 +88,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
         
         CareerService.deleteCareer(career_id,
             function(success){
-                Notification.success("Eliminado con exito");
+                Notification.success("Eliminado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -108,7 +108,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
 
         CareerService.changeStatus(career_id, DISABLED,
             function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -128,7 +128,7 @@ app.controller('CareersController', function($scope, $http, Notification, Career
 
         CareerService.changeStatus(career_id, ENABLED,
             function(success){
-                Notification.success("habilitado con exito");
+                Notification.success("habilitado con éxito");
                 $scope.getCareers();
             },
             function(error){

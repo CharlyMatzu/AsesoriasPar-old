@@ -31,7 +31,7 @@ class CareerService{
         $result = $this->perCareers->getCareers();
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCareers", "Ocurrio un error al obtener careras", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCareers", "Ocurrio un error al obtener carreras", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No hay carreras registradas");
@@ -54,7 +54,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ById( $id );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCareerById", "Ocurrio un error al obtener la carera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCareerById", "Ocurrio un error al obtener la carrera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -75,7 +75,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByName ($name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCareerByName","Ocurrio un error al obtener la carera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCareerByName","Ocurrio un error al obtener la carrera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -95,7 +95,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByShortName( $short_name );
 
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException(static::class.":getCarrerByName", "Ocurrio un error al obtener la carera", $result->getErrorMessage());
+            throw new InternalErrorException(static::class.":getCarrerByName", "Ocurrio un error al obtener la carrera", $result->getErrorMessage());
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe carrera");
@@ -123,7 +123,7 @@ class CareerService{
         }catch (NoContentException $e){}
         try{
             $this->getCareer_ByName_ShortName( $short_name );
-            throw new ConflictException("abreviacion ya existe");
+            throw new ConflictException("Abreviación ya existe");
             //Si no encuentra nada, no hay problema
         }catch (NoContentException $e){}
 
@@ -166,7 +166,7 @@ class CareerService{
             if( $career_aux['short_name'] != $career->getShortName() ) {
                 //Debe lanzar exception para que sea correcto
                 $this->getCareer_ByName_ShortName( $career->getShortName(), $career->getId() );
-                throw new ConflictException("Abreviacion ya existe");
+                throw new ConflictException("Abreviación ya existe");
             }
             //Si no encuentra nada, no hay problema
         }catch (NoContentException $e){}
@@ -265,7 +265,7 @@ class CareerService{
         $result = $this->perCareers->getCareer_ByName_ShortName( $name, $career_id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getCareer_ByName_ShortName",
-                "Error al obtener carrera por nombre/abreviacion", $result->getErrorMessage() );
+                "Error al obtener carrera por nombre/abreviación", $result->getErrorMessage() );
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");
 

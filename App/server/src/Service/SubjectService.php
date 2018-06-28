@@ -28,7 +28,7 @@ class SubjectService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getSubjects","Ocurrio un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("No se encontraron materias reistrados");
+            throw new NoContentException("No se encontraron materias registradas");
         else
             return $result->getData();
     }
@@ -46,7 +46,7 @@ class SubjectService{
             throw new InternalErrorException(static::class.":getEnabledSubjects",
                 "Ocurrio un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("No se encontraron materias reistrados");
+            throw new NoContentException("No se encontraron materias registradas");
         else
             return $result->getData();
     }
@@ -119,7 +119,7 @@ class SubjectService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getCareerSubject","Ocurrio un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("No se encontraron materias reistrados");
+            throw new NoContentException("No se encontraron materias registradas");
         else
             return $result->getData();
     }
@@ -139,7 +139,7 @@ class SubjectService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getPlanSubjects","Ocurrio un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("No se encontraron materias reistrados");
+            throw new NoContentException("No se encontraron materias registradas");
         else
             return $result->getData();
     }
@@ -157,7 +157,7 @@ class SubjectService{
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":getSubjectBySemester","Ocurrio un error al obtener materias", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NoContentException("No se encontraron materias reistrados");
+            throw new NoContentException("No se encontraron materias registradas");
         else
             return $result->getData();
     }
@@ -175,7 +175,7 @@ class SubjectService{
 //        if( Utils::isError( $result->getOperation() ) )
 //            throw new InternalErrorException("Ocurrio un error al obtener materias");
 //        else if( Utils::isEmpty( $result->getOperation() ) )
-//            throw new NoContentException("No se encontraron materias reistrados");
+//            throw new NoContentException("No se encontraron materias registradas");
 //        else
 //            return Utils::makeArrayResponse(
 //                "Materias registradas",
@@ -232,7 +232,7 @@ class SubjectService{
             //Verifica que no exista el nombre
             $this->getSubject_ByName_ShortName( $name, $plan_id, $career_od,  $subject_id);
             //si lanza exepcion, existe
-            throw new ConflictException("Nombre/abreviacion ya existe: $name");
+            throw new ConflictException("Nombre/abreviación ya existe: $name");
             //Si no se encuentra nada, no hay problema
         }catch (NoContentException $e){}
     }
@@ -372,7 +372,7 @@ class SubjectService{
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException(static::class.":isSubjectExist_ByName_ShortName",
-                "Ocurrio un error obtener materia por nombre/abreviacion");
+                "Ocurrio un error obtener materia por nombre/abreviación");
 
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("");

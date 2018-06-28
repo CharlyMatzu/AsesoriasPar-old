@@ -16,7 +16,6 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         $window.location.href = '#!/usuarios/nuevo';
     }
 
-
     $scope.getUsers = function(){
         $scope.loading.status = true;
         $scope.loading.message = "Obteniendo registros";
@@ -131,7 +130,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
 
         UsersService.updateUser(user,
             function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.getUsers();
             },
             function(error){
@@ -163,7 +162,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
 
         UsersService.deleteUser(user_id,
             function(success){
-                Notification.success("Usuario eliminado con exito");
+                Notification.success("Usuario eliminado con éxito");
                 $scope.getUsers();
             },
             function(error){
@@ -185,7 +184,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         Notification('Procesando...');
         UsersService.changeStatus(user_id, ENABLED, 
             function(success){
-                Notification.success("Habilitado con exito");
+                Notification.success("Habilitado con éxito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getUsers();
             },
@@ -209,7 +208,7 @@ app.controller('UsersController', function($scope, $http, $window, Notification,
         Notification('Procesando...');
         UsersService.changeStatus(user_id, DISABLED, 
             function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getUsers();
             },
             function(error){

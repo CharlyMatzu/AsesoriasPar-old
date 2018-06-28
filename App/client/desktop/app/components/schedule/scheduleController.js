@@ -226,7 +226,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 $scope.loading.status = false;
             },
             function(error){
-                Notification.error("Error al iniciarlizar horario");
+                Notification.error("Error al inicializar horario");
                 $scope.loading.status = false;
                 $scope.loading.message = "Ocurrio un error";
                 $scope.loading.status = false;
@@ -349,7 +349,7 @@ app.controller('ScheduleController', function($scope, $http, Notification, Sched
                 // getStudentSchedule( $scope.student.id );
             },
             function(error){
-                Notification.error("Error al actualziar horario: "+error.data);
+                Notification.error("Error al actualizar horario: "+error.data);
                 $scope.loading.status = false;
             }
         );

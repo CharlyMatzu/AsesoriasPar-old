@@ -1,5 +1,5 @@
 app.controller('PlansController', function($scope, $http,Notification, PlansService){
-    $scope.page.title = "Planes academicos"
+    $scope.page.title = "Planes académicos"
     $scope.plans = [];
 
     $scope.plan = {
@@ -35,7 +35,7 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
             function( error ){
                 Notification.error("Error al obtener usuarios: " + error.data);
                 $scope.loading.status = false;
-                $scope.loading.message = "Ocurrio un error =(";
+                $scope.loading.message = "Ocurrio un érror =(";
             }
         );
     }
@@ -55,14 +55,13 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
         //Se hace peticion
         PlansService.insertPlan(plan,
             function(success){
-                Notification.success('Plan registrado con exito');
+                Notification.success('Plan registrado con éxito');
                 $scope.getPlans();
             }, 
             function(error){
                 Notification.error("Error al registrar plan: "+error.data);
             });
-    }
-    
+    }    
 
     $scope.editPlan = function(plan){
         $scope.plan.id = plan.id;
@@ -95,7 +94,7 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
 
         PlansService.deletePlan(plan_id,
             function(success){
-                Notification.success('Plan eliminado con exito');
+                Notification.success('Plan eliminado con éxito');
                 $scope.getPlans();
             },
             function(error){
@@ -115,7 +114,7 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
         Notification('Procesando...');
         PlansService.changeStatus(plan_id, ENABLED, 
             function(success){
-                Notification.success("Habilitado con exito");
+                Notification.success("Habilitado con éxito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getPlans();
             },
@@ -139,7 +138,7 @@ app.controller('PlansController', function($scope, $http,Notification, PlansServ
         Notification('Procesando...');
         PlansService.changeStatus(plan_id, DISABLED, 
             function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getPlans();
             },
             function(error){

@@ -3,7 +3,7 @@ app.controller('SigninController', function($scope, $window, $timeout, localStor
 
     $scope.signin = function(user){
         $scope.loading.status = true;
-        $scope.loading.message = "Iniciando sesion";
+        $scope.loading.message = "Iniciando sesión";
 
         SigninService.signin(user,
             function(success){
@@ -15,7 +15,7 @@ app.controller('SigninController', function($scope, $window, $timeout, localStor
                 },2000);
             },
             function(error){
-                Notification.error("Ocurrio un error");
+                Notification.error("Ocurrió un error");
                 $scope.alert.type = 'warning';
                 $scope.alert.message = error.data;
 

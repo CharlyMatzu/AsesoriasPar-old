@@ -46,7 +46,7 @@ class AuthService
         //Si esta sin confirmar
         $user = $result->getData()[0];
         if( $user['status'] == Utils::$STATUS_NO_CONFIRM ) {
-            throw new ConflictException("Usuario no ha confirmado correo electronico");
+            throw new ConflictException("Usuario no ha confirmado correo electrónico");
             //TODO reenviar correo de confirmacion
         }
 

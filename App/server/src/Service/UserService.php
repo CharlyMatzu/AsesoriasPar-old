@@ -307,7 +307,7 @@ class UserService{
         //Inicia transaccion
         $trans = UsersPersistence::initTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al iniciar transaccion");
+            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al iniciar transacción");
 
 
         //------------Verificacion de datos de usuario (excepciones incluidas)
@@ -355,7 +355,7 @@ class UserService{
         //Si marcha bien, se registra commit
         $trans = UsersPersistence::commitTransaction();
         if( !$trans )
-            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al realizar commit de transaccion");
+            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al realizar commit de transacción");
 
 //        $this->sendConfirmEmail( $user->getEmail() );
     }
@@ -367,20 +367,20 @@ class UserService{
      */
     public function sendConfirmEmail($email){
         //Se envia correo de confirmacion TODO: debe enviarse a una cola
-        $msg = "Se ha registrado en la plataforma de Asesoriaspar.ronintopics.com, para confirmar su correo haga clic en el siguiente enlace
+        $msg = "Se ha registrado en la plataforma de Asesoríaspar.ronintopics.com, para confirmar su correo haga clic en el siguiente enlace
                 <a href='#'> http://client.asesoriaspar.com/#!confirmar/ </a>";
         $mailServ = new MailService();
 
         $mail = new MailModel();
         $mail->addAdress( $email );
-        $mail->setSubject("Confirmacion de correo");
-        $mail->setBody("<h3>Asesorias par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm' </p>");
+        $mail->setSubject("Confirmación de correo");
+        $mail->setBody("<h3>Asesorías par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".CLIENT_URL."confirm' </p>");
         $mail->setBody("asdsad");
 
         try{
             $mailServ->sendMail( $mail );
         }catch (InternalErrorException $e){
-            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al enviar correo de confirmacion");
+            throw new InternalErrorException(static::class.":insertUserAndStudent","Error al enviar correo de confirmación");
         }
     }
 

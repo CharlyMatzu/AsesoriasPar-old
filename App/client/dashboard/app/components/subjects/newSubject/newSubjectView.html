@@ -10,7 +10,7 @@
                     <!-- _______Alerts_______ -->
                     <div ng-show="alert.type == 'error'" class="alert alert-danger fade show">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <strong>Santo guacamole!</strong> Ocurrio un error: {{alert.message}}
+                        <strong>Santo guacamole!</strong> Ocurrio un érror: {{alert.message}}
                     </div>
                     <div ng-show="alert.type == 'warning'" class="alert alert-warning fade show">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -30,12 +30,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="short_name">Abreviacion:</label>
+                            <label for="short_name">Abreviación:</label>
                             <input type="text" id="short_name" class="form-control" ng-model="subject.short_name">
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Descripcion:</label>
+                            <label for="description">Descripción:</label>
                             <textarea name="" id="description" class="form-control" ng-model="subject.description" rows="5"></textarea>
                         </div>
 

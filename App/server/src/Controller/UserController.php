@@ -207,7 +207,7 @@ class UserController
             $user->setId( $params['id'] );
 
             $userServ->updateUser( $user );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Actualizado con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Actualizado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -226,7 +226,7 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status modificado con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Status modificado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -244,7 +244,7 @@ class UserController
         try {
             $userServ = new UserService();
             $userServ->deleteUser( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Eliminado con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Eliminado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

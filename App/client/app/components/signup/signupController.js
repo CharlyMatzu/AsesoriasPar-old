@@ -53,7 +53,7 @@ app.controller('SignupController', function($scope, $window, $timeout, Notificat
             function(success){
                 Notification.success("Bien!");
                 $scope.alert.type = 'success';
-                $scope.alert.message = "Registrado con exito,redireccionando";
+                $scope.alert.message = "Registrado con éxito, redireccionando";
                 $scope.loading.status = false;
                 
                 $scope.student = {};
@@ -64,7 +64,7 @@ app.controller('SignupController', function($scope, $window, $timeout, Notificat
                 }, 2000);
             },
             function(error){
-                Notification.error("Ocurrio un error: "+error.data);
+                Notification.error("Ocurrió un error: "+error.data);
                 $scope.alert.type = 'warning';
                 $scope.alert.message = error.data;
 

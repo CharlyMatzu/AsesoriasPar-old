@@ -65,7 +65,7 @@ class PeriodService{
         if( Utils::isError($result->getOperation()) )
             throw new InternalErrorException(static::class.":getPeriodByRange","Ocurrio un error al obtener periodo", $result->getErrorMessage());
         else if( Utils::isEmpty($result->getOperation()) )
-            throw new NoContentException("No se encontraron periodos reistrados");
+            throw new NoContentException("No se encontraron periodos registrados");
         else
             return $result->getData();
     }
@@ -131,7 +131,7 @@ class PeriodService{
         //FIXME: envitar que la fecha de termino sea antes o igual a la de inicio
         //TODO: debe validar que fecha de cierre no se empalme con otra o hacer que la ultima fecha de cierre(+ un dia) sea la valida en adelante
         if( $dateEnd <= $dateStart )
-            throw new ConflictException("Fecha de cierra incorrecta debe ser posterior a la de inicio");
+            throw new ConflictException("Fecha de cierre incorrecta, debe ser posterior a la de inicio");
 
 
         //------------REISTRANDO PERIODO
@@ -157,7 +157,7 @@ class PeriodService{
 
         //TODO: comprobar que las fechas sean correctas (empalmadas, inicio antes de fin, formatos)
         if( $period->getDateEnd() <= $period->getDateStart() )
-            throw new ConflictException("Fecha de cierra incorrecta, debe ser posterior a la de inicio");
+            throw new ConflictException("Fecha de cierre incorrecta, debe ser posterior a la de inicio");
 
         //Se actualiza
         $result = $this->perPeriods->updatePeriod( $period );

@@ -4,7 +4,7 @@ app.service('UsersService', function($http){
     this.changeStatus = function(user_id, status, successCallback, errorCallback){
         $http({
             method: 'PATCH',
-            url: "http://api.ronintopics.com/users/"+user_id+"/status/"+status
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users/"+user_id+"/status/"+status
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -16,7 +16,7 @@ app.service('UsersService', function($http){
     this.getUsers = function(successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/users/staff"
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users/staff"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -27,7 +27,7 @@ app.service('UsersService', function($http){
     this.searchUsers = function(data,successCallback, errorCallback){
         $http({
             method: 'GET',
-            url: "http://api.ronintopics.com/users/search/"+data+"/staff"
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users/search/"+data+"/staff"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -40,7 +40,7 @@ app.service('UsersService', function($http){
     this.addUser = function(user, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.ronintopics.com/users",
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users",
             data: {
                 email: user.email,
                 password: user.pass,
@@ -56,7 +56,7 @@ app.service('UsersService', function($http){
     this.updateUser = function(user, successCallback, errorCallback){
         $http({
             method: 'PUT',
-            url: "http://api.ronintopics.com/users/"+user.id,
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users/"+user.id,
             data: {
                 email: user.email,
                 password: user.pass,
@@ -72,7 +72,7 @@ app.service('UsersService', function($http){
     this.deleteUser = function(user_id, successCallback, errorCallback){
         $http({
             method: 'DELETE',
-            url: "http://api.ronintopics.com/users/"+user_id
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users/"+user_id
         }).then(function (success){
             successCallback(success);
         },function (error){

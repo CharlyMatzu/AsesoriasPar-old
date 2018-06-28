@@ -35,7 +35,7 @@ class InputParamsMiddelware extends Middelware
         $id = $this->getRouteParams($req)['id'];
         //Verifica que sea un string numerico (no int porque viene como string)
         if( !is_numeric($id) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetro invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -72,7 +72,7 @@ class InputParamsMiddelware extends Middelware
         $advisory = $this->getRouteParams($req)['advisory'];
         //Verifica que sea un string numerico (no int porque viene como string)
         if( !is_numeric($advisory) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetro invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -90,7 +90,7 @@ class InputParamsMiddelware extends Middelware
         $id = $this->getRouteParams($req)['schedule'];
         //Verifica que sea un string numerico (no int porque viene como string)
         if( !is_numeric($id) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetro invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -109,13 +109,13 @@ class InputParamsMiddelware extends Middelware
         $status = $this->getRouteParams($req)['status'];
         //Verifica que sea un string numerico (no int porque viene como string)
         if( !is_numeric($status) || $status === "" || $status == null )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetro invalido");
 
         if( ($status != Utils::$STATUS_ENABLE)
             && ($status != Utils::$STATUS_DISABLE)
             //&& ($status != Utils::$STATUS_NO_CONFIRM)
         )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetro invalido");
 
         $res = $next($req, $res);
         return $res;
@@ -134,7 +134,7 @@ class InputParamsMiddelware extends Middelware
         $email = $this->getRouteParams($req)['email'];
         //Verifica que sea un string numerico (no int porque viene como string)
         if( empty($email) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametro invalido");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetro invalido");
 
         //TODO: no debe contener caracteres extraños
 
@@ -158,16 +158,16 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['role']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: role");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros: Se requiere: role");
 
         if( empty($params['role']) || empty($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros de rol invalidos");
 
         //El tipo basic es solo con estudiante
         if( //$params['role'] != Utils::$ROLE_BASIC &&
             $params['role'] != Utils::$ROLE_MOD &&
             $params['role'] != Utils::$ROLE_ADMIN)
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros de rol invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros de rol invalidos");
 
 
         $req = $req->withAttribute('role_data', $params['role']);
@@ -188,7 +188,7 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['address']) || !isset($params['subject']) || !isset($params['body']) || !isset($params['plainBody']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: address, subject, body, plainBody");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros: Se requiere: address, subject, body, plainBody");
 
         if( empty($params['address']) || empty($params['subject']) || empty($params['body']) || empty($params['plainBody']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
@@ -234,11 +234,11 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['email']) || !isset($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros: Se requiere: email, password");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros: Se requiere: email, password");
 
         //FIXME: debe poder aceptar password vacio para el caso del update
         if( empty($params['email']) || empty($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
 
         $email = $params['email'];
         $pass = $params['password'];
@@ -274,12 +274,12 @@ class InputParamsMiddelware extends Middelware
             !isset($params['itson_id']) || !isset($params['phone']) ||
             !isset($params['career']))
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Faltan parametros: Se requiere: first_name, last_name, itson_id, phone");
+                "Faltan parámetros: Se requiere: first_name, last_name, itson_id, phone");
 
         if( empty($params['first_name']) || empty($params['last_name']) ||
             empty($params['itson_id']) || empty($params['phone']) ||
             empty($params['career']))
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
 
         $first = $params['first_name'];
         $last = $params['last_name'];
@@ -326,10 +326,10 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['email']) || !isset($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: email, password");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros, Se requiere: email, password");
 
         if( empty($params['email']) || empty($params['password']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
 
         $email = $params['email'];
         $pass = $params['password'];
@@ -364,11 +364,11 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['name']) || !isset($params['short_name']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: name, short_name");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parámetros, Se requiere: name, short_name");
 
         //TODO: podria dejarse abreviacion vacio
         if( empty($params['name']) || empty($params['short_name']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros vacios");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros vacios");
 
         $name = $params['name'];
         $short_name = $params['short_name'];
@@ -398,16 +398,16 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['year']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: year");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: year");
 
         if( empty($params['year']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: no debe estar vacio");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan: no debe estar vacio");
 
         if( ( !is_numeric($params['year']) ) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan, debe ser numerico");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan, debe ser numerico");
 
         if( ( strlen( $params['year'] ) != 4 ) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos de plan: deben ser 4 digitos");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos de plan: deben ser 4 digitos");
 
         $res = $next($req, $res);
         return $res;
@@ -426,7 +426,7 @@ class InputParamsMiddelware extends Middelware
         $params = $req->getParsedBody();
         if( !isset($params['name']) || !isset($params['short_name']) || !isset($params['description']) ||
             !isset($params['semester']) || !isset($params['plan']) || !isset($params['career']))
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, 
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, 
             Se requiere: name, short_name, description, semester, plan, career");
 
         //Solo campos que se ocupan
@@ -470,7 +470,7 @@ class InputParamsMiddelware extends Middelware
     {
         $params = $req->getParsedBody();
         if( !isset($params['start']) || !isset($params['end']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: start, end");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: start, end");
 
         if( empty($params['start']) || empty($params['end']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Campos vacios");
@@ -506,10 +506,10 @@ class InputParamsMiddelware extends Middelware
 
         $params = $req->getParsedBody();
         if( !isset($params['hours']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: hours");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: hours");
 
 //        if( empty($params['hours']) )
-//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos");
+//            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos");
 
         if( !is_array($params['hours']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Debe ser un array");
@@ -539,7 +539,7 @@ class InputParamsMiddelware extends Middelware
 
         $params = $req->getParsedBody();
         if( !isset($params['subjects']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan parametros, Se requiere: subjects");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Faltan Parámetros, Se requiere: subjects");
 
 //        if( empty($params['subjects']) )
 //            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Subjects vacio");
@@ -552,7 +552,7 @@ class InputParamsMiddelware extends Middelware
         $subjects = $params['subjects'];
         foreach ( $subjects as $sub ){
             if( !is_numeric($sub) )
-                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Valores no son numericos");
+                return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Valores no son numéricos");
         }
 
         $req = $req->withAttribute('schedule_subjects', $subjects);
@@ -575,21 +575,21 @@ class InputParamsMiddelware extends Middelware
         $params = $req->getParsedBody();
         if( !isset($params['subject']) || !isset($params['description']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Faltan parametros, Se requiere: subject, description");
+                "Faltan Parámetros, Se requiere: subject, description");
 
         if( empty($params['subject']) || empty($params['description']) )
-            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parametros invalidos: campos vacios");
+            return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST, "Parámetros invalidos: campos vacios");
 
         //no debe ser array
         if( is_array($params['subject']) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: subject no debe ser array");
+                "Parámetros invalidos: subject no debe ser array");
 
         //Verificando que sean datos numericos
         $subject = $params['subject'];
         if( !is_numeric($subject) )
             return Utils::makeMessageJSONResponse($res, Utils::$BAD_REQUEST,
-                "Parametros invalidos: subject no es numerico");
+                "Parámetros invalidos: subject no es numerico");
 
         $advisory = new AdvisoryModel();
         $advisory->setSubject( $subject );

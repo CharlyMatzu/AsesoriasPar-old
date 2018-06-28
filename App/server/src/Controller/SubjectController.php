@@ -124,7 +124,7 @@ class SubjectController
             $subjectService = new SubjectService();
             $subject = $req->getAttribute('subject_data');
             $subjectService->insertSubject( $subject );
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materia registrada con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Materia registrada con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -165,7 +165,7 @@ class SubjectController
         try {
             $subjectService = new SubjectService();
             $subjectService->deleteSubject( $params['id'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Materia eliminada con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -182,7 +182,7 @@ class SubjectController
         try {
             $subjectService = new SubjectService();
             $subjectService->changeStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Estado de materia modificado con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Estado de materia modificado con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

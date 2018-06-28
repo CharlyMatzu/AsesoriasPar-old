@@ -146,13 +146,13 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
                         $scope.showUpdateForm = true;
                     },
                     function(error){
-                        Notification.error("Error al cargar planes, se detuvo actualizacion");
+                        Notification.error("Error al cargar planes, se detuvo actualización");
                         $scope.disableButtons(false, '.opt-subjects-'+subject.id);
                     }
                 );
             },
             function(error){
-                Notification.error("Error al cargar carreras, se detuvo actualizacion");
+                Notification.error("Error al cargar carreras, se detuvo actualización");
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
             }
         );
@@ -173,7 +173,7 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
         }
         if( subject.semester == null || subject.semester == "" || 
             subject.semester < 1 || subject.semester > 12 ){
-            Notification.warning("Semestre debe ser numerico y debe estar entre 1 y 12");
+            Notification.warning("Semestre debe ser númerico y debe estar entre 1 y 12");
             return;
         }
 
@@ -183,7 +183,7 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
         
         SubjectService.updateSubject(subject, 
             function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.getSubjects();
             },
             function(error){
@@ -204,7 +204,7 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
         
         SubjectService.deleteSubject(subject_id,
             function(success){
-                Notification.success("Eliminado con exito");
+                Notification.success("Eliminado con éxito");
                 $scope.getSubjects();
             },
             function(error){
@@ -224,7 +224,7 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
 
         SubjectService.changeStatus(subject_id, DISABLED,
             function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getSubjects();
             },
             function(error){
@@ -244,7 +244,7 @@ app.controller('SubjectsController', function($scope, $http, Notification, Subje
 
         SubjectService.changeStatus(subject_id, ENABLED,
             function(success){
-                Notification.success("habilitado con exito");
+                Notification.success("habilitado con éxito");
                 $scope.getSubjects();
             },
             function(error){

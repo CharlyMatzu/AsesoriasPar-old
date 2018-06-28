@@ -4,7 +4,7 @@ app.service('SignupService', function($http){
         $http({
             method: 'GET',
             //TODO: cambiar URL para obtener solo carreras activas
-            url: "http://api.ronintopics.com/index.php/careers"
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/careers"
         }).then(function(success){
             successCallback(success);
         }, function(error){
@@ -15,7 +15,7 @@ app.service('SignupService', function($http){
     this.signup = function(student, successCallback, errorCallback){
         $http({
             method: 'POST',
-            url: "http://api.ronintopics.com/index.php/users/student",
+            url: "http://localhost/AsesoriasParWeb/App/server/index.php/users/student",
             data: {
                 email: student.email,
                 password: student.pass,

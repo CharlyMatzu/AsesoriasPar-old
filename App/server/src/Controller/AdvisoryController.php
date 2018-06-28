@@ -81,7 +81,7 @@ class AdvisoryController
             //Se adiciona estudiante a objeto
             $advisory->setStudent( $params['id'] );
             $advisoryServ->insertAdvisory_CurrentPeriod( $advisory);
-            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asesoria registrada con exito");
+            return Utils::makeMessageJSONResponse( $res, Utils::$CREATED, "Asesoria registrada con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

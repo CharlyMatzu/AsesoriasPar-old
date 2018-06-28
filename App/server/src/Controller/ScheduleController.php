@@ -115,7 +115,7 @@ class ScheduleController
         try {
             $scheduleService = new ScheduleService();
             $scheduleService->changeSchedyleStatus( $params['id'], $params['status'] );
-            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Modificaco estado de horario");
+            return Utils::makeMessageJSONResponse( $res, Utils::$OK, "Modificando estado de horario");
 
         } catch (RequestException $e) {
             return Utils::makeMessageJSONResponse( $res, $e->getStatusCode(), $e->getMessage() );

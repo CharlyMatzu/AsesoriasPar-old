@@ -6,7 +6,7 @@ app.controller('ConfirmController', function($scope, $window, $timeout, Notifica
 
         ConfirmService.confirm($routeParams.token,
             function(success){
-                Notification.success("Confirmado con exito");
+                Notification.success("Confirmado con éxito");
                 $scope.status = "Confirmado";
 
                 // $timeout(function(){

@@ -23,7 +23,7 @@
 
 
             if( !isset($json_config->mode) || !isset($json_config->connection) )
-                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+                throw new InternalErrorException(static::class.":Conexión", "Faltan datos de conexión");
 
             //Obteniendo el modo y las conexiones
             $mode = $json_config->mode;
@@ -31,12 +31,12 @@
 
             //Se obtiene conexion especifica, si no existe, se lanza error
             if( !isset($connections->$mode) )
-                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+                throw new InternalErrorException(static::class.":Conexión", "Faltan datos de conexión");
 
             $con = $connections->$mode;
 
             if( !isset($con->host) || !isset($con->user) || !isset($con->pass) || !isset($con->db) )
-                throw new InternalErrorException(static::class.":Conexion", "Faltan datos de conexion");
+                throw new InternalErrorException(static::class.":Conexión", "Faltan datos de conexión");
 
             //Datos de conexion
             $this->_connection = new mysqli(
