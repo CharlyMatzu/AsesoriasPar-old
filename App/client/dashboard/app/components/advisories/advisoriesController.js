@@ -1,7 +1,11 @@
-angular.module("Dashboard").controller('AdvisoriesController', function($scope, Notification, AdvisoriesService, STATUS){
+angular.module("Dashboard").controller('AdvisoriesController', function($scope, Notification, AdvisoriesService, PlansService, STATUS, $window){
     
     $scope.page.title = "Asesorias";
     $scope.advisories = [];
+
+    $scope.loading = false;
+    $scope.loadingAdvisers = false;
+    $scope.loadingSchedule = false;
 
     $scope.showAssign = false;
     $scope.showAdvisers = false;
@@ -29,14 +33,15 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
                 if( success.status == STATUS.NO_CONTENT ){
                     Notification("No hay asesorias registradas en el periodo actual");
                 }
-                else{
+                else
                     $scope.advisories = success.data;
-                }
             },
             function(error){
                 Notification.error("Error al cargar asesorias: "+error.data);
-            }
-        );
+            })
+            .finally(function(){
+                $scope.loading = false;
+            });
     };
 
     var getSubjectAdvisers = function(advisory){
@@ -89,8 +94,8 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     };
 
     var getDaysAndHours = function(){
-        AdvisoriesService.getDaysAndHours(
-            function(success){
+        AdvisoriesService.getDaysAndHours()
+            .then(function(success){
                 Notification.success("Horas cargadas");
                 $scope.daysAndHours = success.data;
             },
@@ -102,8 +107,8 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
 
 
     var registerAdvisoryHours = function(hours, advisory_id, adviser_id){
-        AdvisoriesService.assignAdviser(advisory_id, hours, adviser_id,
-            function(success){
+        AdvisoriesService.assignAdviser(advisory_id, hours, adviser_id)
+            .then(function(success){
                 Notification.success("Asignado con exito");
                 //Recarga asesorias
                 $scope.getAdvisories();
@@ -177,8 +182,24 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
 
 
     (function(){
-        //TODO: verificar si hay un periodo actual
-        $scope.getAdvisories();
+        $scope.loading = true;
+
+        //verifica si hay un periodo actual
+        PlansService.getCurrentPlan()
+            .then(function(success){
+                
+                if( success.status == STATUS.NO_CONTENT ){
+                    alert("No hay un periodo actual activo");
+                    $window.location = "#!/planes";
+                }
+                else
+                    $scope.getAdvisories();
+
+            }, function(error){
+                $scope.loading = false;
+                Notification.error("Ocurrio un error verificar un periodo actual activo");
+            })
+        
     })();
     
 

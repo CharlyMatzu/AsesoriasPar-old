@@ -53,6 +53,16 @@ angular.module("Dashboard").service('PlansService', function( RequestFactory, Au
     }
 
 
+    this.getCurrentPlan = function(){
+        return RequestFactory.makeTokenRequest(
+            'GET',
+            "/periods/current",
+            null,
+            AuthFactory.getToken()
+        );
+    }
+
+
     
     
 
