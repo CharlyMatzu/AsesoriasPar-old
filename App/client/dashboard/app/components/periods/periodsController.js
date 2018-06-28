@@ -181,7 +181,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         PeriodsService.changeStatus(period_id, ACTIVE)
             .then(function(success){
                 Notification.success("habilitado con exito");
-                getPeriods();
+                $scope.getPeriods();
             },
             function(error){
                 Notification.error("Error al habilitar periodo: "+error.data);

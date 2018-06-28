@@ -14,7 +14,7 @@ angular.module("Dashboard").service('StudentDetailService', function( RequestFac
     this.getDaysAndHours_source = function(){
         return RequestFactory.makeTokenRequest(
             'GET',
-            "/students",
+            "/schedule/source",
             null,
             AuthFactory.getToken()
         );
@@ -67,6 +67,23 @@ angular.module("Dashboard").service('StudentDetailService', function( RequestFac
             AuthFactory.getToken()
         );
     }
-    
+
+
+    this.validateSubject = function(schedule_id, subject_id, status){
+        return RequestFactory.makeTokenRequest(
+            'PUT',
+            "/schedule/"+schedule_id+"/subject/"+subject_id+"/status/"+status,
+            data = {
+                career: student.career_id,
+                first_name: student.first_name,
+                last_name: student.last_name,
+                itson_id: student.itson_id,
+                phone: student.phone,
+                facebook: student.facebook,
+                email: student.user_email
+            },
+            AuthFactory.getToken()
+        );
+    } 
 
 });

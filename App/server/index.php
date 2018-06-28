@@ -428,8 +428,6 @@ $app->get('/schedule/adviser/{adviser}/alumn/{alumn}/match', 'ScheduleController
 $app->get('/subject/{id}/advisers', 'SubjectController:getAdvisers_BySubject_IgnoreStudent')
     ->add('InputMiddleware:checkParam_id');
 
-//TODO: obtener asesores disponibles de dicha por materia
-//TODO: obtener horario de Asesor y comparar con Solicitante
 
 
 //TODO: VALIDAR AUTH
@@ -451,6 +449,10 @@ $app->get('/students/{id}/schedule', 'StudentController:getSchedule_ByStudentId'
 //TODO: VALIDAR AUTH
 $app->get('/schedule/{id}/subjects', 'ScheduleController:getScheduleSubjects')
     ->add('InputMiddleware:checkParam_Id');
+
+
+$app->get('/schedule/{schedule}/subjects/{subject}/status/{status}', 'ScheduleController:validateScheduleSubject')
+    ->add('InputMiddleware:checkParams_ScheduleSubject');
 
 
 //TODO: VALIDAR AUTH

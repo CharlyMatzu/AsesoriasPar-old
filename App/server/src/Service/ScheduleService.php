@@ -675,15 +675,33 @@ class ScheduleService{
 
     //------------------MATERIAS
 
+
+    /**
+     * @param $schedule_id
+     * @param $subject_id
+     * @param $status
+     *
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     */
+    public function validateScheduleSubject_BySchedule($schedule_id, $subject_id, $status){
+        //Verificamos horario
+        $this->getSchedule_ById( $schedule_id );
+
+        //TODO: verificamos materia
+
+        $this->changeStatus_ScheduleSubject( $subject_id, $status );
+    }
+
     /**
      * @param $subId int
      * @param $status int
      * @throws InternalErrorException
      */
-    private function changeStatus_ScheduleSubject($subId, $status)
+    public function changeStatus_ScheduleSubject($subId, $status)
     {
-        //TODO: notificar a usuarios asociados
-        $result = $this->schedulesPer->changetStatus_ScheduleSubject($subId, $status);
+
+        $result = $this->schedulesPer->changetStatus_ScheduleSubject( $subId, $status);
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException( "disableSubject",
                 "Error al deshabilitar materia de horario: $subId", $result->getErrorMessage() );

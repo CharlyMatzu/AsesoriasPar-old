@@ -594,5 +594,28 @@ class InputParamsMiddleware extends Middleware
     }
 
 
+    public function checkParams_ScheduleSubject($req, $res, $next){
+        $schedule = self::getRouteParams($req)['schedule'];
+        $subject = self::getRouteParams($req)['subject'];
+        $status = self::getRouteParams($req)['status'];
+
+        if( empty($schedule) || empty($subject) || empty($status) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
+                "Parámetros vacíos");
+
+        if( !is_numeric($schedule) || !is_numeric($subject) )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
+                "Parametros de ID deben ser numericos");
+
+        if( $status !== Utils::$STATUS_VALIDATED &&
+            $status !== Utils::$STATUS_LOCKED )
+            return Utils::makeMessageResponse($res, Utils::$BAD_REQUEST,
+                "Status debe ser ".Utils::$STATUS_VALIDATED." o ".Utils::$STATUS_LOCKED);
+        
+        $res = $next($req, $res);
+        return $res;
+    }
+
+
 
 }

@@ -36,14 +36,12 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         SubjectService.getSubjects()
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT ){
-                    //Notification.primary("no hay registros");
                     $scope.subjects = [];
                 }
                 else
                     $scope.subjects = success.data;
                     
                 $scope.loading = false;
-               
             },
             function(error){
                 Notification.error("Error al obtener materias: "+error.data);
@@ -117,43 +115,41 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         
         //Se obtienen Carreras
         SubjectService.getCareers()
-
+            //Carreras
             .then(function(success){
                 Notification.success("Carreras cargadas");
-
                 $scope.careers = success.data;
-                
                 //Se obtien planes
-                SubjectService.getPlans(
-                    function(success){
-                        Notification.success("Planes cargados");
-                        $scope.plans = success.data;
-
-                        //Se agregan igualan campos
-                        // y Asignando valores
-                        $scope.subject.id = subject.id;
-                        $scope.subject.name = subject.name;
-                        $scope.subject.short_name = subject.short_name;
-                        $scope.subject.description = subject.description;
-                        //++ para que funcione al ser input number
-                        $scope.subject.semester = ++subject.semester;
-                        $scope.subject.plan = subject.plan_id;
-                        $scope.subject.career = subject.career_id;
-
-                        //Se abre form
-                        $scope.showUpdateSubject = false;
-                    },
-                    function(error){
-                        Notification.error("Error al cargar planes, se detuvo actualizacion");
-                        $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-                    }
-                );
+                return SubjectService.getPlans();
+                    
             },
             function(error){
                 Notification.error("Error al cargar carreras, se detuvo actualizacion");
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
-            }
-        );
+            })
+            //Planes
+            .then(function(success){
+                Notification.success("Planes cargados");
+                $scope.plans = success.data;
+
+                //Se agregan igualan campos
+                // y Asignando valores
+                $scope.subject.id = subject.id;
+                $scope.subject.name = subject.name;
+                $scope.subject.short_name = subject.short_name;
+                $scope.subject.description = subject.description;
+                //++ para que funcione al ser input number
+                $scope.subject.semester = ++subject.semester;
+                $scope.subject.plan = subject.plan_id;
+                $scope.subject.career = subject.career_id;
+
+                //Se abre form
+                $scope.showUpdateSubject = true;
+            },
+            function(error){
+                Notification.error("Error al cargar planes, se detuvo actualizacion");
+                $scope.disableButtons(false, '.opt-subjects-'+subject.id);
+            });
     }
 
 

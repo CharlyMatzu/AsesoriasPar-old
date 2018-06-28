@@ -8,6 +8,7 @@ angular.module("Desktop")
     $scope.schedule = null;
     $scope.subjects = [];
     $scope.noRepeatedSubjects = [];
+    $scope.loadingSubjects = false;
     
     
     
@@ -35,17 +36,21 @@ angular.module("Desktop")
                 $scope.subjects.push( data[i] );
             }
         }
+
+        $scope.loadingSubjects = false;
     };
 
 
     //Obtiene materias para seleccionar
     var getSubjects = function(){
+        $scope.loadingSubjects = true;
         
         SubjestsService.getSubjects()
             .then(function(success){
                 if( success.status === STATUS.NO_CONTENT ){
                     Notification.warning("No hay materias disponibles");
                     $scope.showUpdateSubjects = false;
+                    $scope.loadingSubjects = false;
                 }
                 else{
                     // Notification.success("Materias cargadas");
@@ -58,6 +63,7 @@ angular.module("Desktop")
             function(error){
                 Notification.error("Error al cargar materias: "+error.data);
                 $scope.showUpdateSubjects = false;
+                $scope.loadingSubjects = false;
             });
     };
     
@@ -65,7 +71,6 @@ angular.module("Desktop")
     $scope.openSubjectsUpdate = function(){
         $scope.showUpdateSubjects = true;
         // $scope.schedule.subjects = [];
-        
         $scope.subjects = [];
         //Obtiene materias
         getSubjects();

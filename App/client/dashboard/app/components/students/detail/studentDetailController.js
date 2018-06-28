@@ -226,6 +226,29 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         );
     }
 
+    
+    $scope.allow = function(sub_id){
+        $scope.validate($scope.schedule.id, sub_id, 'VALIDATE');
+    };
+
+    $scope.deny = function(sub_id){
+        $scope.validate($scope.schedule.id, sub_id, 'LOCKED');
+    };
+
+
+    var validate = function(schedule_id, sub_id, status){
+        // $scope.loading = true;
+        Notification("Procesando");
+
+        StudentDetailService.validateSubject()
+            .then(function(success){
+                Notification.success("Validato con éxito");
+                $scope.loadData();
+            }, function(error){
+                Notification.error("No se pudo validar: "+error.status);
+            });
+    };
+
 
     //Se carguen datos al iniciar pagina
     $scope.loadData();

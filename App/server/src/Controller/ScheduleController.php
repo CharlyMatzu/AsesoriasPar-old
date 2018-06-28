@@ -160,11 +160,29 @@ class ScheduleController
         }
     }
 
+//    /**
+//     * @param $req Request
+//     * @param $res Response
+//     */
+//    public function deleteSchedule($req, $res){}
+
+
     /**
      * @param $req Request
      * @param $res Response
+     * @param $params array
+     *
+     * @return Response
      */
-    public function deleteSchedule($req, $res){}
+    public function validateScheduleSubject($req, $res, $params){
+        try {
+            $scheduleService = new ScheduleService();
+            $scheduleService->validateScheduleSubject_BySchedule( $params['schedule'], $params['subject'], $params['status'] );
+            return Utils::makeMessageResponse( $res, Utils::$OK, "Modificado estado de horario");
 
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
 
 }
