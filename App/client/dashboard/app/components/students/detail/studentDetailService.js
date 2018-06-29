@@ -72,16 +72,8 @@ angular.module("Dashboard").service('StudentDetailService', function( RequestFac
     this.validateSubject = function(schedule_id, subject_id, status){
         return RequestFactory.makeTokenRequest(
             'PUT',
-            "/schedule/"+schedule_id+"/subject/"+subject_id+"/status/"+status,
-            data = {
-                career: student.career_id,
-                first_name: student.first_name,
-                last_name: student.last_name,
-                itson_id: student.itson_id,
-                phone: student.phone,
-                facebook: student.facebook,
-                email: student.user_email
-            },
+            "/schedule/"+schedule_id+"/subjects/"+subject_id+"/status/"+status,
+            null,
             AuthFactory.getToken()
         );
     } 

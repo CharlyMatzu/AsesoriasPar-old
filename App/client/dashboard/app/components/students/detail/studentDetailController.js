@@ -178,6 +178,30 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         );
     }
 
+    $scope.getSchedule = function(id){
+
+        StudentDetailService.getStudentSchedule( id )
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT ){
+                    $scope.schedule = null;
+                    throw "Sin horario";
+                }
+                else{
+                    $scope.schedule = success.data;
+                    //Se obtiene dias y horas
+                    return StudentDetailService.getDaysAndHours_source();
+                }
+
+            }, function(error){
+                if( success.status == STATUS.NO_CONTENT )
+                    alert("Error al cargar horas");
+                else
+                    $scope.daysAndHours = success.data;
+
+                $scope.loading = false;    
+            });
+    }
+
     $scope.updateStudentData = function(student){
         var message = "Se actualizarán los datos del estudiante ¿Desea continuar?";
         if( !$scope.confirm(message) )
@@ -248,11 +272,11 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
 
     
     $scope.allow = function(sub_id){
-        $scope.validate($scope.schedule.id, sub_id, 'VALIDATE');
+        validate($scope.schedule.id, sub_id, 'VALIDATED');
     };
 
     $scope.deny = function(sub_id){
-        $scope.validate($scope.schedule.id, sub_id, 'LOCKED');
+        validate($scope.schedule.id, sub_id, 'LOCKED');
     };
 
 
@@ -260,10 +284,10 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         // $scope.loading = true;
         Notification("Procesando");
 
-        StudentDetailService.validateSubject()
+        StudentDetailService.validateSubject(schedule_id, sub_id, status)
             .then(function(success){
                 Notification.success("Validato con éxito");
-                $scope.loadData();
+                $scope.getSchedule( $scope.student.id );
             }, function(error){
                 Notification.error("No se pudo validar: "+error.status);
             });

@@ -468,8 +468,9 @@ $app->get('/schedule/{id}/subjects', 'ScheduleController:getScheduleSubjects')
     ->add('InputMiddleware:checkParam_Id');
 
 
-$app->get('/schedule/{schedule}/subjects/{subject}/status/{status}', 'ScheduleController:validateScheduleSubject')
-    ->add('InputMiddleware:checkParams_ScheduleSubject');
+//TODO: VALIDAR AUTH
+$app->put('/schedule/{schedule}/subjects/{subject}/status/{status}', 'ScheduleController:validateScheduleSubject')
+        ->add('InputMiddleware:checkParams_ScheduleSubject');
 
 
 //TODO: VALIDAR AUTH
