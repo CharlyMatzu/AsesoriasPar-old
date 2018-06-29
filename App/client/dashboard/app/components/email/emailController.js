@@ -9,6 +9,10 @@ angular.module("Dashboard")
 
 
         $scope.loadBox = function(){
+            // hljs.configure({   // optionally configure hljs
+            //     languages: ['javascript', 'ruby', 'python', 'php', 'java']
+            // });
+
             editor = new Quill('#editor-container', {
                 modules: {
                     toolbar: [
@@ -17,7 +21,8 @@ angular.module("Dashboard")
                         ['link', 'clean', 'blockquote', 'code-block'],
                         [{ list: 'ordered' }, { list: 'bullet' }]
                         // ['image']
-                    ]
+                    ],
+                    syntax: true
                 },
                 placeholder: 'Compon algo epico...',
                 theme: 'snow'  // or 'bubble'

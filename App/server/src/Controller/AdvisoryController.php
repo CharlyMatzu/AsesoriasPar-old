@@ -84,7 +84,7 @@ class AdvisoryController
             //Se adiciona estudiante a objeto
             $advisory->setStudent( $params['id'] );
             $advisoryServ->insertAdvisory_CurrentPeriod( $advisory);
-            return Utils::makeMessageResponse( $res, Utils::$CREATED, "asesoria registrada con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "asesoría registrada con éxito");
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
@@ -107,7 +107,7 @@ class AdvisoryController
             //Se adiciona estudiante a objeto
 //            $advisory->setStudent( $params['id'] );
             $advisoryServ->assignAdviser( $params['id'], $advisory->getAdviser(), $advisory->getSchedule() );
-            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Asignacion de asesor con éxito");
+            return Utils::makeMessageResponse( $res, Utils::$CREATED, "Asignación de asesor con éxito");
 
         } catch (RequestException $e) {
         return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );

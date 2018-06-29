@@ -179,7 +179,7 @@ class StudentController
 //            $subject = $req->getAttribute('advisory_subject');
 //            $subject->setStudent( $student_id );
 //            $studentSer->createAdvisoryCurrentPeriod( $subject );
-//            return Utils::makeMessageResponse( $res, Utils::$OK, "asesoria creada con éxito");
+//            return Utils::makeMessageResponse( $res, Utils::$OK, "asesoría creada con éxito");
 //
 //        } catch (RequestException $e) {
 //            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );

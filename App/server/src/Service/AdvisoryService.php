@@ -149,9 +149,9 @@ class AdvisoryService
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisory_ById",
-                "Error al obtener asesoria", $result->getErrorMessage());
+                "Error al obtener asesoría", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe asesoria");
+            throw new NotFoundException("No existe asesoría");
 
         return $result->getData()[0];
     }
@@ -169,7 +169,7 @@ class AdvisoryService
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisorySchedule_ById",
-                "Error al obtener horas de asesoria", $result->getErrorMessage());
+                "Error al obtener horas de asesoría", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NotFoundException("No existe asesorias");
 
@@ -200,7 +200,7 @@ class AdvisoryService
         $subjectServ = new SubjectService();
         $req_subject = $subjectServ->getSubject_ById( $subject_id );
 
-        //TODO: no debe estar empalmada con otra asesoria a la misma hora/dia (activa: status 2)
+        //TODO: no debe estar empalmada con otra asesoría a la misma hora/dia (activa: status 2)
         //TODO: no debe permitir solicitar si es asesor
 
         //Se buscan asesorías activas en el mismo periodo que tengan la misma materia del mismo asesor
@@ -254,8 +254,8 @@ class AdvisoryService
 
             $mailServ = new MailService();
             $mailServ->sendEmailToStaff(
-                "Nueva asesoria",
-                "Se ha registrado una nueva asesoria por: <strong>$name</strong>, para la materia de <strong>".$subject['name']."</strong>",
+                "Nueva asesoría",
+                "Se ha registrado una nueva asesoría por: <strong>$name</strong>, para la materia de <strong>".$subject['name']."</strong>",
                 $userServ->getStaffUsers());
 
         }catch (RequestException $e){}
@@ -340,7 +340,7 @@ class AdvisoryService
         $result = $this->adviPer->assignAdviser( $advisory_id, $adviser_id );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("assignAdviser",
-                "Error al actualizar asesoria", $result->getErrorMessage());
+                "Error al actualizar asesoría", $result->getErrorMessage());
 
         //Agrega horario
         //TODO verificar que horas esten activas
@@ -407,12 +407,13 @@ class AdvisoryService
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("finalizeAdvisory",
-                "Error al finalizar asesoria", $result->getErrorMessage());
+                "Error al finalizar asesoría", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe asesoria");
+            throw new NotFoundException("No existe asesoría");
 
-        return true;
+
         //TODO: enviar correo a asociados
+
     }
 
     /**
@@ -430,7 +431,7 @@ class AdvisoryService
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisorySchedule",
-                "Error al obtener horario de asesoria", $result->getErrorMessage());
+                "Error al obtener horario de asesoría", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 

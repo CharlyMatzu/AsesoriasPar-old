@@ -91,7 +91,8 @@ class StudentsPersistence extends Persistence{
                     WHERE (s.first_name LIKE '%$data%') OR
                           (s.last_name LIKE '%$data%') OR 
                           (s.phone LIKE '%$data%') OR 
-                          (s.itson_id LIKE '%$data%')";
+                          (s.itson_id LIKE '%$data%') OR
+                          (u.email LIKE '%$data%')";
         //Obteniendo resultados
         return $this->executeQuery($query);
     }

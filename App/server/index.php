@@ -352,7 +352,7 @@ $app->get('/students/{id}', 'StudentController:getStudent_ById')
 
 
 //TODO: VALIDAR AUTH
-//Busca estudiante por coincidencias (todos los campos de string: nombre, apellido, correo, telefono)
+//Busca estudiante por coincidencias (todos los campos de string: nombre, apellido, correo, teléfono)
 $app->get('/students/search/{search}', 'StudentController:searchStudents')
     ->add('InputMiddleware:checkParam_Search');
 
@@ -530,7 +530,7 @@ $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects'
 //TODO: debe obtenerse solo materias validadas por admin (status = 2)
 
 
-//TODO: no debe poder solictarse la misma materia mientras una asesoria este activa con la misma
+//TODO: no debe poder solictarse la misma materia mientras una asesoría este activa con la misma
 
 
 //TODO: Al final del periodo, debe finalizarse todas las asesorias activas
@@ -557,7 +557,7 @@ $app->get('/student/{id}/advisories/adviser', 'StudentController:getCurrentAdvis
     ->add('InputMiddleware:checkParam_Id');
 
 //TODO: VALIDAR AUTH
-//Obtiene horas de asesoria asignada
+//Obtiene horas de asesoría asignada
 $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
     ->add('InputMiddleware:checkParam_Id');
 
@@ -565,7 +565,7 @@ $app->get('/advisories/{id}/hours', 'AdvisoryController:getAdvisoryHours_ById')
 //--------------ADVISORIES
 
 //TODO: VALIDAR AUTH
-//Obtiene asesoria por id
+//Obtiene asesoría por id
 $app->get('/advisories/{id}', 'AdvisoryController:getAdvisory_ById')
         ->add('InputMiddleware:checkParam_Id');
 
@@ -581,7 +581,7 @@ $app->get('/subjects/{id}/advisers/ignore/{student}', 'SubjectController:getAdvi
 
 
 //TODO: VALIDAR AUTH
-//crear asesoria por estudiante
+//crear asesoría por estudiante
 $app->post('/students/{id}/advisories', 'AdvisoryController:createStudentAdvisory')
         ->add('InputMiddleware:checkData_advisory')
         ->add('InputMiddleware:checkParam_Id');

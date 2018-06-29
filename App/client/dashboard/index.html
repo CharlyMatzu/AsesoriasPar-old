@@ -144,35 +144,13 @@
                         <!-- TODO: solo para admin -->
                         <li ng-if="isAdmin()">
                             <a href="#!/usuarios">
-                                <i class="fa fa-users"></i><span>Usuarios</span>
+                                <i class="fa fa-users"></i><span class="hide-menu">Usuarios</span>
                             </a>
                         </li>
-                        <!-- <li >
-                            <a class="has-arrow" href="#" aria-expanded="false">
-                                <i class="fa fa-users"></i>
-                                <span class="hide-menu">Staff</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="#!/usuarios">Registrados</a></li>
-                                <li><a href="#!/usuarios/nuevo">Nuevo usuario</a></li>
-                            </ul>
-                        </li> -->
-
-
-                        <!-- <li> 
-                            <a class="has-arrow" href="#" aria-expanded="false">
-                                <i class="fa fa-graduation-cap"></i>
-                                <span class="hide-menu">Estudiantes</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="#!/estudiantes">Registrados</a></li>
-                                <li><a href="#!/estudiantes/nuevo">Nuevo estudiante</a></li>
-                            </ul>
-                        </li> -->
 
                         <li>
                             <a href="#!/estudiantes">
-                                <i class="fa fa-graduation-cap"></i><span>Estudiantes</span>
+                                <i class="fa fa-graduation-cap"></i><span class="hide-menu">Estudiantes</span>
                             </a>
                         </li>
 
@@ -284,8 +262,10 @@
     <script src="../vendor/angularjs/angular-local-storage.min.js"></script>
     <script src="../vendor/angular-notification/angular-ui-notification.min.js"></script>
     
-    <!-- angular-trix editor-->
+    <!-- quill-editor-->
+    <script src="../vendor/highligthjs/highlight.min.js"></script>
     <script src="../vendor/quill-editor/quill.js"></script>
+    
 
     
     

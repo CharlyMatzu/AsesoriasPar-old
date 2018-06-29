@@ -1,15 +1,25 @@
 Acomodar asesorias en dashboard
 
-Solicitar ser asesor de la materia que solicite
+Solicitar ser asesor de la materia que solicite asesoria
+
 Mostrar horario de asesoria en asesoria asignada
+
+Validar que asignaciones no puedan ser la misma hora PEEEERO
+
+Mostrar solo materias de carrera al solicitar asesoria
 
 Al solicitar asesorias debe aparecer solo materias de la que no se es asesor
 Descripcion al solicitar asesoria
-Detalle de estudiante, mostrar asesorías
+Detalle de estudiante
+	-mostrar asesorías
+	-Mostrar información completa
+
 'ACTIVE' del menu del dashboard usando ng-class
 Finalizacion de asesorías al finalizar periodo
 Finalizar asesoria al quitar materia
 Finalizar asesoria al quitar hora
+
+Enviar correo al finalizar
 
 Confirmaciones
 	-Quitar hora
@@ -30,6 +40,10 @@ Enviar correo
 crear PDF o excel asesorias
 Filtro asesorias
 
+Correcciones de diseño
+	-Acomodo de asesorias (wrap)
+	-Acomodar opciones de registros (filtros, search, etc.)	
+	-Acomodar registros de tablas (options, etc.)
 
 ------------Extras
 -Materias relacionadas

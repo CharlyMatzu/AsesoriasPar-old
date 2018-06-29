@@ -62,9 +62,9 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * Obtiene una asesoria en especifico
+     * Obtiene una asesoría en especifico
      *
-     * @param $id int id de la asesoria
+     * @param $id int id de la asesoría
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
@@ -77,7 +77,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Obtiene una asesoria en especifico
+     * Obtiene una asesoría en especifico
      *
      * @param $period_id
      *
@@ -91,7 +91,7 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * Obtiene una asesoria en especifico
+     * Obtiene una asesoría en especifico
      *
      * @param $period_id
      *
@@ -105,7 +105,7 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * Obtiene una asesoria en especifico
+     * Obtiene una asesoría en especifico
      *
      * @param $period_id
      *
@@ -125,7 +125,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Obtiene una asesoria en especifico
+     * Obtiene una asesoría en especifico
      *
      * @param $student_id
      * @param $period_id
@@ -193,7 +193,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Registra una nueva solicitud de asesoria en un periodo dejando la asesoria como en estado pendiente
+     * Registra una nueva solicitud de asesoría en un periodo dejando la asesoría como en estado pendiente
      * por default
      *
      * @param $advisory AdvisoryModel
@@ -212,7 +212,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Actualiza solicitu de asesoria, agregando un asesor, cambiando fecha de inicio y cambiando estado a activo
+     * Actualiza solicitu de asesoría, agregando un asesor, cambiando fecha de inicio y cambiando estado a activo
      *
      * @param $advisory_id int
      * @param $adviser_id int
@@ -245,7 +245,7 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * Obtiene horario de una asesoria
+     * Obtiene horario de una asesoría
      *
      * @param $advisoryId int
      *
