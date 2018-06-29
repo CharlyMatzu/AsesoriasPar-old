@@ -50,7 +50,7 @@ class AuthService
                 $mailServ->sendConfirmEmail( UserService::makeUserModel($user) );
             }catch (InternalErrorException $e) {}
 
-            throw new UnauthorizedException("Usuario no ha confirmado correo electrónico");
+            throw new UnauthorizedException("Debe confirmar correo");
         }
 
         //TODO: no usar id de BD

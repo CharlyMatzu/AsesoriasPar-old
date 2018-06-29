@@ -11,54 +11,50 @@ angular.module("Desktop")
     $scope.loadingSubjects = false;
     
     
-    
+    // var setNoRepeatSubjects = function(data){
+    //     var subs = $scope.schedule.subjects;
+    //     $scope.subjects = [];
 
-    //TODO: las materias que no son parte del horario deben solicitar a la API
-    var setNoRepeatSubjects = function(data){
-        var subs = $scope.schedule.subjects;
-        $scope.subjects = [];
-
-        //Recorre materias
+    //     //Recorre materias
         
-        for( var i=0; i < data.length; i++ ){
-            //Recorre materias
-            var isSelected = false;
-            for( var j=0; j < subs.length; j++ ){
-                //Recorre materias individuales
-                if( data[i]['id'] === subs[j]['subject_id'] ){
-                    isSelected = true;
-                    break;
-                }
-            }
-            //Si no se encontró, entonces se agrega para seleccionar
-            if( !isSelected ){
-                //Se agrega materia que no esta en horario para mostrar
-                $scope.subjects.push( data[i] );
-            }
-        }
+    //     for( var i=0; i < data.length; i++ ){
+    //         //Recorre materias
+    //         var isSelected = false;
+    //         for( var j=0; j < subs.length; j++ ){
+    //             //Recorre materias individuales
+    //             if( data[i]['id'] === subs[j]['subject_id'] ){
+    //                 isSelected = true;
+    //                 break;
+    //             }
+    //         }
+    //         //Si no se encontró, entonces se agrega para seleccionar
+    //         if( !isSelected ){
+    //             //Se agrega materia que no esta en horario para mostrar
+    //             $scope.subjects.push( data[i] );
+    //         }
+    //     }
 
-        $scope.loadingSubjects = false;
-    };
+    //     $scope.loadingSubjects = false;
+    // };
 
 
     //Obtiene materias para seleccionar
     var getSubjects = function(){
         $scope.loadingSubjects = true;
         
-        SubjestsService.getSubjects()
+        SubjestsService.getAvailableSubjects( $scope.schedule.id )
             .then(function(success){
                 if( success.status === STATUS.NO_CONTENT ){
                     Notification.warning("No hay materias disponibles");
-                    $scope.showUpdateSubjects = false;
-                    $scope.loadingSubjects = false;
+                    // $scope.showUpdateSubjects = false;
+                    
                 }
                 else{
-                    // Notification.success("Materias cargadas");
-                    // $scope.subjects = success.data;
-                    //TODO: hacer que la API regresa dichas materias y no que se haga desde el cliente
-                    setNoRepeatSubjects(success.data);
+                    // setNoRepeatSubjects(success.data);
+                    $scope.subjects = success.data;
                 }
-                    
+
+                $scope.loadingSubjects = false;    
             }, 
             function(error){
                 Notification.error("Error al cargar materias: "+error.data);
@@ -88,14 +84,27 @@ angular.module("Desktop")
         SubjestsService.updateScheduleSubjects(schedule_id, subjects)
             .then(function(success){
                 // Recarga materias
-                // Notification.success("Actualizando con éxito");
-                getStudentSchedule( $scope.student.id );
-            },
-            function(error){
-                Notification.error("Error al actualizar materias: "+error.data);
+                Notification.success("Actualizado con éxito");
+                
+                ScheduleService.getStudentSchedule( $scope.student.id )
+                    .then(function(success){
+                        
+                        if( success.status === STATUS.NO_CONTENT )
+                            alert("No se encontro horario");
+                        else{
+                            $scope.schedule = success.data;
+                            getSubjects();
+                        }
+
+                    }, function(error){
+                        Notification.error("Error al obtener horario de alumno");
+                    });
+
+            }, function(error){
+                Notification.error("Error al actualizar materias");
             });
     };
-
+ 
 
 
     $scope.removeSubject = function(event){
@@ -140,6 +149,7 @@ angular.module("Desktop")
             }
         }
     };
+    
 
 
     /**

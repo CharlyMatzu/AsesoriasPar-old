@@ -465,12 +465,21 @@ $app->get('/students/{id}/schedule', 'StudentController:getSchedule_ByStudentId'
 
 
 //TODO: VALIDAR AUTH
+//Obtiene materias de horario
 $app->get('/schedule/{id}/subjects', 'ScheduleController:getScheduleSubjects')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireBasic');
 
 
 //TODO: VALIDAR AUTH
+//Se obtienen materias disponibles para seleccionar para ser asesor
+$app->get('/schedule/{id}/subjects/availables', 'ScheduleController:getAvailableSubjects')
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
+
+
+//TODO: VALIDAR AUTH
+//Se permite o bloquea una materia para asesoría
 $app->put('/schedule/{schedule}/subjects/{subject}/status/{status}', 'ScheduleController:validateScheduleSubject')
         ->add('InputMiddleware:checkParams_ScheduleSubject');
 

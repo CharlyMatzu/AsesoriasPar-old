@@ -72,6 +72,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
             .then(function(success){
                 Notification.success('Plan registrado con exito');
                 $scope.getPlans();
+                $scope.showNewPlan = false;
             }, 
             function(error){
                 Notification.error("Error al registrar plan: "+error.data);

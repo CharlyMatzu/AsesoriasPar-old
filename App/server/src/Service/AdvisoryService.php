@@ -196,9 +196,12 @@ class AdvisoryService
         $student_id = $advisory->getStudent();
         $subject_id = $advisory->getSubject();
 
+        //Se verifica que materia exista
+        $subjectServ = new SubjectService();
+        $req_subject = $subjectServ->getSubject_ById( $subject_id );
 
         //TODO: no debe estar empalmada con otra asesoria a la misma hora/dia (activa: status 2)
-
+        //TODO: no debe permitir solicitar si es asesor
 
         //Se buscan asesorías activas en el mismo periodo que tengan la misma materia del mismo asesor
         $advisories = $this->adviPer->getStudentAdvisories_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
@@ -206,12 +209,31 @@ class AdvisoryService
             throw new InternalErrorException("insertAdvisory_CurrentPeriod",
                 "Error al obtener asesorias", $advisories->getErrorMessage());
 
-        //Verifica que no exista una asesoria similar activa
+        //Verifica que no exista una asesoría similar activa
         $this->checkAdvisoryRedundancy( $advisories->getData(), $advisory );
 
-        //Se verifica que materia exista
-        $subjectServ = new SubjectService();
-        $subjectServ->getSubject_ById( $subject_id );
+        //---Verifica que no este solicitando asesorías de la que es asesor
+        //Obtiene horario de asesor
+        $scheServ = new ScheduleService();
+        $schedule = $scheServ->getCurrentSchedule_ByStudentId( $student_id );
+        //Obtiene materias de asesor
+        $subjectsArray = $scheServ->getScheduleSubjects_ById_Enabled( $schedule['id'] );
+
+        //Se compara materia solicitada con materias de horario
+        if( !empty($subjectsArray) ){
+            //Recorre materias de horario
+            foreach ( $subjectsArray as $sub ){
+                //Si es la misma materia
+                if( $req_subject['id'] === $sub['subject_id'] ){
+                    //solo si esta deshabilitada o bloqueada, se puede solicitar, caso contrario, excepción
+                    if( $sub['status'] === Utils::$STATUS_VALIDATED || $sub['status'] === Utils::$STATUS_PENDING )
+                        throw new ConflictException("No puedes solicitar asesoría de materia de la que eres asesor");
+                    //Si no cumple, se termina y continua
+                    else
+                        break;
+                }
+            }
+        }
 
         //Se registra asesorías
         $result = $this->adviPer->insertAdvisory( $advisory, $period['id'] );
@@ -254,7 +276,7 @@ class AdvisoryService
     private function checkAdvisoryRedundancy( $advisories, $advisory ){
 
         //Si esta vacío, no es redundante
-        if( empty($advisories) )
+        if( empty( $advisories ) )
             return;
 
         foreach ( $advisories as $ad ){

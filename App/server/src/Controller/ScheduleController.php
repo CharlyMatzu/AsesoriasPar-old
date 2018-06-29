@@ -114,13 +114,33 @@ class ScheduleController
     {
         try {
             $scheduleService = new ScheduleService();
-            $scheduleService->getScheduleSubjects_Byid( $params['id'] );
-            return Utils::makeMessageResponse( $res, Utils::$OK, "Materias actualizadas");
+            $result = $scheduleService->getScheduleSubjects_Byid( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
+
+
+    /**
+     * @param $req Request
+     * @param $res Response
+     * @param $params array
+     * @return Response
+     */
+    public function getAvailableSubjects($req, $res, $params)
+    {
+        try {
+            $scheduleService = new ScheduleService();
+            $result = $scheduleService->getAvailableSubjects_BySchedule( $params['id'] );
+            return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
+
+        } catch (RequestException $e) {
+            return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
+        }
+    }
+
 
 
     /**
@@ -163,12 +183,6 @@ class ScheduleController
             return Utils::makeMessageResponse( $res, $e->getStatusCode(), $e->getMessage() );
         }
     }
-
-//    /**
-//     * @param $req Request
-//     * @param $res Response
-//     */
-//    public function deleteSchedule($req, $res){}
 
 
     /**

@@ -37,7 +37,9 @@ class ScheduleService{
         return $result->getData()[0];
     }
 
+
     /**
+     *
      * @param $studentId int
      *
      * @return \mysqli_result
@@ -62,7 +64,6 @@ class ScheduleService{
     }
 
 
-
 //    public function getDays(){
 //        $result = $this->schedulesPer->getDays();
 //        if( !is_array($result) )
@@ -75,6 +76,7 @@ class ScheduleService{
 //            return $days;
 //        }
 //    }
+
 
     /**
      * @return array
@@ -127,6 +129,62 @@ class ScheduleService{
             throw new NoContentException("");
 
         return $this->formatScheduleHours($result->getData());
+    }
+
+    /**
+     * @param $id int
+     *
+     * @return mixed
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
+     */
+    public function getAvailableSubjects_BySchedule($id)
+    {
+        //Se verifica horario
+        $this->getSchedule_ById( $id );
+
+        //Se obtienen materias disponibles
+        $subjServ = new SubjectService();
+        $subjects = $subjServ->getEnabledSubjects();
+
+//        $result = $this->schedulesPer->getScheduleSubjects_BySchedule_Enabled( $id );
+        $result = $this->schedulesPer->getScheduleSubjects_BySchedule( $id );
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("getAvailableSubjects_BySchedule",
+                "Error al obtener materias disponibles", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            return $subjects;
+
+        //Se obtienen datos
+        $scheduleSubjects = $result->getData();
+
+        //-----Verificando materias disponibles
+        $availables = array();
+        //Se recorren las materias
+        foreach ( $subjects as $s ){
+            $add = true;
+            //Se recorren las materias del horario
+            foreach ( $scheduleSubjects as $ss ){
+                //Si es la misma materia
+                if( $ss['subject_id'] === $s['id'] ){
+                    //Si la materia del horario esta deshabilitada, se agrega a mis materias disponibles
+                    if( $ss['status'] !== Utils::$STATUS_DISABLE )
+                        $add = false;
+                    //Se termina ciclo
+                    break;
+                }
+            }
+            //Si add es true, se agrega
+            if( $add )
+                $availables[] = $s;
+        }
+
+        if( empty( $availables ) )
+            throw new NoContentException("No hay materias disponibles");
+
+        return $availables;
     }
 
 
@@ -720,6 +778,8 @@ class ScheduleService{
      */
     public function changeStatus_ScheduleSubject($subId, $status)
     {
+
+        //TODO: si tiene solicitudes de asesoría de dicha materia, no debe permitirse
 
         $result = $this->schedulesPer->changetStatus_ScheduleSubject( $subId, $status);
         if( Utils::isError( $result->getOperation() ) )

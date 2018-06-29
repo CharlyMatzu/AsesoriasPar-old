@@ -146,7 +146,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
                 if( success.status == STATUS.NO_CONTENT ){
                     $scope.plans = [];
                     alert("No hay planes registrados, se redireccionará");
-                    $window.location = "#!/carreras";
+                    $window.location = "#!/planes";
                 }
                 else{
                     $scope.plans = success.data;

@@ -302,18 +302,23 @@ class AdvisoriesPersistence extends Persistence{
         $query = "SELECT 
                       st.student_id as 'id',
                       concat(st.first_name, ' ',st.last_name) as 'name',
-                      -- CONCAT('assets/images/',st.avatar) as 'avatar',
                       st.itson_id as 'itson_id',
+                      
                       c.career_id as 'career_id',
                       c.name as 'career_name',
+                      
                       s.schedule_id as 'schedule_id'
+                      
                   FROM student st
                   INNER JOIN user u ON st.fk_user = u.user_id
                   INNER JOIN career c ON st.fk_career = c.career_id
                   INNER JOIN schedule s ON st.student_id = s.fk_student
                   INNER JOIN schedule_subjects ss ON s.schedule_id = ss.fk_schedule
-                  WHERE s.fk_period = $period_id AND ss.fk_subject = $subject_id 
-                        AND st.student_id <> $student_id AND u.status = '".Utils::$STATUS_ACTIVE."'";
+                  INNER JOIN subject sub ON ss.fk_subject = sub.subject_id
+                  WHERE (s.fk_period = $period_id AND ss.fk_subject = $subject_id AND st.student_id <> $student_id) AND  
+                         (u.status = '" . Utils::$STATUS_ACTIVE . "' AND 
+                            (sub.status = '".Utils::$STATUS_ACTIVE."' AND ss.status = '".Utils::$STATUS_VALIDATED."')
+                         )";
         return self::executeQuery($query);
     }
 

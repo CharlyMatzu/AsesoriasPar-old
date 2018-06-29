@@ -14,11 +14,10 @@ angular.module("Desktop")
     };
     
     
-    //TODO: obtener materias disponibles para asesorías
-    this.getSubjects = function(){
+    this.getAvailableSubjects = function(schedule_id){
         return RequestFactory.makeTokenRequest(
             'GET',
-            "/subjects/enabled",
+            "/schedule/"+schedule_id+"/subjects/availables",
             null,
             AuthFactory.getToken()
         );

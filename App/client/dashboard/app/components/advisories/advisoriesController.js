@@ -28,6 +28,8 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
         $scope.showAdvisers = false;
         $scope.showSchedule = false;
 
+        $scope.loading = true;
+
         AdvisoriesService.getAdvisories()
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT ){
@@ -48,15 +50,20 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
         var subject_id = advisory.subject_id;
         var student_id = advisory.alumn_id;
 
+        $scope.loadingAdvisers = true;
+
         AdvisoriesService.getSubjectAdvisers_Ignore(subject_id, student_id)
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT )
                     Notification("No hay asesores disponibles");
                 else
                     $scope.advisers = success.data;
+
+                $scope.loadingAdvisers = false;
             },
             function(error){
                 Notification.error("Error al cargar asesores: "+error.data);
+                $scope.loadingAdvisers = false;
             }
         );
     };
@@ -152,6 +159,7 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     $scope.closeAssign = function(){
         $scope.showSchedule = false;
         $scope.showAdvisers = false;
+        $scope.advisers = [];
         $scope.showAssign = false;
     };
 

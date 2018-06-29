@@ -175,6 +175,10 @@ class SchedulesPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
+//    public function getAvailableSubjects_BySchedule($id)
+//    {
+//    }
+
 
     /**
      * @param $subject_id int
@@ -372,6 +376,8 @@ class SchedulesPersistence extends Persistence{
                         s.fk_period = $period_id";
         return  self::executeQuery($query);
     }
+
+
 
 
 

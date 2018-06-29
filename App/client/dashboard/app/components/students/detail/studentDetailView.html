@@ -193,8 +193,9 @@
                                     <span ng-show="sub.subject_status === 'ACTIVE'" class="badge badge-success">Activo</span>
                                 </td>
                                 <td>
+                                    <span ng-show="sub.status === 'DISABLED'" class="badge badge-dark">Deshabilitado</span>
                                     <span ng-show="sub.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
-                                    <span ng-show="sub.status === 'VALIDATED'" class="badge badge-success">Validada</span>
+                                    <span ng-show="sub.status === 'VALIDATED'" class="badge badge-success">Permitida</span>
                                     <span ng-show="sub.status === 'LOCKED'" class="badge badge-danger">Bloqueado</span>
                                 </td>
                                 <td>
