@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="info">
                                             <div class="name">
-                                                <a href="#!/estudiantes/ad.alumn_id">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
+                                                <a href="#!/estudiantes/{{ad.alumn_id}}/detalle">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="info">
                                             <div class="name" ng-show="ad.adviser_id != null">
-                                                <a href="#!/estudiantes/ad.adviser_id">{{ad.adviser_first_name}} {{ad.adviser_last_name}}</a>
+                                                <a href="#!/estudiantes/{{ad.adviser_id}}/detalle">{{ad.adviser_first_name}} {{ad.adviser_last_name}}</a>
                                             </div>
                                             <div class="name" ng-show="ad.adviser_id == null">SIN ASESOR</div>
                                         </div>
@@ -117,7 +117,9 @@
             </div>
             <!-- end advisers -->
             
-            
+
+
+            <!-- Horario de alumno -->
             <div class="schedule-container" ng-show="showSchedule">
                 <button ng-click="backToAdvisers()" class="btn btn-primary"><span class="fa fa-arrow-left"></span> Volver</button>
     
@@ -135,10 +137,15 @@
                     <!-- end items -->
                 </div>
                 <!-- end adviser -->
+
+                <!-- loader -->
+                <div class="loader" ng-show="loadingSchedule">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
     
                 <!-- schedule -->
-                <div class="schedule-container">
-                        <button class="btn btn-success" ng-click="saveAssign()">Guardar</button>
+                <div class="schedule-container" ng-show="!loadingSchedule">
+                        <button class="btn btn-success" ng-click="saveAssign()" ng-disabled="loadingAssign">Guardar</button>
                         <h2 class="title">Horario coincidente</h2>
                         <div class="schedule selectable selectable-actives">
                                 
@@ -151,5 +158,8 @@
                 </div>
                 <!-- end schedule -->
             </div>
+            <!--end  Horario de alumno -->
+
+
         </div>
     </div>

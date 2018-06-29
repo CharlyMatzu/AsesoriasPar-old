@@ -15,7 +15,7 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
         StudentsService.getAdviserAdvisories( $scope.student.id )
             .then(
                 function(success){
-                    $scope.adviserAds = success.data;
+                    $scope.advisories = success.data;
                 },
                 function(error){
                     Notification.error(error.data);

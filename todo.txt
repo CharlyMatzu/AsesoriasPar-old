@@ -1,8 +1,9 @@
--No aparecen asesorias solicitadas en dashboard
-
+Acomodar asesorias en dashboard
 
 Solicitar ser asesor de la materia que solicite
+Mostrar horario de asesoria en asesoria asignada
 
+Al solicitar asesorias debe aparecer solo materias de la que no se es asesor
 Descripcion al solicitar asesoria
 Detalle de estudiante, mostrar asesorías
 'ACTIVE' del menu del dashboard usando ng-class
@@ -33,4 +34,5 @@ Filtro asesorias
 ------------Extras
 -Materias relacionadas
 -Agregar materia para asesorias de otra carrera
-
+-Mostrar horario de alumno y sus asesorias asignadas
+-Mostrar asesorias en detalle de alumno

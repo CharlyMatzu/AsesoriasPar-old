@@ -6,6 +6,8 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     $scope.loading = false;
     $scope.loadingAdvisers = false;
     $scope.loadingSchedule = false;
+    
+    $scope.loadingAssign = false;
 
     $scope.showAssign = false;
     $scope.showAdvisers = false;
@@ -70,17 +72,22 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
 
 
     var checkScheduleMatch = function(adviser_id, alumn_id){
+        $scope.loadingSchedule = true;
+
         AdvisoriesService.getMatchHours(adviser_id, alumn_id)
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT )
-                    $scope.matchHours = null;
-                else
+                if( success.status == STATUS.NO_CONTENT ){
+                    $scope.matchHours = [];
+                    $scope.loadingSchedule = false;
+                }
+                else{
                     $scope.matchHours = success.data;
-
-                getDaysAndHours();
+                    getDaysAndHours();
+                }
             },
             function(error){
                 Notification.error("Error al cargar horario coincidente: "+error.data);
+                $scope.loadingSchedule = true;
             }
         );
     };
@@ -101,19 +108,24 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     };
 
     var getDaysAndHours = function(){
+
         AdvisoriesService.getDaysAndHours()
             .then(function(success){
                 Notification.success("Horas cargadas");
                 $scope.daysAndHours = success.data;
+                $scope.loadingSchedule = false;
             },
             function(error){
                 Notification.error("Error al cargar horas: "+error.data);
+                $scope.loadingSchedule = false;
             }
         );
     };
 
 
     var registerAdvisoryHours = function(hours, advisory_id, adviser_id){
+        $scope.loadingAssign = true;
+        
         AdvisoriesService.assignAdviser(advisory_id, hours, adviser_id)
             .then(function(success){
                 Notification.success("Asignado con exito");
@@ -122,8 +134,10 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
             },
             function(error){
                 Notification.error("Error al asignar: "+error.data);
-            }
-        );
+            })
+            .finally(function(){
+                $scope.loadingAssign = false;
+            });
     };
 
     $scope.checkIsExist = function(hour_id){
@@ -154,6 +168,7 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     $scope.backToAdvisers = function(){
         $scope.showAdvisers = true;
         $scope.showSchedule = false;
+        // $scope.adviser = ;
     };
 
     $scope.closeAssign = function(){
