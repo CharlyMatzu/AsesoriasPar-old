@@ -1,5 +1,6 @@
 <?php namespace App\Service;
 
+use App\Auth;
 use App\Exceptions\Request\ConflictException;
 use App\Exceptions\Request\InternalErrorException;
 use App\Exceptions\Request\NoContentException;
@@ -218,7 +219,7 @@ class StudentService{
         //se obtiene horas de horario
         $hours_days = array();
         try {
-            //Sólo obtiene horario activo
+            //Obtiene solo horas activas
             $hours_days = $scheduleService->getScheduleHours_Byid_Enabled( $schedule->getId() );
             //Si no tiene horas, no hay problema
         }catch (InternalErrorException $e){
@@ -229,7 +230,12 @@ class StudentService{
         //se obtiene materias (si hay)
         $subjects = array();
         try {
-            $subjects = $scheduleService->getScheduleSubjects_Byid( $schedule->getId() );
+            //Obtiene todas las materias si es staff, si es estudiante, solo las activas
+            if( Auth::isStaffUser() )
+                $subjects = $scheduleService->getScheduleSubjects_Byid( $schedule->getId() );
+            else
+                $subjects = $scheduleService->getScheduleSubjects_ById_Enabled( $schedule->getId() );
+
         }catch (InternalErrorException $e){
             throw new RequestException($e->getMessage(), $e->getStatusCode());
             //Si no tiene materias, no hay problema

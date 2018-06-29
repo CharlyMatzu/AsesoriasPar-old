@@ -95,10 +95,21 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
             
         };
 
+        $rootScope.storageCurrentUrl = function(){
+            
+            // var url = $window.location.href;
+            // //Si la ruta es loading, se pone otra por defecto
+            // if( url.search('#!/loading') !== -1 )
+            //     url = "#!/escritorio";
+
+            // $rootScope.currentLoc = url;
+            $rootScope.currentLoc = "#!/escritorio";
+        };
+
         
         (function(){
             //Almacena la ruta actual con la que se accedio para posteriormente redireccionar
-            $rootScope.currentLoc = $window.location.href;
+            $rootScope.storageCurrentUrl();
             //Para que inicie en dicho directorio
             $window.location.href = "#!/loading";
         })();

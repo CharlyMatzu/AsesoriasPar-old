@@ -12,12 +12,13 @@
 
     .subjects{
         padding: 20px 0;
-        display: flex;
+        // display: flex;
         flex-wrap: wrap;
         width: 100%;
 
 
         .item{
+            display: block;
             padding: 7px 12px;
             margin: 0 10px 10px 0;
             border-radius: 10px;

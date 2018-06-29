@@ -13,6 +13,8 @@ angular.module("Desktop")
         );
     };
     
+    
+    //TODO: obtener materias disponibles para asesorías
     this.getSubjects = function(){
         return RequestFactory.makeTokenRequest(
             'GET',

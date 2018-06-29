@@ -87,7 +87,9 @@ class ScheduleController
      * @param $req Request
      * @param $res Response
      * @param $params array
+     *
      * @return Response
+     * @throws \App\Exceptions\Persistence\TransactionException
      */
     public function updateScheduleHours($req, $res, $params)
     {
@@ -125,7 +127,9 @@ class ScheduleController
      * @param $req Request
      * @param $res Response
      * @param $params array
+     *
      * @return Response
+     * @throws \App\Exceptions\Persistence\TransactionException
      */
     public function updateScheduleSubjects($req, $res, $params)
     {

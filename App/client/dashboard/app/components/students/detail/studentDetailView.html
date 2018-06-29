@@ -195,13 +195,14 @@
                                 <td>
                                     <span ng-show="sub.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
                                     <span ng-show="sub.status === 'VALIDATED'" class="badge badge-success">Validada</span>
+                                    <span ng-show="sub.status === 'LOCKED'" class="badge badge-danger">Bloqueado</span>
                                 </td>
                                 <td>
                                     <button ng-click="allow(sub.id)" ng-show="sub.status === 'PENDING' || sub.status === 'LOCKED'"  class="btn btn-success">Permitir</button>
                                     
                                     <button ng-click="deny(sub.id)" ng-show="sub.status === 'PENDING' || sub.status === 'VALIDATED'" class="btn btn-warning">Bloquear</button>
                                     
-                                    <button class="btn btn-danger">Eliminar</button>
+                                    <!-- <button ng-click="deny(sub.id)" class="btn btn-danger">Eliminar</button> -->
                                 </td>
                             </tr>
                         </table>

@@ -26,13 +26,15 @@ class SchedulesPersistence extends Persistence{
                   p.year as 'plan',
                   p.status as 'plan_status',
                   
+                  c.career_id as 'career_id',
                   c.name as 'career_name',
-                  c.short_name as 'career_short_name'
+                  c.short_name as 'career_short_name',
+                  c.status as 'career_status'
                   
                 FROM schedule_subjects ss
                 INNER JOIN subject s ON ss.fk_subject = s.subject_id
                 INNER JOIN plan p ON s.fk_plan = p.plan_id
-                INNER JOIN career c ON s.fk_career = c.career_id";
+                INNER JOIN career c ON s.fk_career = c.career_id ";
 
     //--------------------
     //  HORARIO
@@ -138,8 +140,36 @@ class SchedulesPersistence extends Persistence{
     public function getScheduleSubjects_BySchedule($schedule_id)
     {
         $query = $this->SUBJECTS.
-                "WHERE ss.fk_schedule = $schedule_id
-                AND s.status = '".Utils::$STATUS_ACTIVE."'";
+                "WHERE ss.fk_schedule = $schedule_id";
+//                AND
+//                (ss.status = '".Utils::$STATUS_VALIDATED."' OR ss.status = '".Utils::$STATUS_PENDING."')
+//                ORDER BY s.semester, s.fk_plan, s.name;
+
+        //Obteniendo resultados
+        return self::executeQuery($query);
+    }
+
+    /**
+     * @param $schedule_id int
+     *
+     * @return \App\Model\DataResult
+     * TODO: solo materias habilitadas
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getScheduleSubjects_BySchedule_Enabled($schedule_id)
+    {
+        $query = $this->SUBJECTS."
+                WHERE ss.fk_schedule = $schedule_id AND 
+                ( 
+                    (s.status = '".Utils::$STATUS_ACTIVE."' AND 
+                     c.status = '".Utils::$STATUS_ACTIVE."' AND 
+                     p.status = '".Utils::$STATUS_ACTIVE."' ) AND 
+                    
+                    (ss.status = '".Utils::$STATUS_VALIDATED."' OR 
+                    ss.status = '".Utils::$STATUS_PENDING."' OR
+                    ss.status = '".Utils::$STATUS_LOCKED."') 
+                )
+                ORDER BY s.semester, s.fk_plan, s.name";
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -164,24 +194,7 @@ class SchedulesPersistence extends Persistence{
         return self::executeQuery($query);
     }
 
-    /**
-     * @param $schedule_id int
-     *
-     * @return \App\Model\DataResult
-     * TODO: solo materias habilitadas
-     * @throws \App\Exceptions\Request\InternalErrorException
-     */
-    public function getScheduleSubjects_BySchedule_Enabled($schedule_id)
-    {
-        $query = $this->SUBJECTS."
-                WHERE ss.fk_schedule = $schedule_id AND 
-                ( (s.status = '".Utils::$STATUS_ACTIVE."' AND c.status = '".Utils::$STATUS_ACTIVE."' AND p.status = '".Utils::$STATUS_ACTIVE."' ) AND 
-                (ss.status = '".Utils::$STATUS_VALIDATED."' OR ss.status = '".Utils::$STATUS_PENDING."') )
-                ORDER BY s.semester, s.fk_plan, s.name";
 
-        //Obteniendo resultados
-        return self::executeQuery($query);
-    }
 
     /**
      * @param $studentId int
