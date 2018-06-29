@@ -47,7 +47,7 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
         SignupService.signup(student)
             .then(function(success){
                 $scope.alert.type = 'success';
-                $scope.alert.message = "Registrado con exito,redireccionando";
+                $scope.alert.message = "Registrado con éxito,redireccionando";
                 $scope.loading = false;
                 
                 $scope.student = {};
@@ -58,7 +58,7 @@ angular.module("LoginApp").controller('SignupController', function($scope, $wind
                 }, 2000);
             },
             function(error){
-                Notification.error("Ocurrio un error: "+error.data);
+                Notification.error("Ocurrió un error: "+error.data);
                 $scope.alert.type = 'warning';
                 $scope.alert.message = error.data;
 

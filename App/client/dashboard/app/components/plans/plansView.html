@@ -37,7 +37,7 @@
 
                 <div class="card-body" ng-show="!loading">
                     <!-- Messge -->
-                    <p ng-hide="plans.length > 0">No se encontrarón registros</p>
+                    <p ng-hide="plans.length > 0">No se encontraron registros</p>
                     
                     <!-- Table -->
                     <div ng-show="plans.length > 0" class="table-responsive">
@@ -83,7 +83,7 @@
                 <form action="" ng-submit="addPlan(newPlan)">
                     <div class="form-group">
                         <label for="plan">Ingrese plan:</label>
-                        <input type="text" min="4" max="4" class="form-control" placeholder="Plan a 4 digitos" ng-model="newPlan" required>
+                        <input type="text" min="4" max="4" class="form-control" placeholder="Plan a 4 dígitos" ng-model="newPlan" required>
                     </div>
                     <button type="submit" class="btn btn-success">Registrar</button>
                     <button ng-click="showNewPlan = false" type="reset" class="btn btn-outline-danger">Cancelar</button>

@@ -40,7 +40,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
         //Se pone en cargando
         $scope.loading = true;
 
-        //Peticion
+        //petición
         NewStudentService.addStudent(student)
             .then(function(success){
                 Notification.success("Registrado");
@@ -82,8 +82,8 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
 
                 if( success.status === STATUS.NO_CONTENT || 
                     $scope.enabledCareers.length == 0 ){
-                    alert("No hay carreras disponibles, se redireccionará");
-                    //Redireccion a carreras
+                    alert("No hay carreras disponibles, se re-direccionara");
+                    //Redirección a carreras
                     $window.location = "#!/carreras";
                     return;
                 }
@@ -91,7 +91,7 @@ angular.module("Dashboard").controller('NewStudentController', function($scope, 
                 $scope.loading = false;
 
             }, function(error){
-                Notification.error("Ocurrio un error al cargar carreras: "+error.data);
+                Notification.error("Ocurrió un error al cargar carreras: "+error.data);
                 // $scope.loading = false;
             }); 
     })();

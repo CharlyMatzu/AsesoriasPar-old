@@ -69,7 +69,7 @@ angular.module("Dashboard")
                 templateUrl: "app/components/students/newStudent/newStudentView.html"
             })
 
-            //--------- Asesorias
+            //--------- asesorías
             .when("/asesorias", {
                 controller: "AdvisoriesController",
                 templateUrl: "app/components/advisories/advisoriesView.html"

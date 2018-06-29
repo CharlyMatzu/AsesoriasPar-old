@@ -25,8 +25,8 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         //Se obtienen Carreras
         NewSubjectService.getCareers()
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
-                    alert("No hay carreras registradas, redireccionando...");
+                if( success.status === STATUS.NO_CONTENT ){
+                    alert("No hay carreras registradas, re-direccionando...");
                     $scope.loading = false;
                     $window.location.href = '#!/carreras';
                     return;
@@ -45,7 +45,7 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
             //Promesa de plan
             .then(function(success){
                 if( success.status === STATUS.NO_CONTENT ){
-                    alert("No hay planes registrados, redireccionando...");
+                    alert("No hay planes registrados, re-direccionando...");
                     $window.location.href = '#!/planes';
                     return;
                 }
@@ -78,13 +78,13 @@ angular.module("Dashboard").controller('NewSubjectController', function($scope, 
         }
         if( subject.semester == null || subject.semester == "" || 
             subject.semester < 1 || subject.semester > 12 ){
-            Notification.warning("Semestre debe ser numerico y debe estar entre 1 y 12");
+            Notification.warning("Semestre debe ser numérico y debe estar entre 1 y 12");
             return;
         }
         
         NewSubjectService.addSubject(subject)
             .then(function(success){
-                Notification.success("Registrado con exito");
+                Notification.success("Registrado con éxito");
                 $window.location.href = '#!/materias';
             },
             function(error){

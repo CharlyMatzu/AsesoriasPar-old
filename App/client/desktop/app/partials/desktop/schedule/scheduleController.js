@@ -38,7 +38,7 @@ angular.module("Desktop").controller('ScheduleController', function($scope, Noti
 
         ScheduleService.getDaysAndHours()
             .then(function(success){
-                // Notification.success("Horario cargado con exito");
+                // Notification.success("Horario cargado con éxito");
                 $scope.daysAndHours = success.data;
             },
             function(error){
@@ -65,7 +65,7 @@ angular.module("Desktop").controller('ScheduleController', function($scope, Noti
                     createSchedule(studen_id);
                 }
                 else{
-                    //Se asigna informacion
+                    //Se asigna Información
                     $scope.schedule = success.data;
                     //Se manda a llamar la funcion de las horas disponibles
                     getDaysAndHours();
@@ -181,7 +181,7 @@ angular.module("Desktop").controller('ScheduleController', function($scope, Noti
         //Peticiones
         ScheduleService.updateScheduleHours(schedule_id, selectedItems)
             .then(function(success){
-                Notification.success("Horario actualizado con exito");
+                Notification.success("Horario actualizado con éxito");
                 //TODO: recargar datos
                 getStudentSchedule( $scope.student.id );
             },

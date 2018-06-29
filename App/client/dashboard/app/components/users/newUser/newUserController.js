@@ -38,15 +38,15 @@ angular.module("Dashboard").controller('NewUserController', function($scope,  $t
         //Se pone en cargando
         $scope.loading = true;
 
-        //Peticion
+        //petición
         NewUserService.addUser(user)
             .then(function(success){
                 $scope.alert.type = 'success';
-                $scope.alert.message = "Se ha registrado usuario correctamente"
+                $scope.alert.message = "Se ha registrado usuario correctamente";
                 $scope.loading = false;
             },
             function (error){
-                if( error.status == CONFLICT )
+                if( error.status === CONFLICT )
                     $scope.alert.type = 'warning';
                 else
                     $scope.alert.type = 'error';

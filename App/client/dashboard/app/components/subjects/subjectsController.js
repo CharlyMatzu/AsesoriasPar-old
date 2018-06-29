@@ -45,7 +45,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
         SubjectService.getSubjects()
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     $scope.subjects = [];
                 }
                 else
@@ -68,7 +68,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
         SubjectService.getSubject_Search(subject)
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     //Notification.primary("no hay registros");
                     $scope.subjects = [];
                 }
@@ -89,7 +89,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
 
     $scope.searchSubjectByName = function(data){
-        if( data == null || data == "" ) 
+        if( data == null || data == "" )
             return;
 
         $scope.subjects = [];
@@ -97,7 +97,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
         SubjectService.searchSubjects(data)
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT )
+                if( success.status === STATUS.NO_CONTENT )
                     $scope.subjects = [];
                 else
                     $scope.subjects = success.data;
@@ -126,9 +126,9 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         SubjectService.getCareers()
             //Carreras
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     $scope.careers = [];
-                    alert("No hay carreras registradas, se redireccionará");
+                    alert("No hay carreras registradas, se re-direccionará");
                     $window.location = "#!/carreras";
                 }
                 else{
@@ -138,14 +138,14 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
                 }
             },
             function(error){
-                Notification.error("Error al cargar carreras, se detuvo actualizacion");
+                Notification.error("Error al cargar carreras, se detuvo actualización");
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
             })
             //Planes
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     $scope.plans = [];
-                    alert("No hay planes registrados, se redireccionará");
+                    alert("No hay planes registrados, se re-direccionará");
                     $window.location = "#!/planes";
                 }
                 else{
@@ -157,7 +157,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
             },
             function(error){
-                Notification.error("Error al cargar planes, se detuvo actualizacion");
+                Notification.error("Error al cargar planes, se detuvo actualización");
                 $scope.loading = false;
                 $scope.disableButtons(false, '.opt-subjects-'+subject.id);
             });
@@ -181,7 +181,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
             return;
         }
         if( !subject.semester || subject.semester < 1 || subject.semester > 12 ){
-            Notification.warning("Semestre debe ser numerico y debe estar entre 1 y 12");
+            Notification.warning("Semestre debe ser numérico y debe estar entre 1 y 12");
             return;
         }
 
@@ -189,7 +189,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         
         SubjectService.updateSubject(subject)
             .then(function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.getSubjects();
                 $scope.showUpdateSubject = false;
             },
@@ -215,7 +215,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
         
         SubjectService.deleteSubject(subject_id)
             .then(function(success){
-                Notification.success("Eliminado con exito");
+                Notification.success("Eliminado con éxito");
                 $scope.getSubjects();
             },
             function(error){
@@ -230,7 +230,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
      * @param {*} subject_id 
      */
     $scope.disableSubject = function(subject_id){
-        var message = "No estará disponible para su usof ¿Desea continuar?";
+        var message = "No estará disponible para su uso ¿Desea continuar?";
         if( !$scope.confirm(message) )
             return;
 
@@ -239,7 +239,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
         SubjectService.changeStatus(subject_id, DISABLED)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getSubjects();
             },
             function(error){
@@ -259,7 +259,7 @@ angular.module("Dashboard").controller('SubjectsController', function($scope,  $
 
         SubjectService.changeStatus(subject_id, ACTIVE)
             .then(function(success){
-                Notification.success("habilitado con exito");
+                Notification.success("habilitado con éxito");
                 $scope.getSubjects();
             },
             function(error){

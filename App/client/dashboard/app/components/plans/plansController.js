@@ -1,7 +1,7 @@
 angular.module("Dashboard").controller('PlansController', function($scope, Notification, PlansService, STATUS){
 
 
-    $scope.page.title = "Planes academicos"
+    $scope.page.title = "Planes académicos"
     $scope.plans = [];
     $scope.loading = true;
     $scope.showUpdatePlan = false;
@@ -24,7 +24,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
         PlansService.getPlans()
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT )
+                if( success.status === STATUS.NO_CONTENT )
                     $scope.plans = [];
                 else
                     $scope.plans = success.data;
@@ -46,10 +46,10 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
      */
     var validatePlan = function(plan){
         // if( plan.length != 4 )
-        //     return "deben ser 4 digitos";
+        //     return "deben ser 4 dígitos";
 
         // if( !Number.isInteger(plan) )
-        //     return "Debe ser numerico entero";
+        //     return "Debe ser numérico entero";
 
         return null;
     }
@@ -67,10 +67,10 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         
         Notification.primary('Procesando registro...');
 
-        //Se hace peticion
+        //Se hace petición
         PlansService.insertPlan(plan)
             .then(function(success){
-                Notification.success('Plan registrado con exito');
+                Notification.success('Plan registrado con éxito');
                 $scope.getPlans();
                 $scope.showNewPlan = false;
             }, 
@@ -99,7 +99,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
             return;
         }
        
-        //Se hace peticion
+        //Se hace petición
         PlansService.updatePlan(plan)
             .then(function(success){
                 Notification.success('Plan actualizado');
@@ -123,7 +123,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
 
         PlansService.deletePlan(plan_id)
             .then(function(success){
-                Notification.success('Plan eliminado con exito');
+                Notification.success('Plan eliminado con éxito');
                 $scope.getPlans();
             },
             function(error){
@@ -143,7 +143,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         Notification('Procesando...');
         PlansService.changeStatus(plan_id, ACTIVE)
             .then(function(success){
-                Notification.success("Habilitado con exito");
+                Notification.success("Habilitado con éxito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getPlans();
             },
@@ -162,7 +162,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
      */
     $scope.disablePlan = function(plan_id){
 
-        var message = "Las materias asociadas a dicho periodo no estaran disponibles ¿Desea continuar?";
+        var message = "Las materias asociadas a dicho periodo no estarán disponibles ¿Desea continuar?";
         if( !$scope.confirm(message) )
             return;
 
@@ -172,7 +172,7 @@ angular.module("Dashboard").controller('PlansController', function($scope, Notif
         Notification('Procesando...');
         PlansService.changeStatus(plan_id, DISABLED)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getPlans();
             },
             function(error){

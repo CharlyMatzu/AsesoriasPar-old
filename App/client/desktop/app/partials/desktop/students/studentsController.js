@@ -45,11 +45,11 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
         StudentsService.finalizeAdvisory(advisory_id)
             .then(
                 function(success){
-                    Notification.success("Asesoria finalizada con éxito");
+                    Notification.success("asesoría finalizada con éxito");
                     getAdvisories();
                 },
                 function(error){
-                    Notification.error("Ocurrio un error");
+                    Notification.error("Ocurrió un error");
                 }
             );
     };
@@ -70,7 +70,7 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
             }
         }
         else{
-            //Si no tiene horario, se hace peticion a la BD
+            //Si no tiene horario, se hace petición a la BD
             ScheduleService.getStudentSchedule( $scope.student.id )
                 .then(
                     function(success){

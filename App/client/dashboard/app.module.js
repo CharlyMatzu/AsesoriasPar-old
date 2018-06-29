@@ -53,7 +53,7 @@ angular.module("Dashboard")
             if( AuthFactory.isAuthenticated() ){
                 if( !AuthFactory.isStaff() )
                     $window.location.href = "/";
-                // Se obtiene informacion del usuario
+                // Se obtiene Información del usuario
                 else
                     $rootScope.session = AuthFactory.getUser();
             }

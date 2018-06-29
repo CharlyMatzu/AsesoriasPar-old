@@ -49,7 +49,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
         
         CareerService.addCareer(career)
             .then(function(success){
-                Notification.success("Registrado con exito");
+                Notification.success("Registrado con éxito");
                 career.name = "";
                 career.short_name = "";
                 $scope.getCareers();
@@ -78,7 +78,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
         
         CareerService.updateCareer(career)
             .then(function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -103,7 +103,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
         
         CareerService.deleteCareer(career_id)
             .then(function(success){
-                Notification.success("Eliminado con exito");
+                Notification.success("Eliminado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -127,7 +127,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
 
         CareerService.changeStatus(career_id, DISABLED)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getCareers();
             },
             function(error){
@@ -147,7 +147,7 @@ angular.module("Dashboard").controller('CareersController', function($scope,  No
 
         CareerService.changeStatus(career_id, ACTIVE)
             .then(function(success){
-                Notification.success("habilitado con exito");
+                Notification.success("habilitado con éxito");
                 $scope.getCareers();
             },
             function(error){

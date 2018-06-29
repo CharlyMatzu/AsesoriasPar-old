@@ -87,7 +87,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
                 //Promesa estudiante;
                 .then(function(success){
 
-                    //Se asignar informacion
+                    //Se asignar Información
                     $scope.student = success.data;
                     //Se obtienen horario
                     return StudentDetailService.getStudentSchedule( id );
@@ -139,7 +139,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         Notification('Procesando...');
         StudentDetailService.changeStatus(user_id, ACTIVE)
             .then(function(success){
-                Notification.success("Habilitado con exito");
+                Notification.success("Habilitado con éxito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.loadData();
             },
@@ -167,7 +167,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         Notification('Procesando...');
         StudentDetailService.changeStatus(user_id, DISABLED) 
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.loadData();
             },
             function(error){
@@ -219,7 +219,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
                 Notification.success("Actualizado con éxito");
                 $scope.loadData();
             }, function(error){
-                Notification.error("Ocurrio un error al actualizar: "+error.data);
+                Notification.error("Ocurrió un error al actualizar: "+error.data);
                 $scope.loading = false;
             });        
     }
@@ -242,7 +242,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
                 pass.first = "";
                 pass.last = "";
             }, function(error){
-                Notification.error("Ocurrio un error: "+error.data);
+                Notification.error("Ocurrió un error: "+error.data);
             });
     };
 
@@ -261,7 +261,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
 
         StudentDetailService.deleteStudent(user_id)
             .then(function(success){
-                Notification.success("Estudiante eliminado con exito");
+                Notification.success("Estudiante eliminado con éxito");
                 $window.location = "#!/estudiantes";
             },
             function(error){

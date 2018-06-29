@@ -44,7 +44,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         PeriodsService.getPeriods()
             .then(function(success){
 
-                if( success.status == STATUS.NO_CONTENT )
+                if( success.status === STATUS.NO_CONTENT )
                     $scope.periods = [];
                 else
                     $scope.periods = success.data;
@@ -64,7 +64,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
      */
     $scope.addPeriod = function(period){
 
-        //Validacion
+        //Validación
         if( period.end <= period.start ){
             Notification.warning("Fecha de termino debe ser posterior a la de inicio");
             return;
@@ -78,7 +78,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         
         PeriodsService.addPeriod(period)
             .then(function(success){
-                Notification.success("Registrado con exito");
+                Notification.success("Registrado con éxito");
                 $scope.getPeriods();
             },
             function(error){
@@ -108,7 +108,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         if( !$scope.confirm(message) )
             return;
 
-        //Validacion
+        //Validación
         if( period.end <= period.start ){
             Notification.warning("Fecha de termino debe ser posterior a la de inicio");
             return;
@@ -122,7 +122,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         
         PeriodsService.updatePeriod(period)
             .then(function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.getPeriods();
             },
             function(error){
@@ -138,7 +138,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
 
     $scope.deletePeriod = function(period_id){
 
-        var message = "Todos los horarios y asesorías registrasdas en dicho periodo serán eliminados ¿Desea continuar?";
+        var message = "Todos los horarios y asesorías registradas en dicho periodo serán eliminados ¿Desea continuar?";
 
         if( !$scope.confirm(message) )
             return;
@@ -149,7 +149,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
         
         PeriodsService.deletePeriod(period_id)
             .then(function(success){
-                Notification.success("Eliminado con exito");
+                Notification.success("Eliminado con éxito");
                 $scope.getPeriods();
             },
             function(error){
@@ -174,7 +174,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
 
         PeriodsService.changeStatus(period_id, DISABLED)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getPeriods();
             },
             function(error){
@@ -194,7 +194,7 @@ angular.module("Dashboard").controller('PeriodsController', function($scope,  No
 
         PeriodsService.changeStatus(period_id, ACTIVE)
             .then(function(success){
-                Notification.success("habilitado con exito");
+                Notification.success("habilitado con éxito");
                 $scope.getPeriods();
             },
             function(error){

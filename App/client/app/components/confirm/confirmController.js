@@ -6,7 +6,7 @@ angular.module("LoginApp").controller('ConfirmController', function($scope, $win
 
         ConfirmService.confirm($routeParams.token,
             function(success){
-                Notification.success("Confirmado con exito");
+                Notification.success("Confirmado con éxito");
                 $scope.status = "Confirmado";
 
                 // $timeout(function(){

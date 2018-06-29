@@ -20,7 +20,7 @@ angular.module("Desktop").controller('ProfileController', function($scope, Profi
                 Notification.success("Actualizado con éxito");
                 $scope.loadingData = false;
             }, function(error){
-                Notification.error("Ocurrio un error al actualizar: "+error.data);
+                Notification.error("Ocurrió un error al actualizar: "+error.data);
                 $scope.loadingData = false;
             });        
     }
@@ -36,7 +36,7 @@ angular.module("Desktop").controller('ProfileController', function($scope, Profi
                 pass.old = "";
                 pass.new = "";
             }, function(error){
-                Notification.error("Ocurrio un error: "+error.data);
+                Notification.error("Ocurrió un error: "+error.data);
                 $scope.loadingPass = false;
             });
     };

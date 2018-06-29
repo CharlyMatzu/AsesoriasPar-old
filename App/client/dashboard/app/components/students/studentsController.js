@@ -15,7 +15,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
 
     /**
      * 
-     * @param {String} data Informacion a buscar (correo)
+     * @param {String} data Información a buscar (correo)
      */
     $scope.searchStudents = function(data){
         
@@ -28,7 +28,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
         StudentsService.searchStudents(data)
 
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT )
+                if( success.status === STATUS.NO_CONTENT )
                     $scope.students = [];
                 else
                     $scope.students = success.data;
@@ -50,7 +50,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
 
         StudentsService.getStudents()
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     $scope.students = [];
                 }
                 else
@@ -72,7 +72,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
 
         StudentsService.getStudentsByCareer(career_id)
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT ){
+                if( success.status === STATUS.NO_CONTENT ){
                     $scope.students = [];
                 }
                 else
@@ -107,7 +107,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
         Notification('Procesando...');
         StudentsService.changeStatus(user_id, ACTIVE)
             .then(function(success){
-                Notification.success("Habilitado con exito");
+                Notification.success("Habilitado con éxito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getStudents();
             },
@@ -134,7 +134,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
 
         StudentsService.deleteStudent(user_id)
             .then(function(success){
-                Notification.success("Estudiante eliminado con exito");
+                Notification.success("Estudiante eliminado con éxito");
                 $scope.getStudents();
             },
             function(error){
@@ -161,7 +161,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
         Notification('Procesando...');
         StudentsService.changeStatus(user_id, DISABLED)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getStudents();
             },
             function(error){
@@ -184,7 +184,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
         Notification('Procesando...');
         StudentsService.changeStatus(user_id, ACTIVE)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getStudents();
             },
             function(error){
@@ -212,7 +212,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
                 }
                 
             }, function(){
-                Notification.error("Ocurrio un error al obtener carreras: "+error.data);
+                Notification.error("Ocurrió un error al obtener carreras: "+error.data);
                 $scope.loading = false;
             })
         

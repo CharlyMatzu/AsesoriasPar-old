@@ -53,7 +53,7 @@ angular.module("HostModule", [])
             /**
              * @param {String} method   GET, POST, PUT, PATCH, DELETE
              * @param {String} route    /route/param
-             * @param {String} data     Informacion en formato JSON
+             * @param {String} data     Información en formato JSON
              */
             makeRequest: function(method, route, data){
                 
@@ -68,7 +68,7 @@ angular.module("HostModule", [])
             /**
              * @param {String} method   GET, POST, PUT, PATCH, DELETE
              * @param {String} route    /route/param
-             * @param {String} data     Informacion en formato JSON
+             * @param {String} data     Información en formato JSON
              * @param {boolean} token   Para utilizar o no el token
              */
             makeTokenRequest: function(method, route, data, token){

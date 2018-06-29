@@ -27,7 +27,7 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, No
                     $scope.advisories = success.data;
                 },
                 function(error){
-                    Notification.error("Ocurrio un error: "+error.data);
+                    Notification.error("Ocurrió un error: "+error.data);
                 }
             )
             .finally(function(){
@@ -115,15 +115,15 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, No
         AdvisoriesService.finalizeAdvisory(advisory_id)
             .then(
                 function(success){
-                    Notification.success("Asesoria finalizada con éxito");
+                    Notification.success("asesoría finalizada con éxito");
                     
                     //TODO: Verificar cual tipo es
-                    //obtener asesorias
+                    //obtener asesorías
                     getAdvisories();
                     // getAdviserAds();
                 },
                 function(error){
-                    Notification.error("Ocurrio un error");
+                    Notification.error("Ocurrió un error");
                 }
             );
     };
@@ -142,7 +142,7 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, No
             }
         }
         else{
-            //Si no tiene horario, se hace peticion a la BD
+            //Si no tiene horario, se hace petición a la BD
             ScheduleService.getStudentSchedule( $scope.student.id )
                 .then(
                     function(success){

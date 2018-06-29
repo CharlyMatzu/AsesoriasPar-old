@@ -28,7 +28,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
         UsersService.getUsers()
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT )
+                if( success.status === STATUS.NO_CONTENT )
                     $scope.users = [];
                 else
                     $scope.users = success.data;
@@ -46,7 +46,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
     /**
      * 
-     * @param {String} data Informacion a buscar (correo)
+     * @param {String} data Información a buscar (correo)
      */
     $scope.searchUser = function(data){
         if( data == null || data == "" )
@@ -57,7 +57,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
         UsersService.searchUsers(data)
             .then(function(success){
-                if( success.status == STATUS.NO_CONTENT )
+                if( success.status === STATUS.NO_CONTENT )
                     $scope.users = [];
                 else
                     $scope.users = success.data;
@@ -98,16 +98,16 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
 
     /**
-     * Encargado de abrir el panel de edicion
+     * Encargado de abrir el panel de edición
      * @param {*} user 
      */
     $scope.editUser = function(user){
-        if( user.role == "basic" ){
+        if( user.role === "basic" ){
             Notification.warning("No soporta tipo Basic, se debe arreglar");
             return;
         }
 
-        //Asignacion de datos al formulario
+        //Asignación de datos al formulario
         $scope.user.id = user.id;
         $scope.user.email = user.email;
         $scope.user.pass = user.pass;
@@ -131,7 +131,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
         UsersService.updateUser(user)
             .then(function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.showUpdateUser = false;
                 $scope.getUsers();
             },
@@ -162,7 +162,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
         UsersService.updatePassword(user_id, pass.pass)
             .then(function(success){
-                Notification.success("Actualizado con exito");
+                Notification.success("Actualizado con éxito");
                 $scope.showUpdateUser = false;
                 $scope.getUsers();
             },
@@ -189,7 +189,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
 
         UsersService.deleteUser(user_id)
             .then(function(success){
-                Notification.success("Usuario eliminado con exito");
+                Notification.success("Usuario eliminado con éxito");
                 $scope.getUsers();
             },
             function(error){
@@ -210,7 +210,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         Notification('Procesando...');
         UsersService.changeStatus(user_id, ACTIVE)
             .then(function(success){
-                Notification.success("Habilitado con exito");
+                Notification.success("Habilitado con éxito");
                 //TODO: debe actualizarse solo dicha fila de la tabla
                 $scope.getUsers();
             },
@@ -237,7 +237,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
         Notification('Procesando...');
         UsersService.changeStatus(user_id, DISABLED)
             .then(function(success){
-                Notification.success("Deshabilitado con exito");
+                Notification.success("Deshabilitado con éxito");
                 $scope.getUsers();
             },
             function(error){

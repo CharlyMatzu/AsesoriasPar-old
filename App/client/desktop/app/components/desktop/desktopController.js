@@ -58,7 +58,7 @@ angular.module("Desktop").controller('DesktopController', function($scope, $rout
                 .then(function(success){
                     checkRouteParam();
                 }, function(error){
-                    console.log("Ocurrio un error");
+                    console.log("Ocurrió un error");
                 })
                 .finally(function(){
                     //Desactiva loader general

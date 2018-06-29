@@ -82,7 +82,7 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                 $rootScope.signOut();
             }
             else{
-                // //Se hace peticion para obtener usuario actualizado (en caso de tener cambios)
+                // //Se hace petición para obtener usuario actualizado (en caso de tener cambios)
                 var promise = RequestFactory.makeTokenRequest(
                     'GET',
                     "/users/"+user.id,
