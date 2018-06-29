@@ -1,9 +1,10 @@
-angular.module("Dashboard").controller('StudentsController', function($scope,  $window, Notification, StudentsService, STATUS){
+angular.module("Dashboard").controller('StudentsController', function($scope,  $window, Notification, StudentsService, CareerService, STATUS){
     
     
     $scope.page.title = "Estudiantes";
     $scope.students = [];
     $scope.loading = true;
+    $scope.careers = [];
 
 
     //-----------------------
@@ -16,7 +17,7 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
      * 
      * @param {String} data Informacion a buscar (correo)
      */
-    $scope.searchStudent = function(data){
+    $scope.searchStudents = function(data){
         
         //Validation
         if( data == null || data == "" ) 
@@ -24,13 +25,13 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
 
         $scope.loading = true;
         
-        StudentsService.searchStudent(data)
+        StudentsService.searchStudents(data)
 
             .then(function(success){
                 if( success.status == STATUS.NO_CONTENT )
                     $scope.students = [];
                 else
-                    $scope.users = success.data;
+                    $scope.students = success.data;
 
                 //Enabling refresh button
                 $scope.loading = false;
@@ -52,9 +53,8 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
                 if( success.status == STATUS.NO_CONTENT ){
                     $scope.students = [];
                 }
-                else{
+                else
                     $scope.students = success.data;
-                }
 
                 //Enabling refresh button
                 $scope.loading = false;
@@ -62,6 +62,29 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
             },
             function( error ){
                 Notification.error("Error al obtener estudiantes");
+                $scope.loading = false;
+            }
+        );
+    }
+
+    $scope.getStudentsByCareer = function(career_id){
+        $scope.loading = true;
+
+        StudentsService.getStudentsByCareer(career_id)
+            .then(function(success){
+                if( success.status == STATUS.NO_CONTENT ){
+                    $scope.students = [];
+                }
+                else
+                    $scope.students = success.data;
+                
+
+                //Enabling refresh button
+                $scope.loading = false;
+                    
+            },
+            function( error ){
+                Notification.error("Error al obtener estudiantes por carrera");
                 $scope.loading = false;
             }
         );
@@ -174,7 +197,25 @@ angular.module("Dashboard").controller('StudentsController', function($scope,  $
 
 
     (function(){
-        $scope.getStudents();
+        $scope.loading = true;
+
+        CareerService.getCareers()
+            .then(function(success){
+                if( success.status === STATUS.NO_CONTENT ){
+                    alert("No hay carreras registradas");
+                    $window.location = "#!/carreras";
+                    return;
+                }
+                else{
+                    $scope.careers = success.data;
+                    $scope.getStudents();
+                }
+                
+            }, function(){
+                Notification.error("Ocurrio un error al obtener carreras: "+error.data);
+                $scope.loading = false;
+            })
+        
     })();
     //Se carguen datos al iniciar pagina
     

@@ -10,6 +10,15 @@ angular.module("Dashboard").service('StudentsService', function( RequestFactory,
         );
     }
 
+    this.getStudentsByCareer = function(career_id){
+        return RequestFactory.makeTokenRequest(
+            'GET',
+            "/careers/"+career_id+"/students",
+            null,
+            AuthFactory.getToken()
+        );
+    }
+
 
     this.searchStudents = function(data){
         return RequestFactory.makeTokenRequest(

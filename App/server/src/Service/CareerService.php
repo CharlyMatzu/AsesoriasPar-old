@@ -28,10 +28,13 @@ class CareerService{
      */
     public function getCareers(){
 
+        //Validación se sesión
         if( Auth::$isSessionON )
             $result = $this->perCareers->getCareers();
         else
             $result = $this->perCareers->getEnabledCareers();
+
+
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCareers", "Ocurrió un error al obtener careras", $result->getErrorMessage());
@@ -122,6 +125,21 @@ class CareerService{
         $this->getCareer_ById($id);
         $subServ = new SubjectService();
         return $subServ->getSubjects_ByCareer( $id );
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \mysqli_result
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws NoContentException
+     */
+    public function getStudents_ByCareer($id)
+    {
+        $this->getCareer_ById($id);
+        $stuServ = new StudentService();
+        return $stuServ->getStudents_ByCareer( $id );
     }
 
 

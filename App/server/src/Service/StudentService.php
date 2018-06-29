@@ -55,6 +55,25 @@ class StudentService{
     }
 
     /**
+     * @param $id int
+     *
+     * @return \mysqli_result|null
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getStudents_ByCareer($id)
+    {
+        $result = $this->perStudents->getStudents_ByCareer( $id );
+
+        if( Utils::isError($result->getOperation()) )
+            throw new InternalErrorException("getStudents_ByCareer","Ocurrió un error al obtener usuarios por carrera", $result->getErrorMessage());
+        else if( Utils::isEmpty($result->getOperation()) )
+            throw new NoContentException("No hay estudiantes");
+        else
+            return $result->getData();
+    }
+
+    /**
      * @param $student_data string
      *
      * @return \mysqli_result|null

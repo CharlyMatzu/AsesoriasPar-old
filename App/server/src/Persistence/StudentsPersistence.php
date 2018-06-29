@@ -109,6 +109,20 @@ class StudentsPersistence extends Persistence{
         return $this->executeQuery($query);
     }
 
+    /**
+     * @param $career_id int
+     *
+     * @return \App\Model\DataResult
+     * @throws \App\Exceptions\Request\InternalErrorException
+     */
+    public function getStudents_ByCareer($career_id)
+    {
+        $query =    $this->SELECT."
+                    WHERE c.career_id = $career_id";
+        //Obteniendo resultados
+        return $this->executeQuery($query);
+    }
+
 
     //------------------REGISTROS
 
@@ -149,6 +163,8 @@ class StudentsPersistence extends Persistence{
                   WHERE s.student_id = ".$student->getId();
         return  self::executeQuery($query);
     }
+
+
 
 //    /**
 //     * @param $idStudent int

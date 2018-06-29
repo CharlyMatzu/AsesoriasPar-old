@@ -19,17 +19,17 @@
                                     <i class="ti-search"></i>
                                 </button>
                             </span>
-                            <input type="text" placeholder="Buscar" class="form-control" ng-model="studentDataSearch" ng-change="searchStudents(studentDataSearch)">
+                            <input type="text" placeholder="Buscar" class="form-control" ng-model="search" ng-change="searchStudents(search)">
                         </div>
+                        
                         <!-- Filtros -->
-                        <!-- <div class="form-group">
+                        <div class="form-group">
                             <label for="career">Filtrar por carrera:</label>
-                            <select ng-model="filterCareer" id="career" class="btn btn-primary">
-                                <option value="0" selected="selected">0</option>
-                                <option value="1" selected="selected">1</option>
-                                <option value="2" selected="selected">2</option>
+                            <select ng-model="filterCareer" id="career" class="custom-select">
+                                <option ng-repeat="c in careers" value="{{c.id}}" >{{c.name}}</option>
                             </select>
-                        </div> -->
+                        </div>
+                        <button ng-click="getStudentsByCareer(filterCareer)" class="btn btn-primary">Buscar</button>
                     </div>
                 </div>
             </div>

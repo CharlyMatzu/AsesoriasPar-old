@@ -110,7 +110,7 @@ class UserController
     {
         try {
             $userServ = new UserService();
-            $result = $userServ->searchStaffUser_ByEmail( $params['email'] );
+            $result = $userServ->searchStaffUser_ByEmail( $params['search'] );
             return Utils::makeResultJSONResponse($res, Utils::$OK, $result);
 
         } catch (RequestException $e) {
@@ -244,6 +244,7 @@ class UserController
      * @param $params
      *
      * @return Response
+     * @throws \App\Exceptions\Persistence\TransactionException
      */
     public function updateUser($req, $res, $params){
         try {

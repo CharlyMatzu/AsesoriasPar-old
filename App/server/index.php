@@ -171,8 +171,8 @@ $app->get('/users/search/{search}', 'UserController:searchUsersByEmail')
 
 
 //busca usuarios por correo (coincidencias)
-$app->get('/users/search/{email}/staff', 'UserController:searchStaffUsersByEmail')
-        ->add('InputMiddleware:checkParam_Email')
+$app->get('/users/search/{search}/staff', 'UserController:searchStaffUsersByEmail')
+        ->add('InputMiddleware:checkParam_Search')
         ->add('AuthMiddleware:requireStaff');
 
 
@@ -214,8 +214,12 @@ $app->get('/careers/{id}', 'CareerController:getCareer_ById')
 //TODO: obtener materias por carrera
 //TODO: VALIDAR AUTH
 //Obtiene materias de carrera
-$app->get('/career/{id}/subjects', 'CareerController:getCareerSubjects')
+$app->get('/careers/{id}/subjects', 'CareerController:getCareerSubjects')
         ->add('InputMiddleware:checkParam_Id');
+
+
+$app->get('/careers/{id}/students', 'CareerController:getCareerStudents')
+    ->add('InputMiddleware:checkParam_Id');
 
 
 //TODO: VALIDAR AUTH
@@ -345,6 +349,7 @@ $app->get('/students', 'StudentController:getStudents');
 //obtiene estudiante por id
 $app->get('/students/{id}', 'StudentController:getStudent_ById')
     ->add('InputMiddleware:checkParam_Id');
+
 
 //TODO: VALIDAR AUTH
 //Busca estudiante por coincidencias (todos los campos de string: nombre, apellido, correo, telefono)

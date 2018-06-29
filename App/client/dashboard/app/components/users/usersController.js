@@ -49,7 +49,7 @@ angular.module("Dashboard").controller('UsersController', function($scope,  $win
      * @param {String} data Informacion a buscar (correo)
      */
     $scope.searchUser = function(data){
-        if( data == null || data == "" ) 
+        if( data == null || data == "" )
             return;
 
         $scope.users = [];
