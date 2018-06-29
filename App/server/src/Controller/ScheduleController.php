@@ -112,7 +112,7 @@ class ScheduleController
     {
         try {
             $scheduleService = new ScheduleService();
-            $scheduleService->getScheduleSubjects_BySchedule( $params['id'] );
+            $scheduleService->getScheduleSubjects_Byid( $params['id'] );
             return Utils::makeMessageResponse( $res, Utils::$OK, "Materias actualizadas");
 
         } catch (RequestException $e) {

@@ -1,0 +1,2 @@
+[2018-06-29 05:33:44] ErrorHandler.CRITICAL: File: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\autoload.php[11] --- Error al cargar la clase: App\Persistence\SchedulesPersistence.php [] []
+[2018-06-29 05:33:51] ErrorHandler.CRITICAL: File: C:\xampp\htdocs\www\AsesoriasPar-Web\App\server\src\autoload.php[11] --- Error al cargar la clase: App\Persistence\SchedulesPersistence.php [] []

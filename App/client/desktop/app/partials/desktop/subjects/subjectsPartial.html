@@ -24,11 +24,14 @@
 
             <p>Poner más datos: nombre, status, carrera, plan</p>
             <div class="subjects selected-items" ng-if="!loading">
-
                 <!-- items -->
-                <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-subject-id="{{sub.subject_id}}">La materia {{sub.subject_name}} del horario esta {{sub.status}}, y la materia en si: {{sub.subject_status}} de la carrera {{sub.career_name}}</div>
+                <div class="item" ng-repeat="sub in schedule.subjects" data-id="{{sub.id}}" data-subject-id="{{sub.subject_id}}">
+                    <span class="name">{{sub.subject_name}}</span>
+                    <span class="career">{{sub.career_name}}</span>
+                    <span class="status">{{sub.status}}</span>
+                    <span class="plan">{{sub.plan}}</span>
+                </div>
                 <!-- end items -->
-
             </div>
 
         </div>

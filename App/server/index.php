@@ -460,12 +460,14 @@ $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeStatus')
 //TODO: VALIDAR AUTH
 //Obtiene horario actual de estudiante
 $app->get('/students/{id}/schedule', 'StudentController:getSchedule_ByStudentId')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
 
 //TODO: VALIDAR AUTH
 $app->get('/schedule/{id}/subjects', 'ScheduleController:getScheduleSubjects')
-    ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
 
 //TODO: VALIDAR AUTH
@@ -476,7 +478,8 @@ $app->put('/schedule/{schedule}/subjects/{subject}/status/{status}', 'ScheduleCo
 //TODO: VALIDAR AUTH
 //crea horario (horas)
 $app->post('/students/{id}/schedule', 'StudentController:createSchedule')
-        ->add('InputMiddleware:checkParam_Id');
+        ->add('InputMiddleware:checkParam_Id')
+        ->add('AuthMiddleware:requireBasic');
 
 
 

@@ -97,9 +97,10 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
 
         
         (function(){
+            //Almacena la ruta actual con la que se accedio para posteriormente redireccionar
+            $rootScope.currentLoc = $window.location.href;
             //Para que inicie en dicho directorio
-            //TODO: tomar directorio actual para redireccionar una vez termine
-            $window.location = "#!/loading";
+            $window.location.href = "#!/loading";
         })();
 
         
@@ -144,7 +145,8 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
                     
                 })
                 .finally(function(){
-                    $window.location = "#!/escritorio";
+                    //Se refirecciona a ruta con la que se inicio
+                    $window.location = $scope.currentLoc;
                 });
         })();
         

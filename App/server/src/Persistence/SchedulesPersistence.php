@@ -14,6 +14,26 @@ class SchedulesPersistence extends Persistence{
                             s.fk_student as 'student_id'
                             FROM schedule s ";
 
+
+    private $SUBJECTS = "SELECT
+                  ss.schedule_subject_id as 'id',
+                  ss.status as 'status',
+                  
+                  s.subject_id as 'subject_id',
+                  s.name as 'subject_name',
+                  s.status as 'subject_status',
+                  
+                  p.year as 'plan',
+                  p.status as 'plan_status',
+                  
+                  c.name as 'career_name',
+                  c.short_name as 'career_short_name'
+                  
+                FROM schedule_subjects ss
+                INNER JOIN subject s ON ss.fk_subject = s.subject_id
+                INNER JOIN plan p ON s.fk_plan = p.plan_id
+                INNER JOIN career c ON s.fk_career = c.career_id";
+
     //--------------------
     //  HORARIO
     //--------------------
@@ -117,26 +137,14 @@ class SchedulesPersistence extends Persistence{
      */
     public function getScheduleSubjects_BySchedule($schedule_id)
     {
-        $query = "SELECT
-                  ss.schedule_subject_id as 'id',
-                  ss.status as 'status',
-                  s.subject_id as 'subject_id',
-                  s.name as 'subject_name',
-                  s.status as 'subject_status',
-                  p.year as 'plan',
-                  c.name as 'career_name',
-                  c.short_name as 'career_short_name'
-                  
-                FROM schedule_subjects ss
-                INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                INNER JOIN plan p ON s.fk_plan = p.plan_id
-                INNER JOIN career c ON s.fk_career = c.career_id
-                WHERE ss.fk_schedule = $schedule_id AND 
-                s.status = '".Utils::$STATUS_ACTIVE."'";
+        $query = $this->SUBJECTS.
+                "WHERE ss.fk_schedule = $schedule_id
+                AND s.status = '".Utils::$STATUS_ACTIVE."'";
 
         //Obteniendo resultados
         return self::executeQuery($query);
     }
+
 
     /**
      * @param $subject_id int
@@ -148,22 +156,9 @@ class SchedulesPersistence extends Persistence{
      */
     public function getScheduleSubject_BySubject_BySchedule( $subject_id, $schedule_id )
     {
-        $query = "SELECT
-                  ss.schedule_subject_id as 'id',
-                  ss.status as 'status',
-                  s.subject_id as 'subject_id',
-                  s.name as 'subject_name',
-                  s.status as 'subject_status',
-                  p.year as 'plan',
-                  c.name as 'career_name',
-                  c.short_name as 'career_short_name'
-                  
-                FROM schedule_subjects ss
-                INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                INNER JOIN plan p ON s.fk_plan = p.plan_id
-                INNER JOIN career c ON s.fk_career = c.career_id
+        $query = $this->SUBJECTS."
                 WHERE (ss.fk_schedule = $schedule_id AND ss.fk_subject = $subject_id) AND 
-                s.status = '".Utils::$STATUS_ACTIVE."'";
+                ORDER BY s.semester, s.fk_plan, s.name";
 
         //Obteniendo resultados
         return self::executeQuery($query);
@@ -176,24 +171,13 @@ class SchedulesPersistence extends Persistence{
      * TODO: solo materias habilitadas
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getScheduleSubjects_ById_Enabled($schedule_id)
+    public function getScheduleSubjects_BySchedule_Enabled($schedule_id)
     {
-        $query = "SELECT
-                  ss.schedule_subject_id as 'id',
-                  ss.status as 'status',
-                  s.subject_id as 'subject_id',
-                  s.name as 'subject_name',
-                  s.status as 'subject_status',
-                  p.year as 'plan',
-                  c.name as 'career_name',
-                  c.short_name as 'career_short_name'
-                  
-                FROM schedule_subjects ss
-                INNER JOIN subject s ON ss.fk_subject = s.subject_id
-                INNER JOIN plan p ON s.fk_plan = p.plan_id
-                INNER JOIN career c ON s.fk_career = c.career_id
+        $query = $this->SUBJECTS."
                 WHERE ss.fk_schedule = $schedule_id AND 
-                (s.status = '".Utils::$STATUS_ACTIVE."' AND ss.status = '".Utils::$STATUS_ACTIVE."')";
+                ( (s.status = '".Utils::$STATUS_ACTIVE."' AND c.status = '".Utils::$STATUS_ACTIVE."' AND p.status = '".Utils::$STATUS_ACTIVE."' ) AND 
+                (ss.status = '".Utils::$STATUS_VALIDATED."' OR ss.status = '".Utils::$STATUS_PENDING."') )
+                ORDER BY s.semester, s.fk_plan, s.name";
 
         //Obteniendo resultados
         return self::executeQuery($query);

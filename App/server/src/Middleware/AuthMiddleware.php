@@ -131,7 +131,7 @@ class AuthMiddleware extends Middleware
         }
 
         $res = $next($req, $res);
-        Auth::sessionDestroy();
+//        Auth::sessionDestroy();
         return $res;
     }
 
@@ -160,7 +160,7 @@ class AuthMiddleware extends Middleware
         }
 
         $res = $next($req, $res);
-        Auth::sessionDestroy();
+//        Auth::sessionDestroy();
         return $res;
     }
 
@@ -189,7 +189,7 @@ class AuthMiddleware extends Middleware
         }
 
         $res = $next($req, $res);
-        Auth::sessionDestroy();
+//        Auth::sessionDestroy();
         return $res;
     }
 
@@ -212,7 +212,7 @@ class AuthMiddleware extends Middleware
         }catch (RequestException $e){}
 
         $res = $next($req, $res);
-        Auth::sessionDestroy();
+//        Auth::sessionDestroy();
         return $res;
     }
 
