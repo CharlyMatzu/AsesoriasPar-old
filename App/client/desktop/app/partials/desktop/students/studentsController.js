@@ -4,6 +4,8 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
     $scope.page.title = 'Escritorio > Alumnos';
     $scope.loading = true;
     $scope.advisories = [];
+    $scope.showRequireSchedule = false;
+    $scope.showRequireSubjects = false;
 
 
 
@@ -63,6 +65,7 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
                 getAdvisories();
             else{
                 $scope.showRequireSchedule = true;
+                $scope.showRequireSubjects = true;
                 $scope.loading = false;
             }
         }
@@ -74,19 +77,32 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
                         //
                         if( success.status == STATUS.NO_CONTENT ){
                             $scope.showRequireSchedule = true;
+                            $scope.showRequireSubjects = true;
                             $scope.loading = false;
                         }
                         else{
                             $scope.schedule = success.data;
 
+                            var load = true;
+
                             //Si tiene horas disponibles
-                            if( $scope.schedule.days_hours.length > 0 &&
-                                $scope.schedule.subjects.length > 0)
-                                getAdvisories();
-                            else{
+                            if( $scope.schedule.days_hours.length == 0){
+                                load = false;
                                 $scope.showRequireSchedule = true;
                                 $scope.loading = false;
                             }
+
+                            //Si tiene materias disponibles
+                            if( $scope.schedule.subjects.length == 0){
+                                load = false;
+                                $scope.showRequireSubjects = true;
+                                $scope.loading = false;
+                            }
+                                
+
+                            //Si hay ambas
+                            if( load )
+                                getAdvisories();
                         }
                 },
                 function(error){

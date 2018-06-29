@@ -8,14 +8,29 @@
                 <div class="spinner"></div>
             </div>
 
-
+            <!-- horas -->
             <div class="require-message fadeIn" ng-if="showRequireSchedule">
-                <p class="alert alert-warning">No tiene un horario de disponibilidad. Para poder ofrecer asesorías (ser asesor) es necesario indicar un horario seleccionando las horas en las que puedes recibir aseserías. Para crear un horario presione <a href="#!/escritorio/horario">aqui</a>, además es necesario indicar aquellas materias de las cuales puedes ofrecer asesorías, eso puedes hacerlo <a href="#!/escritorio/materias">aquí</a></p>
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Sin Horas disponibles</h4>
+                    <p>
+                        No tiene un horario de disponibilidad. Para poder ofrecer asesorías (ser asesor) es necesario indicar un horario seleccionando las horas en las que puedes recibir aseserías. Para crear un horario presione <a href="#!/escritorio/horario">aqui</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- materias -->
+            <div class="require-message fadeIn" ng-if="showRequireSubjects">
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">Sin materias disponibles</h4>
+                    <p>
+                        Es necesario indicar aquellas materias de las cuales puedes ofrecer asesorías, para hacerlo puedes hacer click <a href="#!/escritorio/materias">aquí</a> y seleccionar las materías de interes
+                    </p>
+                </div>
             </div>
 
 
             <!-- asesorías -->
-            <div class="advisories" ng-if="!loading && !showRequireSchedule">
+            <div class="advisories" ng-if="!loading && !showRequireSchedule && !showRequireSubjects">
 
                 <!-- emtpy advisories -->
                 <div class="empty text-center" ng-if="advisories.length == 0">

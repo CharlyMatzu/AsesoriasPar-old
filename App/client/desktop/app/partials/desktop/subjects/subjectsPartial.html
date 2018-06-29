@@ -10,13 +10,13 @@
             </div>
     
             <!-- Messages and options -->
+            <p class="alert alert-dark">Para ser asesor es importante indicar cuales son las materias de las cuales deseas dar asesorías, una vez seleccionadas estas deberan ser <strong>validadas</strong> por un miembro del staff, de igual manera estas pueden ser <strong>bloqueadas</strong> para evitar su uso como Asesor</p>
 
             <div class="options" ng-if="!loading">
-                <p>Poner una descripción de para que son estas materias</p>
+
                 <!-- emtpy advisories -->
                 <div class="empty text-center" ng-if="schedule.subjects.length == 0">
                     <p class="alert alert-primary">No ha seleccionado materias</p>
-                    <p>Cambiar por imagen jejeje</p>
                 </div>
                 <button class="btn btn-primary" ng-click="openSubjectsUpdate()">Actualizar mis materias</button>
             </div>
