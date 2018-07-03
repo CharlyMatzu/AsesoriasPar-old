@@ -15,10 +15,10 @@
             border-radius: 7px;
             width: 100%;
             max-width: 200px;
-            height: 300px;
-            overflow: hidden;
+            height: 330px;
+            // overflow: hidden;
             text-align: center;
-            cursor: pointer;
+            // cursor: pointer;
             transition: .3s;
             &:hover{
                 // background-color: rgba(#212121, .05);
@@ -65,6 +65,14 @@
                         background-color: #dc3545;
                         color: #fff;
                     }
+                }
+            }
+            .show{
+                // background-color: green;
+                padding: 10px 5px;
+                display: block;
+                .btn-show{
+                    // background-color: red;
                 }
             }
         }

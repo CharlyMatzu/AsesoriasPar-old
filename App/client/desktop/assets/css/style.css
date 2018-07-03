@@ -180,10 +180,8 @@ body {
   border-radius: 7px;
   width: 100%;
   max-width: 200px;
-  height: 300px;
-  overflow: hidden;
+  height: 330px;
   text-align: center;
-  cursor: pointer;
   -webkit-transition: .3s;
   -o-transition: .3s;
   transition: .3s; }
@@ -223,6 +221,9 @@ body {
       .advisories-container .advisories .item .info .btn-opt:hover {
         background-color: #dc3545;
         color: #fff; }
+  .advisories-container .advisories .item .show {
+    padding: 10px 5px;
+    display: block; }
 
 .advisories-container .advisories .new {
   border-color: #3A99D9;

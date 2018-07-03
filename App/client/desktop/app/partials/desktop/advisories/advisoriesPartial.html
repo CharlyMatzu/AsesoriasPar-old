@@ -37,7 +37,7 @@
                 <!-- end new -->
 
                 <!-- items -->
-                <div class="item" ng-repeat="ad in advisories" ng-click="openSchedule(ad)">
+                <div class="item" ng-repeat="ad in advisories">
                     <div class="avatar">
                         <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_assign.jpg" alt="">
                         <img ng-show="ad.adviser_id == null" src="../../../../assets/img/teacher_empty.jpg" alt="">
@@ -53,6 +53,9 @@
                         </div>
                         
                         <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
+                    </div>
+                    <div class="show">
+                        <button class="btn-show btn btn-outline-primary" ng-click="openSchedule(ad)">Ver Horario</button>
                     </div>
                 </div>
                 <!-- end items -->
@@ -106,9 +109,9 @@
 
                 <h2 class="title text-center">Horario de asesoría</h2>
     
-                <!-- loader -->
-                <div class="loader" ng-show="loadingSchedule">
-                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                <!-- spinner -->
+                <div class="spinner-container" ng-if="loading">
+                    <div class="spinner"></div>
                 </div>
         
                 <!-- schedule -->
@@ -117,7 +120,7 @@
                     <button ng-click="showAdvisorySchedule = false"  class="btn btn-danger">Cerrar</button>
 
 
-                    <div class="schedule selectable selectable-actives">
+                    <div class="schedule">
                             
                         <div class="column-item" ng-repeat="dh in daysAndHours">
                             <div class="cell-item cell-header">{{dh.day}}</div>
