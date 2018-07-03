@@ -363,8 +363,8 @@ class ScheduleService{
     }
 
     /**
-     * @param $ad_hours array
-     * @param $alu_hours array
+     * @param $ad_hours array Horario de Asesor
+     * @param $alu_hours array Horario de alumno
      *
      * @return array
      */
@@ -373,11 +373,11 @@ class ScheduleService{
 
         //Recorre horario de asesor
         foreach( $ad_hours as $adviser ){
-            foreach ($adviser['data'] as $d) {
+            foreach ($adviser['hours'] as $d) {
 
                 //Recorre horario de alumno
                 foreach ( $alu_hours as $al ){
-                    foreach ( $al['data'] as $a ){
+                    foreach ( $al['hours'] as $a ){
                         //Si hacen match, se agrega al array
                         if( $d['day_hour_id'] == $a['day_hour_id'] )
                             $match[] = $d;

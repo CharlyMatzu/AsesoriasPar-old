@@ -7,7 +7,7 @@
                 <button class="btn btn-dark"><span class="fa fa-th-large"></span></button>
 
                 <!-- filtro -->
-                <div class="form-inline">
+                <!-- <div class="form-inline">
                     <form>
                         <div class="form-group">
                             <label for="">Día</label>
@@ -31,7 +31,8 @@
                             </select>
                         </div>
                     </form>
-                </div>
+                </div> -->
+                <!-- end filtro -->
             </div>
         </div>
 
@@ -164,7 +165,9 @@
                         <img src="../../../../assets/img/teacher_assign.jpg" alt="">
                     </div>
                     <div class="info">
-                        <span class="name">{{selectedAdviser.name}}</span>
+                        <a href="#!/estudiantes/{{selectedAdviser.id}}/detalle">
+                            <span class="name">{{selectedAdviser.name}}</span>
+                        </a>
                     </div>
                 </div>
                 <!-- end items -->
@@ -184,7 +187,7 @@
                             
                     <div class="column-item" ng-repeat="dh in daysAndHours">
                         <div class="cell-item cell-header">{{dh.day}}</div>
-                        <div ng-repeat="data in dh.data" class="cell-item cell-hour ng-class:checkIsExist(data.id)"  ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                        <div ng-repeat="hour in dh.hours" class="cell-item cell-hour ng-class:checkIfExist(hour.id)"  ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{hour.id}}">{{hour.hour}}</div>
                     </div>
             
                 </div>

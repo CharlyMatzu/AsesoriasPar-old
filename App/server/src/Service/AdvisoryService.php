@@ -27,8 +27,9 @@ class AdvisoryService
 
     /**
      * @return array
-     * @throws \App\Exceptions\Request\InternalErrorException
-     * @throws \App\Exceptions\Request\NoContentException
+     * @throws InternalErrorException
+     * @throws NoContentException
+     * @throws NotFoundException
      */
     public function getCurrentAdvisories()
     {
@@ -52,6 +53,7 @@ class AdvisoryService
      * @return array
      * @throws InternalErrorException
      * @throws NoContentException
+     * @throws NotFoundException
      */
     public function getCurrentAdvisories_ByStudent($student_id)
     {
@@ -60,7 +62,7 @@ class AdvisoryService
 
         $result = $this->adviPer->getStudentAdvisories_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
-            throw new InternalErrorException("getCurrentAdvisory_ByStudent",
+            throw new InternalErrorException("getCurrentAdvisories_ByStudent",
                 "Error al obtener asesorías de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
@@ -97,6 +99,7 @@ class AdvisoryService
      * @return array
      * @throws InternalErrorException
      * @throws NoContentException
+     * @throws NotFoundException
      */
     public function getCurrentAdvisories_Requested($student_id )
     {
@@ -119,6 +122,7 @@ class AdvisoryService
      * @return array
      * @throws InternalErrorException
      * @throws NoContentException
+     * @throws NotFoundException
      */
     public function getCurrentAdvisories_Adviser($student_id )
     {
@@ -158,21 +162,25 @@ class AdvisoryService
 
 
     /**
-     * @param $id int
+     * @param $advisory_id int
      *
      * @return \mysqli_result
      * @throws InternalErrorException
      * @throws NotFoundException
+     * @throws NoContentException
      */
-    public function getAdvisorySchedule_ById($id){
-        $result = $this->adviPer->getAdvisorySchedule_ById($id);
+    public function getAdvisorySchedule_ById($advisory_id){
+        $this->getAdvisory_ById( $advisory_id );
+
+        $result = $this->adviPer->getAdvisorySchedule_ById($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisorySchedule_ById",
                 "Error al obtener horas de asesoría", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe asesorías");
+            throw new NoContentException("No hay horario");
 
+        //TODO: DAR FORMATO
         return $result->getData();
     }
 
@@ -211,12 +219,15 @@ class AdvisoryService
         //Verifica que no exista una asesoría similar activa
         $this->checkAdvisoryRedundancy( $advisories->getData(), $advisory );
 
-        //---Verifica que no este solicitando asesorías de la que es asesor
+        //------------- Verifica que no este solicitando asesorías de la que es asesor
         //Obtiene horario de asesor
         $scheServ = new ScheduleService();
         $schedule = $scheServ->getCurrentSchedule_ByStudentId( $student_id );
         //Obtiene materias de asesor
-        $subjectsArray = $scheServ->getScheduleSubjects_BySchedule_Enabled( $schedule['id'] );
+        $subjectsArray = [];
+        try{
+            $subjectsArray = $scheServ->getScheduleSubjects_BySchedule_Enabled( $schedule['id'] );
+        }catch (NoContentException $e){}
 
         //Se compara materia solicitada con materias de horario
         if( !empty($subjectsArray) ){
@@ -271,6 +282,7 @@ class AdvisoryService
      * @return void
      * @throws ConflictException
      * @throws InternalErrorException
+     * @throws NotFoundException
      */
     private function checkAdvisoryRedundancy( $advisories, $advisory ){
 
@@ -300,8 +312,8 @@ class AdvisoryService
 
             //Si no se encontró, no hay problema
         }
-        catch ( NotFoundException $e){}
-        catch ( NoContentException $e){}
+//        catch ( NotFoundException $e ){}
+        catch ( NoContentException $e ){}
 
     }
 
@@ -420,6 +432,7 @@ class AdvisoryService
      *
      * @return array
      * @throws InternalErrorException
+     * @throws NotFoundException
      */
     public function setAdvisorySchedule_ById( $advisories ){
 
@@ -430,7 +443,7 @@ class AdvisoryService
             try{
                 $schedule = $this->getAdvisorySchedule_ById( $ad['id'] );
                 //Si no hay nada, no deja igual
-            } catch (NotFoundException $e) {}
+            } catch (NoContentException $e) {}
 
             //Se agrega a objeto
             $ad['schedule'] = $schedule;

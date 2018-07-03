@@ -80,10 +80,10 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
                     $scope.matchHours = [];
                     $scope.loadingSchedule = false;
                 }
-                else{
+                else
                     $scope.matchHours = success.data;
-                    getDaysAndHours();
-                }
+                
+                getDaysAndHours();
             },
             function(error){
                 Notification.error("Error al cargar horario coincidente: "+error.data);
@@ -140,7 +140,7 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
             });
     };
 
-    $scope.checkIsExist = function(hour_id){
+    $scope.checkIfExist = function(hour_id){
         for(var i=0; i < $scope.matchHours.length; i++){
             if( hour_id == $scope.matchHours[i]['day_hour_id'] )
                 return 'active';

@@ -37,7 +37,7 @@
                 <!-- end new -->
 
                 <!-- items -->
-                <div class="item" ng-repeat="ad in advisories">
+                <div class="item" ng-repeat="ad in advisories" ng-click="openSchedule(ad)">
                     <div class="avatar">
                         <img ng-show="ad.adviser_id != null" src="../../../../assets/img/teacher_assign.jpg" alt="">
                         <img ng-show="ad.adviser_id == null" src="../../../../assets/img/teacher_empty.jpg" alt="">
@@ -67,7 +67,7 @@
     </div>
 
 
-    <!-- Modal: new advisory -->
+    <!-- Modal: request advisory -->
     <div class="new-advisory-container modal-wrap fadeIn" ng-if="showNewRequest">
         <div class="container">
             
@@ -95,8 +95,47 @@
     
         </div>
     </div>
+    <!-- end request advisory -->
+
+
+    <!-- Moda: advisory schedule -->
+    <div class="modal-wrap fadeIn" ng-show="showAdvisorySchedule">
+        <div class="container">
+
+            <div class="card">
+
+                <h2 class="title text-center">Horario de asesoría</h2>
+    
+                <!-- loader -->
+                <div class="loader" ng-show="loadingSchedule">
+                    <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                </div>
+        
+                <!-- schedule -->
+                <div class="schedule-container" ng-show="!loadingSchedule">
+                    
+                    <button ng-click="showAdvisorySchedule = false"  class="btn btn-danger">Cerrar</button>
+
+
+                    <div class="schedule selectable selectable-actives">
+                            
+                        <div class="column-item" ng-repeat="dh in daysAndHours">
+                            <div class="cell-item cell-header">{{dh.day}}</div>
+                            <div ng-repeat="hour in dh.hours" class="cell-item cell-hour ng-class:checkIfExist(hour.id)"  ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{hour.id}}">{{hour.hour}}</div>
+                        </div>
+            
+                    </div>
+                </div>
+                <!-- end schedule -->
+            </div>
+
+        </div>
+    </div>
+    <!-- end advisory schedule -->
 
 </div>
+
+
 
 
 

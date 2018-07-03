@@ -4,7 +4,7 @@ angular.module("Desktop").service('AdvisoriesService', function($http, RequestFa
     this.getRequestedAdvisories = function(student_id){
         return RequestFactory.makeTokenRequest(
             'GET',
-            "/student/"+student_id+"/advisories/requested",
+            "/students/"+student_id+"/advisories/requested",
             null,
             AuthFactory.getToken()
         );

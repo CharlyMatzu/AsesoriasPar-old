@@ -231,7 +231,7 @@
                         
                             <div class="column-item" ng-repeat="dh in daysAndHours">
                                 <div class="cell-item cell-header">{{dh.day}}</div>
-                                <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                                <div class="cell-item cell-hour ng-class:checkIsExist(hour.id)" ng-repeat="hour in dh.hours" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{hour.id}}">{{hour.hour}}</div>
                             </div>
                     
                         </div>

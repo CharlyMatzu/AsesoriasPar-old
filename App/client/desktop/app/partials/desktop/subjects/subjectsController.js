@@ -9,6 +9,10 @@ angular.module("Desktop")
     $scope.subjects = [];
     $scope.noRepeatedSubjects = [];
     $scope.loadingSubjects = false;
+
+
+
+    
     
 
 

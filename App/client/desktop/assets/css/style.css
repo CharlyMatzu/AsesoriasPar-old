@@ -156,7 +156,19 @@ body {
   right: 0;
   left: 0;
   z-index: 999;
-  background-color: rgba(33, 33, 33, 0.7); }
+  background-color: rgba(33, 33, 33, 0.7);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .modal-wrap .card, .modal-main .card {
+    height: 500px;
+    overflow-y: scroll; }
 
 .advisories-container .advisories .item {
   background-color: #fff;
@@ -171,10 +183,12 @@ body {
   height: 300px;
   overflow: hidden;
   text-align: center;
+  cursor: pointer;
   -webkit-transition: .3s;
   -o-transition: .3s;
   transition: .3s; }
   .advisories-container .advisories .item:hover {
+    border-color: #FF3366;
     -webkit-box-shadow: 0 3px 5px rgba(33, 33, 33, 0.2);
     box-shadow: 0 3px 5px rgba(33, 33, 33, 0.2); }
   .advisories-container .advisories .item .avatar {
@@ -202,9 +216,13 @@ body {
       bottom: -35px;
       left: 55px;
       background: none;
-      border: none; }
+      border: none;
+      -webkit-transition: .3s;
+      -o-transition: .3s;
+      transition: .3s; }
       .advisories-container .advisories .item .info .btn-opt:hover {
-        text-decoration: underline; }
+        background-color: #dc3545;
+        color: #fff; }
 
 .advisories-container .advisories .new {
   border-color: #3A99D9;
@@ -347,13 +365,11 @@ body {
   width: 100%; }
   .subjects-container .subjects {
     padding: 20px 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     width: 100%; }
     .subjects-container .subjects .item {
+      display: block;
       padding: 7px 12px;
       margin: 0 10px 10px 0;
       border-radius: 10px;

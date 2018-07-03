@@ -18,10 +18,11 @@
             height: 300px;
             overflow: hidden;
             text-align: center;
-            // cursor: pointer;
+            cursor: pointer;
             transition: .3s;
             &:hover{
-                // background-color: rgba(#212121, .1);
+                // background-color: rgba(#212121, .05);
+                border-color: $secondary-color;
                 box-shadow: 0 3px 5px rgba(#212121, .2);
             }
             
@@ -58,8 +59,11 @@
                     left: 55px;
                     background: none;
                     border: none;
+                    transition: .3s;
                     &:hover{
-                        text-decoration: underline;
+                        // text-decoration: underline;
+                        background-color: #dc3545;
+                        color: #fff;
                     }
                 }
             }

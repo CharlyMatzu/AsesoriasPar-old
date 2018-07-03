@@ -102,9 +102,7 @@ angular.module("Desktop").controller('ScheduleController', function($scope, Noti
                 //Recorreo cada dia
                 for(let j=0; j < data.length; j++){
                     let day_hour = data[j]['day_hour_id'];
-                    // console.log(" -- ID: "+dh_id+ " -- Schedule:"+ day_hour );
                     if( day_hour === dh_id ){
-                        // console.log( "Coincide" );
                         return 'active';
                     }   
                 }

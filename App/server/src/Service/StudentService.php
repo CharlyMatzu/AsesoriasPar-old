@@ -254,7 +254,7 @@ class StudentService{
     /**
      * @param $student_id int
      *
-     * @return \mysqli_result
+     * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
      * @throws NoContentException
@@ -265,8 +265,8 @@ class StudentService{
         $this->getStudent_ById( $student_id );
 
         //Se obtiene periodo actual
-        $scheduleService = new ScheduleService();
-        return $scheduleService->getCurrentSchedule_ByStudentId( $student_id );
+        $adviServ = new AdvisoryService();
+        return $adviServ->getCurrentAdvisories_ByStudent( $student_id );
     }
 
 

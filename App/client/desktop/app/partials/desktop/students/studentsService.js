@@ -3,7 +3,7 @@ angular.module("Desktop").service('StudentsService', function($http, RequestFact
     this.getAdviserAdvisories = function(student_id){
         return RequestFactory.makeTokenRequest(
             'GET',
-            "/student/"+student_id+"/advisories/adviser",
+            "/students/"+student_id+"/advisories/adviser",
             null,
             AuthFactory.getToken()
         );

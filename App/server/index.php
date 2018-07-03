@@ -537,24 +537,25 @@ $app->put('/schedule/{id}/subjects', 'ScheduleController:updateScheduleSubjects'
 
 
 //TODO: VALIDAR AUTH
-//Obtiene asesorias actuales
+//Obtiene asesorías actuales
 $app->get('/advisories', 'AdvisoryController:getAdvisories');
 
 
 //TODO: VALIDAR AUTH
-//Obtiene asesorias de estudiante
-$app->get('/student/{id}/advisories', 'StudentController:getCurrentAdvisories_ByStudentId')
+//Obtiene asesorías de estudiante
+$app->get('/students/{id}/advisories', 'StudentController:getCurrentAdvisories_ByStudentId')
     ->add('InputMiddleware:checkParam_Id');
 
 //TODO: VALIDAR AUTH
-//Obtiene asesorias de estudiante donde es alumno
-$app->get('/student/{id}/advisories/requested', 'StudentController:getCurrentAdvisories_Requested')
+//Obtiene asesorías de estudiante donde es alumno
+$app->get('/students/{id}/advisories/requested', 'StudentController:getCurrentAdvisories_Requested')
     ->add('InputMiddleware:checkParam_Id');
 
 //TODO: VALIDAR AUTH
-//Obtiene asesorias de estudiante donde es alumno
-$app->get('/student/{id}/advisories/adviser', 'StudentController:getCurrentAdvisories_Adviser')
+//Obtiene asesorías de estudiante donde es alumno
+$app->get('/students/{id}/advisories/adviser', 'StudentController:getCurrentAdvisories_Adviser')
     ->add('InputMiddleware:checkParam_Id');
+
 
 //TODO: VALIDAR AUTH
 //Obtiene horas de asesoría asignada

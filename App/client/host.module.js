@@ -28,8 +28,8 @@ angular.module("HostModule", [])
 
     .factory('RequestFactory', function($http){
 
-        var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
-        // var DEVELOPMENT = "http://10.202.103.252/AsesoriasPar-Web/App/server"
+        // var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
+        var DEVELOPMENT = "http://10.202.106.54/AsesoriasPar-Web/App/server"
         var PRODUCTION = "http://api.ronintopics.com";
         var DEVELOP_MODE = true;
             
@@ -85,65 +85,4 @@ angular.module("HostModule", [])
             },
         };
             
-    })
-
-    
-
-
-
-// angular.module("HostModule", [])
-//     //CONSTANTES
-//     // .constant('SERVERS',
-//     //     {  
-//     //         DEVELOPMENT:    "http://api.asesoriaspar.com",
-//     //         PRODUCTION:     "http://asesoriaspar.ronintopics.com",
-//     //         DEVELOP_MODE:    true
-//     //     }
-//     // )
-
-//     .provider('HostProvider', function(){
-//         var DEVELOPMENT = "http://api.asesoriaspar.com";
-//         var PRODUCTION = "http://asesoriaspar.ronintopics.com";
-//         var DEVELOP_MODE = true;
-
-
-//         //--------------------------Parte del provider
-//         this.setProductionUrl = function(prodUrl){
-//             PRODUCTION = prodUrl;
-//         };
-
-//         this.setDevelopmentUrl = function(devUrl){
-//             DEVELOPMENT = devUrl;
-//         };
-
-//         /**
-//          * 
-//          * @param {boolean} flag 
-//          */
-//         this.setProductionMode = function(){
-//             DEVELOP_MODE = false;
-//         };
-
-        
-//         // this.getURL = function(){
-//         //     if( DEVELOP_MODE === true )
-//         //         return DEVELOPMENT;
-//         //     else
-//         //         return PRODUCTION;
-//         // };
-
-//         //--------------------------Parte del factory
-//         this.$get = function(){
-//             return {
-//                 getURL: function() {
-//                     if( DEVELOP_MODE === true )
-//                         return DEVELOPMENT+"/index.php";
-//                     else
-//                         return PRODUCTION+"/index.php";
-//                 }
-//             };
-//         };
-//     })
-
-
-
+    });

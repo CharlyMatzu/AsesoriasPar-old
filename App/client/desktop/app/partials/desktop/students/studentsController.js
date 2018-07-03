@@ -8,6 +8,44 @@ angular.module("Desktop").controller('StudentsController', function($scope, Noti
     $scope.showRequireSubjects = false;
 
 
+    $scope.showAdvisorySchedule = false;
+    $scope.loadingSchedule = false;
+    $scope.AdvisorySchedule = [];
+    $scope.daysAndHours = [];
+
+
+    $scope.openSchedule = function(advisory){
+
+        if( advisory.schedule.length === 0 ){
+            Notification.warning("Aún no se cuenta con un horario");
+            return;
+        }
+
+        $scope.loadingSchedule = true;
+        $scope.showAdvisorySchedule = true;
+        //Asigna horario de asesoría
+        $scope.AdvisorySchedule = advisory.schedule;
+
+        //Obtiene días y horas
+        ScheduleService.getDaysAndHours()
+            .then(function(success){
+                $scope.daysAndHours = success.data;
+
+            }, function(error){
+                Notification.error("Error: "+error.data);
+                $scope.showAdvisorySchedule = false;
+
+            }).finally(function(){
+                $scope.loadingSchedule = false;
+            });
+    }
+
+    $scope.checkIfExist = function(hour_id){
+        for(var i=0; i < $scope.AdvisorySchedule.length; i++){
+            if( hour_id == $scope.AdvisorySchedule[i]['day_hour_id'] )
+                return 'active';
+        }
+    };
 
     var getAdvisories = function(){
         $scope.loading = true;

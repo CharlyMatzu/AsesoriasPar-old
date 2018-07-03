@@ -42,7 +42,7 @@ angular.module("Dashboard").controller('StudentDetailController', function($scop
         if( dh.length > 0 ){
             //Recorre el data
             for(let i=0; i < dh.length; i++){
-                let data = dh[i]['data'];
+                let data = dh[i]['hours'];
                 //Recorreo cada dia
                 for(let j=0; j < data.length; j++){
                     let day_hour = data[j]['day_hour_id'];

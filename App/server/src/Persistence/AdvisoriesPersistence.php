@@ -135,7 +135,8 @@ class AdvisoriesPersistence extends Persistence{
      */
     public function getStudentAdvisories_ByPeriod($student_id, $period_id){
         $query = $this->SELECT.
-            "WHERE (ar.fk_alumn = $student_id OR ar.fk_adviser = $student_id) AND ar.fk_period = $period_id";
+            "WHERE (ar.fk_student = $student_id OR ar.fk_adviser = $student_id) AND 
+            ar.fk_period = $period_id";
         return self::executeQuery($query);
     }
 

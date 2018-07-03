@@ -81,9 +81,9 @@ class AdvisoryController
             $advisoryServ = new AdvisoryService();
             /* @var $advisory AdvisoryModel */
             $advisory = $req->getAttribute('advisory_data');
-            //Se adiciona estudiante a objeto
+            //Se adiciona estudiante a objeto. TODO: no mandar objeto....
             $advisory->setStudent( $params['id'] );
-            $advisoryServ->insertAdvisory_CurrentPeriod( $advisory);
+            $advisoryServ->insertAdvisory_CurrentPeriod( $advisory );
             return Utils::makeMessageResponse( $res, Utils::$CREATED, "asesoría registrada con éxito");
 
         } catch (RequestException $e) {
