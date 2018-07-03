@@ -91,11 +91,11 @@
                     <button ng-click="showAdvisorySchedule = false"  class="btn btn-danger">Cerrar</button>
 
 
-                    <div class="schedule selectable">
+                    <div class="schedule">
                             
                         <div class="column-item" ng-repeat="dh in daysAndHours">
                             <div class="cell-item cell-header">{{dh.day}}</div>
-                            <div ng-repeat="hour in dh.hours" class="cell-item cell-hour ng-class:checkIfExist(hour.id)"  ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{hour.id}}">{{hour.hour}}</div>
+                            <div ng-repeat="hour in dh.hours" class="cell-item cell-hour ng-class:checkIfExist(hour.id)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{hour.id}}">{{hour.hour}}</div>
                         </div>
             
                     </div>

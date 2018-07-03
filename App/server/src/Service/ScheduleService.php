@@ -144,17 +144,19 @@ class ScheduleService{
 
     /**
      * Obtiene días existentes para utilizar
+     * @return \mysqli_result|null
      * @throws InternalErrorException
      * @throws NoContentException
      */
     public function getDays(){
+
         $result = $this->schedulesPer->getDays();
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException('getDays', "Error al obtener días");
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException("No se encontraron días");
 
-        $result->getData();
+        return $result->getData();
     }
 
 

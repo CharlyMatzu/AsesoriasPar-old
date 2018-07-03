@@ -52,9 +52,26 @@ angular.module("Desktop").controller('AdvisoriesController', function($scope, No
     }
 
     $scope.checkIfExist = function(hour_id){
-        for(var i=0; i < $scope.AdvisorySchedule.length; i++){
-            if( hour_id == $scope.AdvisorySchedule[i]['day_hour_id'] )
-                return 'active';
+        // return 'active';
+
+        //Obtiene solo horario
+        let schedule = $scope.AdvisorySchedule;
+        //Si hay horas
+
+        for(var j=0; j < schedule.length; j++){
+
+            var day = schedule[j];
+
+            //Si tiene horas
+            if( day.hours.length > 0 ){
+                //Recorre todas horas existentes
+                for(var i=0; i < day.hours.length; i++ ){
+                    //Si lo encuentra, regresa 'active'
+                    if( day.hours[i]['day_hour_id'] === hour_id ){
+                        return 'active';
+                    }
+                }
+            }
         }
     };
 

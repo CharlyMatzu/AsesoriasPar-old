@@ -164,7 +164,7 @@ class AdvisoryService
     /**
      * @param $advisory_id int
      *
-     * @return \mysqli_result
+     * @return array
      * @throws InternalErrorException
      * @throws NotFoundException
      * @throws NoContentException
@@ -181,7 +181,7 @@ class AdvisoryService
             throw new NoContentException("No hay horario");
 
         //TODO: DAR FORMATO
-        return $result->getData();
+        return $this->formatAdvisoryHours( $result->getData() );
     }
 
 
@@ -565,6 +565,66 @@ class AdvisoryService
 //        else
 //            return false;
 //    }
+
+
+    /**
+     * Se encarga de juntar las horas correspondientes a cada día, esto funciona gracias al valor "day_number"
+     * que hace referencia al número del dia (Lunes = 1, Martes = 2....) y al estar ordenados de esta forma sólo es necesario
+     * hacer un solo recorrido
+     *
+     * @param $schedule_hours array|\mysqli_result corresponde a las horas de un horario
+     *
+     * @return array
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function formatAdvisoryHours( $schedule_hours ){
+        //Obtiene días existentes individualmente (ordenados)
+        $scheServ = new ScheduleService();
+        $daysArray = $scheServ->getDays();
+
+        //Array vacío para rellenar de valores
+        $formatedSchedule = array();
+        $index = 0;
+
+        //Se recorren los días
+        foreach( $daysArray as $day ){
+            //array para horas
+            $schedule_day_hour = array();
+            $continue = true;
+
+            //Se recorre horas "sueltas" de horario
+            //NOTA: se usa un while normal para no regresar al inicio del array
+            while( $index < count($schedule_hours) && $continue ){
+                //Si es el mismo día
+                if( $schedule_hours[$index]['day'] === $day['day'] ){
+                    $schedule_day_hour[] = [
+                        "id" => $schedule_hours[$index]['id'],
+                        "schedule_hour" => $schedule_hours[$index]['schedule_hour'],
+                        "day_hour_id" => $schedule_hours[$index]['day_hour_id'],
+                        "hour" => $schedule_hours[$index]['hour']
+                    ];
+
+                    //Se incrementa contador
+                    $index++;
+                }
+                //Si no es, se rompe foreach
+                else
+                    $continue = false;
+
+            }//end hours foreach
+
+            //se agregan datos a array
+            $formatedSchedule[] = [
+                "day" => $day['day'],
+                "day_number" => $day['day_number'],
+                "hours" => $schedule_day_hour
+            ];
+        }//end days foreach
+
+
+        return $formatedSchedule;
+    }
 
 
 }

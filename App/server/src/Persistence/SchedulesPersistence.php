@@ -96,6 +96,7 @@ class SchedulesPersistence extends Persistence{
                         sdh.fk_day_hour as 'day_hour_id',
                         dh.day as 'day',
                         TIME_FORMAT(dh.hour, '%H:%i') as 'hour'
+                        
                     FROM schedule_days_hours sdh
                     INNER JOIN day_and_hour dh ON sdh.fk_day_hour = dh.day_hour_id
                     WHERE sdh.fk_schedule = $schedule_id

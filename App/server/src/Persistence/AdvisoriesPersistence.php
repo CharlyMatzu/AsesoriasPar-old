@@ -259,7 +259,9 @@ class AdvisoriesPersistence extends Persistence{
                     ads.fk_hours as 'schedule_hour',
                     h2.day_hour_id as 'day_hour_id',
                     h2.day as 'day',
+                    h2.day_number as 'day_number',
                     h2.hour as 'hour'
+                    
                     FROM advisory_schedule ads
                     INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
                     INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
