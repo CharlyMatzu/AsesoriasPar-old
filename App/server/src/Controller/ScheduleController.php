@@ -17,7 +17,7 @@ class ScheduleController
     public function getSchedule_ById($req, $res, $params){
         try {
             $scheduleService = new ScheduleService();
-            $result = $scheduleService->getSchedule_ById( $params['id'] );
+            $result = $scheduleService->getFullSchedule_ById( $params['id'] );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {
@@ -114,7 +114,7 @@ class ScheduleController
     {
         try {
             $scheduleService = new ScheduleService();
-            $result = $scheduleService->getScheduleSubjects_Byid( $params['id'] );
+            $result = $scheduleService->getScheduleSubjects_BySchedule( $params['id'] );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result);
 
         } catch (RequestException $e) {

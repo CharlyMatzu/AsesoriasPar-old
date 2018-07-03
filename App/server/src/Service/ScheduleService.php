@@ -37,6 +37,28 @@ class ScheduleService{
         return $result->getData()[0];
     }
 
+    /**
+     * @param $id int
+     *
+     * @return array
+     * @throws InternalErrorException
+     * @throws NotFoundException
+     * @throws RequestException
+     */
+    public function getFullSchedule_ById($id)
+    {
+        $result = $this->schedulesPer->getSchedule_Byid($id);
+
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException("getSchedule_ById","Error al obtener horario", $result->getErrorMessage());
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NotFoundException("No existe horario");
+
+        //Adiciona información extra
+        $schedule = $result->getData()[0];
+        return $this->setScheduleData_ById( $schedule );
+    }
+
 
     /**
      *
@@ -64,18 +86,76 @@ class ScheduleService{
     }
 
 
-//    public function getDays(){
-//        $result = $this->schedulesPer->getDays();
-//        if( !is_array($result) )
-//            return $result;
-//        else{
-//            $days = array();
-//            foreach( $result as $day ){
-//                $days[] = $day['day'];
-//            }
-//            return $days;
-//        }
-//    }
+    /**
+     * @param $schedule array|\mysqli_result
+     *
+     * @return array
+     * @throws RequestException
+     * @throws \App\Exceptions\Request\UnauthorizedException
+     */
+    public function setScheduleData_ById( $schedule )
+    {
+
+        $schedule = ScheduleService::makeScheduleModel( $schedule );
+        //se obtiene horas de horario
+        $hours_days = array();
+        try {
+            //Obtiene solo horas activas
+            $hours_days = $this->getScheduleHours_BySchedule_Enabled( $schedule->getId() );
+            //Si no tiene horas, no hay problema
+        }catch (InternalErrorException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+            //Si no hay horas, no hay problema
+        }catch (NoContentException $e){}
+
+        //se obtiene materias (si hay)
+        $subjects = array();
+        try {
+
+            //---------AUTHENTICATION
+            //Obtiene todas las materias si es staff, si es estudiante, solo las activas
+            $subjects = [];
+            if( Auth::$isSessionON ){
+                if( Auth::isStaffUser() )
+                    $subjects = $this->getScheduleSubjects_BySchedule( $schedule->getId() );
+                else
+                    $subjects = $this->getScheduleSubjects_BySchedule_Enabled( $schedule->getId() );
+            }
+            else
+                $subjects = $this->getScheduleSubjects_BySchedule( $schedule->getId() );
+
+
+        }catch (InternalErrorException $e){
+            throw new RequestException($e->getMessage(), $e->getStatusCode());
+            //Si no tiene materias, no hay problema
+        }catch (NoContentException $e){}
+
+        $full_schedule = [
+            "id" => $schedule->getId(),
+            "status" => $schedule->getStatus(),
+            "period" => $schedule->getPeriod(),
+            "days_hours" => $hours_days,
+            "subjects" => $subjects
+        ];
+
+        return $full_schedule;
+    }
+
+
+    /**
+     * Obtiene días existentes para utilizar
+     * @throws InternalErrorException
+     * @throws NoContentException
+     */
+    public function getDays(){
+        $result = $this->schedulesPer->getDays();
+        if( Utils::isError( $result->getOperation() ) )
+            throw new InternalErrorException('getDays', "Error al obtener días");
+        else if( Utils::isEmpty( $result->getOperation() ) )
+            throw new NoContentException("No se encontraron días");
+
+        $result->getData();
+    }
 
 
     /**
@@ -100,7 +180,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleHours_Byid($id )
+    public function getScheduleHours_BySchedule($id )
     {
 
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId( $id, SchedulesPersistence::ORDER_BY_DAY );
@@ -120,7 +200,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleHours_Byid_Enabled($id)
+    public function getScheduleHours_BySchedule_Enabled($id)
     {
         $result = $this->schedulesPer->getScheduleHours_ByScheduleId_Enabled( $id, SchedulesPersistence::ORDER_BY_DAY );
         if( Utils::isError( $result->getOperation() ) )
@@ -195,7 +275,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleSubjects_Byid($id)
+    public function getScheduleSubjects_BySchedule($id)
     {
         $result = $this->schedulesPer->getScheduleSubjects_BySchedule( $id );
 
@@ -214,7 +294,7 @@ class ScheduleService{
      * @throws InternalErrorException
      * @throws NoContentException
      */
-    public function getScheduleSubjects_ById_Enabled($id)
+    public function getScheduleSubjects_BySchedule_Enabled($id)
     {
         $result = $this->schedulesPer->getScheduleSubjects_BySchedule_Enabled( $id );
 
@@ -270,10 +350,10 @@ class ScheduleService{
 
         //se obtiene horario de asesor
         $adviser_schedule = $this->getCurrentSchedule_ByStudentId( $adviser_id );
-        $adviser_hours = $this->getScheduleHours_Byid( $adviser_schedule['id'] );
+        $adviser_hours = $this->getScheduleHours_BySchedule( $adviser_schedule['id'] );
         //Se obtiene horario de alumno
         $alumn_schedule = $this->getCurrentSchedule_ByStudentId( $alumn_id );
-        $alumn_hours = $this->getScheduleHours_Byid( $alumn_schedule['id'] );
+        $alumn_hours = $this->getScheduleHours_BySchedule( $alumn_schedule['id'] );
 
         $result = $this->checkScheduleHoursMatch($adviser_hours, $alumn_hours);
         if( empty($result) )
@@ -362,7 +442,7 @@ class ScheduleService{
         //Se obtiene horas actuales
         $hours = array();
         try{
-            $hours = $this->getScheduleHours_Byid( $schedule_id );
+            $hours = $this->getScheduleHours_BySchedule( $schedule_id );
         }catch (NoContentException $e){}
 
 
@@ -519,12 +599,12 @@ class ScheduleService{
 
         //Se debe agregar las nuevas horas
         // las que ya no estan deben deshabilitarse
-        //Si hay asesorias activas asociadas a esa hora, deben finalizarse y notificar a admin y a alumnos
+        //Si hay asesorías activas asociadas a esa hora, deben finalizarse y notificar a admin y a alumnos
 
         //---Se obtienen horas y dias
         $days_hours = array();
         try{
-            $days_hours = $this->getScheduleHours_Byid( $scheduleId );
+            $days_hours = $this->getScheduleHours_BySchedule( $scheduleId );
             //si esta vacío, no hay problema
         }catch (NoContentException $e){}
 
@@ -542,7 +622,7 @@ class ScheduleService{
             //Recorre cada dia
             foreach ( $days_hours as $days ){
                 //Recorre las horas
-                foreach( $days['data'] as $hour ){
+                foreach( $days['hours'] as $hour ){
                     //Si la hora que esta actualmente en el horario, no se encuentra en la update, se deshabilita
                     if( !in_array($hour['day_hour_id'], $newHours) ){
                         $this->changeStatus_ScheduleHour( $hour['id'], Utils::$STATUS_DISABLE );
@@ -618,12 +698,12 @@ class ScheduleService{
 
         //Se debe agregar las nuevas materias
         // las que ya no estan deben deshabilitarse
-        //Si hay asesorias activas asociadas a esa materia, deben finalizarse y notificar a admin y a alumnos
+        //Si hay asesorías activas asociadas a esa materia, deben finalizarse y notificar a admin y a alumnos
 
         //---Se obtienen horas y dias
         $subjects = array();
         try{
-            $subjects = $this->getScheduleSubjects_Byid( $scheduleId );
+            $subjects = $this->getScheduleSubjects_BySchedule( $scheduleId );
         }catch (InternalErrorException $e){
             throw new InternalErrorException("updateScheduleSubjects",
                 "se detuvo actualización de materias", $e->getMessage());
@@ -650,9 +730,6 @@ class ScheduleService{
                     //Si la materia esta bloqueada por el admin no se podrá deshabilitar
                     if( $sub['status'] !== Utils::$STATUS_LOCKED )
                         $this->changeStatus_ScheduleSubject( $sub['id'], Utils::$STATUS_DISABLE );
-//                    else {
-//                        throw new ConflictException("No se puede deshabilitar materia ya que ha sido bloqueada");
-//                    }
                 }
                 //si ésta ya existe, se pone como pendiente
                 else{
@@ -881,57 +958,125 @@ class ScheduleService{
     }
 
     /**
-     * @param $schedule array|\mysqli_result
+     * Se encarga de juntar las horas correspondientes a cada día, esto funciona gracias al valor "day_number"
+     * que hace referencia al número del dia (Lunes = 1, Martes = 2....) y al estar ordenados de esta forma sólo es necesario
+     * hacer un solo recorrido
+     *
+     * @param $schedule_hours array|\mysqli_result corresponde a las horas de un horario
      *
      * @return array
      * @throws InternalErrorException
      */
-    public function formatScheduleHours($schedule ){
+    public function formatScheduleHours( $schedule_hours ){
+        //Obtiene días existentes individualmente (ordenados)
         $daysArray = $this->schedulesPer->getDays()->getData();
+        //Array vacío para rellenar de valores
         $formatedSchedule = array();
-        //Se recorre cada dia
         $index = 0;
 
-        foreach ( $daysArray as $day ){
-
-            //se recorre el array para encontrar los similares
+        //Se recorren los días
+        foreach( $daysArray as $day ){
+            //array para horas
             $schedule_day_hour = array();
             $continue = true;
 
-            for( ; $continue && $index < count($schedule); ){
-                //Si el dia (primer foreach) es igual al del array, entonces pertenece al dia y se agrega
-                if( $schedule[$index]['day'] === $day['day'] ) {
-                    if( isset($schedule[$index]['day_hour_id']) ){
-                        $schedule_day_hour[] = [
-                            "id" => $schedule[$index]['id'],
-                            "day_hour_id" => $schedule[$index]['day_hour_id'],
-                            "hour" => $schedule[$index]['hour']
-                        ];
-                    }
-                    else{
-                        $schedule_day_hour[] = [
-                            "id" => $schedule[$index]['id'],
-                            "hour" => $schedule[$index]['hour']
-                        ];
-                    }
+            //Se recorre horas "sueltas" de horario
+            //NOTA: se usa un while normal para no regresar al inicio del array
+            while( $index < count($schedule_hours) && $continue ){
+                //Si es el mismo día
+                if( $schedule_hours[$index]['day'] === $day['day'] ){
+                    $schedule_day_hour[] = [
+                        "id" => $schedule_hours[$index]['id'],
+                        "day_hour_id" => $schedule_hours[$index]['day_hour_id'],
+                        "hour" => $schedule_hours[$index]['hour']
+                    ];
 
-                    //Aumenta contador
+                    //Se incrementa contador
                     $index++;
                 }
-                else{
-                    //detiene ciclo
+                //Si no es, se rompe foreach
+                else
                     $continue = false;
-                }
-            }
-            //Se agrega acumulado al schedule principal
+
+            }//end hours foreach
+
+            //se agregan datos a array
             $formatedSchedule[] = [
                 "day" => $day['day'],
                 "day_number" => $day['day_number'],
-                "data" => $schedule_day_hour
+                "hours" => $schedule_day_hour
             ];
-        }
+        }//end days foreach
+
+
         return $formatedSchedule;
     }
+
+
+
+
+
+//    /**
+//     * Se encarga de juntar las horas correspondientes a cada día, esto funciona gracias al valor "day_number"
+//     * que hace referencia al número del dia (Lunes = 1, Martes = 2....) y al estar ordenados de esta forma sólo es necesario
+//     * hacer un solo recorrido
+//     * @param $schedule array|\mysqli_result
+//     *
+//     * @return array
+//     * @throws InternalErrorException
+//     */
+//    public function formatScheduleHours($schedule ){
+//        //Obtiene días existentes individualmente (ordenados)
+//        $daysArray = $this->schedulesPer->getDays()->getData();
+//        //Array vacío para rellenar de valores
+//        $formatedSchedule = array();
+//        //Corresponde a cada día
+//        $index = 0;
+//
+//        //Se recorre cada día y a partir de este, se lee el horario
+//        foreach ( $daysArray as $day ){
+//
+//            //se recorre el array para encontrar los similares
+//            $schedule_day_hour = array();
+//            $continue = true;
+//
+//            //Recorre todas las horas registradas para un horario
+//            for( ; $continue && $index < count($schedule); ){
+//                //Si el dia (primer foreach) es igual al del array, entonces pertenece al dia y se agrega
+//                if( $schedule[$index]['day'] === $day['day'] ) {
+//                    //Si son el mismo día/hora
+//                    if( isset( $schedule[$index]['day_hour_id'] ) ){
+//                        //Se crea array de hora
+//                        $schedule_day_hour[] = [
+//                            "id" => $schedule[$index]['id'],
+//                            "day_hour_id" => $schedule[$index]['day_hour_id'],
+//                            "hour" => $schedule[$index]['hour']
+//                        ];
+//                    }
+//                    else{
+//                        $schedule_day_hour[] = [
+//                            "id" => $schedule[$index]['id'],
+//                            "hour" => $schedule[$index]['hour']
+//                        ];
+//                    }
+//
+//                    //Aumenta contador
+//                    $index++;
+//                }
+//                else{
+//                    //detiene ciclo
+//                    $continue = false;
+//                }
+//            }//end foreach
+//            //Se agrega acumulado al schedule principal
+//            $formatedSchedule[] = [
+//                "day" => $day['day'],
+//                "day_number" => $day['day_number'],
+//                "data" => $schedule_day_hour
+//            ];
+//        } //end foreach
+//        return $formatedSchedule;
+//    }
 
 
 

@@ -97,13 +97,17 @@ angular.module("Desktop", ['ngRoute', 'ui-notification', 'HostModule', 'AuthModu
 
         $rootScope.storageCurrentUrl = function(){
             
-            // var url = $window.location.href;
-            // //Si la ruta es loading, se pone otra por defecto
-            // if( url.search('#!/loading') !== -1 )
-            //     url = "#!/escritorio";
-
-            // $rootScope.currentLoc = url;
-            $rootScope.currentLoc = "#!/escritorio";
+            //Obtiene la ruta actual
+            var url = $window.location.href;
+ 
+            if( url.indexOf('#!/') == -1 )
+                url = "#!/escritorio";
+            else if( url.indexOf('#!/loading') == -1 )
+                url = "#!/escritorio";
+            //Si la ruta es loading, se pone otra por defecto
+ 
+            $rootScope.currentLoc = url;
+            // $rootScope.currentLoc = "#!/escritorio";
         };
 
         

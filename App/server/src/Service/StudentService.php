@@ -196,60 +196,21 @@ class StudentService{
     /**
      * Obtiene todas las horas y dias de un horario asi como las materias
      *
-     * @param $studentId int
+     * @param $student_id int
      *
-     * @return array
+     * @return mixed
      * @throws InternalErrorException
+     * @throws NoContentException
      * @throws NotFoundException
      * @throws RequestException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      */
-    public function getCurrentStudentSchedule_ById($studentId)
+    public function getCurrentSchedule_ByStudent($student_id)
     {
-        //TODO: mover todo a un método en ScheduleService
-
-        //Se verifica que exista estudiante
-        $this->getStudent_ById($studentId);
-
-        //Se obtiene horario de estudiante
-        /* @var $schedule ScheduleModel */
-        $scheduleService = new ScheduleService();
-        $schedule = $scheduleService->getCurrentSchedule_ByStudentId($studentId);
-        $schedule = ScheduleService::makeScheduleModel($schedule);
-
-        //se obtiene horas de horario
-        $hours_days = array();
-        try {
-            //Obtiene solo horas activas
-            $hours_days = $scheduleService->getScheduleHours_Byid_Enabled( $schedule->getId() );
-            //Si no tiene horas, no hay problema
-        }catch (InternalErrorException $e){
-            throw new RequestException($e->getMessage(), $e->getStatusCode());
-            //Si no hay horas, no hay problema
-        }catch (NoContentException $e){}
-
-        //se obtiene materias (si hay)
-        $subjects = array();
-        try {
-            //Obtiene todas las materias si es staff, si es estudiante, solo las activas
-            if( Auth::isStaffUser() )
-                $subjects = $scheduleService->getScheduleSubjects_Byid( $schedule->getId() );
-            else
-                $subjects = $scheduleService->getScheduleSubjects_ById_Enabled( $schedule->getId() );
-
-        }catch (InternalErrorException $e){
-            throw new RequestException($e->getMessage(), $e->getStatusCode());
-            //Si no tiene materias, no hay problema
-        }catch (NoContentException $e){}
-
-        $student_schedule = [
-            "id" => $schedule->getId(),
-            "status" => $schedule->getStatus(),
-            "period" => $schedule->getPeriod(),
-            "days_hours" => $hours_days,
-            "subjects" => $subjects
-        ];
-
-        return $student_schedule;
+        $this->getStudent_ById($student_id );
+        $scheServ = new ScheduleService();
+        $schedule = $scheServ->getCurrentSchedule_ByStudentId( $student_id );
+        return $scheServ->setScheduleData_ById( $schedule );
     }
 
 

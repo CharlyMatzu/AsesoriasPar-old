@@ -109,12 +109,12 @@ class StudentController
      * @param $params array
      * @return Response
      */
-    public function getSchedule_ByStudentId($req, $res, $params)
+    public function getCurrentSchedule($req, $res, $params)
     {
         try {
             $studentSer = new StudentService();
             $student_id = $params['id'];
-            $result = $studentSer->getCurrentStudentSchedule_ById( $student_id );
+            $result = $studentSer->getCurrentSchedule_ByStudent( $student_id );
             return Utils::makeResultJSONResponse( $res, Utils::$OK, $result );
 
         } catch (RequestException $e) {

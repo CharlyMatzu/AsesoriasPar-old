@@ -107,7 +107,7 @@ class AuthService
         try{
             $text = "Confirmado con éxito el correo: ".$user['email'];
             $mail = new MailModel();
-            $mail->setSubject("asesorias par: confirmado");
+            $mail->setSubject("asesorías par: confirmado");
             $mail->setBody($text);
             $mail->setPlainBody($text);
             $mail->addAdress( $user['email'] );

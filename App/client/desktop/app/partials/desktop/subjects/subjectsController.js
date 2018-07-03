@@ -10,32 +10,6 @@ angular.module("Desktop")
     $scope.noRepeatedSubjects = [];
     $scope.loadingSubjects = false;
     
-    
-    // var setNoRepeatSubjects = function(data){
-    //     var subs = $scope.schedule.subjects;
-    //     $scope.subjects = [];
-
-    //     //Recorre materias
-        
-    //     for( var i=0; i < data.length; i++ ){
-    //         //Recorre materias
-    //         var isSelected = false;
-    //         for( var j=0; j < subs.length; j++ ){
-    //             //Recorre materias individuales
-    //             if( data[i]['id'] === subs[j]['subject_id'] ){
-    //                 isSelected = true;
-    //                 break;
-    //             }
-    //         }
-    //         //Si no se encontró, entonces se agrega para seleccionar
-    //         if( !isSelected ){
-    //             //Se agrega materia que no esta en horario para mostrar
-    //             $scope.subjects.push( data[i] );
-    //         }
-    //     }
-
-    //     $scope.loadingSubjects = false;
-    // };
 
 
     //Obtiene materias para seleccionar
@@ -46,13 +20,10 @@ angular.module("Desktop")
             .then(function(success){
                 if( success.status === STATUS.NO_CONTENT ){
                     Notification.warning("No hay materias disponibles");
-                    // $scope.showUpdateSubjects = false;
-                    
+                    $scope.subjects = [];
                 }
-                else{
-                    // setNoRepeatSubjects(success.data);
+                else
                     $scope.subjects = success.data;
-                }
 
                 $scope.loadingSubjects = false;    
             }, 

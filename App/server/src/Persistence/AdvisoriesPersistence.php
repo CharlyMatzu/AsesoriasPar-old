@@ -38,7 +38,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Obtiene todas las asesorias
+     * Obtiene todas las asesorías
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
@@ -48,7 +48,7 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * Obtiene todas las asesorias en un periodo especifico
+     * Obtiene todas las asesorías en un periodo especifico
      *
      * @param $periodId int
      *
@@ -120,7 +120,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     //-----------------------
-    // asesorias por estudiante
+    // asesorías por estudiante
     //-----------------------
 
 
@@ -141,7 +141,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Obtiene todas las asesorias en un periodo donde el usuario espeficio ha solicitado las asesorias (es alumno)
+     * Obtiene todas las asesorías en un periodo donde el usuario especifico ha solicitado las asesorías (es alumno)
      *
      * @param $student_id int
      * @param $period_id int
@@ -149,7 +149,7 @@ class AdvisoriesPersistence extends Persistence{
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getRequestedAdvisories_ByStuden_ByPeriod($student_id, $period_id)
+    public function getRequestedAdvisories_ByStudent_ByPeriod($student_id, $period_id)
     {
         $query = $this->SELECT.
             "WHERE ar.fk_student = $student_id AND ar.fk_period = $period_id";
@@ -157,7 +157,7 @@ class AdvisoriesPersistence extends Persistence{
     }
 
     /**
-     * Obtiene todas las asesorias en un periodo donde el usuario espeficio es asesor
+     * Obtiene todas las asesorías en un periodo donde el usuario especifico es asesor
      *
      * @param $student_id int
      * @param $period_id int
@@ -165,7 +165,7 @@ class AdvisoriesPersistence extends Persistence{
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getAdviserAdvisories_ByStuden_ByPeriod($student_id, $period_id)
+    public function getAdviserAdvisories_ByStudent_ByPeriod($student_id, $period_id)
     {
         $query = $this->SELECT. "WHERE ar.fk_adviser = $student_id AND ar.fk_period = $period_id";
         return self::executeQuery($query);
@@ -173,7 +173,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Obtiene todas las asesorias de un estudiante en un periodo especifico de una materia en especifico
+     * Obtiene todas las asesorías de un estudiante en un periodo especifico de una materia en especifico
      *
      * @param $student_id int
      * @param $subject_id int
@@ -212,7 +212,7 @@ class AdvisoriesPersistence extends Persistence{
 
 
     /**
-     * Actualiza solicitu de asesoría, agregando un asesor, cambiando fecha de inicio y cambiando estado a activo
+     * Actualiza solicitud de asesoría, agregando un asesor, cambiando fecha de inicio y cambiando estado a activo
      *
      * @param $advisory_id int
      * @param $adviser_id int
@@ -247,12 +247,12 @@ class AdvisoriesPersistence extends Persistence{
     /**
      * Obtiene horario de una asesoría
      *
-     * @param $advisoryId int
+     * @param $advisory_id int
      *
      * @return \App\Model\DataResult
      * @throws \App\Exceptions\Request\InternalErrorException
      */
-    public function getAdvisoryHours_ById($advisoryId){
+    public function getAdvisorySchedule_ById( $advisory_id ){
         $query = "SELECT 
                     ads.advisory_schedule_id as 'id',
                     ads.fk_hours as 'schedule_hour',
@@ -262,7 +262,7 @@ class AdvisoriesPersistence extends Persistence{
                     FROM advisory_schedule ads
                     INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id
                     INNER JOIN day_and_hour h2 ON h.fk_day_hour = h2.day_hour_id
-                    WHERE ads.fk_advisory = $advisoryId ";
+                    WHERE ads.fk_advisory = $advisory_id ";
         return self::executeQuery($query);
     }
 

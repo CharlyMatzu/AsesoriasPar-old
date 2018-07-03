@@ -25,12 +25,17 @@ class CareerService{
      * @return array|null|string
      * @throws InternalErrorException
      * @throws NoContentException
+     * @throws \App\Exceptions\Request\UnauthorizedException
      */
     public function getCareers(){
 
         //Validación se sesión
-        if( Auth::$isSessionON )
-            $result = $this->perCareers->getCareers();
+        if( Auth::$isSessionON ){
+            if( Auth::isStaffUser() )
+                $result = $this->perCareers->getCareers();
+            else
+                $result = $this->perCareers->getEnabledCareers();
+        }
         else
             $result = $this->perCareers->getEnabledCareers();
 

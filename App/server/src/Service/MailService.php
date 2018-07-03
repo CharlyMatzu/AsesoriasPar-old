@@ -49,10 +49,10 @@ class MailService
 
         $mail = new MailModel();
         $mail->addAdress( $user->getEmail() );
-        $mail->setSubject("asesorias par: Confirmación de correo");
+        $mail->setSubject("asesorías par: Confirmación de correo");
         //TODO: cambiar ruta de confirmación de email
-        $mail->setBody("<h3>Asesorias par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".SERVER_URL."/auth/confirm/$token'>".SERVER_URL."/auth/confirm/$token</a> </p> <p>Favor de hacer en menos de una hora</p>");
-        $mail->setPlainBody("asesorias par, Favor de verificar su correo haciendo click en el siguiente enlace: ".SERVER_URL."/auth/confirm/$token");
+        $mail->setBody("<h3>asesorías par</h3> <p>Favor de verificar su correo haciendo click en el siguiente enlace: <a href='".SERVER_URL."/auth/confirm/$token'>".SERVER_URL."/auth/confirm/$token</a> </p> <p>Favor de hacer en menos de una hora</p>");
+        $mail->setPlainBody("asesorías par, Favor de verificar su correo haciendo click en el siguiente enlace: ".SERVER_URL."/auth/confirm/$token");
 
         try{
             $this->sendMail( $mail );

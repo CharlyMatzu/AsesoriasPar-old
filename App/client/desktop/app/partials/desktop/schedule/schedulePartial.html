@@ -1,14 +1,14 @@
 <div class="section schedule-section" ng-controller="ScheduleController">
     <div class="container">
 
+            <p class="alert alert-dark">
+                Tanto para ofrecer asesorías como para solicitar, es necesario conocer tu disponibilidad para que se te sea asignado un asesor o seas asignado con alguien que concuerde con tu horario.
+            </p>
+
             <!-- spinner -->
             <div class="spinner-container" ng-if="loading">
                 <div class="spinner"></div>
             </div>
-
-            <p class="alert alert-dark">
-                Tanto para ofrecer asesorías como para solicitar, es necesario conocer tu disponibilidad para que se te sea asignado un asesor o seas asignado con alguien que concuerde con tu horario.
-            </p>
 
             <div class="schedule-container fadeIn" ng-if="!loading">
 
@@ -27,7 +27,7 @@
                     
                     <div class="column-item" ng-repeat="dh in daysAndHours">
                         <div class="cell-item cell-header">{{dh.day}}</div>
-                        <div class="cell-item cell-hour ng-class:checkIsExist(data.id)" ng-repeat="data in dh.data" ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{data.id}}">{{data.hour}}</div>
+                        <div ng-repeat="hour in dh.hours" class="cell-item cell-hour ng-class:checkIsExist(hour.id)"  ng-click="toggleHour($event)" data-day-number="{{dh.day_number}}" data-hour-day-id="{{hour.id}}">{{hour.hour}}</div>
                     </div>
             
                 </div>

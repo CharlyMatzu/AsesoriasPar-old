@@ -459,7 +459,7 @@ $app->patch('/schedule/{id}/status/{status}', 'ScheduleController:changeStatus')
 
 //TODO: VALIDAR AUTH
 //Obtiene horario actual de estudiante
-$app->get('/students/{id}/schedule', 'StudentController:getSchedule_ByStudentId')
+$app->get('/students/{id}/schedule', 'StudentController:getCurrentSchedule')
         ->add('InputMiddleware:checkParam_Id')
         ->add('AuthMiddleware:requireBasic');
 

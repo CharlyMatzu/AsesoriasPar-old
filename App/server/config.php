@@ -40,6 +40,6 @@
 
     
     // define("SERVER_URL", "http://".$_SERVER['HTTP_HOST']."/index.php");
-    // define("SERVER_URL", "http://192.168.1.72/AsesoriasPar-Web/App/server/index.php");
-    define("SERVER_URL", "http://10.202.103.252/AsesoriasPar-Web/App/server/index.php");
+    define("SERVER_URL", "http://192.168.1.72/AsesoriasPar-Web/App/server/index.php");
+    // define("SERVER_URL", "http://10.202.103.252/AsesoriasPar-Web/App/server/index.php");
     

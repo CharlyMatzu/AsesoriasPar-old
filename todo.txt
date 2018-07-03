@@ -1,3 +1,5 @@
+Mejorar sistema de chequeo de login en Dashboard y Desktop
+
 Acomodar asesorias en dashboard
 
 Solicitar ser asesor de la materia que solicite asesoria

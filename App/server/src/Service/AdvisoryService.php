@@ -26,7 +26,7 @@ class AdvisoryService
 
 
     /**
-     * @return \mysqli_result|null
+     * @return array
      * @throws \App\Exceptions\Request\InternalErrorException
      * @throws \App\Exceptions\Request\NoContentException
      */
@@ -39,17 +39,17 @@ class AdvisoryService
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCurrentAdvisories",
-                "Error al obtener asesorias en periodo actual", $result->getErrorMessage());
+                "Error al obtener asesorías en periodo actual", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 
-        return $result->getData();
+        return $this->setAdvisorySchedule_ById( $result->getData() );
     }
 
     /**
      * @param $student_id int
      *
-     * @return \mysqli_result
+     * @return array
      * @throws InternalErrorException
      * @throws NoContentException
      */
@@ -61,11 +61,11 @@ class AdvisoryService
         $result = $this->adviPer->getStudentAdvisories_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCurrentAdvisory_ByStudent",
-                "Error al obtener asesorias de estudiante", $result->getErrorMessage());
+                "Error al obtener asesorías de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 
-        return $result->getData();
+        return $this->setAdvisorySchedule_ById( $result->getData() );
     }
 
 
@@ -94,7 +94,7 @@ class AdvisoryService
     /**
      * @param $student_id int
      *
-     * @return \mysqli_result
+     * @return array
      * @throws InternalErrorException
      * @throws NoContentException
      */
@@ -103,20 +103,20 @@ class AdvisoryService
         $periodService = new PeriodService();
         $period = $periodService->getCurrentPeriod();
 
-        $result = $this->adviPer->getRequestedAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
+        $result = $this->adviPer->getRequestedAdvisories_ByStudent_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCurrentAdvisories_Requested",
-                "Error al obtener asesorias de estudiante", $result->getErrorMessage());
+                "Error al obtener asesorías de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 
-        return $result->getData();
+        return $this->setAdvisorySchedule_ById( $result->getData() );
     }
 
     /**
      * @param $student_id int
      *
-     * @return \mysqli_result
+     * @return array
      * @throws InternalErrorException
      * @throws NoContentException
      */
@@ -125,14 +125,14 @@ class AdvisoryService
         $periodService = new PeriodService();
         $period = $periodService->getCurrentPeriod();
 
-        $result = $this->adviPer->getAdviserAdvisories_ByStuden_ByPeriod( $student_id, $period['id'] );
+        $result = $this->adviPer->getAdviserAdvisories_ByStudent_ByPeriod( $student_id, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getCurrentAdvisories_Adviser",
-                "Error al obtener asesorias de estudiante", $result->getErrorMessage());
+                "Error al obtener asesorías de estudiante", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
             throw new NoContentException();
 
-        return $result->getData();
+        return $this->setAdvisorySchedule_ById( $result->getData() );
     }
 
 
@@ -165,16 +165,15 @@ class AdvisoryService
      * @throws NotFoundException
      */
     public function getAdvisorySchedule_ById($id){
-        $result = $this->adviPer->getAdvisoryHours_ById($id);
+        $result = $this->adviPer->getAdvisorySchedule_ById($id);
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisorySchedule_ById",
                 "Error al obtener horas de asesoría", $result->getErrorMessage());
         else if( Utils::isEmpty( $result->getOperation() ) )
-            throw new NotFoundException("No existe asesorias");
+            throw new NotFoundException("No existe asesorías");
 
         return $result->getData();
-
     }
 
 
@@ -207,7 +206,7 @@ class AdvisoryService
         $advisories = $this->adviPer->getStudentAdvisories_BySubject_ByPeriod($student_id, $subject_id, $period['id']);
         if( Utils::isError( $advisories->getOperation() ) )
             throw new InternalErrorException("insertAdvisory_CurrentPeriod",
-                "Error al obtener asesorias", $advisories->getErrorMessage());
+                "Error al obtener asesorías", $advisories->getErrorMessage());
 
         //Verifica que no exista una asesoría similar activa
         $this->checkAdvisoryRedundancy( $advisories->getData(), $advisory );
@@ -217,7 +216,7 @@ class AdvisoryService
         $scheServ = new ScheduleService();
         $schedule = $scheServ->getCurrentSchedule_ByStudentId( $student_id );
         //Obtiene materias de asesor
-        $subjectsArray = $scheServ->getScheduleSubjects_ById_Enabled( $schedule['id'] );
+        $subjectsArray = $scheServ->getScheduleSubjects_BySchedule_Enabled( $schedule['id'] );
 
         //Se compara materia solicitada con materias de horario
         if( !empty($subjectsArray) ){
@@ -225,7 +224,7 @@ class AdvisoryService
             foreach ( $subjectsArray as $sub ){
                 //Si es la misma materia
                 if( $req_subject['id'] === $sub['subject_id'] ){
-                    //solo si esta deshabilitada o bloqueada, se puede solicitar, caso contrario, excepción
+                    //solo si esta deshabilitada o bloqueada, se puede solicitar, caso contrario
                     if( $sub['status'] === Utils::$STATUS_VALIDATED || $sub['status'] === Utils::$STATUS_PENDING )
                         throw new ConflictException("No puedes solicitar asesoría de materia de la que eres asesor");
                     //Si no cumple, se termina y continua
@@ -239,7 +238,7 @@ class AdvisoryService
         $result = $this->adviPer->insertAdvisory( $advisory, $period['id'] );
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("insertAdvisory",
-                "Error al registrar asesorias", $advisories->getErrorMessage());
+                "Error al registrar asesorías", $advisories->getErrorMessage());
 
 
         //envía correo de confirmación
@@ -280,12 +279,12 @@ class AdvisoryService
             return;
 
         foreach ( $advisories as $ad ){
-            //Si se encuentra una asesorias activa de la misma materia
+            //Si se encuentra una asesorías activa de la misma materia
             // en estado activa o pendiente, entonces es redundante
             if( $ad['status'] == Utils::$STATUS_ACTIVE )
-                throw new ConflictException("Ya existe asesorias activa con dicha materia");
+                throw new ConflictException("Ya existe asesorías activa con dicha materia");
             else if( $ad['status'] == Utils::$STATUS_PENDING )
-                throw new ConflictException("Ya existe asesorias pendiente con dicha materia");
+                throw new ConflictException("Ya existe asesorías pendiente con dicha materia");
         }
 
 
@@ -417,6 +416,33 @@ class AdvisoryService
     }
 
     /**
+     * @param $advisories \mysqli_result
+     *
+     * @return array
+     * @throws InternalErrorException
+     */
+    public function setAdvisorySchedule_ById( $advisories ){
+
+        //--------Agregando horario
+        $advisoriesArray = [];
+        foreach ( $advisories as $ad ){
+            $schedule = [];
+            try{
+                $schedule = $this->getAdvisorySchedule_ById( $ad['id'] );
+                //Si no hay nada, no deja igual
+            } catch (NotFoundException $e) {}
+
+            //Se agrega a objeto
+            $ad['schedule'] = $schedule;
+            //Se agrega asesoría con horario a array
+            $advisoriesArray[] = $ad;
+        }
+
+        return $advisoriesArray;
+    }
+
+
+    /**
      * @param $advisory_id int
      *
      * @return \mysqli_result|null
@@ -427,7 +453,7 @@ class AdvisoryService
     public function getAdvisorySchedule($advisory_id){
         $this->getAdvisory_ById( $advisory_id );
 
-        $result = $this->adviPer->getAdvisoryHours_ById($advisory_id);
+        $result = $this->adviPer->getAdvisorySchedule_ById($advisory_id);
 
         if( Utils::isError( $result->getOperation() ) )
             throw new InternalErrorException("getAdvisorySchedule",
@@ -444,13 +470,13 @@ class AdvisoryService
 //     * @param $idStudent
 //     * @return array|null|string
 //     */
-//    public function getCurrentasesoriasLikeAsesor_ByStudent($idStudent ){
+//    public function getCurrentasesoríasLikeAsesor_ByStudent($idStudent ){
 //        $conHorarios = new ScheduleControl();
 //        $cycle = $conHorarios->getCurrentPeriod();
 //        if( !is_array($cycle) )
 //            return $cycle;
 //        else{
-//            $result = $this->perasesorias->getasesoriasLikeAsesor_ByStudentIdAndSchedule( $idStudent, $cycle['id'] );
+//            $result = $this->perasesorías->getasesoríasLikeAsesor_ByStudentIdAndSchedule( $idStudent, $cycle['id'] );
 //            if( $result === false )
 //                return 'error';
 //            else if( $result === null )
