@@ -240,10 +240,10 @@
 
     <!-- All Jquery -->
     <script src="../vendor/jquery/jquery.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="../vendor/popper/popper.min.js"></script>
     <!-- <script src="../assets/js/lib/bootstrap/js/bootstrap.min.js"></script> -->
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="../vendor/popper/popper.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="../assets/js/jquery.slimscroll.js"></script>
     <!--Menu sidebar -->
@@ -332,7 +332,13 @@
     <!-- correo -->
     <script src="app/components/email/emailService.js"></script>
     <script src="app/components/email/emailController.js"></script>
+
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
     
 </body>
-
 </html>

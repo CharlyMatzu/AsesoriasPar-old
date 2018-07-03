@@ -51,11 +51,11 @@
                             <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
                             <span ng-show="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
                         </div>
-                        
-                        <button class="btn-opt" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
                     </div>
-                    <div class="show">
-                        <button class="btn-show btn btn-outline-primary" ng-click="openSchedule(ad)">Ver Horario</button>
+                    <div class="options">
+                        <button class="btn-opt btn-show btn btn-primary" ng-click="openSchedule(ad)">Ver Horario</button>
+
+                        <button class="btn-opt btn btn-outline-danger" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
                     </div>
                 </div>
                 <!-- end items -->

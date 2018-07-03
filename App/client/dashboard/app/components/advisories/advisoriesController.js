@@ -3,6 +3,11 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     $scope.page.title = "Asesorías";
     $scope.advisories = [];
 
+
+    $scope.showSquareAdvisories = true;
+    $scope.showTableAdvisories = false;
+
+
     $scope.loading = false;
     $scope.loadingAdvisers = false;
     $scope.loadingSchedule = false;
@@ -23,6 +28,16 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     // $scope.mySchedule = [];
     $scope.matchHours = [];
     $scope.daysAndHours = [];
+
+    $scope.showSquare = function(){
+        $scope.showSquareAdvisories = true;
+        $scope.showTableAdvisories = false; 
+    }
+
+    $scope.showTable = function(){
+        $scope.showSquareAdvisories = false;
+        $scope.showTableAdvisories = true; 
+    }
 
 
     $scope.getAdvisories = function(){

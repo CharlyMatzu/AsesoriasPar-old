@@ -178,13 +178,16 @@ body {
   padding: 10px;
   border: 1px solid rgba(33, 33, 33, 0.3);
   border-radius: 7px;
-  width: 100%;
-  max-width: 200px;
-  height: 330px;
   text-align: center;
+  overflow: hidden;
+  width: 220px;
+  height: 360px;
   -webkit-transition: .3s;
   -o-transition: .3s;
   transition: .3s; }
+  @media only screen and (max-width: 600px) {
+    .advisories-container .advisories .item {
+      width: 100%; } }
   .advisories-container .advisories .item:hover {
     border-color: #FF3366;
     -webkit-box-shadow: 0 3px 5px rgba(33, 33, 33, 0.2);
@@ -207,27 +210,19 @@ body {
       overflow: hidden;
       height: 50px;
       max-height: 50px; }
-    .advisories-container .advisories .item .info .btn-opt {
-      position: absolute;
-      color: #dc3545;
-      cursor: pointer;
-      bottom: -35px;
-      left: 55px;
-      background: none;
-      border: none;
-      -webkit-transition: .3s;
-      -o-transition: .3s;
-      transition: .3s; }
-      .advisories-container .advisories .item .info .btn-opt:hover {
-        background-color: #dc3545;
-        color: #fff; }
-  .advisories-container .advisories .item .show {
+  .advisories-container .advisories .item .options {
     padding: 10px 5px;
     display: block; }
+    .advisories-container .advisories .item .options .btn-opt {
+      width: 100%;
+      margin-bottom: 5px; }
 
 .advisories-container .advisories .new {
   border-color: #3A99D9;
   cursor: pointer; }
+  @media only screen and (max-width: 600px) {
+    .advisories-container .advisories .new {
+      height: auto; } }
   .advisories-container .advisories .new:hover {
     background-color: rgba(58, 153, 217, 0.1); }
   .advisories-container .advisories .new .icon-container {
@@ -258,78 +253,6 @@ body {
       align-items: center;
       font-size: 2.5em;
       color: #3A99D9; }
-
-.advisories-container .double {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-  .advisories-container .double .item-double {
-    padding-bottom: 130px;
-    overflow: visible;
-    position: relative;
-    height: auto;
-    max-width: 400px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    cursor: auto; }
-    .advisories-container .double .item-double .student-item {
-      padding: 10px 20px;
-      -webkit-box-flex: 1;
-      -ms-flex: 1;
-      flex: 1;
-      width: 100%; }
-      .advisories-container .double .item-double .student-item .title {
-        width: 100%;
-        display: block;
-        font-weight: bold; }
-      .advisories-container .double .item-double .student-item .avatar {
-        margin-bottom: 10px; }
-      .advisories-container .double .item-double .student-item .info .name {
-        width: 100%; }
-      .advisories-container .double .item-double .student-item:nth-child(1) {
-        border-right: 1px dashed #a3a3a3; }
-    .advisories-container .double .item-double .info-container {
-      position: absolute;
-      z-index: 20;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 15px; }
-      .advisories-container .double .item-double .info-container .subject {
-        font-weight: bold; }
-      .advisories-container .double .item-double .info-container .status {
-        margin: 15px 0; }
-        .advisories-container .double .item-double .info-container .status .badge {
-          font-size: 1em; }
-      .advisories-container .double .item-double .info-container .btn-opt {
-        font-size: 1.1em;
-        color: #dc3545;
-        cursor: pointer;
-        bottom: -35px;
-        left: 55px;
-        background: none;
-        border: none; }
-        .advisories-container .double .item-double .info-container .btn-opt:hover {
-          background-color: #dc3545;
-          color: #fff; }
-      .advisories-container .double .item-double .info-container .opt-success {
-        color: #28A745;
-        -webkit-animation-name: assign;
-        animation-name: assign;
-        -webkit-animation-duration: 1s;
-        animation-duration: 1s;
-        -webkit-animation-direction: alternate;
-        animation-direction: alternate;
-        -webkit-animation-timing-function: ease-in-out;
-        animation-timing-function: ease-in-out;
-        -webkit-animation-iteration-count: infinite;
-        animation-iteration-count: infinite; }
-        .advisories-container .double .item-double .info-container .opt-success:hover {
-          background-color: #28A745; }
 
 .advisories-container .new-advisorie-container {
   position: fixed;

@@ -2,45 +2,21 @@
 
         <!-- Options -->
         <div class="card col-lg-12">
+
             <div class="options">
-                <button class="btn btn-dark"><span class="fa fa-list"></span></button>
-                <button class="btn btn-dark"><span class="fa fa-th-large"></span></button>
+                <button ng-click="showSquare()" class="btn btn-dark" data-toggle="tooltip" title="Mostrar en cuadros"><span class="fa fa-th-large"></span></button>
+                <button ng-click="showTable()" class="btn btn-dark" data-toggle="tooltip" title="Mostrar en tabla"><span class="fa fa-list"></span></button>
 
+                <!-- refresh -->
                 <button ng-click="getAdvisories()" class="btn btn-primary"><span class="fa fa-refresh"></span> Recargar</button>
-
-                <!-- filtro -->
-                <!-- <div class="form-inline">
-                    <form>
-                        <div class="form-group">
-                            <label for="">Día</label>
-                            <select class="custom-select">
-                                <option value="">Lunes</option>
-                                <option value="">Martes</option>
-                                <option value="">Miercoles</option>
-                                <option value="">Jueves</option>
-                                <option value="">Viernes</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Día</label>
-                            <select class="custom-select">
-                                <option value="">Lunes</option>
-                                <option value="">Martes</option>
-                                <option value="">Miercoles</option>
-                                <option value="">Jueves</option>
-                                <option value="">Viernes</option>
-                            </select>
-                        </div>
-                    </form>
-                </div> -->
-                <!-- end filtro -->
             </div>
+            
         </div>
+        <!-- end options -->
 
     
-        <!-- content -->
-        <div class="card col-lg-12">
+        <!-- content square -->
+        <div class="card col-lg-12 square" ng-if="showSquareAdvisories">
 
             <!-- loader -->
             <div class="loader" ng-show="loading">
@@ -110,12 +86,77 @@
                 <!-- end advisories -->
             </div>
         </div>
-        <!-- end content -->
+        <!-- end content square -->
+
+
+
+        <!-- advisories table -->
+        <div class="card col-lg-12 table" ng-if="showTableAdvisories">
+
+            <!-- loader -->
+            <div class="loader" ng-show="loading">
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+            </div>
+
+            <div class="card-body" ng-show="!loading">
+                <div class="advisories-container advisories-table">
+
+                    <p ng-show="advisories.length == 0">No hay asesorías registradas</p>
+
+                    <div class="table-responsive" ng-show="advisories.length > 0">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Alumno</th>
+                                <th>Asesor</th>
+                                <th>Materia</th>
+                                <th>Fecha inicio</th>
+                                <th>Fecha termino</th>
+                                <th>Estado</th>
+                                <th>Horario</th>
+                                <th>Opciones</th>
+                            </tr>
+                            <tr ng-repeat="ad in advisories">
+                                <td>
+                                    <a class="link" href="#!/estudiantes/{{ad.alumn_id}}/detalle">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
+                                </td>
+                                <td>
+                                    <a class="link" href="#!/estudiantes/{{ad.alumn_id}}/detalle" ng-show="ad.adviser_id">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
+
+                                    <span ng-show="!ad.adviser_id">Sin asesor</span>
+                                </td>
+                                <td>{{ad.subject_name}}</td>
+                                <td>{{ad.date_start}}</td>
+                                <td>{{ad.date_end}}</td>
+                                <td>
+                                    <span ng-show="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
+                                    <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                    <span ng-show="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
+                                </td>
+                                <td class="table-schedule">
+                                    <span class="day" ng-repeat="day in ad.schedule">
+                                        <strong>{{day.day}}:</strong>
+                                        <span class="hour" ng-repeat="hour in day.hours">{{hour.hour}}</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" ng-show="ad.status === 'PENDING' || ad.status == 'ACTIVE'"><span class="fa fa-times"></span> Finalizar</button>
+                                    <button ng-show="ad.status === 'PENDING'" class="btn btn-success" ng-click="openAssign(ad)"><span class="fa fa-plus"></span> Asignar</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- end advisories table -->
 
 </div>
 <!-- end fluid -->
     
     
+<!-- modal -->
 <div class="assign-container modal-container fadeIn" ng-show="showAssign">
     <div class="card content">
         <!-- TODO: estilizar -->
@@ -201,3 +242,4 @@
 
     </div>
 </div>
+<!-- end modal -->
