@@ -31,7 +31,6 @@
                 <div class="item new" ng-click="newRequest()">
                     <div class="icon-container">
                         <span class="icon fa fa-plus"></span>
-                        <!-- Solicitar -->
                     </div>
                 </div>
                 <!-- end new -->
@@ -53,8 +52,7 @@
                         </div>
                     </div>
                     <div class="options">
-                        <button class="btn-opt btn-show btn btn-primary" ng-click="openSchedule(ad)">Ver Horario</button>
-
+                        <button class="btn-opt btn btn-primary" ng-click="openSchedule(ad)">Ver Horario</button>
                         <button class="btn-opt btn btn-outline-danger" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
                     </div>
                 </div>

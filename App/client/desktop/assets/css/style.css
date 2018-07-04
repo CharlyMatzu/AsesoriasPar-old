@@ -11,6 +11,9 @@
 body {
   background-color: #F9F9FB; }
 
+.card {
+  padding: 20px; }
+
 .flicker {
   -webkit-animation: flick;
   animation: flick;
@@ -289,11 +292,12 @@ body {
   width: 100%; }
   .subjects-container .subjects {
     padding: 20px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    width: 100%; }
+    flex-wrap: wrap; }
     .subjects-container .subjects .item {
-      display: block;
       padding: 7px 12px;
       margin: 0 10px 10px 0;
       border-radius: 10px;

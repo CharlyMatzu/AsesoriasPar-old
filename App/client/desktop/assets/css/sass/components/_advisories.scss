@@ -76,9 +76,11 @@
 
             border-color: #3A99D9;
             cursor: pointer;
+
             &:hover{
                 background-color: rgba(#3A99D9, .1);
             }
+            
 
             .icon-container{
                 height: 100%;
@@ -100,8 +102,8 @@
                 }
             }
             
-        }
-    }
+        }//end new
+    }//end advisories
 
 
     // .double{

@@ -42,12 +42,10 @@
                 <div class="item" ng-repeat="ad in advisories">
                     <div class="avatar">
                         <img ng-show="ad.adviser_id != null" src="../../../../assets/img/student_assign.jpg" alt="">
-                        <img ng-show="ad.adviser_id == null" src="../../../../assets/img/student_empty.jpg" alt="">
                     </div>
                     <div class="info">
-                        <div ng-show="ad.alumn_id != null" class="info-item student" >{{ad.alumn_name}} {{ad.alumn_last_name}}</div>
-                        <div ng-show="ad.alumn_id == null" class="info-item student" >GASPARIN</div>
-                        <div class="info-item subject">{{ad.subject_name}}</div>
+                        <div class="info-item student" >{{ad.alumn_first_name}} {{ad.alumn_last_name}}</div>
+                        <div class="info-item subject text-truncate">{{ad.subject_name}}</div>
                         <div class="info-item status">
                             <span ng-show="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
                             <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
@@ -55,8 +53,7 @@
                         </div>
                     </div>
                     <div class="options">
-                            <button class="btn-opt btn-show btn btn-primary" ng-click="openSchedule(ad)">Ver Horario</button>
-
+                        <button class="btn-opt btn btn-primary" ng-click="openSchedule(ad)">Ver Horario</button>
                         <button class="btn-opt btn btn-outline-danger" ng-click="finalize(ad.id)" ng-show="ad.status === 'PENDING' || ad.status === 'ACTIVE'">Finalizar</button>
                     </div>
                 </div>
