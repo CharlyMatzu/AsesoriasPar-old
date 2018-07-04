@@ -28,8 +28,8 @@ angular.module("HostModule", [])
 
     .factory('RequestFactory', function($http){
 
-        var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
-        // var DEVELOPMENT = "http://10.202.106.54/AsesoriasPar-Web/App/server"
+        // var DEVELOPMENT = "http://192.168.1.72/AsesoriasPar-Web/App/server"
+        var DEVELOPMENT = "http://10.202.106.54/AsesoriasPar-Web/App/server"
         var PRODUCTION = "http://api.ronintopics.com";
         var DEVELOP_MODE = true;
             

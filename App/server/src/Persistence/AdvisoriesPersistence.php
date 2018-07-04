@@ -260,7 +260,7 @@ class AdvisoriesPersistence extends Persistence{
                     h2.day_hour_id as 'day_hour_id',
                     h2.day as 'day',
                     h2.day_number as 'day_number',
-                    h2.hour as 'hour'
+                    TIME_FORMAT(h2.hour, '%H:%i') as 'hour'
                     
                     FROM advisory_schedule ads
                     INNER JOIN schedule_days_hours h ON ads.fk_hours = h.schedule_dh_id

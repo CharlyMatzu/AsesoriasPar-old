@@ -104,45 +104,74 @@
                     <p ng-show="advisories.length == 0">No hay asesorías registradas</p>
 
                     <div class="table-responsive" ng-show="advisories.length > 0">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Alumno</th>
-                                <th>Asesor</th>
-                                <th>Materia</th>
-                                <th>Fecha inicio</th>
-                                <th>Fecha termino</th>
-                                <th>Estado</th>
-                                <th>Horario</th>
-                                <th>Opciones</th>
-                            </tr>
-                            <tr ng-repeat="ad in advisories">
-                                <td>
-                                    <a class="link" href="#!/estudiantes/{{ad.alumn_id}}/detalle">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
-                                </td>
-                                <td>
-                                    <a class="link" href="#!/estudiantes/{{ad.alumn_id}}/detalle" ng-show="ad.adviser_id">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
+                        
+                        <table id="table-advisories" class="display nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Alumno</th>
+                                    <th>Asesor</th>
+                                    <th>Materia</th>
+                                    <th>Fecha inicio</th>
+                                    <th>Fecha termino</th>
+                                    <th>Estado</th>
+                                    <!-- <th>Horario</th> -->
+                                    <th>Lunes</th>
+                                    <th>Martes</th>
+                                    <th>Miércoles</th>
+                                    <th>Jueves</th>
+                                    <th>Viernes</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ad in advisories">
+                                    <td>
+                                        <a class="link" href="#!/estudiantes/{{ad.alumn_id}}/detalle">{{ad.alumn_first_name}} {{ad.alumn_last_name}}</a>
+                                    </td>
+                                    <td>
+                                        <a class="link" href="#!/estudiantes/{{ad.adviser_id}}/detalle" ng-if="ad.adviser_id">{{ad.adviser_first_name}} {{ad.adviser_last_name}}</a>
+    
+                                        <span ng-if="!ad.adviser_id">Sin asesor</span>
+                                    </td>
+                                    <td>{{ad.subject_name}}</td>
+                                    <td>{{ad.date_start}}</td>
+                                    <td>{{ad.date_end}}</td>
+                                    <td>
+                                        <span ng-if="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
+                                        <span ng-if="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
+                                        <span ng-if="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
+                                    </td>
+                                    <!-- Si no hay horas asignadas -->
+                                    <td ng-if="ad.schedule.length == 0" ng-repeat="i in getNumber(5) track by $index">
+                                        ....
+                                    </td>
 
-                                    <span ng-show="!ad.adviser_id">Sin asesor</span>
-                                </td>
-                                <td>{{ad.subject_name}}</td>
-                                <td>{{ad.date_start}}</td>
-                                <td>{{ad.date_end}}</td>
-                                <td>
-                                    <span ng-show="ad.status === 'PENDING'" class="badge badge-warning">Pendiente</span>
-                                    <span ng-show="ad.status === 'ACTIVE'" class="badge badge-success">Activo</span>
-                                    <span ng-show="ad.status === 'FINALIZED'" class="badge badge-danger">Finalizado</span>
-                                </td>
-                                <td class="table-schedule">
-                                    <span class="day" ng-repeat="day in ad.schedule">
-                                        <strong>{{day.day}}:</strong>
-                                        <span class="hour" ng-repeat="hour in day.hours">{{hour.hour}}</span>
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger" ng-show="ad.status === 'PENDING' || ad.status == 'ACTIVE'"><span class="fa fa-times"></span> Finalizar</button>
-                                    <button ng-show="ad.status === 'PENDING'" class="btn btn-success" ng-click="openAssign(ad)"><span class="fa fa-plus"></span> Asignar</button>
-                                </td>
-                            </tr>
+                                    <!-- Cuando hay horas -->
+                                    <td ng-if="ad.schedule.length > 0" ng-repeat="day in ad.schedule">
+                                        <span ng-if="!day.hours.length > 0">N/A</span>
+                                        <span ng-if="day.hours.length > 0" ng-repeat="hour in day.hours">{{hour.hour}}</span>
+                                    </td>
+
+
+                                    <!-- <td class="table-schedule">
+                                        <span class="day" ng-repeat="day in ad.schedule">
+                                            <strong>{{day.day}}:</strong>
+                                            <span class="hour" ng-repeat="hour in day.hours">{{hour.hour}}</span>
+                                        </span>
+                                    </td> -->
+                                    <!-- <td ng-repeat="day in ad.schedule">
+                                        <span ng-if="!day.hours.length > 0">N/A</span>
+                                        <span ng-if="day.hours.length > 0" ng-repeat="hour in day.hours">{{hour.hour}}</span>
+                                    </td> -->
+                                    
+
+
+                                    <td>
+                                        <button class="btn btn-danger" ng-if="ad.status === 'PENDING' || ad.status == 'ACTIVE'"><span class="fa fa-times"></span> Finalizar</button>
+                                        <button ng-if="ad.status === 'PENDING'" class="btn btn-success" ng-click="openAssign(ad)"><span class="fa fa-plus"></span> Asignar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
 
@@ -243,3 +272,4 @@
     </div>
 </div>
 <!-- end modal -->
+

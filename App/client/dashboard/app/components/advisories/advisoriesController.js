@@ -29,6 +29,13 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     $scope.matchHours = [];
     $scope.daysAndHours = [];
 
+
+    $scope.number = 5;
+    $scope.getNumber = function(num) {
+        return new Array(num);   
+    }
+
+
     $scope.showSquare = function(){
         $scope.showSquareAdvisories = true;
         $scope.showTableAdvisories = false; 
@@ -37,6 +44,8 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     $scope.showTable = function(){
         $scope.showSquareAdvisories = false;
         $scope.showTableAdvisories = true; 
+
+        loadDataTables();
     }
 
 
@@ -218,6 +227,35 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
     };
 
 
+    var loadDataTables = function(){
+        $(document).ready(function() {
+
+            $('#table-advisories').DataTable( {
+              dom: 'Bfrtip',
+              buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+              ],
+              "language": {
+                  "emptyTable":     "No datos en la tabla",
+                  "info":           "Mostrando de _START_ al _END_ de _TOTAL_ registros",
+                  "infoPostFix":    "",
+                  "thousands":      ",",
+                  "loadingRecords": "Cargando...",
+                  "processing":     "Procesando...",
+                  "search":         "Buscar:",
+                  "paginate": {
+                      "first":      "Primero",
+                      "last":       "Ultimo",
+                      "next":       "Siguiente",
+                      "previous":   "Anterior"
+                  },
+              },
+            });
+
+          });
+    };
+
+
 
     (function(){
         $scope.loading = true;
@@ -236,7 +274,7 @@ angular.module("Dashboard").controller('AdvisoriesController', function($scope, 
             }, function(error){
                 $scope.loading = false;
                 Notification.error("Ocurrió un error verificar un periodo actual activo");
-            })
+            });
         
     })();
     
